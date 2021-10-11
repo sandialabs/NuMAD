@@ -1,0 +1,21 @@
+﻿**BladeDef Property**,**Property Description**
+``span``,Spanwise location of distributed properties [m]
+``degreestwist``,Twist distribution [degrees]
+``chord``,Chord length distribution [m]
+``percentthick``,Percent thickness of airfoil [%]
+``chordoffset``,Chordwise offset (in attrition to natural offset)
+``aerocenter``,Aerodynamic center of airfoil
+``sweep``,Reference axis location along :math:`x_{1}` [m] (see Figure 2‑1)
+``prebend``,Reference axis location along :math:`x_{2}` [m] (see Figure 2‑1)
+``materials``,MaterialDef – See :numref:`materialDefTable`
+``stations``,StationDef – See :numref:`stationDefTable`
+``components``,"ComponentDef – See :numref:`componentDefTable`. Blade components such as spar, panels, etc…"
+``sparcapwidth``,1 × 2  array. Defines distance between keypoints b & c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap
+``sparcapoffset``,1 × 2  array. (Does Nothing)
+``leband``,Defines location of keypoint a
+``teband``,Defines location of keypoint d
+``ispan``,Spanwise locations of interpolated output [m]
+``naturaloffset=1``,"1: offset by max thickness, 0: do not offset to max thickness"
+``rotorspin = 1``,"1: CW rotation looking downwind, -1: CCW rotation"
+``swtwisted``,"0: planar shear webs, 1: shearwebs twisted by blade twist"
+``mesh``,Approximate element edge size for FE model [m]

@@ -1,0 +1,9 @@
+﻿**ComponentDef Property**,**Property Description**
+``group``,"0: blade, 1: first shear web, 2: second shear web, etc."
+``materialid``,string such as ``'spar'``
+``fabricangle``,material id number from ``blade.materials``
+``hpextents``,The extent of the airfoil covered by the component. High pressure side. Eg. ``{‘a’}``    ``{‘b’}``. See Figure 1‑1.
+``lpextents``,The extent of the airfoil covered by the component. Low pressure side. Eg. ``{‘a’}``    ``{‘b’}``. See Figure 1‑1.
+``cp``,Material thickness distribution along blade span. ``M × 2`` array. First column is nondimension span location where thickness is to be defined. Second column is material thickness [mm].
+``imethod``,``'pchip'``
+``pinnedends``,Set to ``false`` by default.

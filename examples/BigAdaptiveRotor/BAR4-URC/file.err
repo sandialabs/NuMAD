@@ -1,0 +1,2298 @@
+/COM,ANSYS RELEASE Release 18.1      BUILD 18.1      UP20170403       10:36:01
+
+ *** WARNING ***                         CP =       1.109   TIME= 10:36:03
+ For element type = 31 (SHELL281), KEYOPT(2) = 1 is an undocumented      
+ option.                                                                 
+
+ *** WARNING ***                         CP =       6.984   TIME= 10:36:08
+ Lines 4737, 4798, 4739, and 4797 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       6.984   TIME= 10:36:08
+ Lines 4738, 4797, 4740, and 4798 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.000   TIME= 10:36:08
+ Lines 4739, 4800, 4741, and 4799 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.000   TIME= 10:36:08
+ Lines 4740, 4799, 4742, and 4800 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.000   TIME= 10:36:08
+ Lines 4741, 4804, 4743, and 4802 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.016   TIME= 10:36:08
+ Lines 4742, 4803, 4744, and 4804 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.031   TIME= 10:36:08
+ Lines 4743, 4808, 4745, and 4806 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.031   TIME= 10:36:08
+ Lines 4744, 4807, 4746, and 4808 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.031   TIME= 10:36:08
+ Lines 4745, 4812, 4747, and 4810 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.047   TIME= 10:36:08
+ Lines 4746, 4811, 4748, and 4812 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.047   TIME= 10:36:08
+ Lines 4747, 4814, 4749, and 4813 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.047   TIME= 10:36:08
+ Lines 4748, 4813, 4750, and 4814 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.062   TIME= 10:36:08
+ Lines 4749, 4816, 4751, and 4815 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.062   TIME= 10:36:08
+ Lines 4750, 4815, 4752, and 4816 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.078   TIME= 10:36:08
+ Lines 4751, 4818, 4753, and 4817 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.078   TIME= 10:36:08
+ Lines 4752, 4817, 4754, and 4818 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.078   TIME= 10:36:08
+ Lines 4753, 4822, 4755, and 4820 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.094   TIME= 10:36:08
+ Lines 4754, 4821, 4756, and 4822 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.094   TIME= 10:36:08
+ Lines 4755, 4826, 4757, and 4824 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.094   TIME= 10:36:08
+ Lines 4756, 4825, 4758, and 4826 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.109   TIME= 10:36:08
+ Lines 4757, 4830, 4759, and 4828 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.109   TIME= 10:36:08
+ Lines 4758, 4829, 4760, and 4830 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.109   TIME= 10:36:08
+ Lines 4759, 4834, 4761, and 4832 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.109   TIME= 10:36:08
+ Lines 4760, 4833, 4762, and 4834 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.125   TIME= 10:36:08
+ Lines 4761, 4838, 4763, and 4836 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.125   TIME= 10:36:08
+ Lines 4762, 4837, 4764, and 4838 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.125   TIME= 10:36:08
+ Lines 4763, 4842, 4765, and 4840 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.141   TIME= 10:36:08
+ Lines 4764, 4841, 4766, and 4842 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.156   TIME= 10:36:08
+ Lines 4765, 4846, 4767, and 4844 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.156   TIME= 10:36:08
+ Lines 4766, 4845, 4768, and 4846 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.156   TIME= 10:36:08
+ Lines 4767, 4850, 4769, and 4848 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.172   TIME= 10:36:08
+ Lines 4768, 4849, 4770, and 4850 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.172   TIME= 10:36:08
+ Lines 4769, 4854, 4771, and 4852 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.188   TIME= 10:36:08
+ Lines 4770, 4853, 4772, and 4854 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.188   TIME= 10:36:08
+ Lines 4771, 4856, 4773, and 4855 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.188   TIME= 10:36:08
+ Lines 4772, 4855, 4774, and 4856 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.203   TIME= 10:36:08
+ Lines 4773, 4858, 4775, and 4857 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.203   TIME= 10:36:08
+ Lines 4774, 4857, 4776, and 4858 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.203   TIME= 10:36:08
+ Lines 4775, 4860, 4777, and 4859 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.203   TIME= 10:36:08
+ Lines 4776, 4859, 4778, and 4860 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.203   TIME= 10:36:08
+ Lines 4777, 4862, 4779, and 4861 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.219   TIME= 10:36:09
+ Lines 4778, 4861, 4780, and 4862 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.219   TIME= 10:36:09
+ Lines 4779, 4864, 4781, and 4863 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.234   TIME= 10:36:09
+ Lines 4780, 4863, 4782, and 4864 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.234   TIME= 10:36:09
+ Lines 4781, 4866, 4783, and 4865 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.234   TIME= 10:36:09
+ Lines 4782, 4865, 4784, and 4866 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.266   TIME= 10:36:09
+ Lines 4783, 4868, 4785, and 4867 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.266   TIME= 10:36:09
+ Lines 4784, 4867, 4786, and 4868 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.266   TIME= 10:36:09
+ Lines 4785, 4870, 4787, and 4869 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.281   TIME= 10:36:09
+ Lines 4786, 4869, 4788, and 4870 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.281   TIME= 10:36:09
+ Lines 4787, 4872, 4789, and 4871 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.281   TIME= 10:36:09
+ Lines 4788, 4871, 4790, and 4872 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.281   TIME= 10:36:09
+ Lines 4789, 4874, 4791, and 4873 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.281   TIME= 10:36:09
+ Lines 4790, 4873, 4792, and 4874 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.297   TIME= 10:36:09
+ Lines 4791, 4876, 4793, and 4875 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.297   TIME= 10:36:09
+ Lines 4792, 4875, 4794, and 4876 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.328   TIME= 10:36:09
+ Lines 4793, 4878, 4795, and 4877 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =       7.328   TIME= 10:36:09
+ Lines 4794, 4877, 4796, and 4878 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      10.297   TIME= 10:36:12
+ Lines 1, 4879, 159, and 4797 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.297   TIME= 10:36:12
+ Lines 2, 4880, 160, and 4879 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.297   TIME= 10:36:12
+ Lines 7, 4881, 166, and 4880 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.328   TIME= 10:36:12
+ Lines 44, 4882, 201, and 4881 do not lie on a common coordinate value   
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.344   TIME= 10:36:12
+ Lines 55, 4883, 212, and 4882 do not lie on a common coordinate value   
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.359   TIME= 10:36:12
+ Lines 79, 3, 237, and 4883 do not lie on a common coordinate value in   
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.359   TIME= 10:36:12
+ Lines 80, 4884, 238, and 3 do not lie on a common coordinate value in   
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.359   TIME= 10:36:12
+ Lines 81, 4885, 239, and 4884 do not lie on a common coordinate value   
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.391   TIME= 10:36:12
+ Lines 122, 4886, 278, and 4885 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.391   TIME= 10:36:12
+ Lines 133, 4887, 289, and 4886 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.406   TIME= 10:36:12
+ Lines 153, 4888, 311, and 4887 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.406   TIME= 10:36:12
+ Lines 157, 4797, 315, and 4888 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.422   TIME= 10:36:12
+ Lines 159, 4889, 317, and 4799 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.422   TIME= 10:36:12
+ Lines 160, 4890, 318, and 4889 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.422   TIME= 10:36:12
+ Lines 166, 4891, 324, and 4890 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.453   TIME= 10:36:12
+ Lines 201, 4892, 356, and 4891 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.453   TIME= 10:36:12
+ Lines 212, 4893, 369, and 4892 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.469   TIME= 10:36:12
+ Lines 237, 4, 395, and 4893 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.469   TIME= 10:36:12
+ Lines 238, 4894, 396, and 4 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.484   TIME= 10:36:12
+ Lines 239, 4895, 397, and 4894 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.516   TIME= 10:36:12
+ Lines 278, 4896, 434, and 4895 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.516   TIME= 10:36:12
+ Lines 289, 4897, 447, and 4896 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.531   TIME= 10:36:12
+ Lines 311, 4898, 469, and 4897 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.531   TIME= 10:36:12
+ Lines 315, 4799, 473, and 4898 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.531   TIME= 10:36:12
+ Lines 317, 4899, 475, and 4801 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.547   TIME= 10:36:12
+ Lines 318, 4900, 476, and 4899 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.547   TIME= 10:36:12
+ Lines 324, 4901, 482, and 4900 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.562   TIME= 10:36:12
+ Lines 356, 4902, 513, and 4901 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.578   TIME= 10:36:12
+ Lines 369, 4903, 527, and 4902 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.594   TIME= 10:36:12
+ Lines 395, 5, 553, and 4903 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.594   TIME= 10:36:12
+ Lines 396, 4904, 554, and 5 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.594   TIME= 10:36:12
+ Lines 397, 4905, 555, and 4904 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.641   TIME= 10:36:12
+ Lines 434, 4906, 588, and 4905 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.641   TIME= 10:36:12
+ Lines 447, 4907, 602, and 4906 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.672   TIME= 10:36:12
+ Lines 469, 4908, 626, and 4907 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.672   TIME= 10:36:12
+ Lines 473, 4801, 632, and 4908 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.672   TIME= 10:36:12
+ Lines 475, 4806, 633, and 4805 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.672   TIME= 10:36:12
+ Lines 476, 4909, 634, and 4806 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.672   TIME= 10:36:12
+ Lines 482, 4910, 641, and 4909 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.688   TIME= 10:36:12
+ Lines 513, 4911, 672, and 4910 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.688   TIME= 10:36:12
+ Lines 527, 4912, 686, and 4911 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.719   TIME= 10:36:12
+ Lines 553, 6, 711, and 4912 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.734   TIME= 10:36:12
+ Lines 554, 4913, 712, and 6 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.734   TIME= 10:36:12
+ Lines 555, 4914, 713, and 4913 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.750   TIME= 10:36:12
+ Lines 588, 4915, 743, and 4914 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.766   TIME= 10:36:12
+ Lines 602, 4916, 758, and 4915 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.781   TIME= 10:36:12
+ Lines 626, 4807, 784, and 4916 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.781   TIME= 10:36:12
+ Lines 632, 4805, 790, and 4807 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.781   TIME= 10:36:12
+ Lines 633, 4917, 791, and 4809 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.781   TIME= 10:36:12
+ Lines 634, 4918, 792, and 4917 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.797   TIME= 10:36:12
+ Lines 641, 4919, 799, and 4918 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.797   TIME= 10:36:12
+ Lines 672, 4920, 830, and 4919 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.812   TIME= 10:36:12
+ Lines 686, 4921, 845, and 4920 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.828   TIME= 10:36:12
+ Lines 711, 8, 869, and 4921 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.828   TIME= 10:36:12
+ Lines 712, 4922, 870, and 8 do not lie on a common coordinate value in  
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.828   TIME= 10:36:12
+ Lines 713, 4923, 871, and 4922 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.859   TIME= 10:36:12
+ Lines 743, 4924, 899, and 4923 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.875   TIME= 10:36:12
+ Lines 758, 4925, 914, and 4924 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.891   TIME= 10:36:12
+ Lines 784, 4926, 942, and 4925 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.891   TIME= 10:36:12
+ Lines 790, 4809, 947, and 4926 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.891   TIME= 10:36:12
+ Lines 791, 4927, 949, and 4813 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.891   TIME= 10:36:12
+ Lines 792, 4928, 950, and 4927 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.891   TIME= 10:36:12
+ Lines 799, 4929, 957, and 4928 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.922   TIME= 10:36:12
+ Lines 830, 4930, 990, and 4929 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.938   TIME= 10:36:12
+ Lines 845, 4931, 1005, and 4930 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.953   TIME= 10:36:12
+ Lines 869, 9, 1027, and 4931 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.953   TIME= 10:36:12
+ Lines 870, 4932, 1028, and 9 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.953   TIME= 10:36:12
+ Lines 871, 4933, 1029, and 4932 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.969   TIME= 10:36:12
+ Lines 899, 4934, 1054, and 4933 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      10.984   TIME= 10:36:12
+ Lines 914, 4935, 1069, and 4934 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.000   TIME= 10:36:12
+ Lines 942, 4936, 1099, and 4935 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.016   TIME= 10:36:12
+ Lines 947, 4813, 1105, and 4936 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.016   TIME= 10:36:12
+ Lines 949, 4937, 1107, and 4815 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.016   TIME= 10:36:12
+ Lines 950, 4938, 1108, and 4937 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.016   TIME= 10:36:12
+ Lines 957, 4939, 1115, and 4938 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.047   TIME= 10:36:12
+ Lines 990, 4940, 1149, and 4939 do not lie on a common coordinate value 
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.062   TIME= 10:36:12
+ Lines 1005, 4941, 1165, and 4940 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.062   TIME= 10:36:12
+ Lines 1027, 10, 1185, and 4941 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.062   TIME= 10:36:12
+ Lines 1028, 4942, 1186, and 10 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.062   TIME= 10:36:12
+ Lines 1029, 4943, 1187, and 4942 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.094   TIME= 10:36:12
+ Lines 1054, 4944, 1210, and 4943 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.109   TIME= 10:36:12
+ Lines 1069, 4945, 1225, and 4944 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.141   TIME= 10:36:12
+ Lines 1099, 4946, 1257, and 4945 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.141   TIME= 10:36:12
+ Lines 1105, 4815, 1263, and 4946 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.141   TIME= 10:36:12
+ Lines 1107, 4947, 1265, and 4817 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.141   TIME= 10:36:12
+ Lines 1108, 4948, 1266, and 4947 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.141   TIME= 10:36:12
+ Lines 1115, 4949, 1273, and 4948 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.172   TIME= 10:36:12
+ Lines 1149, 4950, 1309, and 4949 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.188   TIME= 10:36:12
+ Lines 1165, 4951, 1324, and 4950 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.203   TIME= 10:36:12
+ Lines 1185, 11, 1343, and 4951 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.203   TIME= 10:36:12
+ Lines 1186, 4952, 1344, and 11 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.203   TIME= 10:36:12
+ Lines 1187, 4953, 1345, and 4952 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.234   TIME= 10:36:13
+ Lines 1210, 4954, 1366, and 4953 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.234   TIME= 10:36:13
+ Lines 1225, 4955, 1381, and 4954 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.266   TIME= 10:36:13
+ Lines 1257, 4956, 1415, and 4955 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.266   TIME= 10:36:13
+ Lines 1263, 4817, 1421, and 4956 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.266   TIME= 10:36:13
+ Lines 1265, 4957, 1423, and 4819 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.281   TIME= 10:36:13
+ Lines 1266, 4958, 1424, and 4957 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.281   TIME= 10:36:13
+ Lines 1273, 4959, 1431, and 4958 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.297   TIME= 10:36:13
+ Lines 1309, 4960, 1469, and 4959 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.312   TIME= 10:36:13
+ Lines 1324, 4961, 1484, and 4960 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.328   TIME= 10:36:13
+ Lines 1343, 12, 1501, and 4961 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.328   TIME= 10:36:13
+ Lines 1344, 4962, 1502, and 12 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.328   TIME= 10:36:13
+ Lines 1345, 4963, 1503, and 4962 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.344   TIME= 10:36:13
+ Lines 1366, 4964, 1522, and 4963 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.359   TIME= 10:36:13
+ Lines 1381, 4965, 1537, and 4964 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.391   TIME= 10:36:13
+ Lines 1415, 4966, 1573, and 4965 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.391   TIME= 10:36:13
+ Lines 1421, 4819, 1580, and 4966 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.406   TIME= 10:36:13
+ Lines 1423, 4824, 1581, and 4823 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.406   TIME= 10:36:13
+ Lines 1424, 4967, 1582, and 4824 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.406   TIME= 10:36:13
+ Lines 1431, 4968, 1589, and 4967 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.438   TIME= 10:36:13
+ Lines 1469, 4969, 1628, and 4968 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.453   TIME= 10:36:13
+ Lines 1484, 4970, 1643, and 4969 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.469   TIME= 10:36:13
+ Lines 1501, 13, 1659, and 4970 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.469   TIME= 10:36:13
+ Lines 1502, 4971, 1660, and 13 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.469   TIME= 10:36:13
+ Lines 1503, 4972, 1661, and 4971 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.484   TIME= 10:36:13
+ Lines 1522, 4973, 1678, and 4972 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.484   TIME= 10:36:13
+ Lines 1537, 4974, 1694, and 4973 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.516   TIME= 10:36:13
+ Lines 1573, 4825, 1731, and 4974 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.516   TIME= 10:36:13
+ Lines 1581, 4828, 1739, and 4827 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.516   TIME= 10:36:13
+ Lines 1582, 4975, 1740, and 4828 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.516   TIME= 10:36:13
+ Lines 1589, 4976, 1748, and 4975 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.547   TIME= 10:36:13
+ Lines 1628, 4977, 1786, and 4976 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.562   TIME= 10:36:13
+ Lines 1643, 4978, 1802, and 4977 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.578   TIME= 10:36:13
+ Lines 1659, 14, 1817, and 4978 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.578   TIME= 10:36:13
+ Lines 1660, 4979, 1818, and 14 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.578   TIME= 10:36:13
+ Lines 1661, 4980, 1819, and 4979 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.578   TIME= 10:36:13
+ Lines 1678, 4981, 1835, and 4980 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.594   TIME= 10:36:13
+ Lines 1694, 4982, 1851, and 4981 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.625   TIME= 10:36:13
+ Lines 1731, 4829, 1888, and 4982 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.625   TIME= 10:36:13
+ Lines 1738, 4827, 1896, and 4829 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.641   TIME= 10:36:13
+ Lines 1740, 4983, 1898, and 4832 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.641   TIME= 10:36:13
+ Lines 1748, 4984, 1906, and 4983 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.656   TIME= 10:36:13
+ Lines 1786, 4985, 1944, and 4984 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.656   TIME= 10:36:13
+ Lines 1802, 4986, 1961, and 4985 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.672   TIME= 10:36:13
+ Lines 1817, 15, 1975, and 4986 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.672   TIME= 10:36:13
+ Lines 1818, 4987, 1976, and 15 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.672   TIME= 10:36:13
+ Lines 1819, 4988, 1977, and 4987 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.688   TIME= 10:36:13
+ Lines 1835, 4989, 1992, and 4988 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.703   TIME= 10:36:13
+ Lines 1851, 4990, 2009, and 4989 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.719   TIME= 10:36:13
+ Lines 1888, 4833, 2046, and 4990 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.719   TIME= 10:36:13
+ Lines 1896, 4831, 2054, and 4833 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.719   TIME= 10:36:13
+ Lines 1897, 4836, 2055, and 4835 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.719   TIME= 10:36:13
+ Lines 1898, 4991, 2056, and 4836 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.734   TIME= 10:36:13
+ Lines 1906, 4992, 2064, and 4991 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.750   TIME= 10:36:13
+ Lines 1944, 4993, 2102, and 4992 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.750   TIME= 10:36:13
+ Lines 1961, 4994, 2120, and 4993 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.766   TIME= 10:36:13
+ Lines 1975, 16, 2133, and 4994 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.766   TIME= 10:36:13
+ Lines 1976, 4995, 2134, and 16 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.766   TIME= 10:36:13
+ Lines 1977, 4996, 2135, and 4995 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.766   TIME= 10:36:13
+ Lines 1992, 4997, 2149, and 4996 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.781   TIME= 10:36:13
+ Lines 2009, 4998, 2167, and 4997 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.812   TIME= 10:36:13
+ Lines 2046, 4837, 2204, and 4998 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.828   TIME= 10:36:13
+ Lines 2055, 4840, 2213, and 4839 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.828   TIME= 10:36:13
+ Lines 2056, 4999, 2214, and 4840 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.828   TIME= 10:36:13
+ Lines 2064, 5000, 2223, and 4999 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.844   TIME= 10:36:13
+ Lines 2102, 5001, 2259, and 5000 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.859   TIME= 10:36:13
+ Lines 2120, 5002, 2278, and 5001 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.859   TIME= 10:36:13
+ Lines 2133, 17, 2291, and 5002 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.875   TIME= 10:36:13
+ Lines 2134, 5003, 2292, and 17 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.875   TIME= 10:36:13
+ Lines 2135, 5004, 2293, and 5003 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.875   TIME= 10:36:13
+ Lines 2149, 5005, 2307, and 5004 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.891   TIME= 10:36:13
+ Lines 2167, 5006, 2326, and 5005 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.906   TIME= 10:36:13
+ Lines 2204, 4841, 2361, and 5006 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.938   TIME= 10:36:13
+ Lines 2212, 4839, 2370, and 4841 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.938   TIME= 10:36:13
+ Lines 2214, 5007, 2372, and 4844 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.938   TIME= 10:36:13
+ Lines 2223, 5008, 2381, and 5007 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.969   TIME= 10:36:13
+ Lines 2259, 5009, 2416, and 5008 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.984   TIME= 10:36:13
+ Lines 2278, 5010, 2436, and 5009 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      11.984   TIME= 10:36:13
+ Lines 2291, 18, 2449, and 5010 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.984   TIME= 10:36:13
+ Lines 2292, 5011, 2450, and 18 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      11.984   TIME= 10:36:13
+ Lines 2293, 5012, 2451, and 5011 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.000   TIME= 10:36:13
+ Lines 2307, 5013, 2465, and 5012 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.016   TIME= 10:36:13
+ Lines 2326, 5014, 2485, and 5013 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.031   TIME= 10:36:13
+ Lines 2361, 4845, 2519, and 5014 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.047   TIME= 10:36:13
+ Lines 2370, 4843, 2528, and 4845 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.047   TIME= 10:36:13
+ Lines 2371, 4848, 2529, and 4847 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.047   TIME= 10:36:13
+ Lines 2372, 5015, 2530, and 4848 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.047   TIME= 10:36:13
+ Lines 2381, 5016, 2540, and 5015 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.078   TIME= 10:36:13
+ Lines 2416, 5017, 2572, and 5016 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.094   TIME= 10:36:13
+ Lines 2436, 5018, 2594, and 5017 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.094   TIME= 10:36:13
+ Lines 2449, 19, 2607, and 5018 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.094   TIME= 10:36:13
+ Lines 2450, 5019, 2608, and 19 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.094   TIME= 10:36:13
+ Lines 2451, 5020, 2609, and 5019 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.109   TIME= 10:36:13
+ Lines 2465, 5021, 2623, and 5020 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.125   TIME= 10:36:13
+ Lines 2485, 5022, 2644, and 5021 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.141   TIME= 10:36:13
+ Lines 2519, 4849, 2676, and 5022 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.141   TIME= 10:36:13
+ Lines 2529, 5023, 2687, and 4851 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.141   TIME= 10:36:13
+ Lines 2530, 5024, 2688, and 5023 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.156   TIME= 10:36:13
+ Lines 2540, 5025, 2699, and 5024 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.172   TIME= 10:36:13
+ Lines 2572, 5026, 2729, and 5025 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.188   TIME= 10:36:13
+ Lines 2594, 5027, 2752, and 5026 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.203   TIME= 10:36:13
+ Lines 2607, 20, 2765, and 5027 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.203   TIME= 10:36:13
+ Lines 2608, 5028, 2766, and 20 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.203   TIME= 10:36:13
+ Lines 2609, 5029, 2767, and 5028 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.203   TIME= 10:36:13
+ Lines 2623, 5030, 2781, and 5029 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.219   TIME= 10:36:13
+ Lines 2644, 5031, 2804, and 5030 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.250   TIME= 10:36:14
+ Lines 2676, 5032, 2833, and 5031 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.250   TIME= 10:36:14
+ Lines 2686, 4851, 2843, and 5032 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.250   TIME= 10:36:14
+ Lines 2687, 5033, 2845, and 4855 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.250   TIME= 10:36:14
+ Lines 2688, 5034, 2846, and 5033 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.266   TIME= 10:36:14
+ Lines 2699, 5035, 2857, and 5034 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.281   TIME= 10:36:14
+ Lines 2729, 5036, 2885, and 5035 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.297   TIME= 10:36:14
+ Lines 2752, 5037, 2910, and 5036 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.297   TIME= 10:36:14
+ Lines 2765, 21, 2923, and 5037 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.297   TIME= 10:36:14
+ Lines 2766, 5038, 2924, and 21 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.297   TIME= 10:36:14
+ Lines 2767, 5039, 2925, and 5038 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.312   TIME= 10:36:14
+ Lines 2781, 5040, 2939, and 5039 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.328   TIME= 10:36:14
+ Lines 2804, 5041, 2963, and 5040 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.359   TIME= 10:36:14
+ Lines 2833, 5042, 2991, and 5041 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.359   TIME= 10:36:14
+ Lines 2843, 4855, 3001, and 5042 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.359   TIME= 10:36:14
+ Lines 2845, 5043, 3003, and 4857 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.359   TIME= 10:36:14
+ Lines 2846, 5044, 3004, and 5043 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.359   TIME= 10:36:14
+ Lines 2857, 5045, 3015, and 5044 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.391   TIME= 10:36:14
+ Lines 2885, 5046, 3042, and 5045 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.422   TIME= 10:36:14
+ Lines 2910, 5047, 3069, and 5046 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.422   TIME= 10:36:14
+ Lines 2923, 22, 3080, and 5047 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.422   TIME= 10:36:14
+ Lines 2924, 5048, 3082, and 22 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.422   TIME= 10:36:14
+ Lines 2925, 5049, 3083, and 5048 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.438   TIME= 10:36:14
+ Lines 2939, 5050, 3096, and 5049 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.453   TIME= 10:36:14
+ Lines 2963, 5051, 3122, and 5050 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.469   TIME= 10:36:14
+ Lines 2991, 5052, 3148, and 5051 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.484   TIME= 10:36:14
+ Lines 3001, 4857, 3158, and 5052 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.484   TIME= 10:36:14
+ Lines 3003, 5053, 3160, and 4859 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.484   TIME= 10:36:14
+ Lines 3004, 5054, 3161, and 5053 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.484   TIME= 10:36:14
+ Lines 3015, 5055, 3172, and 5054 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.500   TIME= 10:36:14
+ Lines 3042, 5056, 3198, and 5055 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.531   TIME= 10:36:14
+ Lines 3069, 5057, 3226, and 5056 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.531   TIME= 10:36:14
+ Lines 3080, 23, 3237, and 5057 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.531   TIME= 10:36:14
+ Lines 3082, 5058, 3239, and 23 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.531   TIME= 10:36:14
+ Lines 3083, 5059, 3240, and 5058 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.547   TIME= 10:36:14
+ Lines 3096, 5060, 3251, and 5059 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.547   TIME= 10:36:14
+ Lines 3122, 5061, 3280, and 5060 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.562   TIME= 10:36:14
+ Lines 3148, 5062, 3305, and 5061 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.578   TIME= 10:36:14
+ Lines 3158, 4859, 3316, and 5062 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.578   TIME= 10:36:14
+ Lines 3160, 5063, 3318, and 4861 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.578   TIME= 10:36:14
+ Lines 3161, 5064, 3319, and 5063 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.578   TIME= 10:36:14
+ Lines 3172, 5065, 3330, and 5064 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.594   TIME= 10:36:14
+ Lines 3198, 5066, 3354, and 5065 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.641   TIME= 10:36:14
+ Lines 3226, 5067, 3383, and 5066 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.641   TIME= 10:36:14
+ Lines 3237, 24, 3394, and 5067 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.641   TIME= 10:36:14
+ Lines 3239, 5068, 3396, and 24 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.641   TIME= 10:36:14
+ Lines 3240, 5069, 3398, and 5068 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.656   TIME= 10:36:14
+ Lines 3251, 5070, 3408, and 5069 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.672   TIME= 10:36:14
+ Lines 3280, 5071, 3438, and 5070 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.688   TIME= 10:36:14
+ Lines 3305, 5072, 3462, and 5071 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.688   TIME= 10:36:14
+ Lines 3316, 4861, 3473, and 5072 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.688   TIME= 10:36:14
+ Lines 3318, 5073, 3475, and 4863 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.703   TIME= 10:36:14
+ Lines 3319, 5074, 3476, and 5073 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.703   TIME= 10:36:14
+ Lines 3330, 5075, 3487, and 5074 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.719   TIME= 10:36:14
+ Lines 3354, 5076, 3510, and 5075 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.750   TIME= 10:36:14
+ Lines 3383, 5077, 3540, and 5076 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.750   TIME= 10:36:14
+ Lines 3394, 25, 3551, and 5077 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.750   TIME= 10:36:14
+ Lines 3396, 5078, 3553, and 25 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.750   TIME= 10:36:14
+ Lines 3398, 5079, 3555, and 5078 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.750   TIME= 10:36:14
+ Lines 3408, 5080, 3565, and 5079 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.781   TIME= 10:36:14
+ Lines 3438, 5081, 3596, and 5080 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.797   TIME= 10:36:14
+ Lines 3462, 5082, 3619, and 5081 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.797   TIME= 10:36:14
+ Lines 3473, 4863, 3630, and 5082 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.797   TIME= 10:36:14
+ Lines 3475, 5083, 3632, and 4865 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.797   TIME= 10:36:14
+ Lines 3476, 5084, 3633, and 5083 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.812   TIME= 10:36:14
+ Lines 3487, 5085, 3645, and 5084 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.812   TIME= 10:36:14
+ Lines 3510, 5086, 3666, and 5085 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.828   TIME= 10:36:14
+ Lines 3540, 5087, 3698, and 5086 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.844   TIME= 10:36:14
+ Lines 3551, 26, 3709, and 5087 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.844   TIME= 10:36:14
+ Lines 3553, 5088, 3711, and 26 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.844   TIME= 10:36:14
+ Lines 3555, 5089, 3713, and 5088 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.844   TIME= 10:36:14
+ Lines 3565, 5090, 3723, and 5089 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.875   TIME= 10:36:14
+ Lines 3596, 5091, 3756, and 5090 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.891   TIME= 10:36:14
+ Lines 3619, 5092, 3777, and 5091 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.891   TIME= 10:36:14
+ Lines 3630, 4865, 3788, and 5092 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.906   TIME= 10:36:14
+ Lines 3632, 5093, 3790, and 4867 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.906   TIME= 10:36:14
+ Lines 3633, 5094, 3791, and 5093 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.906   TIME= 10:36:14
+ Lines 3645, 5095, 3803, and 5094 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.922   TIME= 10:36:14
+ Lines 3666, 5096, 3822, and 5095 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.938   TIME= 10:36:14
+ Lines 3698, 5097, 3856, and 5096 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.953   TIME= 10:36:14
+ Lines 3709, 27, 3867, and 5097 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.953   TIME= 10:36:14
+ Lines 3711, 5098, 3869, and 27 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      12.953   TIME= 10:36:14
+ Lines 3713, 5099, 3871, and 5098 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.953   TIME= 10:36:14
+ Lines 3723, 5100, 3881, and 5099 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      12.984   TIME= 10:36:14
+ Lines 3756, 5101, 3916, and 5100 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.000   TIME= 10:36:14
+ Lines 3777, 5102, 3935, and 5101 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.000   TIME= 10:36:14
+ Lines 3788, 4867, 3946, and 5102 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.000   TIME= 10:36:14
+ Lines 3790, 5103, 3948, and 4869 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.000   TIME= 10:36:14
+ Lines 3791, 5104, 3949, and 5103 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.000   TIME= 10:36:14
+ Lines 3803, 5105, 3961, and 5104 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.016   TIME= 10:36:14
+ Lines 3822, 5106, 3976, and 5105 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.047   TIME= 10:36:14
+ Lines 3856, 5107, 4014, and 5106 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.047   TIME= 10:36:14
+ Lines 3867, 28, 4024, and 5107 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.047   TIME= 10:36:14
+ Lines 3869, 5108, 4027, and 28 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.062   TIME= 10:36:14
+ Lines 3871, 5109, 4029, and 5108 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.062   TIME= 10:36:14
+ Lines 3881, 5110, 4039, and 5109 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.094   TIME= 10:36:14
+ Lines 3916, 5111, 4077, and 5110 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.109   TIME= 10:36:14
+ Lines 3935, 5112, 4093, and 5111 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.109   TIME= 10:36:14
+ Lines 3946, 4869, 4104, and 5112 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.109   TIME= 10:36:14
+ Lines 3948, 5113, 4106, and 4871 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.109   TIME= 10:36:14
+ Lines 3949, 5114, 4107, and 5113 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.109   TIME= 10:36:14
+ Lines 3961, 5115, 4119, and 5114 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.125   TIME= 10:36:14
+ Lines 3976, 5116, 4129, and 5115 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.156   TIME= 10:36:14
+ Lines 4014, 5117, 4172, and 5116 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.156   TIME= 10:36:14
+ Lines 4024, 29, 4182, and 5117 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.172   TIME= 10:36:14
+ Lines 4027, 5118, 4185, and 29 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.172   TIME= 10:36:14
+ Lines 4029, 5119, 4187, and 5118 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.172   TIME= 10:36:14
+ Lines 4039, 5120, 4197, and 5119 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.203   TIME= 10:36:14
+ Lines 4077, 5121, 4240, and 5120 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.219   TIME= 10:36:14
+ Lines 4093, 5122, 4251, and 5121 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.219   TIME= 10:36:15
+ Lines 4104, 4871, 4262, and 5122 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.219   TIME= 10:36:15
+ Lines 4106, 5123, 4264, and 4873 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.219   TIME= 10:36:15
+ Lines 4107, 5124, 4265, and 5123 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.234   TIME= 10:36:15
+ Lines 4119, 5125, 4277, and 5124 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.234   TIME= 10:36:15
+ Lines 4129, 5126, 4281, and 5125 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.266   TIME= 10:36:15
+ Lines 4172, 5127, 4330, and 5126 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.281   TIME= 10:36:15
+ Lines 4182, 30, 4339, and 5127 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.281   TIME= 10:36:15
+ Lines 4185, 5128, 4342, and 30 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.281   TIME= 10:36:15
+ Lines 4187, 5129, 4345, and 5128 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.281   TIME= 10:36:15
+ Lines 4197, 5130, 4354, and 5129 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.328   TIME= 10:36:15
+ Lines 4240, 5131, 4404, and 5130 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.328   TIME= 10:36:15
+ Lines 4251, 5132, 4408, and 5131 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.344   TIME= 10:36:15
+ Lines 4262, 4873, 4419, and 5132 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.344   TIME= 10:36:15
+ Lines 4264, 5133, 4421, and 4875 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.344   TIME= 10:36:15
+ Lines 4265, 5134, 4422, and 5133 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.344   TIME= 10:36:15
+ Lines 4277, 5135, 4434, and 5134 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.344   TIME= 10:36:15
+ Lines 4281, 5136, 4438, and 5135 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.375   TIME= 10:36:15
+ Lines 4330, 5137, 4487, and 5136 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.375   TIME= 10:36:15
+ Lines 4339, 31, 4496, and 5137 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.391   TIME= 10:36:15
+ Lines 4342, 5138, 4500, and 31 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.391   TIME= 10:36:15
+ Lines 4345, 5139, 4503, and 5138 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.391   TIME= 10:36:15
+ Lines 4354, 5140, 4511, and 5139 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.406   TIME= 10:36:15
+ Lines 4404, 5141, 4562, and 5140 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.422   TIME= 10:36:15
+ Lines 4408, 5142, 4566, and 5141 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.422   TIME= 10:36:15
+ Lines 4419, 4875, 4577, and 5142 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.422   TIME= 10:36:15
+ Lines 4422, 5144, 4580, and 5143 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.422   TIME= 10:36:15
+ Lines 4434, 5145, 4592, and 5144 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.422   TIME= 10:36:15
+ Lines 4438, 5146, 4596, and 5145 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.438   TIME= 10:36:15
+ Lines 4487, 5147, 4645, and 5146 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.438   TIME= 10:36:15
+ Lines 4496, 32, 4652, and 5147 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.438   TIME= 10:36:15
+ Lines 4500, 5148, 4658, and 32 do not lie on a common coordinate value  
+ in the currently active coordinate system (CSYS).  A non-planar area    
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.453   TIME= 10:36:15
+ Lines 4503, 5149, 4663, and 5148 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.453   TIME= 10:36:15
+ Lines 4511, 5150, 4669, and 5149 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.469   TIME= 10:36:15
+ Lines 4562, 5151, 4720, and 5150 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.469   TIME= 10:36:15
+ Lines 4566, 5152, 4724, and 5151 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.484   TIME= 10:36:15
+ Lines 4577, 4877, 4735, and 5152 do not lie on a common coordinate      
+ value in the currently active coordinate system (CSYS).  A non-planar   
+ area (Coons patch) will be fitted.                                      
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ Lines 33, 4911, 34, and 4914 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ Lines 34, 4920, 35, and 4923 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ Lines 35, 4930, 36, and 4933 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ The group of lines beginning with 36 4940 37 4943 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.475594 to 0.48164).                               
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ The group of lines beginning with 37 4950 38 4953 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.477667 to 0.481640296).                           
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ The group of lines beginning with 38 4960 39 4963 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.478093 to 0.482227).                              
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ The group of lines beginning with 39 4969 40 4972 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.476234 to 0.482252244).                           
+
+ *** WARNING ***                         CP =      13.500   TIME= 10:36:15
+ Lines 40, 4977, 41, and 4980 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ Lines 41, 4985, 42, and 4988 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ Lines 42, 4993, 43, and 4996 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ Lines 43, 5001, 45, and 5004 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ The group of lines beginning with 45 5009 46 5012 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.473285 to 0.480304).                              
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ The group of lines beginning with 46 5017 47 5020 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.474305 to 0.480243).                              
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ The group of lines beginning with 47 5026 48 5029 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.475517 to 0.480268).                              
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ The group of lines beginning with 48 5036 49 5039 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.476525 to 0.480268).                              
+
+ *** WARNING ***                         CP =      13.516   TIME= 10:36:15
+ The group of lines beginning with 49 5046 50 5049 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = 0.476456 to 0.480136).                              
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 50, 5056, 51, and 5059 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 51, 5066, 52, and 5069 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 52, 5076, 53, and 5079 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 53, 5086, 54, and 5089 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 54, 5096, 56, and 5099 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 56, 5106, 57, and 5109 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 57, 5116, 58, and 5119 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 58, 5126, 59, and 5129 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 59, 5136, 60, and 5139 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.531   TIME= 10:36:15
+ Lines 60, 5146, 61, and 5149 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 62, 4910, 63, and 4915 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 63, 4919, 64, and 4924 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 64, 4929, 65, and 4934 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 65, 4939, 66, and 4944 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 66, 4949, 67, and 4954 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 67, 4959, 68, and 4964 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ Lines 68, 4968, 69, and 4973 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ The group of lines beginning with 69 4976 70 4981 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482458 to -0.477631).                            
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ The group of lines beginning with 70 4984 71 4989 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482267 to -0.479106).                            
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ The group of lines beginning with 71 4992 72 4997 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482318 to -0.479686912).                         
+
+ *** WARNING ***                         CP =      13.547   TIME= 10:36:15
+ The group of lines beginning with 72 5000 73 5005 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482402 to -0.479584).                            
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 73 5008 74 5013 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482402 to -0.479053).                            
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 74 5016 75 5021 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482354 to -0.478178998).                         
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 75 5025 76 5030 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.482002 to -0.476994).                            
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 76 5035 77 5040 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.481304 to -0.475445).                            
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 77 5045 78 5050 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.480262 to -0.475373891).                         
+
+ *** WARNING ***                         CP =      13.562   TIME= 10:36:15
+ The group of lines beginning with 78 5055 82 5060 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.479922 to -0.475414).                            
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ The group of lines beginning with 82 5065 83 5070 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.479729 to -0.476061986).                         
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ The group of lines beginning with 83 5075 84 5080 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.479483 to -0.476857888).                         
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ The group of lines beginning with 85 5095 86 5100 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.478464 to -0.476367).                            
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ The group of lines beginning with 86 5105 87 5110 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.479261 to -0.475499).                            
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ The group of lines beginning with 87 5115 88 5120 has a poorly matching 
+ coordinate value in the currently active coordinate system (CSYS).      
+ The interior of the enclosed curved area may not be accurate            
+ (coordinate range = -0.480455 to -0.474889).                            
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ Lines 88, 5125, 89, and 5130 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.578   TIME= 10:36:15
+ Lines 89, 5135, 90, and 5140 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.594   TIME= 10:36:15
+ Lines 90, 5145, 91, and 5150 do not lie on a common coordinate value in 
+ the currently active coordinate system (CSYS).  A non-planar area       
+ (Coons patch) will be fitted.                                           
+
+ *** WARNING ***                         CP =      13.594   TIME= 10:36:15
+ Real constants on areas or elements that had the normal direction       
+ reversed have not been adjusted.  You should verify the resulting real  
+ constants on any reversed areas or elements.                            
+
+ *** WARNING ***                         CP =      34.719   TIME= 10:36:35
+ Shape testing revealed that 274 of the 19553 new or modified elements   
+ violate shape warning limits.  To review test results, please see the   
+ output file or issue the CHECK command.                                 
+
+ *** WARNING ***                         CP =      34.781   TIME= 10:36:35
+ MPWRITE is not a recognized BEGIN command, abbreviation, or macro.      
+ This command will be ignored.                                           

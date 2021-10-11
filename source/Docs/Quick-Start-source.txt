@@ -1,8 +1,0 @@
-Quick start - getting up and running with NuMAD as fast as possible:
-
--See "Quick Start Guide" on page 15 of SAND2012-7028.pdf (included in this package)
--Follow steps 1-4 in "Installing the M-File Version" on Page 16-17 of SAND2012-7028.pdf.  
-
-Afterwards, to run NuMAD from Matlab:  at the Matlab command prompt, type "snl,numad" to set up path and then open NuMAD.
-
-Extract and then open some example model files (provided in this package) to verify that NuMAD is working.

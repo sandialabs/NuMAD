@@ -1,0 +1,172 @@
+
+ LIST DATA TABLE  FCLI  FOR ALL MATERIALS
+
+ *** ANSYS - ENGINEERING ANALYSIS SYSTEM  RELEASE Release 18.1     18.1     ***
+ ANSYS Mechanical Enterprise                       
+ 00601480  VERSION=WINDOWS x64   12:39:22  OCT 04, 2021 CP=     35.688
+
+ BAR2_SNL_1_18_2021_numad                                                      
+
+
+
+               FC LIMIT (FCLI) Table For Material     1
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     1.0000000e+010 
+ XCMP     -1.0000000e+010 
+ YTEN     1.0000000e+010 
+ YCMP     -1.0000000e+010 
+ ZTEN     1.0000000e+010 
+ ZCMP     -1.0000000e+010 
+   XY     1.0000000e+010 
+   YZ     1.0000000e+010 
+   XZ     1.0000000e+010 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   2.4117600e-001 
+ ETA_L    -7.6104800e-001 
+ ETA_T    2.8674500e-001 
+ ALPHA_0  5.3000000e+001 
+
+
+               FC LIMIT (FCLI) Table For Material     2
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     1.2852000e+009 
+ XCMP     -8.7821000e+008 
+ YTEN     3.8100000e+007 
+ YCMP     -8.2180000e+007 
+ ZTEN     0.0000000e+000 
+ ZCMP     -0.0000000e+000 
+   XY     3.0170000e+007 
+   YZ     1.8970000e+007 
+   XZ     6.2100000e+006 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   6.0396000e-001 
+ ETA_L    -1.5429200e-001 
+ ETA_T    1.7632700e-001 
+ ALPHA_0  5.0000000e+001 
+
+
+               FC LIMIT (FCLI) Table For Material     3
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     4.6210000e+007 
+ XCMP     -7.0690000e+007 
+ YTEN     4.6210000e+007 
+ YCMP     -7.0690000e+007 
+ ZTEN     0.0000000e+000 
+ ZCMP     -0.0000000e+000 
+   XY     1.2446000e+008 
+   YZ     1.8970000e+007 
+   XZ     6.2100000e+006 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   2.4117600e-001 
+ ETA_L    0.0000000e+000 
+ ETA_T    -0.0000000e+000 
+ ALPHA_0  4.5000000e+001 
+
+
+               FC LIMIT (FCLI) Table For Material     4
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     4.3563000e+008 
+ XCMP     -3.4310000e+008 
+ YTEN     7.6440000e+007 
+ YCMP     -1.7471000e+008 
+ ZTEN     0.0000000e+000 
+ ZCMP     -0.0000000e+000 
+   XY     8.5060000e+007 
+   YZ     1.8970000e+007 
+   XZ     6.2100000e+006 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   2.4117600e-001 
+ ETA_L    0.0000000e+000 
+ ETA_T    -0.0000000e+000 
+ ALPHA_0  4.5000000e+001 
+
+
+               FC LIMIT (FCLI) Table For Material     5
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     6.4023000e+008 
+ XCMP     -3.7069000e+008 
+ YTEN     3.8100000e+007 
+ YCMP     -8.2180000e+007 
+ ZTEN     0.0000000e+000 
+ ZCMP     -0.0000000e+000 
+   XY     3.0170000e+007 
+   YZ     1.8970000e+007 
+   XZ     6.2100000e+006 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   6.0396000e-001 
+ ETA_L    -1.5429200e-001 
+ ETA_T    1.7632700e-001 
+ ALPHA_0  5.0000000e+001 
+
+
+               FC LIMIT (FCLI) Table For Material     6
+               Stress Strength Limits                                                          
+
+                     1 
+ Temps     0.0000000e+000 
+ XTEN     1.0000000e+010 
+ XCMP     -1.0000000e+010 
+ YTEN     1.0000000e+010 
+ YCMP     -1.0000000e+010 
+ ZTEN     1.0000000e+010 
+ ZCMP     -1.0000000e+010 
+   XY     1.0000000e+010 
+   YZ     1.0000000e+010 
+   XZ     1.0000000e+010 
+ XYCP     0.0000000e+000 
+ YZCP     0.0000000e+000 
+ XZCP     0.0000000e+000 
+ XZIT     3.0000000e-001 
+ XZIC     2.5000000e-001 
+ YZIT     3.0000000e-001 
+ YZIC     2.5000000e-001 
+ GI/GII   8.7928000e-002 
+ ETA_L    -7.6104800e-001 
+ ETA_T    2.8674500e-001 
+ ALPHA_0  5.3000000e+001 
+

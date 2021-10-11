@@ -1,0 +1,7 @@
+*.asv
+*.m~
+.DS_Store
+*.~m
+*.mat
+source/NuMAD_toolbox/NuMAD_GUI/settings/*
+source/NuMAD_toolbox/NuMAD_GUI/settings/settings.txt
