@@ -27,9 +27,6 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
     sections = readANSYSSections('NuMAD/Sections.txt');
     elements = readANSYSElem(['NuMAD/Elements.txt']);
     
-    %Used for reading element stresses
-    pat='ELEM\s*ZCENT\s*LAYER1\s*LAYER2\s*LAYER3\s*LAYER4\s*LAYER5';
-    NCOLS=7;
     for kTheta=1:nDirections/2  % Loop through half of the number of load direction 
                                  %since blade movements along single direction constitues 
                                  %two directions (e.g positive flap deflections and negative 
@@ -66,23 +63,7 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
                 fileNameTheta=['plateStrains-' int2str(iSegment) '-' int2str(kTheta) '.txt'];
                 fileNameThetaPlus90=['plateStrains-' int2str(iSegment) '-' int2str(kTheta+nSpace) '.txt']; 
             end     
-%             
-%             if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
-%                 title='All segments'; %Used for printing title for table.
-%                 fileNameTheta=['stresses-all-' int2str(kTheta) '.txt'];
-%                 fileNameThetaPlus90=['stresses-all-' int2str(kTheta+nSpace) '.txt'];
-%                 iSegment=1;
-%             elseif ~ strcmpi(config.ansys.analysisFlags.fatigue(i),'webs')
-%                 title=config.ansys.analysisFlags.fatigue(i); %Used for printing title for table.
-%                 iSegment = find(strcmpi(segmentNamesReference,config.ansys.analysisFlags.fatigue(i))==1)
-%                 fileNameTheta=['stresses-' int2str(iSegment) '-' int2str(kTheta) '.txt'];
-%                 fileNameThetaPlus90=['stresses-' int2str(iSegment) '-' int2str(kTheta+nSpace) '.txt'];
-%             else
-%                 title='Webs'; %Used for printing title for table.
-%                 iSegment=nsegmentNamesReference+1;
-%                 fileNameTheta=['stresses-' int2str(iSegment) '-' int2str(kTheta) '.txt'];
-%                 fileNameThetaPlus90=['stresses-' int2str(iSegment) '-' int2str(kTheta+nSpace) '.txt']; 
-%             end
+
             
             disp(fileNameTheta)
             disp(fileNameThetaPlus90)
@@ -97,11 +78,9 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
             
             for chSpan=1:nGage
 
-                direction='x';
                 direction =int2str(theta);
                 Ltheta=getMomentMarkov(rccdata,wt,Yr,simtime,markovSize,chSpan,direction);
 
-                direction='y';
                 if theta+90 <180
                     direction =int2str(theta+90);
                 else
@@ -109,15 +88,9 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
                 end
                 LthetaPlus90=getMomentMarkov(rccdata,wt,Yr,simtime,markovSize,chSpan,direction);
 
-                %%% CAUTION %%%%
-%                 LthetaPlus90(2:markovSize+1,2:markovSize+1)=zeros(markovSize);
 
                 Mtheta = interp1(rGage,MrTheta,rGage(chSpan));
                 MthetaPlus90 = interp1(rGage,MrThetaPlus90,rGage(chSpan));
-%                 if kTheta==3 && chSpan==3
-%                     keyboard
-%                 end
-
 
                 zwidth=0.75; % [m] check fatigue for elements within a band of zwidth centered 
                            % at a blade gage location.

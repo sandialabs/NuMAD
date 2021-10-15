@@ -1,4 +1,4 @@
-function bladeMeshCheck(xlsFile,aeSizes,plotOnly)
+function layupDesignMeshCheck(xlsFile,aeSizes,plotOnly)
 
 if ~plotOnly
     numelem=aeSizes.^-2;

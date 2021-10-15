@@ -29,7 +29,7 @@ params.Class=3; % turbine class: 1,2,3
 params.TurbClass='C';  % turbulence class: A,B,C
 params.designLife = 30;             % years of life
 params.BldGagNd=[1,2,3,4,5,6,7];  % vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
-% Material properties for fatigue analyses
+% Material properties for fatigue analyses (with a beam model)
 matData(1).Name='s1-fiberglass';
 matData(1).E=42.8e9;
 matData(1).m=10;  % from GL standard for uni-directional, epoxy laminate construction

@@ -91,6 +91,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#coupling-to-numad-2-0">Coupling to NuMAD 2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#numad-gui-mode">NuMAD GUI Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#potential-future-capabilities">Potential Future Capabilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
@@ -1299,7 +1300,7 @@ structural optimization would be mass, for example. If it is desired to
 minimize the mass of a blade subject to some set of constraints, the
 objective function should calculate the mass of the blade based on the
 design variables and return it as the primary output. An example
-objective function definition is given in <cite>examples/optimization/objectiveExample.m</cite>, demonstrating
+objective function definition is given in <code class="docutils literal notranslate"><span class="pre">examples/optimization/objectiveExample.m</span></code>, demonstrating
 the use of NuMAD’s finite element analysis tools described in <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.</p>
 </section>
 <section id="defining-design-variables">
@@ -1520,6 +1521,14 @@ be accessed the same as it was in prior releases. Refer to the former user manua
 (<a class="reference external" href="https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf">SAND2012-7028</a>) for
 detailed instructions on how to use the GUI . For operating NuMAD exclusivley with the GUI refer
 to the <a class="reference internal" href="../introduction/release_notes.html#intro-release-notes"><span class="std std-ref">Release Notes</span></a> on NuMAD v2.0.</p>
+</section>
+<section id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline"></a></h1>
+<p>NuMAD will repeatedly print a message in the MATLAB command window to the effect of:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code>
+<code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code>
+<code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code></p>
+<p>Common things to check are the ANSYS <cite>.err</cite> and <cite>.log</cite> for clues.</p>
 </section>
 <section id="known-issues">
 <span id="knownissues"></span><h1>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline"></a></h1>

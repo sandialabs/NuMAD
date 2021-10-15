@@ -1247,7 +1247,7 @@ structural optimization would be mass, for example. If it is desired to
 minimize the mass of a blade subject to some set of constraints, the
 objective function should calculate the mass of the blade based on the
 design variables and return it as the primary output. An example
-objective function definition is given in `examples/optimization/objectiveExample.m`, demonstrating
+objective function definition is given in ``examples/optimization/objectiveExample.m``, demonstrating
 the use of NuMAD’s finite element analysis tools described in :ref:`FEAOps`.
 
 .. _definingDesignVars:
@@ -1514,6 +1514,20 @@ be accessed the same as it was in prior releases. Refer to the former user manua
 (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__) for
 detailed instructions on how to use the GUI . For operating NuMAD exclusivley with the GUI refer
 to the :ref:`intro-release-notes` on NuMAD v2.0.
+
+
+.. _troubleshooting
+
+Troubleshooting
+===============
+
+NuMAD will repeatedly print a message in the MATLAB command window to the effect of:
+
+``Waiting for ANSYS to <`do something`>``
+``Waiting for ANSYS to <`do something`>``
+``Waiting for ANSYS to <`do something`>``
+
+Common things to check are the ANSYS `.err` and `.log` for clues. 
 
 .. _KnownIssues:
 
