@@ -35,7 +35,7 @@ when submitting pull-requests.
 ## License
 
 NuMAD is licensed under BSD 3-clause license. Please see the
-[LICENSE](https://github.com/sandialabs/NuMAD/LICENSE.md) included in
+[LICENSE](https://github.com/sandialabs/NuMAD/blob/main/LICENSE) included in
 the source code repository for more details.
 
 ## Acknowledgements 
