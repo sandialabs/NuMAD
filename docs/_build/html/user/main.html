@@ -1275,13 +1275,18 @@ constraints. It is in no small way the essence of engineering and
 design, but nothing could be more open-ended as there are virtually
 limitless possibilities in how to define variables, objective functions
 and constraints as well as what optimization algorithms settings and
-parameters to use. These considerations are all very case-dependent, so
-in NuMAD there is no single optimization script or function for all
-purposes. Instead, a set of tools is offered for obtaining running
+parameters to use. A set of tools is offered for obtaining running
 finite element, and other analysis to obtain the quantities needed to
 evaluate the performance of a blade structure and set up an
 optimization. Some general guidelines are given here to assist with the
 process.</p>
+<p>In addition, an example optimization script to demonstrate the application of the following concepts is included in</p>
+<p><code class="docutils literal notranslate"><span class="pre">examples/exampleOptimizationDir</span></code></p>
+<p>This folder contains the main optimization script, <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>, the objective defined as a MATLAB function, <code class="docutils literal notranslate"><span class="pre">objectiveExample.m</span></code>, along with a folder containing the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file and loading data for the example blade.  The loading data is pre-generated using <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> and the functions descriped in <a class="reference internal" href="#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> and <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections <a class="reference internal" href="#definingobjective"><span class="std std-ref">Defining the Objective Function</span></a> through <a class="reference internal" href="#choosingopimizationalgor"><span class="std std-ref">Choosing an Optimization Algorithm</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please update the <code class="docutils literal notranslate"><span class="pre">ansysPath</span></code> variable in the input settings to the actual path to your ANSYS executable.</p>
+</div>
 <section id="defining-the-objective-function">
 <span id="definingobjective"></span><h3>Defining the Objective Function<a class="headerlink" href="#defining-the-objective-function" title="Permalink to this headline"></a></h3>
 <p>The first critical step in setting up an optimization is defining a
