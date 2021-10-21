@@ -3,6 +3,8 @@
 Release Notes
 =============
 
+.. _NuMADv3:
+
 NuMAD v3.0
 ----------------
 The current release now incorporates structural optimization, associated
@@ -38,6 +40,8 @@ analyses, and the object-oriented data structures.
 
 Prior Releases
 ----------------
+
+.. _NuMADv2:
 
 NuMAD v2.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

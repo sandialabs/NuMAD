@@ -1,7 +1,7 @@
 .. _home:
 
 .. figure:: /_static/images/NuMAD-header.png
-   :target: https://github.com/WEC-Sim/WEC-Sim
+   :target: https://github.com/sandialabs/NuMAD
 
 
 .. toctree::
@@ -23,18 +23,19 @@ complex task. In many cases it is difficult to find the optimal design
 of a turbine blade by hand, or by trial and error, and the software
 tools used for such designs are most effective when integrated into
 automated optimization and analysis algorithms. A new version of the
-software tool NuMAD (Numerical Manufacturing And Design) for the design
+software tool `NuMAD (Numerical Manufacturing And Design) <https://github.com/sandialabs/NuMAD>`_ for the design
 and modeling of wind turbine blades is developed and described. 
 
-Newly released NuMAD 3.0, is structured to be run from a scripting environment
+Newly released :ref:`NuMADv3`, is structured to be run from a scripting environment
 and easily called by optimization processes. 
-This is a major update from the previous release, NuMAD 2.0, which relied on the use of a graphical
+The previous release, :ref:`NuMADv2`, relied on the use of a graphical
 user interface. Modifications were made to the MATLAB-based source code
 to decouple the internal functions from the graphical user interface,
 and additional functionality was added for convenience in performing
 high-fidelity finite element analysis. NuMAD 3.0 has been successfully
 implemented for optimization of large, flexible rotor blades, and is
 suitable to be made available for public use.
+
 
 .. _developers:
 
