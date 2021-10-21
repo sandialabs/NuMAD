@@ -38,38 +38,20 @@ To test the current branch, use the following:
 >
 ```
 
+NOTE: for a clean build ``(_wssphinx) > sphinx-build -b html -a docs docs/_build/html``
+
 The front page of the docs can be accessed at 
 `docs/_build/html/index.html`. 
-
-#### Building Final Version Locally
-
-The final documentation can be built locally for inspection prior to 
-publishing. They are built in the `docs/_build` directory. Note, docs are built 
-from the remote, so only pushed changes will be shown. 
-
-To build the docs as they would be published, use the following:
-
-```
-> conda activate _wssphinx
-(_wssphinx) > cd path/to/NuMAD
-(_wssphinx) > sphinx-multiversion docs docs/_build/html
-(_wssphinx) > conda deactivate
->
-```
-
-The front page of the docs can be accessed at 
-`docs/_build/html/master/index.html`. 
 
 #### Publishing Final Version Remotely
 
 The NuMAD docs are rebuilt automatically following every merge commit made 
-to the master or dev branch of the [NuMAD/NuMAD](
-https://github.com/NuMAD/NuMAD) repository.
+to the master or dev branch of the [sandialabs/NuMAD](
+https://github.com/sandialabs/NuMAD) repository.
 
 
 ## Best Practices
   - Run spell check (not built into most text editors)
-  - When compiling the website, ``make clean`` and then ``make html``
 
 ### Formatting Guidelines
   - use ``insert code`` to reference code
@@ -85,3 +67,4 @@ https://github.com/NuMAD/NuMAD) repository.
   - post-processing (not postprocessing)
   - pre-processing (not preprocessing)  
   - nonlinear (not non-linear)
+  - MATLAB (not Matlab)

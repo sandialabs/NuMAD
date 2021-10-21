@@ -49,7 +49,7 @@ Appendix
     +---------------------+----------------------------------------------------+
     | ``plygroups``       | Array of ply structures, one for each ply.         |
     |                     |                                                    |
-    |                     | ``ply = struct('component',...% parent comp. ``    |
+    |                     | ``ply = struct('component'),...% parent comp``     |
     |                     |                                                    |
     |                     | ``'materialid',[],...% materialid of ply``         |
     |                     |                                                    |

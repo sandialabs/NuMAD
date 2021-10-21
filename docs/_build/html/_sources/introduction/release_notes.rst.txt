@@ -3,11 +3,8 @@
 Release Notes
 =============
 
-Current Release
-----------------
-
 NuMAD v3.0
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------
 The current release now incorporates structural optimization, associated
 structural analyses, and the move to object-oriented data structures.
 The exclusive use of the GUI in prior versions prevented automation in
@@ -37,11 +34,15 @@ analyses, and the object-oriented data structures.
    journal article “Part II: 3D FEM design optimization of the rotor
    blades”.
 
+.. TO DO: Link to release and add DOI
+
+Prior Releases
+----------------
+
 NuMAD v2.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Initial release of NuMAD is on the NuMAD2p0 static branch (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`, now available on GitHub)
+* Initial release of NuMAD is on the `NuMAD2p0 static branch <https://github.com/sandialabs/NuMAD/tree/NuMAD2p0>`_ (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`_, now available on GitHub)
 
 * Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
 
-
-
+.. TO DO: remove link to wind enery site, former NUMAD release

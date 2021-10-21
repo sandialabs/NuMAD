@@ -3,5 +3,6 @@
 .DS_Store
 *.~m
 *.mat
+*.tws
 source/NuMAD_toolbox/NuMAD_GUI/settings/*
 source/NuMAD_toolbox/NuMAD_GUI/settings/settings.txt

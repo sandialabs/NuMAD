@@ -13,10 +13,9 @@
    user/index.rst
 
 
-#########################################
-Numerical Manufacturing And Design Tool (NuMAD v3.0) for Wind Turbine
-Blades
-#########################################
+##################################################################################
+Numerical Manufacturing And Design Tool (NuMAD) for Wind Turbine Blades
+##################################################################################
 
 
 The structural design and optimization of wind turbine blades is a
@@ -24,11 +23,12 @@ complex task. In many cases it is difficult to find the optimal design
 of a turbine blade by hand, or by trial and error, and the software
 tools used for such designs are most effective when integrated into
 automated optimization and analysis algorithms. A new version of the
-software tool NuMAD (Numerical Manufacturing and Design) for the design
-and modeling of wind turbine blades is developed and described. The new
-version, NuMAD 3.0, is structured to be run from a scripting environment
-and easily called by optimization processes. This is in contrast with
-the previous version, NuMAD 2.0, which relied on the use of a graphical
+software tool NuMAD (Numerical Manufacturing And Design) for the design
+and modeling of wind turbine blades is developed and described. 
+
+Newly released NuMAD 3.0, is structured to be run from a scripting environment
+and easily called by optimization processes. 
+This is a major update from the previous release, NuMAD 2.0, which relied on the use of a graphical
 user interface. Modifications were made to the MATLAB-based source code
 to decouple the internal functions from the graphical user interface,
 and additional functionality was added for convenience in performing

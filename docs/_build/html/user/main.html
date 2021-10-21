@@ -1,37 +1,77 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  <meta charset="utf-8" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Blade definition and terminology &mdash; NuMAD  documentation</title>
-      <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../_static/js/theme.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Appendix" href="appendix.html" />
     <link rel="prev" title="User’s Guide" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
+
+   
   <div class="wy-grid-for-nav">
+    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
+          
+
+          
             <a href="../index.html" class="icon icon-home"> NuMAD
+          
+
+          
           </a>
+
+          
+            
+            
               <div class="version">
                 v3.0
               </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -39,7 +79,18 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
@@ -100,33 +151,75 @@
 </li>
 </ul>
 
+            
+          
         </div>
+        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">NuMAD</a>
+        
       </nav>
 
+
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
+    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
           <li><a href="index.html">User’s Guide</a> &raquo;</li>
+        
       <li>Blade definition and terminology</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
+        
+          
             <a href="../_sources/user/main.rst.txt" rel="nofollow"> View page source</a>
+          
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
-  <section id="blade-definition-and-terminology">
-<span id="bladedefandterms"></span><h1>Blade definition and terminology<a class="headerlink" href="#blade-definition-and-terminology" title="Permalink to this headline"></a></h1>
+            
+  <div class="section" id="blade-definition-and-terminology">
+<span id="bladedefandterms"></span><h1>Blade definition and terminology<a class="headerlink" href="#blade-definition-and-terminology" title="Permalink to this headline">¶</a></h1>
 <p>In NuMAD, a blade is uniquely defined with the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object or blade
 object for short. As defined in</p>
 <p><code class="docutils literal notranslate"><span class="pre">source\preNuMAD\BladeDef.m</span></code>,</p>
@@ -147,7 +240,7 @@ the high pressure surface verses the low pressure surface. Other airfoil
 properties and external blade shape data are defined with the <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>
 class and the <code class="docutils literal notranslate"><span class="pre">StationDef</span></code> object respectively.</p>
 <span id="defineregions"></span><table class="docutils align-default" id="id2">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">Region definition by keypoints (TE-Trailing edge, LE-leading edge)</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Region definition by keypoints (TE-Trailing edge, LE-leading edge)</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 49%" />
 <col style="width: 51%" />
@@ -183,15 +276,13 @@ with interpolated stations.</p>
 <p>Material properties, layup information, and thicknesses and widths are
 additionally defined in the</p>
 <p><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StackDef</span></code>, and <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code> respectively.</p>
-<figure class="align-default" id="id3">
+<div class="figure align-default" id="id3">
 <span id="bladekeypoints"></span><a class="reference internal image-reference" href="../_images/bladeKeyPoints.png"><img alt="../_images/bladeKeyPoints.png" src="../_images/bladeKeyPoints.png" style="width: 6.5in; height: 2.23056in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Relative locations of the blade keypoints.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="getting-started-with-numad">
-<span id="gettingstarted"></span><h1>Getting Started with NuMAD<a class="headerlink" href="#getting-started-with-numad" title="Permalink to this headline"></a></h1>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Relative locations of the blade keypoints.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="getting-started-with-numad">
+<span id="gettingstarted"></span><h1>Getting Started with NuMAD<a class="headerlink" href="#getting-started-with-numad" title="Permalink to this headline">¶</a></h1>
 <p>The code containing all open-source tools for NuMAD can be downloaded or
 cloned as a repository from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD
 GitHub</a>. There
@@ -220,8 +311,8 @@ analyzing a blade design in NuMAD, from creating a blade object, to
 modifying its parameters and attributes, to generating structural models
 for analysis. Tips for implementation are given to ensure the smoothest
 execution.</p>
-<section id="blade-generation">
-<span id="bladegen"></span><h2>Blade Generation<a class="headerlink" href="#blade-generation" title="Permalink to this headline"></a></h2>
+<div class="section" id="blade-generation">
+<span id="bladegen"></span><h2>Blade Generation<a class="headerlink" href="#blade-generation" title="Permalink to this headline">¶</a></h2>
 <p>There are several ways to go about constructing a blade model in NuMAD
 3.0. In many ways the most intuitive approach is by using the graphical
 user interface carried over from NuMAD 2.0 (for detailed instructions,
@@ -275,9 +366,9 @@ blade model’s working directory alongside the original.</p>
 and optimization processes, since all operations can be called from a
 MATLAB script, without depending on the graphical user interface or any
 manual input during execution.</p>
-</section>
-<section id="blade-variable-assignment">
-<span id="bladevarassign"></span><h2>Blade Variable Assignment<a class="headerlink" href="#blade-variable-assignment" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="blade-variable-assignment">
+<span id="bladevarassign"></span><h2>Blade Variable Assignment<a class="headerlink" href="#blade-variable-assignment" title="Permalink to this headline">¶</a></h2>
 <p>Any blade design process involves setting and modifying characteristics
 of the blade’s geometric, structural, and material properties in some
 way. The NuMAD blade object contains a collection of variables that
@@ -347,9 +438,9 @@ various details of the geometry, stored in <code class="docutils literal notrans
 the blade object can be used to perform various operations for analysis
 and optimization, such as generating representative structural models as
 described in the next section.</p>
-</section>
-<section id="generating-representative-blade-structural-models">
-<span id="genbladestructural"></span><h2>Generating Representative Blade Structural Models<a class="headerlink" href="#generating-representative-blade-structural-models" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="generating-representative-blade-structural-models">
+<span id="genbladestructural"></span><h2>Generating Representative Blade Structural Models<a class="headerlink" href="#generating-representative-blade-structural-models" title="Permalink to this headline">¶</a></h2>
 <p>A NuMAD blade object can be used to construct structural models for
 various types of analysis. Several tools exist that analyze
 characteristics such as section stiffness, mass, and natural frequencies
@@ -363,10 +454,10 @@ ANSYS, which are easily invokable from a MATLAB script or command line.
 These include analysis for maximum tip deflection, ultimate rupture
 failure, global and local buckling, fatigue and natural frequencies and
 are discussed in detail in <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.</p>
-</section>
-</section>
-<section id="aeroelastic-simulation-and-the-runiec-function">
-<span id="aeroelasticsimruniec"></span><h1>Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function<a class="headerlink" href="#aeroelastic-simulation-and-the-runiec-function" title="Permalink to this headline"></a></h1>
+</div>
+</div>
+<div class="section" id="aeroelastic-simulation-and-the-runiec-function">
+<span id="aeroelasticsimruniec"></span><h1>Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function<a class="headerlink" href="#aeroelastic-simulation-and-the-runiec-function" title="Permalink to this headline">¶</a></h1>
 <p>A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
 the blade under a range of expected wind and loading conditions. NuMAD’s
@@ -375,8 +466,8 @@ capability for performing this analysis is contained in the
 package. In the following sections the basic capability and
 functionality of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> package will be described, followed by
 recent updates related to its operation from previous versions.</p>
-<section id="use-and-functionality-of-runiec">
-<span id="useandfunctofruniec"></span><h2>Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code><a class="headerlink" href="#use-and-functionality-of-runiec" title="Permalink to this headline"></a></h2>
+<div class="section" id="use-and-functionality-of-runiec">
+<span id="useandfunctofruniec"></span><h2>Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code><a class="headerlink" href="#use-and-functionality-of-runiec" title="Permalink to this headline">¶</a></h2>
 <p>The main function called to perform aeroelastic analysis of a NuMAD
 blade is</p>
 <p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC\runIEC.m.</span></code></p>
@@ -460,16 +551,16 @@ defining a set of general simulation parameters referenced throughout
 the process. A sample script showing the parameters that need to be
 defined can be located at</p>
 <p><code class="docutils literal notranslate"><span class="pre">\examples\runIEC_ipt--EXAMPLE.m</span></code>.</p>
-</section>
-<section id="recent-updates-to-runiec-functionality">
-<span id="recentupdatesruniec"></span><h2>Recent Updates to runIEC Functionality<a class="headerlink" href="#recent-updates-to-runiec-functionality" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="recent-updates-to-runiec-functionality">
+<span id="recentupdatesruniec"></span><h2>Recent Updates to runIEC Functionality<a class="headerlink" href="#recent-updates-to-runiec-functionality" title="Permalink to this headline">¶</a></h2>
 <p>Two main updates have been made recently affecting the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>
 process: 1) A change in the method of obtaining 50-year extrapolated
 maximum values in the analysis of DLC case 1.1, and 2) An introduction
 of tools for reading input files for OpenFAST. These changes are
 described in the following two sections.</p>
-<section id="methodology-for-analysis-of-design-load-case-1-1">
-<span id="methodsfordlc1p1"></span><h3>Methodology for Analysis of Design Load Case 1.1<a class="headerlink" href="#methodology-for-analysis-of-design-load-case-1-1" title="Permalink to this headline"></a></h3>
+<div class="section" id="methodology-for-analysis-of-design-load-case-1-1">
+<span id="methodsfordlc1p1"></span><h3>Methodology for Analysis of Design Load Case 1.1<a class="headerlink" href="#methodology-for-analysis-of-design-load-case-1-1" title="Permalink to this headline">¶</a></h3>
 <p>As per the IEC standards, an analysis of DLC case 1.1 involves the
 simulation of a wind turbine under normal operating conditions for a
 range of wind speeds sufficiently representing what is expected under
@@ -498,7 +589,7 @@ local peak value <span class="math notranslate nohighlight">\(F_{\text{ext}}\)</
 <span class="math notranslate nohighlight">\(F\)</span> within a time period <span class="math notranslate nohighlight">\(T\)</span> can be expressed mathematically
 as follows:</p>
 <div class="math notranslate nohighlight" id="equation-maxpeak">
-<span class="eqno">(1)<a class="headerlink" href="#equation-maxpeak" title="Permalink to this equation"></a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F\  \middle| T \right) = P_{e}(F,T) = \int_{V_{\min}}^{V_{\max}}{\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right)p(V)\text{dV}}\]</div>
+<span class="eqno">(1)<a class="headerlink" href="#equation-maxpeak" title="Permalink to this equation">¶</a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F\  \middle| T \right) = P_{e}(F,T) = \int_{V_{\min}}^{V_{\max}}{\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right)p(V)\text{dV}}\]</div>
 <p>Where
 <span class="math notranslate nohighlight">\(\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right)\)</span> is
 the probability of <span class="math notranslate nohighlight">\(F_{\text{ext}}\)</span> exceeding <span class="math notranslate nohighlight">\(F\)</span> within the
@@ -506,7 +597,7 @@ time period <span class="math notranslate nohighlight">\(T\)</span> at a given w
 is the probability density function of the wind speed. The
 velocity-specific probability function is commonly computed as</p>
 <div class="math notranslate nohighlight" id="equation-velprob">
-<span class="eqno">(2)<a class="headerlink" href="#equation-velprob" title="Permalink to this equation"></a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right) = 1 - \left( \text{CD}\left( F \middle| V,T \right) \right)^{N}\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-velprob" title="Permalink to this equation">¶</a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right) = 1 - \left( \text{CD}\left( F \middle| V,T \right) \right)^{N}\]</div>
 <p>Where <span class="math notranslate nohighlight">\(\text{CD}\left( F \middle| V,T \right)\)</span> is the cumulative
 distribution function of the quantity for a given velocity <span class="math notranslate nohighlight">\(V\)</span>
 over the time period <span class="math notranslate nohighlight">\(T\)</span>, and <span class="math notranslate nohighlight">\(N\)</span> is the number of local
@@ -521,7 +612,7 @@ which is commonly available for most standard distribution types.</p>
 \[P_{e}(F,T) = \frac{T}{T_{50\text{yr}}}\]</div>
 <p>Or, for the typical 10-minute simulation time,</p>
 <div class="math notranslate nohighlight" id="equation-prob10">
-<span class="eqno">(3)<a class="headerlink" href="#equation-prob10" title="Permalink to this equation"></a></span>\[P_{e}(F,T) = \frac{10}{60 \times 24 \times 365 \times 50} = 3.805 \times 10^{- 7}\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-prob10" title="Permalink to this equation">¶</a></span>\[P_{e}(F,T) = \frac{10}{60 \times 24 \times 365 \times 50} = 3.805 \times 10^{- 7}\]</div>
 <p>and determine the 50-year extrapolated value for <span class="math notranslate nohighlight">\(F\)</span>. One approach
 to finding the root of Eq. <a class="reference internal" href="#equation-prob10">(3)</a> is to derive a single probability curve
 representing <span class="math notranslate nohighlight">\(P_{e}(F,T)\)</span> by compiling the local peaks from all
@@ -578,9 +669,9 @@ stability concerns.</p>
 <p class="admonition-title">Note</p>
 <p>There can be slight differences between the 50-year extrapolation results obtained using different methods, and it is difficult to assert that any given approach is certainly more accurate or superior to another. The extrapolation process remains subject to further modifications and improvements moving forward.</p>
 </div>
-</section>
-<section id="tools-for-processing-openfast-input-files">
-<span id="toolsforopenfast"></span><h3>Tools for Processing OpenFAST Input Files<a class="headerlink" href="#tools-for-processing-openfast-input-files" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="tools-for-processing-openfast-input-files">
+<span id="toolsforopenfast"></span><h3>Tools for Processing OpenFAST Input Files<a class="headerlink" href="#tools-for-processing-openfast-input-files" title="Permalink to this headline">¶</a></h3>
 <p>NuMAD is currently set up with FAST v7 as the default version of the
 aeroelastic solver. Although FAST v7 is reliable and robust, it is now
 an outdated version succeeded by the current equivalent, OpenFAST. The
@@ -600,13 +691,13 @@ their FAST v7 counterparts.</p>
 development, and new modules are coming online that will be increasingly
 used in the future. The toolset for input/output processing is subject
 to change to accommodate new input file formats, etc. moving forward.</p>
-</section>
-</section>
-</section>
-<section id="finite-element-analysis-operations">
-<span id="feaops"></span><h1>Finite Element Analysis Operations<a class="headerlink" href="#finite-element-analysis-operations" title="Permalink to this headline"></a></h1>
-<section id="mesh-generation">
-<span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+</div>
+<div class="section" id="finite-element-analysis-operations">
+<span id="feaops"></span><h1>Finite Element Analysis Operations<a class="headerlink" href="#finite-element-analysis-operations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mesh-generation">
+<span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this headline">¶</a></h2>
 <p>The function called to generates the FE shell model in ANSYS of a NuMAD
 blade is</p>
 <p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
@@ -622,9 +713,9 @@ called <code class="docutils literal notranslate"><span class="pre">NLIST.lis</s
 file stores the node number and its Cartesian coordinates. This
 information is utilized when loads are applied to the FE model in a
 later step.</p>
-</section>
-<section id="coordinate-systems">
-<span id="coordinatesystems"></span><h2>Coordinate Systems<a class="headerlink" href="#coordinate-systems" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="coordinate-systems">
+<span id="coordinatesystems"></span><h2>Coordinate Systems<a class="headerlink" href="#coordinate-systems" title="Permalink to this headline">¶</a></h2>
 <p>Loading for the FEA model will typically be derived from FAST or
 OpenFAST cross-sectional stress resultant forces and moments at various
 spanwise positions. These forces and moments are in coordinate systems
@@ -644,12 +735,10 @@ indicated).</p>
 <p class="admonition-title">Note</p>
 <p>The <span class="math notranslate nohighlight">\(x_{i}\)</span> coordinate system is like the <span class="math notranslate nohighlight">\(w_{i}\)</span> system but the first axis, <span class="math notranslate nohighlight">\(w_{1}\)</span> points toward the leading edge instead of the flap direction.</p>
 </div>
-<figure class="align-default" id="id4">
+<div class="figure align-default" id="id4">
 <span id="numadfastcsys"></span><a class="reference internal image-reference" href="../_images/numadFASTcsys.png"><img alt="../_images/numadFASTcsys.png" src="../_images/numadFASTcsys.png" style="width: 5.85771in; height: 4.10039in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Comparison of the FAST results coordinate system with that of the NuMAD and ANSYS coordinate systems.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Comparison of the FAST results coordinate system with that of the NuMAD and ANSYS coordinate systems.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
 <p>A small angle is assumed to exist between
 <span class="math notranslate nohighlight">\(v_{3}^{(j)}\ (j = 1,2,3,\ldots,k)\)</span> and <span class="math notranslate nohighlight">\(w_{3}\)</span> and is
 unaccounted for in NuMAD. Thus, it is assumed that
@@ -660,27 +749,25 @@ the <span class="math notranslate nohighlight">\(w_{i}\)</span> are related by</
 <p>where <span class="math notranslate nohighlight">\(C_{iq}\)</span> are the direction cosines which can be
 stored in a matrix as shown below</p>
 <div class="math notranslate nohighlight" id="equation-dcm">
-<span class="eqno">(4)<a class="headerlink" href="#equation-dcm" title="Permalink to this equation"></a></span>\[\begin{split}C = \begin{bmatrix}
+<span class="eqno">(4)<a class="headerlink" href="#equation-dcm" title="Permalink to this equation">¶</a></span>\[\begin{split}C = \begin{bmatrix}
           \text{cos}(\mu) &amp; \text{sin}(\mu) &amp; 0 \\
           -\text{sin}(\mu) &amp; \text{cos}(\mu) &amp; 0 \\
           0 &amp; 0 &amp; 1
           \end{bmatrix}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the so-called structural twist and is illustrated
 in <a class="reference internal" href="#fastvsnumadcsys"><span class="std std-numref">Fig. 3</span></a>.</p>
-<figure class="align-default" id="id5">
+<div class="figure align-default" id="id5">
 <span id="fastvsnumadcsys"></span><a class="reference internal image-reference" href="../_images/FASTvsNuMADcsys.png"><img alt="../_images/FASTvsNuMADcsys.png" src="../_images/FASTvsNuMADcsys.png" style="width: 3.15956in; height: 1.77725in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Time history moment data from the <span class="math notranslate nohighlight">\(v_{\alpha}\)</span> coordinate system to the <span class="math notranslate nohighlight">\(w_{\alpha}\)</span> intermediate coordinate system.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">Time history moment data from the <span class="math notranslate nohighlight">\(v_{\alpha}\)</span> coordinate system to the <span class="math notranslate nohighlight">\(w_{\alpha}\)</span> intermediate coordinate system.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <p>These angles are obtained by <a class="reference external" href="https://www.nrel.gov/wind/nwtc/precomp.html">PreComp</a>. This coordinate transformation is
 implementation in <code class="docutils literal notranslate"><span class="pre">loadFASTOutDataGageRot</span></code>.</p>
 <p>Before transforming the loads data to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system, various
 data processing operations occur in intermediate coordinate systems as
 described in the next section.</p>
-</section>
-<section id="analysis-directions">
-<span id="analdir"></span><h2>Analysis Directions<a class="headerlink" href="#analysis-directions" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="analysis-directions">
+<span id="analdir"></span><h2>Analysis Directions<a class="headerlink" href="#analysis-directions" title="Permalink to this headline">¶</a></h2>
 <p>Increasing the fidelity from a beam model in FAST/OpenFAST to a shell
 model also increases the computational cost. Thus, it would be
 cumbersome to conduct a time history structural analyses with a shell
@@ -741,15 +828,13 @@ obtained by</p>
 <p class="admonition-title">Note</p>
 <p>In the above equation, the minimum of <span class="math notranslate nohighlight">\(M_{1}^{y}\)</span> is found instead of the maximum but <span class="math notranslate nohighlight">\(\theta\)</span> still ranges from 0 to 180 deg. Unlike the resultants used for the deflection analysis which all occurred at a specific time in the OpenFAST simulations, each of the axial force, torsion, and bending moment resultants along the span could possibly come from different times. Thus, it is an artificial distribution suitable for design use. Also unlike the deflection case, the two bending-moment components (i.e. flap-wise and edge-wise bending) at a span location were projected onto 12 directions as defined by <span class="math notranslate nohighlight">\(y_{1}\)</span> in <a class="reference internal" href="#loaddirections"><span class="std std-numref">Fig. 4</span></a>. All of the <span class="math notranslate nohighlight">\(P_{i}\ \)</span>then transformed to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">ad2ansys</span></code>.</p>
 </div>
-<figure class="align-default" id="id6">
+<div class="figure align-default" id="id6">
 <span id="loaddirections"></span><a class="reference internal image-reference" href="../_images/loadDirections.png"><img alt="../_images/loadDirections.png" src="../_images/loadDirections.png" style="width: 3.06468in; height: 1.72388in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The definition of the <span class="math notranslate nohighlight">\(y_1\)</span> axis and the angle <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span>.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="loads-application">
-<span id="applyloads"></span><h2>Loads Application<a class="headerlink" href="#loads-application" title="Permalink to this headline"></a></h2>
+<p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">The definition of the <span class="math notranslate nohighlight">\(y_1\)</span> axis and the angle <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span>.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="loads-application">
+<span id="applyloads"></span><h2>Loads Application<a class="headerlink" href="#loads-application" title="Permalink to this headline">¶</a></h2>
 <p>Blade loads can either come from the cross-sectional stress resultant
 time-histories from FAST or user defined. Two load types are supported
 for loads coming from a FAST; loads at a particular time and extremum
@@ -792,12 +877,10 @@ bending moments, <span class="math notranslate nohighlight">\(M_{i}\)</span> act
 the blade root and the forces to be solved, <span class="math notranslate nohighlight">\(F_{i}\)</span> acting at
 <span class="math notranslate nohighlight">\({\overline{z}}_{i}\)</span>, where
 <span class="math notranslate nohighlight">\({\overline{z}}_{i} = 1/2(z_{i} + z_{i + 1})\)</span>.</p>
-<figure class="align-default" id="id7">
+<div class="figure align-default" id="id7">
 <span id="momentstoforces"></span><a class="reference internal image-reference" href="../_images/momentsToForces.png"><img alt="../_images/momentsToForces.png" src="../_images/momentsToForces.png" style="width: 6.5in; height: 3.65625in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Freebody diagram used to determine transverse loads from a given distribution of moments along the blade span.</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">Freebody diagram used to determine transverse loads from a given distribution of moments along the blade span.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
 <p>From static equilibrium, the forces to be applied are found by solving
 the following linear system of equations for
 <span class="math notranslate nohighlight">\(F_{i}\ (i = 1,2,3,\ldots,k)\)</span></p>
@@ -831,9 +914,9 @@ case is as follows</p>
 steps are not usually required with using <code class="docutils literal notranslate"><span class="pre">layupDesign_ANSYSanalysis</span></code>, the
 main analysis script. These instructions are for building the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable
 and applying nodal forces to an FE model in a stand-alone manner.</p>
-</section>
-<section id="analysis-script">
-<span id="analysisscript"></span><h2>Analysis Script<a class="headerlink" href="#analysis-script" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="analysis-script">
+<span id="analysisscript"></span><h2>Analysis Script<a class="headerlink" href="#analysis-script" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">layupDesign_ANSYSanalysis.m</span></code> is the main analysis script. A user may call
 on it to</p>
 <ul class="simple">
@@ -853,7 +936,7 @@ variable. The script knows which analysis types it should run based on
 config. See <a class="reference internal" href="#configtable"><span class="std std-numref">Table 2</span></a> for the structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code>
 variable.</p>
 <span id="configtable"></span><table class="colwidths-given docutils align-default" id="id8">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">Structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable.</span><a class="headerlink" href="#id8" title="Permalink to this table"></a></caption>
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable.</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 71%" />
 <col style="width: 14%" />
@@ -931,8 +1014,8 @@ which analysis flags are active, results can be accessed with</p>
 <p><code class="docutils literal notranslate"><span class="pre">result.fatigue</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">result.resultantVSspan</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">result.mass</span></code></p>
-<section id="linear-static-analysis">
-<span id="linearfea"></span><h3>Linear-Static Analysis<a class="headerlink" href="#linear-static-analysis" title="Permalink to this headline"></a></h3>
+<div class="section" id="linear-static-analysis">
+<span id="linearfea"></span><h3>Linear-Static Analysis<a class="headerlink" href="#linear-static-analysis" title="Permalink to this headline">¶</a></h3>
 <p>A linear-static analysis is defined and solved by default. Since
 linear-buckling is a notable advantage of using a shell model for the
 blade, prestress is activated in this load step in preparation for a
@@ -940,9 +1023,9 @@ linear buckling analysis. The effects of inertia are counterbalanced
 with inertia relief.</p>
 <p>Depending on the <code class="docutils literal notranslate"><span class="pre">config</span></code> flags, a number analysis outputs can be
 examined.</p>
-</section>
-<section id="deflection">
-<span id="deflectionfea"></span><h3>Deflection<a class="headerlink" href="#deflection" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="deflection">
+<span id="deflectionfea"></span><h3>Deflection<a class="headerlink" href="#deflection" title="Permalink to this headline">¶</a></h3>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">config.ansys.deflection</span> <span class="pre">=</span> <span class="pre">1</span></code> will cause <code class="docutils literal notranslate"><span class="pre">result.deflection</span></code> to
 hold the average deflection of each cross-section at every <code class="docutils literal notranslate"><span class="pre">blade.ispan</span></code>
 location. For example, access results from the second <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> case as</p>
@@ -955,14 +1038,14 @@ and <span class="math notranslate nohighlight">\({\overline{u}}_{3}\)</span> res
 correspond to <span class="math notranslate nohighlight">\({\overline{\theta}}_{1}\)</span>,
 <span class="math notranslate nohighlight">\({\overline{\theta}}_{2}\)</span>, and <span class="math notranslate nohighlight">\({\overline{\theta}}_{3}\)</span>,
 respectively.</p>
-</section>
-<section id="failure">
-<span id="failurefea"></span><h3>Failure<a class="headerlink" href="#failure" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="failure">
+<span id="failurefea"></span><h3>Failure<a class="headerlink" href="#failure" title="Permalink to this headline">¶</a></h3>
 <p>If material failure is being considered in an analysis, set
 <code class="docutils literal notranslate"><span class="pre">config.ansys.failure</span></code> equal to any one of the entries in <a class="reference internal" href="#failurecriteriaoptions"><span class="std std-numref">Table 3</span></a>. An
 empty string will skip any material failure analyses.</p>
 <span id="failurecriteriaoptions"></span><table class="colwidths-given docutils align-default" id="id9">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Supported failure criteria and associated <code class="docutils literal notranslate"><span class="pre">config</span></code> flags.</span><a class="headerlink" href="#id9" title="Permalink to this table"></a></caption>
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Supported failure criteria and associated <code class="docutils literal notranslate"><span class="pre">config</span></code> flags.</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -998,9 +1081,9 @@ have the appropriate material properties defined in <code class="docutils litera
 <p>Since each element section is a layered composite, by default,
 <code class="docutils literal notranslate"><span class="pre">result.failure</span></code> will hold the maximum failure index of all elements and
 every layer.</p>
-</section>
-<section id="global-buckling">
-<span id="globalbucklingfea"></span><h3>Global Buckling<a class="headerlink" href="#global-buckling" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="global-buckling">
+<span id="globalbucklingfea"></span><h3>Global Buckling<a class="headerlink" href="#global-buckling" title="Permalink to this headline">¶</a></h3>
 <p>A nonzero number for <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.globalBuckling</span></code> will call
 ANSYS to run a buckling analysis. The buckling analysis can either be
 linear or nonlinear. The nonlinear case will be activated by creating
@@ -1025,9 +1108,9 @@ load factor from the eigenvalue analysis will not always cause the
 lowest load factor from the nonlinear case. Thus, a nonlinear static
 analysis for each requested mode is performed and the minimum load
 factor is reported.</p>
-</section>
-<section id="local-buckling">
-<span id="localbucklingfea"></span><h3>Local Buckling<a class="headerlink" href="#local-buckling" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="local-buckling">
+<span id="localbucklingfea"></span><h3>Local Buckling<a class="headerlink" href="#local-buckling" title="Permalink to this headline">¶</a></h3>
 <p>Sandwich panels typically consist of a relatively soft core layer
 <em>sandwiched</em> between two faces sheets. For the parts of blade that are
 described as sandwhich panels, local instabilities can be checked in
@@ -1038,9 +1121,9 @@ equal to the name of the core material in your BladeDef as a string
 (e.g. <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.localBuckling</span> <span class="pre">=</span> <span class="pre">'Balsa'</span></code>). Otherwise an
 empty string will skip the analysis. Currently, all ply angles are
 limited to zero (i.e. no off-axis layups).</p>
-</section>
-<section id="fatigue">
-<span id="fatiguefea"></span><h3>Fatigue<a class="headerlink" href="#fatigue" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="fatigue">
+<span id="fatiguefea"></span><h3>Fatigue<a class="headerlink" href="#fatigue" title="Permalink to this headline">¶</a></h3>
 <p>If <code class="docutils literal notranslate"><span class="pre">config.ansys.fatigue</span></code> is a nonempty string, then ANSYS will be
 directed to write model data and field output to text files for fatigue
 post-processing in MATLAB. Namely, <code class="docutils literal notranslate"><span class="pre">Elements.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">Materials.txt</span></code>,
@@ -1071,7 +1154,7 @@ accomplished by setting <code class="docutils literal notranslate"><span class="
 The latter is accomplished by setting <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.fatigue</span></code>
 to a MATLAB string array where any and all Region Names in <a class="reference internal" href="#regionnames"><span class="std std-numref">Table 4</span></a> are allowed.</p>
 <span id="regionnames"></span><table class="colwidths-given docutils align-default" id="id10">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">Region Names to specify in config for fatigue analyses.</span><a class="headerlink" href="#id10" title="Permalink to this table"></a></caption>
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Region Names to specify in config for fatigue analyses.</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />
@@ -1144,15 +1227,13 @@ root. Subsequent columns correspond to successively farther gage
 locations.</p>
 <p>The results from the first fatigue evaluation can visualized as shown in
 <a class="reference internal" href="#fatiguedamagefractionexample"><span class="std std-numref">Fig. 6</span></a>.</p>
-<figure class="align-default" id="id11">
+<div class="figure align-default" id="id11">
 <span id="fatiguedamagefractionexample"></span><a class="reference internal image-reference" href="../_images/fatigueDamageFractionExample.bmp"><img alt="Diagram Description automatically generated" src="../_images/fatigueDamageFractionExample.bmp" style="width: 4.17467in; height: 3.131in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Fatigue damage fraction visualization.</span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="local-fields">
-<span id="localfieldsfea"></span><h3>Local Fields<a class="headerlink" href="#local-fields" title="Permalink to this headline"></a></h3>
+<p class="caption"><span class="caption-number">Fig. 6 </span><span class="caption-text">Fatigue damage fraction visualization.</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="local-fields">
+<span id="localfieldsfea"></span><h3>Local Fields<a class="headerlink" href="#local-fields" title="Permalink to this headline">¶</a></h3>
 <p>If <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.localFeilds</span></code> is activated, then the plate
 strains and curvatures for every element will be written to
 plateStrains-all-1.txt.</p>
@@ -1211,12 +1292,10 @@ stresses.</p>
 <p>Note the <code class="docutils literal notranslate"><span class="pre">x3</span></code> value that is zero corresponds to the reference surface in the shell model.</p>
 </div>
 <p>In this example the shell offset in ANSYS was set to <code class="docutils literal notranslate"><span class="pre">“BOT”</span></code> so the zero appears the end:</p>
-<figure class="align-default" id="id12">
+<div class="figure align-default" id="id12">
 <span id="localfieldsdataexplanationfigure"></span><a class="reference internal image-reference" href="../_images/localFieldsDataExplanationFigure.png"><img alt="../_images/localFieldsDataExplanationFigure.png" src="../_images/localFieldsDataExplanationFigure.png" style="width: 5.03004in; height: 2.30597in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Explanation of how data for local fields is ordered.</span><a class="headerlink" href="#id12" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
+<p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Explanation of how data for local fields is ordered.</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
 <p>A plotting utility has been made to visualize the local fields. This can
 be achieved for example:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">scaleFactor</span><span class="p">=</span><span class="mf">1e6</span><span class="p">;</span><span class="w"> </span><span class="c">%Used to plot stress in MPa and strain in microstrain</span><span class="w"></span>
@@ -1228,15 +1307,13 @@ be achieved for example:</p>
 <span class="nb">legend</span><span class="p">(</span><span class="s">&#39;LE Reinf. Element&#39;</span><span class="p">,</span><span class="s">&#39;Spar Cap element&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<figure class="align-default" id="id13">
+<div class="figure align-default" id="id13">
 <span id="localfieldsplotexample"></span><a class="reference internal image-reference" href="../_images/localFieldsPlotExample.png"><img alt="../_images/localFieldsPlotExample.png" src="../_images/localFieldsPlotExample.png" style="width: 6.5in; height: 2.98472in;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Local fields example plots.</span><a class="headerlink" href="#id13" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-</section>
-<section id="resultant-forces-and-moments">
-<span id="resultantsfea"></span><h3>Resultant Forces and Moments<a class="headerlink" href="#resultant-forces-and-moments" title="Permalink to this headline"></a></h3>
+<p class="caption"><span class="caption-number">Fig. 8 </span><span class="caption-text">Local fields example plots.</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="resultant-forces-and-moments">
+<span id="resultantsfea"></span><h3>Resultant Forces and Moments<a class="headerlink" href="#resultant-forces-and-moments" title="Permalink to this headline">¶</a></h3>
 <p>The resultant forces and moments due to stresses on cross-sections along
 the span can be obtained by activating
 <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.resultantVSspan</span></code>. <code class="docutils literal notranslate"><span class="pre">result.</span> <span class="pre">resultantVSspan{i}</span></code>
@@ -1252,11 +1329,11 @@ order). For example, access results such as</p>
 <div><p>&gt;&gt; result.resultantVSspan{i}</p>
 </div></blockquote>
 <p>where i is the i<sup>th</sup> load case in <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>.</p>
-</section>
-</section>
-</section>
-<section id="optimization-and-analysis-tools">
-<span id="optimization"></span><h1>Optimization and Analysis Tools<a class="headerlink" href="#optimization-and-analysis-tools" title="Permalink to this headline"></a></h1>
+</div>
+</div>
+</div>
+<div class="section" id="optimization-and-analysis-tools">
+<span id="optimization"></span><h1>Optimization and Analysis Tools<a class="headerlink" href="#optimization-and-analysis-tools" title="Permalink to this headline">¶</a></h1>
 <p>The NuMAD package can be used to perform design optimization on a blade
 structure. Through manipulation of the data defining the blade design
 stored in the NuMAD blade object, a design can be tailored to best
@@ -1266,8 +1343,8 @@ various constraints on aspects such as stress/failure, deflection,
 buckling, fatigue or modal frequencies. This section contains some
 general guidelines for setting up and running and optimization and
 recent updates related to the process.</p>
-<section id="guidelines-for-running-optimization">
-<span id="runningoptimization"></span><h2>Guidelines for Running Optimization<a class="headerlink" href="#guidelines-for-running-optimization" title="Permalink to this headline"></a></h2>
+<div class="section" id="guidelines-for-running-optimization">
+<span id="runningoptimization"></span><h2>Guidelines for Running Optimization<a class="headerlink" href="#guidelines-for-running-optimization" title="Permalink to this headline">¶</a></h2>
 <p>Optimization is simple in concept. In short it is the process of finding
 the best possible state or performance of a system for what is invested
 in it within allowable variable ranges and satisfying necessary
@@ -1281,14 +1358,14 @@ evaluate the performance of a blade structure and set up an
 optimization. Some general guidelines are given here to assist with the
 process.</p>
 <p>In addition, an example optimization script to demonstrate the application of the following concepts is included in</p>
-<p><code class="docutils literal notranslate"><span class="pre">examples/exampleOptimizationDir</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">examples/optimization/exampleOptimizationDir</span></code></p>
 <p>This folder contains the main optimization script, <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>, the objective defined as a MATLAB function, <code class="docutils literal notranslate"><span class="pre">objectiveExample.m</span></code>, along with a folder containing the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file and loading data for the example blade.  The loading data is pre-generated using <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> and the functions descriped in <a class="reference internal" href="#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> and <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections <a class="reference internal" href="#definingobjective"><span class="std std-ref">Defining the Objective Function</span></a> through <a class="reference internal" href="#choosingopimizationalgor"><span class="std std-ref">Choosing an Optimization Algorithm</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Please update the <code class="docutils literal notranslate"><span class="pre">ansysPath</span></code> variable in the input settings to the actual path to your ANSYS executable.</p>
 </div>
-<section id="defining-the-objective-function">
-<span id="definingobjective"></span><h3>Defining the Objective Function<a class="headerlink" href="#defining-the-objective-function" title="Permalink to this headline"></a></h3>
+<div class="section" id="defining-the-objective-function">
+<span id="definingobjective"></span><h3>Defining the Objective Function<a class="headerlink" href="#defining-the-objective-function" title="Permalink to this headline">¶</a></h3>
 <p>The first critical step in setting up an optimization is defining a
 fitness, or objective function. This is a function that numerically
 evaluates the favorability/suitability of a given design based on some
@@ -1307,9 +1384,9 @@ objective function should calculate the mass of the blade based on the
 design variables and return it as the primary output. An example
 objective function definition is given in <code class="docutils literal notranslate"><span class="pre">examples/optimization/objectiveExample.m</span></code>, demonstrating
 the use of NuMAD’s finite element analysis tools described in <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.</p>
-</section>
-<section id="defining-design-variables">
-<span id="definingdesignvars"></span><h3>Defining Design Variables<a class="headerlink" href="#defining-design-variables" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="defining-design-variables">
+<span id="definingdesignvars"></span><h3>Defining Design Variables<a class="headerlink" href="#defining-design-variables" title="Permalink to this headline">¶</a></h3>
 <p>The next step is to define the design variables, or the variables that
 can be changed in order to optimize the objective, and within what
 ranges they can be changed. In NuMAD the design variables can, in
@@ -1325,9 +1402,9 @@ bounds and lower bounds can be challenging, and care should be taken to
 make sure that the bounds do not violate physical limits, such as making
 the spar cap wider than the blade or setting negative values for
 composite layer thicknesses.</p>
-</section>
-<section id="defining-constraints">
-<span id="definingconstraints"></span><h3>Defining Constraints<a class="headerlink" href="#defining-constraints" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="defining-constraints">
+<span id="definingconstraints"></span><h3>Defining Constraints<a class="headerlink" href="#defining-constraints" title="Permalink to this headline">¶</a></h3>
 <p>Next is to identify any constraints that must be imposed on the design.
 A constraint is any condition that must be satisfied in order to make a
 design feasible, or eligible as a solution. Constraints and objectives
@@ -1387,9 +1464,9 @@ can require fine-tuning and adjustment of the constant parameters on the
 part of the user. These are just some examples, and ultimately it is up
 to the judgement of the user the most appropriate way to incorporate
 their constraints in with the objective.</p>
-</section>
-<section id="choosing-an-optimization-algorithm">
-<span id="choosingopimizationalgor"></span><h3>Choosing an Optimization Algorithm<a class="headerlink" href="#choosing-an-optimization-algorithm" title="Permalink to this headline"></a></h3>
+</div>
+<div class="section" id="choosing-an-optimization-algorithm">
+<span id="choosingopimizationalgor"></span><h3>Choosing an Optimization Algorithm<a class="headerlink" href="#choosing-an-optimization-algorithm" title="Permalink to this headline">¶</a></h3>
 <p>Numerous optimization algorithms exist, each with many options and
 settings possible. A variety of functions are available built into
 MATLAB, but many external packages are available as well. In choosing
@@ -1450,13 +1527,10 @@ find a semi-optimal design, and proceed to fine tune it with a
 higher-fidelity model and design space in a gradient-based optimizer.
 Ultimately it is up to the user to determine the best course of action,
 and the most important tool is your own judgement and ingenuity.</p>
-<p>An example script to run a general optimization using the tools described in this document, as well as a companion objective function script are contained in</p>
-<p><code class="docutils literal notranslate"><span class="pre">examples/optimization/optimizationExample.m</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">examples/optimization/objectiveExample.m</span></code></p>
-</section>
-</section>
-<section id="recent-updates">
-<span id="recentopiupdates"></span><h2>Recent Updates<a class="headerlink" href="#recent-updates" title="Permalink to this headline"></a></h2>
+</div>
+</div>
+<div class="section" id="recent-updates">
+<span id="recentopiupdates"></span><h2>Recent Updates<a class="headerlink" href="#recent-updates" title="Permalink to this headline">¶</a></h2>
 <p>Several updates have been made related to the tools for analysis and
 optimization since the previous release of NuMAD. Among the most
 significant is the addition of the finite-element-based analysis of
@@ -1505,10 +1579,10 @@ built, named</p>
 blade file. This can be called immediately after reading the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>
 file, and before performing any analysis to ensure the consistency of
 data.</p>
-</section>
-</section>
-<section id="coupling-to-numad-2-0">
-<span id="numad2p0"></span><h1>Coupling to NuMAD 2.0<a class="headerlink" href="#coupling-to-numad-2-0" title="Permalink to this headline"></a></h1>
+</div>
+</div>
+<div class="section" id="coupling-to-numad-2-0">
+<span id="numad2p0"></span><h1>Coupling to NuMAD 2.0<a class="headerlink" href="#coupling-to-numad-2-0" title="Permalink to this headline">¶</a></h1>
 <p>The once the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object is defined, it is possible to interface
 with prior versions of NuMAD which were GUI-centric. The function that
 writes the input file to older versions of NuMAD from a blade object is</p>
@@ -1518,25 +1592,25 @@ writes the input file to older versions of NuMAD from a blade object is</p>
 <p>where <code class="docutils literal notranslate"><span class="pre">blade</span></code> is a blade object, <code class="docutils literal notranslate"><span class="pre">'numad.nmd'</span></code>is the desired name
 to be given to the NuMAD file and <code class="docutils literal notranslate"><span class="pre">'MatDBsi.txt'</span></code> is the desired
 material data base name.</p>
-</section>
-<section id="numad-gui-mode">
-<span id="gui"></span><h1>NuMAD GUI Mode<a class="headerlink" href="#numad-gui-mode" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="numad-gui-mode">
+<span id="gui"></span><h1>NuMAD GUI Mode<a class="headerlink" href="#numad-gui-mode" title="Permalink to this headline">¶</a></h1>
 <p>In this version of NuMAD, the graphical user interface (GUI) can still
 be accessed the same as it was in prior releases. Refer to the former user manual
 (<a class="reference external" href="https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf">SAND2012-7028</a>) for
 detailed instructions on how to use the GUI . For operating NuMAD exclusivley with the GUI refer
 to the <a class="reference internal" href="../introduction/release_notes.html#intro-release-notes"><span class="std std-ref">Release Notes</span></a> on NuMAD v2.0.</p>
-</section>
-<section id="troubleshooting">
-<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
 <p>NuMAD will repeatedly print a message in the MATLAB command window to the effect of:</p>
 <p><code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code>
 <code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code>
 <code class="docutils literal notranslate"><span class="pre">Waiting</span> <span class="pre">for</span> <span class="pre">ANSYS</span> <span class="pre">to</span> <span class="pre">&lt;`do</span> <span class="pre">something`&gt;</span></code></p>
 <p>Common things to check are the ANSYS <cite>.err</cite> and <cite>.log</cite> for clues.</p>
-</section>
-<section id="known-issues">
-<span id="knownissues"></span><h1>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="known-issues">
+<span id="knownissues"></span><h1>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h1>
 <p>Trailing Edge Issues</p>
 <ul class="simple">
 <li><p>There is a need to allow for the existence of a nonzero trailing edge
@@ -1558,9 +1632,9 @@ spar cap keypoints.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">blade.updateBOM</span></code> fails for an unknown reason if the layer quantity
 increases rather than decreases toward the tip.</p></li>
 </ul>
-</section>
-<section id="potential-future-capabilities">
-<span id="potentialfuturecapabilities"></span><h1>Potential Future Capabilities<a class="headerlink" href="#potential-future-capabilities" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="potential-future-capabilities">
+<span id="potentialfuturecapabilities"></span><h1>Potential Future Capabilities<a class="headerlink" href="#potential-future-capabilities" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p>Allow for the option to make the blade entirely of solid elements</p></li>
 <li><p>Incorporate adhesive modeling</p></li>
@@ -1570,9 +1644,9 @@ increases rather than decreases toward the tip.</p></li>
 <li><p>In addition to the ANSYS interface, add capability for a user to use
 other commercial FEA codes such as Abaqus and/or Nastran</p></li>
 </ul>
-</section>
-<section id="references">
-<span id="id1"></span><h1>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="references">
+<span id="id1"></span><h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
 <ol class="arabic simple">
 <li><p>Berg, Jonathan, Joshua Paquette, and Brian Resor. “Mapping of 1D beam
 loads to the 3D wind blade for buckling analysis.” <em>52nd
@@ -1587,48 +1661,67 @@ design tool (NuMAD V2. 0) for wind turbine blades: user’s guide.”
 <em>Sandia National Laboratories Technical Report, SAND2012-7028</em>
 (2012).</p></li>
 </ol>
-</section>
+</div>
 
 
            </div>
+           
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="User’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="appendix.html" class="btn btn-neutral float-right" title="Appendix" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="User’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).</p>
-  </div>
+    <p>
+        &#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
         </div>
       </div>
+
     </section>
+
   </div>
-  <script>
+  
+
+  <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-    <!-- Theme Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88158104-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'UA-88158104-1', {
-          'anonymize_ip': false,
-      });
-    </script> 
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-88158104-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
 
 </body>
 </html>
