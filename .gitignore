@@ -1,8 +1,8 @@
 # File Extensions
 *.asv
-*.m~
 .DS_Store
 *.~m
+*.m~
 *.mat
 *.tws
 
