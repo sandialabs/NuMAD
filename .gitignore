@@ -1,8 +1,14 @@
+# File Extensions
 *.asv
 *.m~
 .DS_Store
 *.~m
 *.mat
 *.tws
+
+# GUI
 source/NuMAD_toolbox/NuMAD_GUI/settings/*
 source/NuMAD_toolbox/NuMAD_GUI/settings/settings.txt
+
+# docs build directory
+docs/_build
