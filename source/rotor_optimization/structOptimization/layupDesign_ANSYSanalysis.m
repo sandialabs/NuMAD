@@ -350,8 +350,8 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
         end
 %% ************************************************************************
 % ================= CREAT LOCAL FIELD RESULTS FOR MATLAB =================
-%         if isfield(config.ansys.analysisFlags,'localFeilds') && config.ansys.analysisFlags.localFeilds~=0
-   if isfield(config.ansys.analysisFlags,'localFeilds') && ~isempty(config.ansys.analysisFlags.localFeilds)
+
+   if isfield(config.ansys.analysisFlags,'localFields') && ~isempty(config.ansys.analysisFlags.localFields)
             %%%%%%%%%%%%%%%%%%%Outputs for fatigue analysis in MATLAB%%%%%%%%%%%%%%%%%
             fprintf(fid,'! BEGIN LOCAL FIELD SCRIPT\n');
             fprintf(fid,'allsel\n');
@@ -1239,10 +1239,10 @@ function LF=getLoadFactorsForElementsWithSameSection(LF,ansysSecNumber,avgFaceSt
 end
 
 function designvar=saveData(designvar,iLoad,airfoilSegmentName,iSpan,nodes,midNodei)
-    designvar.localFeilds{iLoad}.(airfoilSegmentName).x(iSpan) =nodes(midNodei,2);
-    designvar.localFeilds{iLoad}.(airfoilSegmentName).y(iSpan) =nodes(midNodei,3);
-    designvar.localFeilds{iLoad}.(airfoilSegmentName).z(iSpan) =nodes(midNodei,4);
-    designvar.localFeilds{iLoad}.(airfoilSegmentName).data(iSpan)=nodes(midNodei,5);
+    designvar.localFields{iLoad}.(airfoilSegmentName).x(iSpan) =nodes(midNodei,2);
+    designvar.localFields{iLoad}.(airfoilSegmentName).y(iSpan) =nodes(midNodei,3);
+    designvar.localFields{iLoad}.(airfoilSegmentName).z(iSpan) =nodes(midNodei,4);
+    designvar.localFields{iLoad}.(airfoilSegmentName).data(iSpan)=nodes(midNodei,5);
 end
 function midNodei=findCenterNode(nodes,direction)        
     xlist=nodes(:,direction+1); %list of nodal x values
