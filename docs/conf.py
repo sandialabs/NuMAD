@@ -83,7 +83,7 @@ master_doc = 'index'
 # -- Project information -----------------------------------------------------
 # General information about the project.
 project = 'NuMAD'
-copyright = '2013, National Technology & Engineering Solutions of Sandia, LLC (NTESS)' 
+copyright = '2013-2021, National Technology & Engineering Solutions of Sandia, LLC (NTESS)' 
 author = 'The NuMAD Developers'
 
 # The version info for the project you're documenting, acts as replacement for
