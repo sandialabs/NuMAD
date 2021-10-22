@@ -1,11 +1,20 @@
-function layupDesign_ANSYSmesh(blade,config)
+function layupDesign_ANSYSmesh(blade,varargin)
 % Generate the ANSYS mesh and nodal listing
+
+defaultfn = 'numad.nmd';
+
+
+% hard-code filename if not specified
+if nargin==1
+    fileName = defaultfn;
+else
+    fileName = varargin{1};
+end
 
 disp(' '); disp('Creating ANSYS model...')
 fprintf('Mesh size setting = %0.4f\n',blade.mesh)
 while 1
-    numad('numad.nmd','ansys',blade.mesh) 
-    %numad_multiLayer('numad.nmd','ansys',blade.mesh) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TEMP
+    numad(fileName,'ansys',blade.mesh) 
     if exist('master.db','file')
         disp('ANSYS model created')
         break;

@@ -79,11 +79,11 @@ input settings script may need to be modified, as described further in the
 blade, the paths of these folders should be added to the MATLAB domain
 of working directories, using the script ``paths.m``. All tools and
 functions available in NuMAD 3.0 will then be available to invoke from a
-script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable 
+script or the command window. If you intend to use NuMAD in conjunction with ANSYS then the global variable 
 ``ANSYS_Path`` needs to be modified to your ANSYS working directory file path name.
 
 The ``NuMAD_toolbox`` folder contains basic functions and operations needed
-for performing analysis with packages such as precomp, BPE, and ANSYS.
+for performing analysis with packages such as PreComp, BPE, and ANSYS.
 The ``preNuMAD`` folder mainly contains the class definition of the blade
 object, which stores the geometric, airfoil and material data for a
 given blade design. The ``rotor_optimization`` folder contains bundles of
@@ -584,24 +584,27 @@ Finite Element Analysis Operations
 Mesh Generation
 ---------------
 
-The function called to generates the FE shell model in ANSYS of a NuMAD
+The function called to generate the FE shell model in ANSYS of a NuMAD
 blade is
 
 ``source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
-    It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
+    It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details. Thus, NuMAD 3.0 currently relies on NuMAD 2.0 to create an ANSYS mesh. As time and buget allow, the ``blade.generateFEA()`` will be fixed so that ``layupDesign_ANSYSmesh`` is not needed.
 
 As an example, the following call would build a mesh for the blade blade
 object
 
-``layupDesign_ANSYSmesh(blade,config)``
+``layupDesign_ANSYSmesh(blade)``
 
-The function also issues commands that calls ANSYS to write a textfile
-called ``NLIST.lis``. For each node on the wetted area of the blade, this
-file stores the node number and its Cartesian coordinates. This
-information is utilized when loads are applied to the FE model in a
-later step.
+This will generate an ANSYS models for NuMAD 2.0 input file named ``numad.nmd``.
+
+If the NuMAD 2.0 input file is named differently then add a second argument as in:
+
+``layupDesign_ANSYSmesh(blade,numadFile)``
+
+where ``numadFile`` is a string with the desired filename. 
+
 
 .. _coordinateSystems:
 
@@ -884,7 +887,7 @@ each solve. It defaults to 1.
 The output and it is a variable length struct. Depending on
 which analysis flags are active, results can be accessed with
 
-``result=layupDesign_ANSYSmesh(blade,config)``
+``result=layupDesign_ANSYSanalysis(blade,loadsTable,config)``
 
 ``result.globalBuckling``
 
@@ -998,7 +1001,7 @@ Local Buckling
 
 Sandwich panels typically consist of a relatively soft core layer
 *sandwiched* between two faces sheets. For the parts of blade that are
-described as sandwhich panels, local instabilities can be checked in
+described as sandwich panels, local instabilities can be checked in
 NuMAD with a strip theory model from Ref. [2]. In particular, this check
 examines if the outermost facesheet wrinkles under compression.
 
@@ -1390,7 +1393,7 @@ may not be the most optimal solution in the whole design space. They
 also require the objective function to be a continuous, smooth function
 of the design variables which can be challenging to define in some
 cases, while still representing the true objective that is sought after.
-Examples of gradient-based optimizers include fmincon in the MATLAB
+Examples of gradient-based optimizers include ``fmincon`` in the MATLAB
 built-in optimization suite, or SNOPT, a widely-used sparse nonlinear
 optimizer out of Stanford.
 
@@ -1536,6 +1539,8 @@ Common things to check are the ANSYS `.err` and `.log` for clues.
 
 Known Issues
 ============
+-  Fix ``blade.generateFEA()`` to create an ANSYS mesh without needed to use NuMAD 2.0 functions. This will make ``layupDesign_ANSYSmesh`` obsolete.
+
 
 Trailing Edge Issues
 
