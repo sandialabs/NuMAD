@@ -1230,7 +1230,7 @@ process.
 
 In addition, an example optimization script to demonstrate the application of the following concepts is included in 
 
-``examples/optimization/exampleOptimizationDir``
+``examples/exampleOptimizationDir``
 
 This folder contains the main optimization script, ``optimizationExample.m``, the objective defined as a MATLAB function, ``objectiveExample.m``, along with a folder containing the ``.yaml`` file and loading data for the example blade.  The loading data is pre-generated using ``runIEC`` and the functions descriped in :ref:`AeroelasticSimRunIEC` and :ref:`FEAOps`.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute ``optimizationExample.m``.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections :ref:`definingObjective` through :ref:`choosingOpimizationAlgor`. 
 
@@ -1259,7 +1259,7 @@ structural optimization would be mass, for example. If it is desired to
 minimize the mass of a blade subject to some set of constraints, the
 objective function should calculate the mass of the blade based on the
 design variables and return it as the primary output. An example
-objective function definition is given in ``examples/optimization/objectiveExample.m``, demonstrating
+objective function definition is given in ``examples/exampleOptimizationDir/objectiveExample.m``, demonstrating
 the use of NuMAD’s finite element analysis tools described in :ref:`FEAOps`.
 
 .. _definingDesignVars:
