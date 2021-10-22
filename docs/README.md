@@ -1,4 +1,4 @@
-# Visit the [NuMAD website](http://NuMAD.github.io/NuMAD) for more information.
+# Visit the [NuMAD website](http://sandialabs.NuMAD.github.io/NuMAD) for more information.
 
 ## NuMAD Documentation
 
@@ -14,10 +14,10 @@ replace slashes (`/`) in paths with backslashes (`\ `).
 2. Create the Sphinx environment:
    
    ```
-   > conda create -c conda-forge -n _wssphinx git click colorama colorclass future pip sphinxcontrib-bibtex "sphinx_rtd_theme<1"
-   > conda activate _wssphinx
-   (_wssphinx) > pip install sphinxcontrib-matlabdomain sphinxext-remoteliteralinclude sphinx-multiversion
-   (_wssphinx) > conda deactivate
+   > conda create -c conda-forge -n _numaddocs git click colorama colorclass future pip sphinxcontrib-bibtex "sphinx_rtd_theme<1"
+   > conda activate _numaddocs
+   (_numaddocs) > pip install sphinxcontrib-matlabdomain sphinxext-remoteliteralinclude sphinx-multiversion
+   (_numaddocs) > conda deactivate
    >
    ```
 
@@ -31,14 +31,14 @@ available.
 To test the current branch, use the following:
 
 ```
-> conda activate _wssphinx
-(_wssphinx) > cd path/to/NuMAD
-(_wssphinx) > sphinx-build -b html docs docs/_build/html
-(_wssphinx) > conda deactivate
+> conda activate _numaddocs
+(_numaddocs) > cd path/to/NuMAD
+(_numaddocs) > sphinx-build -b html docs docs/_build/html
+(_numaddocs) > conda deactivate
 >
 ```
 
-NOTE: for a clean build ``(_wssphinx) > sphinx-build -b html -a docs docs/_build/html``
+NOTE: for a clean build ``(_numaddocs) > sphinx-build -b html -a docs docs/_build/html``
 
 The front page of the docs can be accessed at 
 `docs/_build/html/index.html`. 

@@ -36,7 +36,7 @@ analyses, and the object-oriented data structures.
    journal article “Part II: 3D FEM design optimization of the rotor
    blades”.
 
-.. TO DO: Link to release and add DOI
+.. Kelley: Link to release on GitHub and add DOI
 
 Prior Releases
 ----------------
@@ -49,4 +49,4 @@ NuMAD v2.0
 
 * Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
 
-.. TO DO: remove link to wind enery site, former NUMAD release
+.. Kelley: remove link to wind enery site, former NUMAD release

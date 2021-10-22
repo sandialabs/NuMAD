@@ -3,7 +3,7 @@
 Overview
 =======================
 
-NuMAD (Numerical Manufacturing And Design) is an object-oriented,
+`NuMAD (Numerical Manufacturing And Design)<https://github.com/sandialabs/NuMAD>`_ is an object-oriented,
 open-source software program written in
 `MATLAB <http://www.mathworks.com>`__ which simplifies the process of
 creating a three-dimensional model of a wind turbine blade. The tool
@@ -25,4 +25,4 @@ When used in conjunction with these other tools, NuMAD provides
 computation of blade cross section properties, various structural
 analyses, and estimation of blade aeroelastic instability.
 
-.. TODO: consider adding some images of NuMAD applications here, there is where you can encourage people to use the software
+.. Kelley: consider adding some images of NuMAD applications here, there is where you can encourage people to use the software

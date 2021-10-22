@@ -14,7 +14,7 @@
 
 
 ##################################################################################
-Numerical Manufacturing And Design Tool (NuMAD) for Wind Turbine Blades
+Numerical Manufacturing And Design (NuMAD) Tool for Wind Turbine Blades
 ##################################################################################
 
 
@@ -26,7 +26,7 @@ automated optimization and analysis algorithms. A new version of the
 software tool `NuMAD (Numerical Manufacturing And Design) <https://github.com/sandialabs/NuMAD>`_ for the design
 and modeling of wind turbine blades is developed and described. 
 
-Newly released :ref:`NuMADv3`, is structured to be run from a scripting environment
+Newly released :ref:`NuMADv3` is structured to be run from a scripting environment
 and easily called by optimization processes. 
 The previous release, :ref:`NuMADv2`, relied on the use of a graphical
 user interface. Modifications were made to the MATLAB-based source code
