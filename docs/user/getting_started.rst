@@ -1,221 +1,47 @@
 .. _gettingStarted:
 
-Getting Started with NuMAD
-==========================
+Getting Started 
+================
 
+MATLAB Requirements
+-------------------
+
+NuMAD is developed in MATLAB, and requires the following toolboxes:
+
+.. Kelley: add MATLAB version requirements
+ 
+==========================  =============================
+**Required Toolbox**        **Oldest Compatible Version**
+MATLAB                      Version 9.9  (R2020b)
+==========================  =============================
+
+
+Installing NuMAD 
+----------------
 The code containing all open-source tools for NuMAD can be downloaded or
-cloned as a repository from the `NuMAD
-GitHub <https://github.com/sandialabs/NuMAD>`__. There
-are 3 main folders within the root ``source`` directory, named ``NuMAD_toolbox``,
-``preNuMAD``, and ``rotor_optimization``. It is advisable to save these
-in a directory called ``DesignCodes`` on, for example, the C drive if possible. If another
-path location is desired, some path definitions in the ``runIEC_ipt.m``
-input settings script may need to be modified, as described further in the
-:ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. Before beginning any design or analysis of a
+cloned from the `NuMAD GitHub repository <https://github.com/sandialabs/NuMAD>`__. 
+There are 3 main folders within the ``NuMAD/source`` directory: ``NuMAD_toolbox``,
+``preNuMAD``, and ``rotor_optimization``. It is advisable to save the NumAD source
+in a directory called ``DesignCodes`` on, for example ``C:\DesignCodes\NuMAD\source\``. 
+
+
+Before beginning any design or analysis of a
 blade, the paths of these folders should be added to the MATLAB domain
 of working directories, using the script ``paths.m``. All tools and
-functions available in NuMAD 3.0 will then be available to invoke from a
+functions distrubuted with the NuMAD source code will then be accessible from from a MATLAB
 script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable 
 ``ANSYS_Path`` needs to be modified to your ANSYS working directory file path name.
 
-The ``NuMAD_toolbox`` folder contains basic functions and operations needed
-for performing analysis with packages such as precomp, BPE, and ANSYS.
-The ``preNuMAD`` folder mainly contains the class definition of the blade
-object, which stores the geometric, airfoil and material data for a
-given blade design. The ``rotor_optimization`` folder contains bundles of
-tools for several purposes, including ``runIEC``, as explained further in the
-:ref:`AeroelasticSimRunIEC` section, file processing functions for input and output from other
-programs such as FAST and Crunch, and setup and execution of ANSYS
-models for analyzing quantities like material rupture, fatigue, and
-buckling under loading. 
-
-The following sections go through the basics of putting together and
-analyzing a blade design in NuMAD, from creating a blade object, to
-modifying its parameters and attributes, to generating structural models
-for analysis. Tips for implementation are given to ensure the smoothest
-execution.
-
-.. _bladeGen:
-
-Blade Generation
-----------------
-
-There are several ways to go about constructing a blade model in NuMAD
-3.0. In many ways the most intuitive approach is by using the graphical
-user interface carried over from NuMAD 2.0 (for detailed instructions,
-please refer to the NuMAD 2.0 user manual [3]). Although the current
-version is designed not to be reliant on this GUI, it is still supported
-and can be a useful tool if designing a blade model from scratch.
-
-A more automated way to generate a blade model is by reading a ``.yaml``
-file, and using the data stored within to populate the model definition.
-The ``.yaml`` format contains all the geometric, aerodynamic and material
-information needed to define a blade structure, and is widely used in
-the field, making it a convenient choice for the source data file.
-Several examples of ``.yaml`` files are given in the ``examples`` directory
-of the GitHub repository.
-
-To read a ``.yaml`` file’s data into NuMAD from a MATLAB script or command
-window, first save the ``.yaml`` file in the working directory for the blade
-model. Typically, each blade design should have its own working
-directory, which contains aerodynamic/airfoil data, FAST input files
-(``*.fst`` extension) and subfolders for NuMAD operations and FAST
-simulation output files (``*.out`` extension). Once the ``.yaml`` file is saved
-alongside these items, it can be read by creating a new blade object of
-type ``BladeDef`` and calling the reader function, as shown:
-
-    >> ``blade = BladeDef``
-
-    >> ``blade.readYAML(<yamlfilename>)``
-
-After entering these commands, the blade model data will be stored in
-the object called ``blade``, which can be printed out and modified as
-desired as further explained in :ref:`bladeGen`. Many types of analysis and
-operations can be performed once a blade model is stored as a blade
-object in this way. If it is desired to run aeroelastic simulation with
-``runIEC``, or to generate loads from FAST-generated output files as
-described in :ref:`FEAOps`, it is advisable to update the FAST input files
-in the blade’s main working directory to ensure that certain quantities
-within are consistent with the data stored in the ``.yaml`` file, such as
-prebend, presweep, and structural twist. This can be done using the
-commands
-
-``runIEC_ipt``
-
-``updateFASTFromBLADEDef(params,blade)``
-
-The ``runIEC_ipt.m`` script initializes a data structure named ``params``, which
-stores variables related to the analysis and simulation (``\examples\runIEC_ipt--EXAMPLE.m``), and is passed along with the blade object into the update
-function.
-
-After all desired analyses and modifications are complete, a new,
-updated ``.yaml`` file can be generated to represent the optimized, or
-re-designed blade. To do this issue the command:
-
-``writeYAML(blade,<newyamlfilename>);``
-
-The new file name should be of the form ``<originalfile>_mod.yaml``, adding
-an ‘_mod’ extension to the name of the original ``.yaml`` file from which
-the blade model was generated. The new file will be written into the
-blade model’s working directory alongside the original.
-
-Generating blades from ``.yaml`` files is useful for streamlining analysis
-and optimization processes, since all operations can be called from a
-MATLAB script, without depending on the graphical user interface or any
-manual input during execution.
+============================ ===================================================
+Source Directory       	 	Description
+============================ ===================================================
+``NuMAD_toolbox``		contains basic functions and operations needed for performing analysis with packages such as precomp, BPE, and ANSYS
+``preNuMAD``			contains the class definition of the blade object, which stores the geometric, airfoil and material data for a given blade design
+``rotor_optimization``		contains bundles of tools for several purposes, including ``runIEC``, as explained further in the :ref:`AeroelasticSimRunIEC` section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading
+============================ ===================================================
 
 
 
-.. _bladeVarAssign:
 
-Blade Variable Assignment
--------------------------
-
-Any blade design process involves setting and modifying characteristics
-of the blade’s geometric, structural, and material properties in some
-way. The NuMAD blade object contains a collection of variables that
-represent these properties, and can be set and modified by value
-assignment within a MATLAB script or in the command line. A
-comprehensive list of all public variables in the BladeDef class used in
-NuMAD is given in the :ref:`appendix`.
-
-Here we give some highlighted examples of key variables within the blade
-object and their basic access. The overall shape of the blade is defined
-largely by the stations (access: ``blade.stations``). Each station
-contains several variables whose values can be edited. For instance, if
-a blade model was generated by reading a ``.yaml`` file as described in
-:ref:`bladeGen`, and it was desired to set the spanwise position of the
-second station at 3.5 meters, the command
-
-``blade.stations(2).spanlocation = 3.5``
-
-could be used. Many variables are arrays with multiple values, and can
-be set according using standard MATLAB syntax. The coordinates of the
-points defining the outer airfoil shape at a given station, for example,
-are stored in the airfoil object at each individual station as an :math:`N X 2`
-array, and can be set as follows:
-
-``blade.stations(2).airfoil.coordinates = [X1, Y1; …``
-
-``X2, Y2; …``
-
-``…``
-
-``XN, YN]``
-
-There are several properties that each define some aspect of the blade’s
-shape with a value at any given spanwise location, including chord
-length, angle of twist, aerodynamic center, sweep and prebend. These can
-be set at any number of spanwise points, with the variable ‘span’
-specifying their locations. If a user wanted to, say, set the prebend of
-the blade to some constant :math:`k` times cube of the spanwise location,
-specified at 10 equally spaced points, they could set
-
-``blade.span = linspace(0,<bladeLength>,10)’;``
-
-``blade.prebend = k*blade.span.^3;``
-
-The bulk of the structural properties of the blade’s components are
-stored in blade.components variable. A single component contains a name,
-a material ID number, labels representing the points it spans between
-according to :numref:`bladeKeyPoints`, and a control point array, called ``cp``. The
-control point array specifies the thickness of the given component at
-every spanwise location, expressed in number of layers (the actual
-thickness of a layer is defined by the material object it corresponds
-to, shown shortly). Suppose component 3 in the blade was the suction
-side spar cap, and it was desired to vary the thickness linearly from 10
-layers at the root to 2 layers at the tip, say 50 meters span. The user
-could set
-
-``blade.components(3).cp = [0, 10; …``
-
-``50, 2];``
-
-The width of the spar caps and the leading edge and trailing edge bands
-are single nominal values for the entire length of the blade, stored in
-the variables ``blade.sparcapwidth``, ``blade.leband`` and ``blade.teband``
-respectively.
-
-The data defining the properties of all the materials used throughout
-the blade are stored in the variable blade.materials. Each entry in
-blade.materials is a MaterialDef object, which stores a name, elastic
-properties, density, and strength properties among others (see :numref:`materialDefTable` in the :ref:`appendix`). It also stores the thickness that a single layer of that material in a composite is assumed to be, which can be important to know or edit when defining the thickness distribution of the blade’s components as just described.
-
-After editing the design properties of a blade model as illustrated in
-these few examples, a user should run the command
-
-``blade.UpdateBlade()``
-
-This function updates numerous internal private variables based on the
-edited values in the public variables. Among other things, it
-interpolates the properties that vary along the span of the blade to the
-spanwise points specified in the variable ``blade.ispan``. These include
-all the properties defined in ``blade.stations``, as well as the general
-spanwise properties such as prebend, twist, etc. ``UpdateBlade`` also
-updates the bill of materials for the blade, stored in ``blade.bom`` and
-various details of the geometry, stored in ``blade.geometry``.
-
-When the variables defining the blade design are set to satisfaction,
-the blade object can be used to perform various operations for analysis
-and optimization, such as generating representative structural models as
-described in the next section.
-
-.. _genBladeStructural:
-
-Generating Representative Blade Structural Models
--------------------------------------------------
-
-A NuMAD blade object can be used to construct structural models for
-various types of analysis. Several tools exist that analyze
-characteristics such as section stiffness, mass, and natural frequencies
-of wind blades by representing them with low-fidelity beam models. These
-include PreComp, BModes, and BPE. The most straightforward way of
-invoking these capabilities is through the graphical user interface (for
-details please see ref. [3]).
-
-In addition to these, however, NuMAD 3.0 has many built-in functions for
-performing high-fidelity analysis of a blade as a shell-element model in
-ANSYS, which are easily invokable from a MATLAB script or command line.
-These include analysis for maximum tip deflection, ultimate rupture
-failure, global and local buckling, fatigue and natural frequencies and
-are discussed in detail in :ref:`FEAOps`.
+.. Note::
+	If a path other than ``C:\DesignCodes\NuMAD\source\`` is used, path definitions in the ``runIEC_ipt.m`` input settings script may need to be modified, as described further in the :ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. 

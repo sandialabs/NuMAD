@@ -1,7 +1,7 @@
 .. _bladeDefAndTerms:
 
-Blade definition and terminology
-================================
+Blade Definition
+=================
 
 In NuMAD, a blade is uniquely defined with the ``BladeDef`` object or blade
 object for short. As defined in ``source\preNuMAD\BladeDef.m``, many of the properties are parameterized by spanwise location. Refer to
@@ -46,9 +46,7 @@ Usually, the number of stations defined needs to be supplemented for
 with interpolated stations.
 
 Material properties, layup information, and thicknesses and widths are
-additionally defined in the
-
-``MaterialDef``, ``StackDef``, and ``ComponentDef`` respectively.
+additionally defined in the ``MaterialDef``, ``StackDef``, and ``ComponentDef`` respectively.
 
 .. _bladeKeyPoints:
 .. figure:: /_static/images/bladeKeyPoints.png
@@ -56,6 +54,22 @@ additionally defined in the
    :height: 2.23056in
 
    Relative locations of the blade keypoints.
+   
+Terminology
+--------------
+
+============================ ===================================================
+Term or Variable       	 	Definition
+============================ ===================================================
+HP				High Pressure
+LE				Leading Edge
+LP				Low Pressure
+TE				Trailing Edge
+============================ ===================================================
+
+
+
+.. Kelley: split documentation into several rst files
 
 .. Kelley: getting_started
 .. Kelley: aero_sim
