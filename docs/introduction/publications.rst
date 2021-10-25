@@ -15,10 +15,3 @@ Here is a list of publications written by the NuMAD team about the development a
 
 .. Kelley: This is a duplication of citation/publications , consider removing this page for now until there are more publciations to add
 
-
-.. Kelley: I commented out this section for now
-
-.. News Articles
-.. ^^^^^^^^^^^^^
-
-.. * Future news article

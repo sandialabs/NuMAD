@@ -49,4 +49,23 @@ NuMAD v2.0
 
 * Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
 
-.. Kelley: remove link to wind enery site, former NUMAD release
+.. Kelley: remove link to wind enery site, former NUMAD release mechanism
+
+
+.. _FutureDev:
+
+Future Development
+---------------------
+
+-  Allow for the option to make the blade entirely of solid elements
+
+-  Incorporate adhesive modeling
+
+-  Allow for FEA without the need of commercial FE licenses
+
+-  Probabilistic flaw distributions
+
+-  Incorporate Progressive damage
+
+-  In addition to the ANSYS interface, add capability for a user to use
+   other commercial FEA codes such as Abaqus and/or Nastran
