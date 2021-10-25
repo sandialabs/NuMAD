@@ -1037,7 +1037,8 @@ classdef BladeDef < handle
                 obj.paths.batch_run = true;
                 
             elseif ispc
-                obj.paths.ansys = 'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
+                global ANSYS_Path
+                obj.paths.ansys = ANSYS_Path;%'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
                 obj.paths.precomp = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
                 obj.paths.bmodes = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
                 obj.paths.batch_run = false;

@@ -9,5 +9,5 @@
 ``config.ansys.analysisFlags.fatigue``,``'all'``,If Field Name exists and is not empty.
 ``config.ansys.analysisFlags.resultantVSspan``,1,If Field Name exists and is not equal to 0.
 ``config.ansys.analysisFlags.deflection``,1,If Field Name exists and is not equal to 0.
-``config.ansys.analysisFlags.localFeilds``,``'all'``,If Field Name exists and is not empty.
+``config.ansys.analysisFlags.localFields``,``'all'``,If Field Name exists and is not empty.
 ``config.ansys.analysisFlags.mass``,1,If Field Name exists and is not empty and is not equal to 0.

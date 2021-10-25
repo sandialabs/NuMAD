@@ -79,7 +79,8 @@ input settings script may need to be modified, as described further in the
 blade, the paths of these folders should be added to the MATLAB domain
 of working directories, using the script ``paths.m``. All tools and
 functions available in NuMAD 3.0 will then be available to invoke from a
-script or the command window.
+script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable 
+``ANSYS_Path`` needs to be modified to your ANSYS working directory file path name.
 
 The ``NuMAD_toolbox`` folder contains basic functions and operations needed
 for performing analysis with packages such as precomp, BPE, and ANSYS.
@@ -191,7 +192,7 @@ second station at 3.5 meters, the command
 ``blade.stations(2).spanlocation = 3.5``
 
 could be used. Many variables are arrays with multiple values, and can
-be set according using standard MALAB syntax. The coordinates of the
+be set according using standard MATLAB syntax. The coordinates of the
 points defining the outer airfoil shape at a given station, for example,
 are stored in the airfoil object at each individual station as an :math:`N X 2`
 array, and can be set as follows:
@@ -1491,7 +1492,7 @@ data.
 Coupling to NuMAD 2.0
 =====================
 
-The once the ``BladeDef`` object is defined, it is possible to interface
+Once the ``BladeDef`` object is defined, it is possible to interface
 with prior versions of NuMAD which were GUI-centric. The function that
 writes the input file to older versions of NuMAD from a blade object is
 
