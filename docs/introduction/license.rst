@@ -20,5 +20,3 @@ BSD 3-Clause License
 .. literalinclude:: ../../LICENSE
    :language: text
 
-
-.. Kelley: updated License and Copyright to 2013, to reflect date of original NuMAD Copyright
