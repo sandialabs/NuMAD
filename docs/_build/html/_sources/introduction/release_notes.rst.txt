@@ -38,19 +38,6 @@ analyses, and the object-oriented data structures.
 
 .. Kelley: Link to release on GitHub and add DOI
 
-Prior Releases
-----------------
-
-.. _NuMADv2:
-
-NuMAD v2.0
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Initial release of NuMAD is on the `NuMAD2p0 static branch <https://github.com/sandialabs/NuMAD/tree/NuMAD2p0>`_ (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`_, now available on GitHub)
-
-* Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
-
-.. Kelley: remove link to wind enery site, former NUMAD release mechanism
-
 
 .. _FutureDev:
 
@@ -69,3 +56,19 @@ Future Development
 
 -  In addition to the ANSYS interface, add capability for a user to use
    other commercial FEA codes such as Abaqus and/or Nastran
+
+
+Prior Releases
+----------------
+
+.. _NuMADv2:
+
+NuMAD v2.0
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Initial release of NuMAD is on the `NuMAD2p0 static branch <https://github.com/sandialabs/NuMAD/tree/NuMAD2p0>`_ (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`_, now available on GitHub)
+
+* Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
+
+.. Kelley: remove link to wind enery site, former NUMAD release mechanism
+
+

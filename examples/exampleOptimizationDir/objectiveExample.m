@@ -29,7 +29,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable)
     disp(' '); disp('Creating ANSYS model...')
     fprintf('Mesh size setting = %0.4f\n',blade.mesh)
     delete 'file.lock';
-    layupDesign_ANSYSmesh(blade,config.meshConfig)
+    layupDesign_ANSYSmesh(blade)
     
     %% Initialize values for objective evaluation and results.
     c1 = 60000;  %% Coefficient for constraint penalty terms, chosen based on approximate blade mass

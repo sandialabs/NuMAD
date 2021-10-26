@@ -1,3 +1,5 @@
+%% Include NuMAD code/tools in MATLAB working directories
+paths;
 %% Input settings
 dataFolder = 'exampleBlade';  %% Folder containing the data/files for the blade model
 yamlFile = 'exampleBlade.yaml';  %% Name of .yaml file giving the initial design of the blade
@@ -11,7 +13,6 @@ optAl = 'objective';  %% Tag specifying optimization algorithm to use
 maxIt = 1;  %% Maximum iterations for the optimization algorithm
 numProc = 4; %% Number of processors to use for parallel optimization
 swarmSize = 4; %% Swarm size, if particle swarm optimization algorithm is used.
-ansysPath = 'C:\Program Files\ANSYS Inc\v201\ansys\bin\winx64\ANSYS201.exe'; %% Path to the executable launching ANSYS analysis
 
 %% Set all the fields for the analysis configuration as described in Section 5 of documentation
 
@@ -63,9 +64,6 @@ for i = 1:numProc
     copyfile([dataFolder '\' rccDataPath],[folderName '\rccdata.mat']);
 end
 
-%% Include NuMAD code/tools in MATLAB working directories
-snl2;
-
 %%  Read the .yaml file into a NuMAD blade object
 mainDir = pwd;
 cd(dataFolder);
@@ -74,7 +72,7 @@ blade.readYAML(yamlFile);
 blade.mesh = 0.4;
 
 %%  Set ANSYS .exe path in blade object
-blade.paths.ansys = ansysPath;
+blade.paths.ansys = ANSYS_Path;
 
 if(contains(defLoadsPath,'.'))
     load(defLoadsPath,'defLoadsTable');

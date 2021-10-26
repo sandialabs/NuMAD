@@ -31,12 +31,25 @@ evaluate the performance of a blade structure and set up an
 optimization. Some general guidelines are given here to assist with the
 process.
 
-In addition, an example optimization script to demonstrate the application of the following concepts is included in ``examples/optimization/exampleOptimizationDir``
+In addition, an example optimization script to demonstrate the application 
+of the following concepts is included in ``examples/optimization/exampleOptimizationDir``
 
-This folder contains the main optimization script, ``optimizationExample.m``, the objective defined as a MATLAB function, ``objectiveExample.m``, along with a folder containing the ``.yaml`` file and loading data for the example blade.  The loading data is pre-generated using ``runIEC`` and the functions descriped in :ref:`AeroelasticSimRunIEC` and :ref:`FEAOps`.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute ``optimizationExample.m``.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections :ref:`definingObjective` through :ref:`choosingOpimizationAlgor`. 
-
-.. Note::
-    Please update the ``ansysPath`` variable in the input settings to the actual path to your ANSYS executable.  
+This folder contains the main optimization script, ``optimizationExample.m``, 
+the objective defined as a MATLAB function, ``objectiveExample.m``,
+along with a folder containing the ``.yaml`` file and loading data for 
+the example blade.  The loading data is pre-generated using ``runIEC`` 
+and the functions descriped in :ref:`AeroelasticSimRunIEC` and :ref:`FEAOps`.  
+An airfoil database directory is included as well, for reference in the 
+NuMAD input file generation process.  To run the example script, place 
+the ``exampleOptimizationDir`` folder with all its contents in a working 
+directory of your choosing, and execute ``optimizationExample.m``.  
+The user is encouraged to read through the source code in main script 
+and the objective function to understand the steps to the process, and 
+the calls to NuMAD functions for various operations.  A good approach 
+to putting together a customized optimization is to begin from these 
+scripts and modify according to the specific needs at hand, while being
+mindful of the concepts presented in Sections :ref:`definingObjective` 
+through :ref:`choosingOpimizationAlgor`. 
 
 
 .. _definingObjective:
@@ -251,11 +264,12 @@ direction to account for centrifugal effects and torsional moments for
 the sake of completeness.
 
 In the current version when forces are compiled from the FAST/OpenFAST
-output in the functions: ``source\rotor_optimization\sim_tools\FastLoads4Ansys.m`` and ``source\rotor_optimization\sim_tools\getForceDistributionAtTime.m``
+output in the functions: ``source\optimization\sim_tools\FastLoads4Ansys.m`` 
+and ``source\optimization\sim_tools\getForceDistributionAtTime.m``
 
 the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
-modifications were also made to the function: ``source\NuMAD_toolbox\ad2ansys.m``
+modifications were also made to the function: ``source\toolbox\ad2ansys.m``
 to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
 coordinate system at each point along the blade, which rotates along
@@ -264,7 +278,7 @@ forces and moments are now transformed to the blade global coordinate
 system before being applied to the model. There is a new function
 available to process a given output file, perform the transformation and
 return the data in global coordinates: 
-``source\rotor_optimization\sim_tools\loadFASTOutDataGageRot.m``
+``source\optimization\sim_tools\loadFASTOutDataGageRot.m``
 
 Finally, when performing structural optimization, the blade model is
 typically defined primarily by a ``.yaml`` file, which is read into an
@@ -274,8 +288,7 @@ application of loads, information such as pre-bend, pre-sweep and
 structural twist is taken from the FAST/OpenFAST files in the model
 directory. To make sure the necessary information in these files is
 consistent with that in the ``.yaml`` file, a convenient function was
-built, named: 
-``source\rotor_optimization\sim_tools\updateFASTFromBladeDef.m``
+built, named: ``source\optimization\sim_tools\updateFASTFromBladeDef.m``
 which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the ``.yaml``
 file, and before performing any analysis to ensure the consistency of

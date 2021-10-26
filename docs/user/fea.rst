@@ -9,10 +9,11 @@ Mesh Generation
 ---------------
 
 The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is ``source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m``
+blade is ``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
-    It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
+    It is currently necessary to have created the NuMAD input file from 
+    NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
 
 As an example, the following call would build a mesh for the blade blade
 object
@@ -49,7 +50,9 @@ Repeated indices are summed over their range (except where explicitly
 indicated). 
 
 .. Note::
-     The :math:`x_{i}` coordinate system is like the :math:`w_{i}` system but the first axis, :math:`w_{1}` points toward the leading edge instead of the flap direction.
+     The :math:`x_{i}` coordinate system is like the :math:`w_{i}` system 
+     but the first axis, :math:`w_{1}` points toward the leading edge 
+     instead of the flap direction.
 
 .. _numadFASTcsys:
 .. figure:: /_static/images/numadFASTcsys.png
@@ -167,7 +170,17 @@ obtained by
 \end{bmatrix}` 0\ :math:`\leq \theta`\ <180
 
 .. Note:: 
-    In the above equation, the minimum of :math:`M_{1}^{y}` is found instead of the maximum but :math:`\theta` still ranges from 0 to 180 deg. Unlike the resultants used for the deflection analysis which all occurred at a specific time in the OpenFAST simulations, each of the axial force, torsion, and bending moment resultants along the span could possibly come from different times. Thus, it is an artificial distribution suitable for design use. Also unlike the deflection case, the two bending-moment components (i.e. flap-wise and edge-wise bending) at a span location were projected onto 12 directions as defined by :math:`y_{1}` in :numref:`loadDirections`. All of the :math:`P_{i}\ `\ then transformed to the :math:`x_{i}` system in ``ad2ansys``.
+    In the above equation, the minimum of :math:`M_{1}^{y}` is found 
+    instead of the maximum but :math:`\theta` still ranges from 0 to 180 deg. 
+    Unlike the resultants used for the deflection analysis which all occurred 
+    at a specific time in the OpenFAST simulations, each of the axial force, 
+    torsion, and bending moment resultants along the span could possibly come
+    from different times. Thus, it is an artificial distribution suitable for
+    design use. Also unlike the deflection case, the two bending-moment 
+    components (i.e. flap-wise and edge-wise bending) at a span location
+    were projected onto 12 directions as defined by :math:`y_{1}` in 
+    :numref:`loadDirections`. All of the :math:`P_{i}\ `\ then transformed 
+    to the :math:`x_{i}` system in ``ad2ansys``.
 
 .. _loadDirections:
 .. figure:: /_static/images/loadDirections.png
@@ -240,7 +253,9 @@ wetted area of the blade. Details of the approach are found in Ref. [1]
 but with modifications to add axial loads. 
 
 .. Note:: 
-    The script assumes that the input forces are in the FAST coordinate system, :math:`w_{i}`, so a conversion is performed in the script to the ANSYS coordinate system, :math:`x_{i}`.
+    The script assumes that the input forces are in the FAST coordinate system, 
+    :math:`w_{i}`, so a conversion is performed in the script to the 
+    ANSYS coordinate system, :math:`x_{i}`.
 
 A vector, :math:`G_{i}`, such as a force or a
 moment, in the :math:`w_{i}` coordinate system is transformed to the

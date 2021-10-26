@@ -189,16 +189,16 @@
 <span id="aeroelasticsimruniec"></span><h1>Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function<a class="headerlink" href="#aeroelastic-simulation-and-the-runiec-function" title="Permalink to this headline">¶</a></h1>
 <p>A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
-the blade under a range of expected wind and loading conditions. NuMAD?s
+the blade under a range of expected wind and loading conditions. NuMAD’s
 capability for performing this analysis is contained in the
-<code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC</span></code> directory of the standard design codes
+<code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC</span></code> directory of the standard design codes
 package. In the following sections the basic capability and
 functionality of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> package will be described, followed by
 recent updates related to its operation from previous versions.</p>
 <div class="section" id="use-and-functionality-of-runiec">
 <span id="useandfunctofruniec"></span><h2>Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code><a class="headerlink" href="#use-and-functionality-of-runiec" title="Permalink to this headline">¶</a></h2>
 <p>The main function called to perform aeroelastic analysis of a NuMAD
-blade is <code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC\runIEC.m.</span></code></p>
+blade is <code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC\runIEC.m.</span></code></p>
 <p>This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
 aeroelastic analysis for a set of requested simulation cases or by
@@ -234,7 +234,7 @@ turbulence seeds specified in the variables params.ws and
 params.numSeeds in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>DLC?s 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.</p>
+<p>DLC’s 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.</p>
 </div>
 <p><strong>1.3:</strong> Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with extreme turbulence
@@ -258,7 +258,7 @@ with the turbine in a parked or idle state. Simulations run with extreme
 turbulence model, maximum loads taken directly from simulation results.</p>
 <p>As an example, the following call would run the FAST simulation for
 cases 1.1, 1.3, and 6.1 without using parallel processing:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">({</span>?<span class="mf">1.1</span>?<span class="p">,</span>?<span class="mf">1.3</span>?<span class="p">,</span>?<span class="mf">6.1</span>?<span class="p">},</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">({</span><span class="s">&#39;1.1&#39;</span><span class="p">,</span><span class="s">&#39;1.3&#39;</span><span class="p">,</span><span class="s">&#39;6.1&#39;</span><span class="p">},</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>``<span class="w"></span>
 </pre></div>
 </div>
 <p>The output of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function is a data structure reporting a
@@ -310,7 +310,7 @@ If, for example, an event is 1% likely to occur once over a period of 10
 minutes, then it should be 10% percent likely to occur once over a
 period of 100 minutes under the same conditions.</p>
 <p>Following this reasoning, a load/quantity that has a probability of
-3.805 ? 10<sup>-7</sup> to exceed a certain value in a period of 10
+3.805 x 10<sup>-7</sup> to exceed a certain value in a period of 10
 minutes should be 100% likely to exceed that value once in 50 years of
 operation. That value is the extrapolated 50-year extreme value, which
 is the main result of interest for DLC 1.1.</p>
@@ -416,7 +416,7 @@ OpenFAST input files to supplement what is currently there for FAST v7.</p>
 the data in a MATLAB struct object which can then be edited and modified
 for the purposes of design and optimization. Updated versions of the
 input files can then be re-written from the modified data. The tools can
-be found in the <code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC</span></code> directory, along with
+be found in the <code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC</span></code> directory, along with
 their FAST v7 counterparts.</p>
 <p>As of the release of this document, OpenFAST remains in a state of
 development, and new modules are coming online that will be increasingly
@@ -440,7 +440,7 @@ to change to accommodate new input file formats, etc. moving forward.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
+        &#169; Copyright 2013-2021, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
 
     </p>
   </div>

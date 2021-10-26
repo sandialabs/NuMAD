@@ -200,6 +200,9 @@
 <tr class="row-odd"><td><p>FAST (Optional)</p></td>
 <td><p>v7</p></td>
 </tr>
+<tr class="row-even"><td><p>ANSYS (Optional)</p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -207,12 +210,12 @@
 <h2>Installing NuMAD<a class="headerlink" href="#installing-numad" title="Permalink to this headline">¶</a></h2>
 <p>The code containing all open-source tools for NuMAD can be downloaded or
 cloned from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.
-There are 3 main folders within the <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> directory: <code class="docutils literal notranslate"><span class="pre">NuMAD_toolbox</span></code>,
-<code class="docutils literal notranslate"><span class="pre">preNuMAD</span></code>, and <code class="docutils literal notranslate"><span class="pre">rotor_optimization</span></code>. It is advisable to save the NumAD source
-in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes</span></code> on, for example <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code>.</p>
+There are 3 main folders within the <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> directory: <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
+<code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>. It is advisable to save the NumAD source
+in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes\NuMAD</span></code>, for example <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code>.</p>
 <p>Before beginning any design or analysis of a
 blade, the paths of these folders should be added to the MATLAB domain
-of working directories, using the script <code class="docutils literal notranslate"><span class="pre">paths.m</span></code>. All tools and
+of working directories, using the script <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code>. All tools and
 functions distrubuted with the NuMAD source code will then be accessible from from a MATLAB
 script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable
 <code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> needs to be modified to your ANSYS working directory file path name.</p>
@@ -227,13 +230,13 @@ script or the command window. If you intend to use NuMAD in conjuction with ANSY
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NuMAD_toolbox</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">toolbox</span></code></p></td>
 <td><p>contains basic functions and operations needed for performing analysis with packages such as precomp, BPE, and ANSYS</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">preNuMAD</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">objects</span></code></p></td>
 <td><p>contains the class definition of the blade object, which stores the geometric, airfoil and material data for a given blade design</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rotor_optimization</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimization</span></code></p></td>
 <td><p>contains bundles of tools for several purposes, including <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, as explained further in the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading</p></td>
 </tr>
 </tbody>
@@ -259,7 +262,7 @@ script or the command window. If you intend to use NuMAD in conjuction with ANSY
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
+        &#169; Copyright 2013-2021, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
 
     </p>
   </div>

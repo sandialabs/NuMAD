@@ -5,9 +5,9 @@ Aeroelastic Simulation and the ``runIEC`` Function
 
 A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
-the blade under a range of expected wind and loading conditions. NuMAD’s
+the blade under a range of expected wind and loading conditions. NuMAD's
 capability for performing this analysis is contained in the
-``source\rotor_optimization\runIEC`` directory of the standard design codes
+``source\optimization\runIEC`` directory of the standard design codes
 package. In the following sections the basic capability and
 functionality of the ``runIEC`` package will be described, followed by
 recent updates related to its operation from previous versions.
@@ -18,7 +18,7 @@ Use and Functionality of ``runIEC``
 -----------------------------------
 
 The main function called to perform aeroelastic analysis of a NuMAD
-blade is ``source\rotor_optimization\runIEC\runIEC.m.``
+blade is ``source\optimization\runIEC\runIEC.m.``
 
 This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
@@ -60,7 +60,7 @@ turbulence seeds specified in the variables params.ws and
 params.numSeeds in the ``runIEC_ipt.m`` file. 
 
 .. Note::
-    DLC’s 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.
+    DLC's 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.
 
 **1.3:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with extreme turbulence
@@ -93,7 +93,7 @@ cases 1.1, 1.3, and 6.1 without using parallel processing:
 
 .. code-block:: matlabsession
 
-    >> ``output = runIEC({‘1.1’,‘1.3’,‘6.1’},1,0)``
+    >> ``output = runIEC({'1.1','1.3','6.1'},1,0)``
 
 The output of the ``runIEC`` function is a data structure reporting a
 compilation of critical values from the results of all the simulations
@@ -154,7 +154,7 @@ minutes, then it should be 10% percent likely to occur once over a
 period of 100 minutes under the same conditions.
 
 Following this reasoning, a load/quantity that has a probability of
-3.805 × 10\ :sup:`-7` to exceed a certain value in a period of 10
+3.805 x 10\ :sup:`-7` to exceed a certain value in a period of 10
 minutes should be 100% likely to exceed that value once in 50 years of
 operation. That value is the extrapolated 50-year extreme value, which
 is the main result of interest for DLC 1.1.
@@ -281,7 +281,7 @@ These tools primarily read different types OpenFAST input files, storing
 the data in a MATLAB struct object which can then be edited and modified
 for the purposes of design and optimization. Updated versions of the
 input files can then be re-written from the modified data. The tools can
-be found in the ``source\rotor_optimization\runIEC`` directory, along with
+be found in the ``source\optimization\runIEC`` directory, along with
 their FAST v7 counterparts.
 
 As of the release of this document, OpenFAST remains in a state of

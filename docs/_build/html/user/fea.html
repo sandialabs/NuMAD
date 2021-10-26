@@ -199,10 +199,11 @@
 <div class="section" id="mesh-generation">
 <span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this headline">¶</a></h2>
 <p>The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is <code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
+blade is <code class="docutils literal notranslate"><span class="pre">source\optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See <a class="reference internal" href="numad.html#numad2p0"><span class="std std-ref">Coupling to NuMAD 2.0</span></a> for further details.</p>
+<p>It is currently necessary to have created the NuMAD input file from
+NuMAD 2.0, before attempting to run this function. See <a class="reference internal" href="numad.html#numad2p0"><span class="std std-ref">Coupling to NuMAD 2.0</span></a> for further details.</p>
 </div>
 <p>As an example, the following call would build a mesh for the blade blade
 object</p>
@@ -234,7 +235,9 @@ Repeated indices are summed over their range (except where explicitly
 indicated).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <span class="math notranslate nohighlight">\(x_{i}\)</span> coordinate system is like the <span class="math notranslate nohighlight">\(w_{i}\)</span> system but the first axis, <span class="math notranslate nohighlight">\(w_{1}\)</span> points toward the leading edge instead of the flap direction.</p>
+<p>The <span class="math notranslate nohighlight">\(x_{i}\)</span> coordinate system is like the <span class="math notranslate nohighlight">\(w_{i}\)</span> system
+but the first axis, <span class="math notranslate nohighlight">\(w_{1}\)</span> points toward the leading edge
+instead of the flap direction.</p>
 </div>
 <div class="figure align-default" id="id1">
 <span id="numadfastcsys"></span><a class="reference internal image-reference" href="../_images/numadFASTcsys.png"><img alt="../_images/numadFASTcsys.png" src="../_images/numadFASTcsys.png" style="width: 5.85771in; height: 4.10039in;" /></a>
@@ -327,7 +330,17 @@ obtained by</p>
 \end{bmatrix}\)</span> 0<span class="math notranslate nohighlight">\(\leq \theta\)</span>&lt;180</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In the above equation, the minimum of <span class="math notranslate nohighlight">\(M_{1}^{y}\)</span> is found instead of the maximum but <span class="math notranslate nohighlight">\(\theta\)</span> still ranges from 0 to 180 deg. Unlike the resultants used for the deflection analysis which all occurred at a specific time in the OpenFAST simulations, each of the axial force, torsion, and bending moment resultants along the span could possibly come from different times. Thus, it is an artificial distribution suitable for design use. Also unlike the deflection case, the two bending-moment components (i.e. flap-wise and edge-wise bending) at a span location were projected onto 12 directions as defined by <span class="math notranslate nohighlight">\(y_{1}\)</span> in <a class="reference internal" href="#loaddirections"><span class="std std-numref">Fig. 4</span></a>. All of the <span class="math notranslate nohighlight">\(P_{i}\ \)</span>then transformed to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">ad2ansys</span></code>.</p>
+<p>In the above equation, the minimum of <span class="math notranslate nohighlight">\(M_{1}^{y}\)</span> is found
+instead of the maximum but <span class="math notranslate nohighlight">\(\theta\)</span> still ranges from 0 to 180 deg.
+Unlike the resultants used for the deflection analysis which all occurred
+at a specific time in the OpenFAST simulations, each of the axial force,
+torsion, and bending moment resultants along the span could possibly come
+from different times. Thus, it is an artificial distribution suitable for
+design use. Also unlike the deflection case, the two bending-moment
+components (i.e. flap-wise and edge-wise bending) at a span location
+were projected onto 12 directions as defined by <span class="math notranslate nohighlight">\(y_{1}\)</span> in
+<a class="reference internal" href="#loaddirections"><span class="std std-numref">Fig. 4</span></a>. All of the <span class="math notranslate nohighlight">\(P_{i}\ \)</span>then transformed
+to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">ad2ansys</span></code>.</p>
 </div>
 <div class="figure align-default" id="id3">
 <span id="loaddirections"></span><a class="reference internal image-reference" href="../_images/loadDirections.png"><img alt="../_images/loadDirections.png" src="../_images/loadDirections.png" style="width: 3.06468in; height: 1.72388in;" /></a>
@@ -396,7 +409,9 @@ wetted area of the blade. Details of the approach are found in Ref. [1]
 but with modifications to add axial loads.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The script assumes that the input forces are in the FAST coordinate system, <span class="math notranslate nohighlight">\(w_{i}\)</span>, so a conversion is performed in the script to the ANSYS coordinate system, <span class="math notranslate nohighlight">\(x_{i}\)</span>.</p>
+<p>The script assumes that the input forces are in the FAST coordinate system,
+<span class="math notranslate nohighlight">\(w_{i}\)</span>, so a conversion is performed in the script to the
+ANSYS coordinate system, <span class="math notranslate nohighlight">\(x_{i}\)</span>.</p>
 </div>
 <p>A vector, <span class="math notranslate nohighlight">\(G_{i}\)</span>, such as a force or a
 moment, in the <span class="math notranslate nohighlight">\(w_{i}\)</span> coordinate system is transformed to the
@@ -851,7 +866,7 @@ order). For example, access results such as</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
+        &#169; Copyright 2013-2021, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
 
     </p>
   </div>

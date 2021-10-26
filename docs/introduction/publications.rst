@@ -4,9 +4,6 @@ Publications
 ============
 
 
-NuMAD Publications
-^^^^^^^^^^^^^^^^^^^^
-
 Here is a list of publications written by the NuMAD team about the development and application of NuMAD:
 
 

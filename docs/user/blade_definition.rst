@@ -4,7 +4,7 @@ Blade Definition
 =================
 
 In NuMAD, a blade is uniquely defined with the ``BladeDef`` object or blade
-object for short. As defined in ``source\preNuMAD\BladeDef.m``, many of the properties are parameterized by spanwise location. Refer to
+object for short. As defined in ``source\objects\BladeDef.m``, many of the properties are parameterized by spanwise location. Refer to
 :numref:`bladeDefTable` in the :ref:`appendix` for a complete listing of ``BladeDef`` properties.
 
 First and foremost there are *stations*. A station is an airfoil at a
@@ -67,16 +67,6 @@ LP				Low Pressure
 TE				Trailing Edge
 ============================ ===================================================
 
-
-
-.. Kelley: split documentation into several rst files
-
-.. Kelley: getting_started
-.. Kelley: aero_sim
-.. Kelley: fea
-.. Kelley: optimization.rst
-.. Kelley: numad.rst
-.. Kelley: conclusion
 
 
 

@@ -8,7 +8,8 @@ Coupling to NuMAD 2.0
 ----------------------
 Once the ``BladeDef`` object is defined, it is possible to interface
 with prior versions of NuMAD which were GUI-centric. The function that
-writes the input file to older versions of NuMAD from a blade object is: ``source\preNuMAD\BladeDef_to_NuMADfile.m``
+writes the input file to older versions of NuMAD from a blade object is:
+``source\objects\BladeDef_to_NuMADfile.m``
 
 For example the function can be used as:
 
