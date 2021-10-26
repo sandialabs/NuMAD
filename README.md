@@ -17,7 +17,7 @@ For any questions or to request more information, send an e-mail to: numad@sandi
 
 ## Examples
 
-Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/examples) folder on GitHub. 
+Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/tree/main/examples) folder on GitHub. 
 
   
 ## License

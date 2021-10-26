@@ -69,7 +69,7 @@ stores variables related to the analysis and simulation (``NuMAD\examples\lost+f
 and is passed along with the blade object into the update
 function.
 
-.. NOTE:
+.. NOTE::
 	``runIEC_ipt`` must be saved in the working directory
 
 After all desired analyses and modifications are complete, a new,

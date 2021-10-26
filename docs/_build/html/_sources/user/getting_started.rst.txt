@@ -56,4 +56,6 @@ Installation Steps
 Every time a new MATLAB session is started type ``addNumadPaths`` to be able to run NuMAD.
 
 .. Note::
-	If a path other than ``C:\DesignCodes\NuMAD\source\`` is used, path definitions in the ``runIEC_ipt.m`` input settings script may need to be modified, as described further in the :ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. 
+	If a path other than ``C:\DesignCodes\NuMAD\source\`` is used, path definitions in the 
+	``runIEC_ipt.m`` input settings script may need to be modified, as described further in 
+	the :ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. 

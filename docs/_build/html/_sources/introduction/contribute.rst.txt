@@ -15,7 +15,7 @@ Reporting issues and bugs
 This section guides you through the process of submitting an issue for NuMAD.
 To report issues or bugs please `create a new
 issue <https://github.com/sandialabs/NuMAD/issues/new>`_ on GitHub.
-
+	
 Following these guidelines will help maintainers understand your issue,
 reproduce the behavior, and develop a fix in an expedient fashion. Before
 submitting your bug report, please perform a cursory
