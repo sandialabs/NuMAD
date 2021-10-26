@@ -63,6 +63,5 @@ References
    (2012). 
 
 
-.. Kelley: Are these NuMAD publications? Or are these documentation references?
-.. Kelley: userGuide.bib publications are not included in the docs
+.. TODO: use userGuide.bib publications to reference citations
    

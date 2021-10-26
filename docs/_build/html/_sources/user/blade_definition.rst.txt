@@ -69,7 +69,6 @@ TE				Trailing Edge
 ============================ ===================================================
 
 
-.. Kelley: more terminology or variables to add?
 
 
 

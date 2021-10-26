@@ -10,28 +10,15 @@ When used in conjunction with these other tools, NuMAD provides computation of b
 
 For any questions or to request more information, send an e-mail to: numad@sandia.gov
 
+## Source
+- **toolbox**: contains basic functions and operations needed for performing analysis with packages such as precomp, BPE, and ANSYS
+- **objects**: contains the class definition of the blade object, which stores the geometric, airfoil and material data for a given blade design
+- **optimization**: contains bundles of tools for several purposes, including ``runIEC``, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading
 
-## Installation Instructions
-1. Install [Matlab](https://www.mathworks.com/products/matlab.html)
-2. Open `addNumadPaths.m` in an editor and set the `NuMAD_path` to the `source` directory in the repo. It is highly recommended that the contents of the repo be located at ``C:\DesignCodes\NuMAD``.
-3. If you plan to use ANSYS, update the ``ANSYS_Path`` variable to the actual path to your ANSYS executable. Save and close `addNumadPaths.m`.
-4. Move the `addNumadPaths.m` file to the MATLAB directory of your user account (e.g. C:\Users\username\Documents\MATLAB)
-
-Every time a new MATLAB session is started type `addNumadPaths` to be able to run NuMAD.
-### Models
+## Examples
 
 Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/examples) folder on GitHub. 
 
-### Contributing, reporting bugs, and requesting help
-
-To report issues or bugs please [create a new
-issue](https://github.com/sandialabs/NuMAD/issues/new) on GitHub.
-
-We welcome contributions from the community in form of bug fixes, feature
-enhancements, documentation updates, etc. All contributions are processed
-through pull-requests on GitHub. Please follow our [contributing
-guidelines](https://github.com/sandialabs/NuMAD/blob/master/CONTRIBUTING.md)
-when submitting pull-requests.
   
 ## License
 

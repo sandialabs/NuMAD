@@ -8,10 +8,10 @@ Software Requirements
 NuMAD is developed in MATLAB, and requires the following software packages:
 
 ==========================  =============================
-**Required Toolbox**        **Oldest Compatible Version**
+**Required Packages**        **Oldest Compatible Version**
 MATLAB                      Version 9.9  (R2020b)
 FAST (Optional)		    v7
-ANSYS (Optional)
+ANSYS (Optional)	    
 PreComp (Optional)
 BModes (Optional)
 FAST (Optional)
@@ -53,6 +53,7 @@ Installation Steps
 3.    If you plan to use ANSYS, update the ``ANSYS_Path`` variable to the actual path to your ANSYS executable. Save and close ``addNumadPaths.m.``
 4.    Move the ``addNumadPaths.m`` file to the MATLAB directory of your user account (e.g. ``C:\Users\username\Documents\MATLAB``)
 
+Every time a new MATLAB session is started type ``addNumadPaths`` to be able to run NuMAD.
 
 .. Note::
 	If a path other than ``C:\DesignCodes\NuMAD\source\`` is used, path definitions in the ``runIEC_ipt.m`` input settings script may need to be modified, as described further in the :ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. 

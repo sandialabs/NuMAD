@@ -3,12 +3,11 @@
 .DS_Store
 *.~m
 *.m~
-*.mat
 *.tws
 
 # GUI
-source/NuMAD_toolbox/NuMAD_GUI/settings/*
-source/NuMAD_toolbox/NuMAD_GUI/settings/settings.txt
+source/toolbox/NuMAD_GUI/settings/*
+source/toolbox/NuMAD_GUI/settings/settings.txt
 
 # docs build directory
 # docs/_build
