@@ -1,3 +1,5 @@
+# Instructions
+
 To generate NuMAD model file (*.nmd) from Excel spreadsheet:
 
 (recommend to do this within the blade project folder where .nmd file typically resides)
