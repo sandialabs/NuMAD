@@ -5,7 +5,7 @@ Running NuMAD
 
 The following sections go through the basics of putting together and
 analyzing a blade design in NuMAD, from creating a blade object, to
-modifying its parameters and attributes, to generating structural models
+modifying its parameters and attributes, and generating structural models
 for analysis. Tips for implementation are given to ensure the smoothest
 execution.
 
@@ -14,7 +14,7 @@ execution.
 Blade Generation
 ----------------
 
-There are several ways to go about constructing a blade model in NuMAD
+There are several ways to construct a blade model in NuMAD
 3.0. In many ways the most intuitive approach is by using the graphical
 user interface carried over from NuMAD 2.0 (for detailed instructions,
 please refer to the NuMAD 2.0 user manual [3]). Although the current
@@ -26,7 +26,7 @@ file, and using the data stored within to populate the model definition.
 The ``.yaml`` format contains all the geometric, aerodynamic and material
 information needed to define a blade structure, and is widely used in
 the field, making it a convenient choice for the source data file.
-Several examples of ``.yaml`` files are given in the ``NuMAD/examples`` directory
+Several examples of ``.yaml`` files are provided in the ``NuMAD/examples`` directory
 of the GitHub repository.
 
 .. Kelley: this would be a good place to introduce the difference between the source directory and the case directory (for a run)
@@ -42,12 +42,12 @@ type ``BladeDef`` and calling the reader function, as shown:
 
 .. code-block:: matlabsession
 
-    >> ``blade = BladeDef``
-    >> ``blade.readYAML(<yamlfilename>)``
+    >> blade = BladeDef
+    >> blade.readYAML(<yamlfilename>)
 
 After entering these commands, the blade model data will be stored in
 the object called ``blade``, which can be printed out and modified as
-desired as further explained in :ref:`bladeGen`. Many types of analysis and
+desired as further explained in :ref:`bladeVarAssign`. Many types of analysis and
 operations can be performed once a blade model is stored as a blade
 object in this way. If it is desired to run aeroelastic simulation with
 ``runIEC``, or to generate loads from FAST-generated output files as
@@ -59,11 +59,12 @@ commands
 
 .. code-block:: matlabsession
 
-    >> 	``runIEC_ipt``
-    >> 	``updateFASTFromBLADEDef(params,blade)``
+    >> 	runIEC_ipt
+    >> 	updateFASTFromBLADEDef(params,blade)
 
 The ``runIEC_ipt.m`` script initializes a data structure named ``params``, which
-stores variables related to the analysis and simulation (``NuMAD\examples\runIEC_ipt--EXAMPLE.m``), and is passed along with the blade object into the update
+stores variables related to the analysis and simulation (``NuMAD\examples\runIEC_ipt--EXAMPLE.m``), 
+and is passed along with the blade object into the update
 function.
 
 After all desired analyses and modifications are complete, a new,
@@ -72,7 +73,7 @@ re-designed blade. To do this issue the command:
 
 .. code-block:: matlabsession
 
-    >> ``writeYAML(blade,<newyamlfilename>);``
+    >> writeYAML(blade,<newyamlfilename>);
 
 The new file name should be of the form ``<originalfile>_mod.yaml``, adding
 an ``_mod`` extension to the name of the original ``.yaml`` file from which
@@ -96,7 +97,7 @@ of the blade's geometric, structural, and material properties in some
 way. The NuMAD blade object contains a collection of variables that
 represent these properties, and can be set and modified by value
 assignment within a MATLAB script or in the command line. A
-comprehensive list of all public variables in the BladeDef class used in
+comprehensive list of all public variables in the ``BladeDef`` class used in
 NuMAD is given in the :ref:`appendix`.
 
 Here we give some highlighted examples of key variables within the blade
@@ -109,7 +110,7 @@ second station at 3.5 meters, the command
 
 .. code-block:: matlabsession
 
-    >> ``blade.stations(2).spanlocation = 3.5``
+    >> blade.stations(2).spanlocation = 3.5
 
 could be used. Many variables are arrays with multiple values, and can
 be set according using standard MATLAB syntax. The coordinates of the
@@ -119,7 +120,7 @@ array, and can be set as follows:
 
 .. code-block:: matlabsession
 
-    >> ``blade.stations(2).airfoil.coordinates = [X1, Y1; X2, Y2; ... XN, YN]``
+    >> blade.stations(2).airfoil.coordinates = [X1, Y1; X2, Y2; ...; XN, YN]
 
 There are several properties that each define some aspect of the blade's
 shape with a value at any given spanwise location, including chord
@@ -131,8 +132,8 @@ specified at 10 equally spaced points, they could set
 
 .. code-block:: matlabsession
 
-    >> ``blade.span = linspace(0,<bladeLength>,10);``
-    >>	``blade.prebend = k*blade.span.^3;``
+    >> blade.span = linspace(0,<bladeLength>,10);
+    >> blade.prebend = k*blade.span.^3;
 
 The bulk of the structural properties of the blade's components are
 stored in ``blade.components`` variable. A single component contains a name,
@@ -148,7 +149,7 @@ could set
 
 .. code-block:: matlabsession
 
-    >> ``blade.components(3).cp = [0, 10; 50, 2];``
+    >> blade.components(3).cp = [0, 10; 50, 2];
 
 The width of the spar caps and the leading edge and trailing edge bands
 are single nominal values for the entire length of the blade, stored in
@@ -156,8 +157,8 @@ the variables ``blade.sparcapwidth``, ``blade.leband`` and ``blade.teband``
 respectively.
 
 The data defining the properties of all the materials used throughout
-the blade are stored in the variable blade.materials. Each entry in
-blade.materials is a MaterialDef object, which stores a name, elastic
+the blade are stored in the variable ``blade.materials``. Each entry in
+``blade.materials`` is a ``MaterialDef`` object, which stores a name, elastic
 properties, density, and strength properties among others (see :numref:`materialDefTable` in the :ref:`appendix`). 
 It also stores the thickness that a single layer of that material in a 
 composite is assumed to be, which can be important to know or edit when 
@@ -168,7 +169,7 @@ these few examples, a user should run the command
 
 .. code-block:: matlabsession
 
-    >> ``blade.UpdateBlade()``
+    >> blade.UpdateBlade()
 
 This function updates numerous internal private variables based on the
 edited values in the public variables. Among other things, it

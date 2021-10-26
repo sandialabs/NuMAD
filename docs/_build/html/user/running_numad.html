@@ -186,12 +186,12 @@
 <span id="runningnumad"></span><h1>Running NuMAD<a class="headerlink" href="#running-numad" title="Permalink to this headline">¶</a></h1>
 <p>The following sections go through the basics of putting together and
 analyzing a blade design in NuMAD, from creating a blade object, to
-modifying its parameters and attributes, to generating structural models
+modifying its parameters and attributes, and generating structural models
 for analysis. Tips for implementation are given to ensure the smoothest
 execution.</p>
 <div class="section" id="blade-generation">
 <span id="bladegen"></span><h2>Blade Generation<a class="headerlink" href="#blade-generation" title="Permalink to this headline">¶</a></h2>
-<p>There are several ways to go about constructing a blade model in NuMAD
+<p>There are several ways to construct a blade model in NuMAD
 3.0. In many ways the most intuitive approach is by using the graphical
 user interface carried over from NuMAD 2.0 (for detailed instructions,
 please refer to the NuMAD 2.0 user manual [3]). Although the current
@@ -202,7 +202,7 @@ file, and using the data stored within to populate the model definition.
 The <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> format contains all the geometric, aerodynamic and material
 information needed to define a blade structure, and is widely used in
 the field, making it a convenient choice for the source data file.
-Several examples of <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files are given in the <code class="docutils literal notranslate"><span class="pre">NuMAD/examples</span></code> directory
+Several examples of <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files are provided in the <code class="docutils literal notranslate"><span class="pre">NuMAD/examples</span></code> directory
 of the GitHub repository.</p>
 <p>To read a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file’s data into NuMAD from a MATLAB script or command
 window, first save the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file in the working directory for the blade
@@ -212,13 +212,13 @@ directory, which contains aerodynamic/airfoil data, FAST input files
 simulation output files (<code class="docutils literal notranslate"><span class="pre">*.out</span></code> extension). Once the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file is saved
 alongside these items, it can be read by creating a new blade object of
 type <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> and calling the reader function, as shown:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BladeDef</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">readYAML</span><span class="p">(</span><span class="o">&lt;</span><span class="n">yamlfilename</span><span class="o">&gt;</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BladeDef</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">readYAML</span><span class="p">(</span><span class="o">&lt;</span><span class="n">yamlfilename</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>After entering these commands, the blade model data will be stored in
 the object called <code class="docutils literal notranslate"><span class="pre">blade</span></code>, which can be printed out and modified as
-desired as further explained in <a class="reference internal" href="#bladegen"><span class="std std-ref">Blade Generation</span></a>. Many types of analysis and
+desired as further explained in <a class="reference internal" href="#bladevarassign"><span class="std std-ref">Blade Variable Assignment</span></a>. Many types of analysis and
 operations can be performed once a blade model is stored as a blade
 object in this way. If it is desired to run aeroelastic simulation with
 <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, or to generate loads from FAST-generated output files as
@@ -227,17 +227,18 @@ in the blade’s main working directory to ensure that certain quantities
 within are consistent with the data stored in the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file, such as
 prebend, presweep, and structural twist. This can be done using the
 commands</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">runIEC_ipt</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">updateFASTFromBLADEDef</span><span class="p">(</span><span class="n">params</span><span class="p">,</span><span class="n">blade</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="w"> </span><span class="n">runIEC_ipt</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="w"> </span><span class="s">updateFASTFromBLADEDef(params,blade)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> script initializes a data structure named <code class="docutils literal notranslate"><span class="pre">params</span></code>, which
-stores variables related to the analysis and simulation (<code class="docutils literal notranslate"><span class="pre">NuMAD\examples\runIEC_ipt--EXAMPLE.m</span></code>), and is passed along with the blade object into the update
+stores variables related to the analysis and simulation (<code class="docutils literal notranslate"><span class="pre">NuMAD\examples\runIEC_ipt--EXAMPLE.m</span></code>),
+and is passed along with the blade object into the update
 function.</p>
 <p>After all desired analyses and modifications are complete, a new,
 updated <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file can be generated to represent the optimized, or
 re-designed blade. To do this issue the command:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">writeYAML</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="o">&lt;</span><span class="n">newyamlfilename</span><span class="o">&gt;</span><span class="p">);</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">writeYAML</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="o">&lt;</span><span class="n">newyamlfilename</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The new file name should be of the form <code class="docutils literal notranslate"><span class="pre">&lt;originalfile&gt;_mod.yaml</span></code>, adding
@@ -256,7 +257,7 @@ of the blade’s geometric, structural, and material properties in some
 way. The NuMAD blade object contains a collection of variables that
 represent these properties, and can be set and modified by value
 assignment within a MATLAB script or in the command line. A
-comprehensive list of all public variables in the BladeDef class used in
+comprehensive list of all public variables in the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class used in
 NuMAD is given in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>.</p>
 <p>Here we give some highlighted examples of key variables within the blade
 object and their basic access. The overall shape of the blade is defined
@@ -265,7 +266,7 @@ contains several variables whose values can be edited. For instance, if
 a blade model was generated by reading a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file as described in
 <a class="reference internal" href="#bladegen"><span class="std std-ref">Blade Generation</span></a>, and it was desired to set the spanwise position of the
 second station at 3.5 meters, the command</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">spanlocation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.5</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">spanlocation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.5</span><span class="w"></span>
 </pre></div>
 </div>
 <p>could be used. Many variables are arrays with multiple values, and can
@@ -273,7 +274,7 @@ be set according using standard MATLAB syntax. The coordinates of the
 points defining the outer airfoil shape at a given station, for example,
 are stored in the airfoil object at each individual station as an <span class="math notranslate nohighlight">\(N X 2\)</span>
 array, and can be set as follows:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">airfoil</span><span class="p">.</span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">;</span><span class="w"> </span><span class="n">X2</span><span class="p">,</span><span class="w"> </span><span class="n">Y2</span><span class="p">;</span><span class="w"> </span><span class="k">...</span><span class="c"> XN, YN]``</span><span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">airfoil</span><span class="p">.</span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">;</span><span class="w"> </span><span class="n">X2</span><span class="p">,</span><span class="w"> </span><span class="n">Y2</span><span class="p">;</span><span class="w"> </span><span class="k">...</span><span class="c">; XN, YN]</span><span class="w"></span>
 </pre></div>
 </div>
 <p>There are several properties that each define some aspect of the blade’s
@@ -283,8 +284,8 @@ be set at any number of spanwise points, with the variable <em>span</em>
 specifying their locations. If a user wanted to, say, set the prebend of
 the blade to some constant <span class="math notranslate nohighlight">\(k\)</span> times cube of the spanwise location,
 specified at 10 equally spaced points, they could set</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">&lt;</span><span class="n">bladeLength</span><span class="o">&gt;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">blade</span><span class="p">.</span><span class="n">prebend</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">k</span><span class="o">*</span><span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">&lt;</span><span class="n">bladeLength</span><span class="o">&gt;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">prebend</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">k</span><span class="o">*</span><span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The bulk of the structural properties of the blade’s components are
@@ -298,7 +299,7 @@ to, shown shortly). Suppose component 3 in the blade was the suction
 side spar cap, and it was desired to vary the thickness linearly from 10
 layers at the root to 2 layers at the tip, say 50 meters span. The user
 could set</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">components</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">cp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">components</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">cp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The width of the spar caps and the leading edge and trailing edge bands
@@ -306,15 +307,15 @@ are single nominal values for the entire length of the blade, stored in
 the variables <code class="docutils literal notranslate"><span class="pre">blade.sparcapwidth</span></code>, <code class="docutils literal notranslate"><span class="pre">blade.leband</span></code> and <code class="docutils literal notranslate"><span class="pre">blade.teband</span></code>
 respectively.</p>
 <p>The data defining the properties of all the materials used throughout
-the blade are stored in the variable blade.materials. Each entry in
-blade.materials is a MaterialDef object, which stores a name, elastic
+the blade are stored in the variable <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code>. Each entry in
+<code class="docutils literal notranslate"><span class="pre">blade.materials</span></code> is a <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code> object, which stores a name, elastic
 properties, density, and strength properties among others (see <a class="reference internal" href="appendix.html#materialdeftable"><span class="std std-numref">Table 7</span></a> in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>).
 It also stores the thickness that a single layer of that material in a
 composite is assumed to be, which can be important to know or edit when
 defining the thickness distribution of the blade’s components as just described.</p>
 <p>After editing the design properties of a blade model as illustrated in
 these few examples, a user should run the command</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">blade</span><span class="p">.</span><span class="n">UpdateBlade</span><span class="p">()</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">UpdateBlade</span><span class="p">()</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This function updates numerous internal private variables based on the

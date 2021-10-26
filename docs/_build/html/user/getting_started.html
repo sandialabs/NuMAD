@@ -95,8 +95,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#matlab-requirements">MATLAB Requirements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#installing-numad">Installing NuMAD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-numad">Installing NuMAD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installation-steps">Installation Steps</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
@@ -182,9 +185,9 @@
             
   <div class="section" id="getting-started">
 <span id="gettingstarted"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="matlab-requirements">
-<h2>MATLAB Requirements<a class="headerlink" href="#matlab-requirements" title="Permalink to this headline">¶</a></h2>
-<p>NuMAD is developed in MATLAB, and requires the following toolboxes:</p>
+<div class="section" id="software-requirements">
+<h2>Software Requirements<a class="headerlink" href="#software-requirements" title="Permalink to this headline">¶</a></h2>
+<p>NuMAD is developed in MATLAB, and requires the following software packages:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 47%" />
@@ -203,6 +206,18 @@
 <tr class="row-even"><td><p>ANSYS (Optional)</p></td>
 <td></td>
 </tr>
+<tr class="row-odd"><td><p>PreComp (Optional)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>BModes (Optional)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>FAST (Optional)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>PLOT3D (Optional)</p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -210,15 +225,8 @@
 <h2>Installing NuMAD<a class="headerlink" href="#installing-numad" title="Permalink to this headline">¶</a></h2>
 <p>The code containing all open-source tools for NuMAD can be downloaded or
 cloned from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.
-There are 3 main folders within the <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> directory: <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
-<code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>. It is advisable to save the NumAD source
-in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes\NuMAD</span></code>, for example <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code>.</p>
-<p>Before beginning any design or analysis of a
-blade, the paths of these folders should be added to the MATLAB domain
-of working directories, using the script <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code>. All tools and
-functions distrubuted with the NuMAD source code will then be accessible from from a MATLAB
-script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable
-<code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> needs to be modified to your ANSYS working directory file path name.</p>
+There are 3 directories within <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> : <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
+<code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>, their purpose is described in the table below:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 7%" />
@@ -241,9 +249,26 @@ script or the command window. If you intend to use NuMAD in conjuction with ANSY
 </tr>
 </tbody>
 </table>
+<p>It is advisable to save the NuMAD source
+in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes\NuMAD</span></code>, for example <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code>.
+Before beginning any design or analysis of a
+blade, the paths of these folders should be added to the MATLAB domain
+of working directories, using the script <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code>. All tools and
+functions distrubuted with the NuMAD source code will then be accessible from from a MATLAB
+script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable
+<code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> needs to be modified to your ANSYS working directory file path name.</p>
+<div class="section" id="installation-steps">
+<h3>Installation Steps<a class="headerlink" href="#installation-steps" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> in an editor and set the <code class="docutils literal notranslate"><span class="pre">NuMAD_path</span></code> to the source directory in the repo. It is highly recommended that the contents of the repo be located at <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD</span></code>.</p></li>
+<li><p>If you plan to use ANSYS, update the <code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> variable to the actual path to your ANSYS executable. Save and close <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m.</span></code></p></li>
+<li><p>Move the <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> file to the MATLAB directory of your user account (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Users\username\Documents\MATLAB</span></code>)</p></li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If a path other than <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code> is used, path definitions in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> input settings script may need to be modified, as described further in the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, and the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>.</p>
+</div>
 </div>
 </div>
 </div>

@@ -181,11 +181,11 @@
             
   <div class="section" id="blade-definition">
 <span id="bladedefandterms"></span><h1>Blade Definition<a class="headerlink" href="#blade-definition" title="Permalink to this headline">¶</a></h1>
-<p>In NuMAD, a blade is uniquely defined with the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object or blade
+<p>In NuMAD, a blade is uniquely defined with the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object, or blade
 object for short. As defined in <code class="docutils literal notranslate"><span class="pre">source\objects\BladeDef.m</span></code>, many of the properties are parameterized by spanwise location. Refer to
-<a class="reference internal" href="appendix.html#bladedeftable"><span class="std std-numref">Table 5</span></a> in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a> for a complete listing of <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> properties.</p>
+<a class="reference internal" href="appendix.html#bladedeftable"><span class="std std-numref">Table 5</span></a> for a complete listing of <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> properties.</p>
 <p>First and foremost there are <em>stations</em>. A station is an airfoil at a
-specified span location. The airfoil is partitioned by <em>keypoints</em> as
+specified span location. The airfoil is partitioned by <em>keypoints</em>,
 shown in <a class="reference internal" href="#bladekeypoints"><span class="std std-numref">Fig. 1</span></a>. Various blade properties such as <code class="docutils literal notranslate"><span class="pre">blade.leband</span></code>,
 <code class="docutils literal notranslate"><span class="pre">blade.teband</span></code>, <code class="docutils literal notranslate"><span class="pre">blade.sparcapwidth</span></code>, and <code class="docutils literal notranslate"><span class="pre">blade.sparcapoffset</span></code> help to
 position the keypoints precisely. For example, <code class="docutils literal notranslate"><span class="pre">blade.leband</span></code> is the
@@ -197,9 +197,18 @@ adjacent station; thus bounding the region with four curves. A suffix of
 either HP or LP is added to each region name to distinguish regions on
 the high pressure surface verses the low pressure surface. Other airfoil
 properties and external blade shape data are defined with the <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>
-class and the <code class="docutils literal notranslate"><span class="pre">StationDef</span></code> object respectively.</p>
-<span id="defineregions"></span><table class="docutils align-default" id="id1">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">Region definition by keypoints (TE-Trailing edge, LE-leading edge)</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+class and the <code class="docutils literal notranslate"><span class="pre">StationDef</span></code> object respectively.
+Usually, the number of stations defined needs to be supplemented for
+with interpolated stations.</p>
+<p>Material properties, layup information, and thicknesses and widths are
+additionally defined in the <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StackDef</span></code>, and <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code> respectively.
+Refer to the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a> for more information.</p>
+<div class="figure align-default" id="id1">
+<span id="bladekeypoints"></span><a class="reference internal image-reference" href="../_images/bladeKeyPoints.png"><img alt="../_images/bladeKeyPoints.png" src="../_images/bladeKeyPoints.png" style="width: 6.5in; height: 2.23056in;" /></a>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Relative locations of the blade keypoints.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<span id="defineregions"></span><table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Region definition by keypoints (TE-Trailing edge, LE-leading edge)</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 49%" />
 <col style="width: 51%" />
@@ -230,14 +239,6 @@ class and the <code class="docutils literal notranslate"><span class="pre">Stati
 </tr>
 </tbody>
 </table>
-<p>Usually, the number of stations defined needs to be supplemented for
-with interpolated stations.</p>
-<p>Material properties, layup information, and thicknesses and widths are
-additionally defined in the <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StackDef</span></code>, and <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code> respectively.</p>
-<div class="figure align-default" id="id2">
-<span id="bladekeypoints"></span><a class="reference internal image-reference" href="../_images/bladeKeyPoints.png"><img alt="../_images/bladeKeyPoints.png" src="../_images/bladeKeyPoints.png" style="width: 6.5in; height: 2.23056in;" /></a>
-<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Relative locations of the blade keypoints.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
 <div class="section" id="terminology">
 <h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
 <table class="docutils align-default">
