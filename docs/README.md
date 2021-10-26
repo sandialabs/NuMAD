@@ -1,4 +1,4 @@
-# Visit the [NuMAD website](http://NuMAD.github.io/NuMAD) for more information.
+# Visit the [NuMAD website](http://sandialabs.NuMAD.github.io/NuMAD) for more information.
 
 ## NuMAD Documentation
 
@@ -14,10 +14,10 @@ replace slashes (`/`) in paths with backslashes (`\ `).
 2. Create the Sphinx environment:
    
    ```
-   > conda create -c conda-forge -n _wssphinx git click colorama colorclass future pip sphinxcontrib-bibtex sphinx_rtd_theme 
-   > conda activate _wssphinx
-   (_wssphinx) > pip install sphinxcontrib-matlabdomain sphinxext-remoteliteralinclude sphinx-multiversion
-   (_wssphinx) > conda deactivate
+   > conda create -c conda-forge -n _numaddocs git click colorama colorclass future pip sphinxcontrib-bibtex "sphinx_rtd_theme<1"
+   > conda activate _numaddocs
+   (_numaddocs) > pip install sphinxcontrib-matlabdomain sphinxext-remoteliteralinclude sphinx-multiversion
+   (_numaddocs) > conda deactivate
    >
    ```
 
@@ -31,45 +31,27 @@ available.
 To test the current branch, use the following:
 
 ```
-> conda activate _wssphinx
-(_wssphinx) > cd path/to/NuMAD
-(_wssphinx) > sphinx-build -b html docs docs/_build/html
-(_wssphinx) > conda deactivate
+> conda activate _numaddocs
+(_numaddocs) > cd path/to/NuMAD
+(_numaddocs) > sphinx-build -b html docs docs/_build/html
+(_numaddocs) > conda deactivate
 >
 ```
+
+NOTE: for a clean build ``(_numaddocs) > sphinx-build -b html -a docs docs/_build/html``
 
 The front page of the docs can be accessed at 
 `docs/_build/html/index.html`. 
 
-#### Building Final Version Locally
-
-The final documentation can be built locally for inspection prior to 
-publishing. They are built in the `docs/_build` directory. Note, docs are built 
-from the remote, so only pushed changes will be shown. 
-
-To build the docs as they would be published, use the following:
-
-```
-> conda activate _wssphinx
-(_wssphinx) > cd path/to/NuMAD
-(_wssphinx) > sphinx-multiversion docs docs/_build/html
-(_wssphinx) > conda deactivate
->
-```
-
-The front page of the docs can be accessed at 
-`docs/_build/html/master/index.html`. 
-
 #### Publishing Final Version Remotely
 
 The NuMAD docs are rebuilt automatically following every merge commit made 
-to the master or dev branch of the [NuMAD/NuMAD](
-https://github.com/NuMAD/NuMAD) repository.
+to the master or dev branch of the [sandialabs/NuMAD](
+https://github.com/sandialabs/NuMAD) repository.
 
 
 ## Best Practices
   - Run spell check (not built into most text editors)
-  - When compiling the website, ``make clean`` and then ``make html``
 
 ### Formatting Guidelines
   - use ``insert code`` to reference code
@@ -85,3 +67,4 @@ https://github.com/NuMAD/NuMAD) repository.
   - post-processing (not postprocessing)
   - pre-processing (not preprocessing)  
   - nonlinear (not non-linear)
+  - MATLAB (not Matlab)

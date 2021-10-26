@@ -1,23 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 classdef BladeDef < handle
-%BladeDef  A class definition for wind & water turbine blades.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``BladeDef``  A class definition for wind & water turbine blades.
 %
 %   Usage: 
 %     blade = BladeDef();
 %
-%   See also BladeDef.updateGeometry, BladeDef.updateKeypoints,
-%            BladeDef.updateBOM, BladeDef.writeBOMxls,
-%            BladeDef_to_NuMADfile
-%            xlsBlade, AirfoilDef, StationDef, ComponentDef, StackDef
-    properties
-        span                % spanwise location of distributed properties
-        degreestwist        % twist distribution
-        chord               % chord distribution
-        percentthick        % percent thickness of airfoil
+%   See also ``BladeDef.updateGeometry``, ``BladeDef.updateKeypoints``,
+%            ``BladeDef.updateBOM``, ``BladeDef.writeBOMxls``,
+%            ``BladeDef_to_NuMADfile``
+%            ``xlsBlade``, ``AirfoilDef``, ``StationDef``, ``ComponentDef``,
+%            ``StackDef``
+%
+% .. autoattribute:: preNuMAD.BladeDef.addStation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    properties (SetAccess = 'public', GetAccess = 'public')
+        span                % spanwise location of distributed properties [m]
+        degreestwist        % twist distribution [degrees]
+        chord               % chord distribution [m] 
+        percentthick        % percent thickness of airfoil [%]
         chordoffset         % chordwise offset (in addition to natural offset)
         aerocenter          % aerodynamic center of airfoil (used only by NuMAD->FAST)
         sweep               % blade sweep

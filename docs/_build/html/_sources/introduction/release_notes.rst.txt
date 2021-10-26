@@ -3,11 +3,10 @@
 Release Notes
 =============
 
-Current Release
-----------------
+.. _NuMADv3:
 
 NuMAD v3.0
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------
 The current release now incorporates structural optimization, associated
 structural analyses, and the move to object-oriented data structures.
 The exclusive use of the GUI in prior versions prevented automation in
@@ -37,11 +36,39 @@ analyses, and the object-oriented data structures.
    journal article “Part II: 3D FEM design optimization of the rotor
    blades”.
 
+.. Kelley: Link to release on GitHub and add DOI
+
+
+.. _FutureDev:
+
+Future Development
+---------------------
+
+-  Allow for the option to make the blade entirely of solid elements
+
+-  Incorporate adhesive modeling
+
+-  Allow for FEA without the need of commercial FE licenses
+
+-  Probabilistic flaw distributions
+
+-  Incorporate Progressive damage
+
+-  In addition to the ANSYS interface, add capability for a user to use
+   other commercial FEA codes such as Abaqus and/or Nastran
+
+
+Prior Releases
+----------------
+
+.. _NuMADv2:
+
 NuMAD v2.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Initial release of NuMAD is on the NuMAD2p0 static branch (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`, now available on GitHub)
+* Initial release of NuMAD is on the `NuMAD2p0 static branch <https://github.com/sandialabs/NuMAD/tree/NuMAD2p0>`_ (originally on `Sandia National Laboratories (Sandia) <https://energy.sandia.gov/programs/renewable-energy/wind-power/>`_, now available on GitHub)
 
 * Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).
 
+.. Kelley: remove link to wind enery site, former NUMAD release mechanism
 
 

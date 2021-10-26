@@ -3,42 +3,69 @@
 
 Appendix
 ========
+
+Blade Class
+------------------
+
 .. _bladeDefTable:
-.. csv-table:: BladeDef: A class definition for wind & water turbine blades.
+.. csv-table:: ``BladeDef``: A class definition for wind & water turbine blades.
    :file: bladeDefTable.csv
-   :widths: 2,1
+   :widths: 1,2
    :header-rows: 1
+
+
+.. _bladeDefMethodsTable:
+.. csv-table::  List of Methods for ``BladeDef`` class.
+   :file: bladeDefMethodsTable.csv
+   :widths: 1
+   :header-rows: 1
+
+
+Material Class
+------------------
    
 .. _materialDefTable:
-.. csv-table:: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
+.. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
    :file: materialDefTable.csv
-   :widths: 2,1
+   :widths: 1,2
    :header-rows: 1
 
+
+Station Class
+------------------
 
 .. _stationDefTable:
-.. csv-table::  StationDef: A class definition for blade stations.
+.. csv-table::  ``StationDef``: A class definition for blade stations.
    :file: stationDefTable.csv
-   :widths: 2,2
+   :widths: 1,2
    :header-rows: 1
+
+
+Component Class
+------------------
 
 .. _componentDefTable:
-.. csv-table::  ComponentDef: A class definition for blade components.
+.. csv-table::  ``ComponentDef``: A class definition for blade components.
    :file: componentDefTable.csv
-   :widths: 2,2
+   :widths: 1,2
    :header-rows: 1
 
+
+Airfoil Class
+------------------
 
 .. _airfoilDefTable:
-.. csv-table::  AirfoilDef: A class definition for airfoil profiles.
+.. csv-table::  ``AirfoilDef``: A class definition for airfoil profiles.
    :file: airfoilDefTable.csv
-   :widths: 2,2
+   :widths: 1,2
    :header-rows: 1
    
-   
+
+Stack Class
+------------------ 
 
 .. _stackDefTable:
-.. table:: A class definition for a stack of composite layers.
+.. table:: ``StackDef``: A class definition for a stack of composite layers.
 
     +---------------------+----------------------------------------------------+
     | **StackDef          | **Property Description**                           |
@@ -49,7 +76,7 @@ Appendix
     +---------------------+----------------------------------------------------+
     | ``plygroups``       | Array of ply structures, one for each ply.         |
     |                     |                                                    |
-    |                     | ``ply = struct('component',...% parent comp. ``    |
+    |                     | ``ply = struct('component'),...% parent comp``     |
     |                     |                                                    |
     |                     | ``'materialid',[],...% materialid of ply``         |
     |                     |                                                    |
@@ -68,8 +95,6 @@ Appendix
     +---------------------+----------------------------------------------------+
 
 
-.. _bladeDefMethodsTable:
-.. csv-table::  List of Methods for BladeDef class.
-   :file: bladeDefMethodsTable.csv
-   :widths: 2
-   :header-rows: 1
+   
+   
+
