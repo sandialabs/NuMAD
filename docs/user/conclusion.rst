@@ -5,9 +5,11 @@ Troubleshooting
 
 NuMAD will repeatedly print a message in the MATLAB command window to the effect of:
 
-``Waiting for ANSYS to <`do something`>``
-``Waiting for ANSYS to <`do something`>``
-``Waiting for ANSYS to <`do something`>``
+.. code-block:: matlabsession
+
+	``Waiting for ANSYS to <`do something`>``
+	``Waiting for ANSYS to <`do something`>``
+	``Waiting for ANSYS to <`do something`>``
 
 Common things to check are the ANSYS `.err` and `.log` for clues. 
 

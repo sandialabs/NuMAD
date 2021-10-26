@@ -13,6 +13,7 @@ NuMAD is developed in MATLAB, and requires the following toolboxes:
 ==========================  =============================
 **Required Toolbox**        **Oldest Compatible Version**
 MATLAB                      Version 9.9  (R2020b)
+FAST (Optional)		    v7
 ==========================  =============================
 
 

@@ -3,7 +3,6 @@
 Aeroelastic Simulation and the ``runIEC`` Function
 ==================================================
 
-
 A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
 the blade under a range of expected wind and loading conditions. NuMAD’s
@@ -19,9 +18,7 @@ Use and Functionality of ``runIEC``
 -----------------------------------
 
 The main function called to perform aeroelastic analysis of a NuMAD
-blade is
-
-``source\rotor_optimization\runIEC\runIEC.m.``
+blade is ``source\rotor_optimization\runIEC\runIEC.m.``
 
 This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
@@ -38,7 +35,9 @@ requested set of design load cases, a flag indicating whether to run the
 aeroelastic analysis (as opposed to just processing an existing output
 set) and a flag indicating whether to run in parallel, as shown below:
 
-``output = runIEC(DLC,simflag,parflag)``
+.. code-block:: matlabsession
+
+    >> ``output = runIEC(DLC,simflag,parflag)``
 
 The inputs ``simflag`` and ``parflag`` should be set to 1 for yes and 0
 for no. The design load case list ``DLC`` should be a cell array of
@@ -92,7 +91,9 @@ turbulence model, maximum loads taken directly from simulation results.
 As an example, the following call would run the FAST simulation for
 cases 1.1, 1.3, and 6.1 without using parallel processing:
 
-``output = runIEC({‘1.1’,‘1.3’,‘6.1’},1,0)``
+.. code-block:: matlabsession
+
+    >> ``output = runIEC({‘1.1’,‘1.3’,‘6.1’},1,0)``
 
 The output of the ``runIEC`` function is a data structure reporting a
 compilation of critical values from the results of all the simulations
@@ -115,9 +116,7 @@ directory and a NuMAD working directory. In addition, the model
 directory must have a MATLAB script file with the name ``runIEC_ipt.m``,
 defining a set of general simulation parameters referenced throughout
 the process. A sample script showing the parameters that need to be
-defined can be located at 
-
-``\examples\runIEC_ipt--EXAMPLE.m``.
+defined can be located at ``NuMAD\examples\runIEC_ipt--EXAMPLE.m``.
 
 .. _recentUpdatesRunIEC:
 

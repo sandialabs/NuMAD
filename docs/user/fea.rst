@@ -9,9 +9,7 @@ Mesh Generation
 ---------------
 
 The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is
-
-``source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m``
+blade is ``source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
@@ -19,7 +17,9 @@ blade is
 As an example, the following call would build a mesh for the blade blade
 object
 
-``layupDesign_ANSYSmesh(blade,config)``
+.. code-block:: matlabsession
+
+    >> ``layupDesign_ANSYSmesh(blade,config)``
 
 The function also issues commands that calls ANSYS to write a textfile
 called ``NLIST.lis``. For each node on the wetted area of the blade, this
@@ -295,7 +295,7 @@ variable.
 .. _configTable:
 .. csv-table:: Structure and usage of the ``config`` variable.
    :file: configTable.csv
-   :widths: 5, 1, 1
+   :widths: 1, 1, 3
    :header-rows: 1
    
 
@@ -308,21 +308,17 @@ each solve. It defaults to 1.
 The output and it is a variable length struct. Depending on
 which analysis flags are active, results can be accessed with
 
-``result=layupDesign_ANSYSmesh(blade,config)``
+.. code-block:: matlabsession
 
-``result.globalBuckling``
+    >> ``result=layupDesign_ANSYSmesh(blade,config)``
+    >> 	``result.globalBuckling``
+    >> 	``result.localBuckling``
+    >> 	``result.deflection``
+    >> 	``result.failure``
+    >> 	``result.fatigue``
+    >> 	``result.resultantVSspan``
+    >> 	``result.mass``
 
-``result.localBuckling``
-
-``result.deflection``
-
-``result.failure``
-
-``result.fatigue``
-
-``result.resultantVSspan``
-
-``result.mass``
 
 .. _linearFEA:
 
@@ -484,6 +480,8 @@ to a MATLAB string array where any and all Region Names in :numref:`regionNames`
 For example, suppose that the fatigue damage was only desired at the
 spar caps and the reinforcement locations one would set
 
+.. code-block:: matlabsession
+
     >> config.ansys.analysisFlags.fatigue = ["HP_TE_FLAT","HP_TE_REINF","HP_SPAR","HP_LE","LP_LE","LP_SPAR","LP_TE_REINF","LP_TE_FLAT"]
 
 If ``"ALL"`` is included along with other regions, the other regions are
@@ -535,35 +533,30 @@ results in the local layer coordinate system or set ``coordSys='global'`` to
 obtain results in the element coordinate system.
 
 For example if one sets ``elNo=[1950,2558]`` then, ``myresult`` is a struct with
-two fields
+two fields:
 
-element1950: [1×1 struct]
+.. code-block:: matlabsession
 
-element2558: [1×1 struct]
+    >> myresult
+	element1950: [1x1 struct]
+	element2558: [1x1 struct]
 
 Looking at the first struct shows:
 
+.. code-block:: matlabsession
+
     >> myresult.element1950
-         x3: [8×1 double] 
-         eps11: [8×1 double] 
-		 
-         eps22: [8×1 double]
-		 
-         eps33: [8×1 double]
-		 
-         eps23: [8×1 double]
-		 
-         eps13: [8×1 double]
-		 
-         eps12: [8×1 double]
-		 
-         sig11: [8×1 double]
-		 
-         sig22: [8×1 double]
-		 
-         sig12: [8×1 double]
-		 
-         matNumber: [8×1 double]
+         x3: [8x1 double] 
+         eps11: [8x1 double] 		 
+         eps22: [8x1 double]		 
+         eps33: [8x1 double]		 
+         eps23: [8x1 double]		 
+         eps13: [8x1 double]		 
+         eps12: [8x1 double]		 
+         sig11: [8x1 double]		 
+         sig22: [8x1 double]		 
+         sig12: [8x1 double]		 
+         matNumber: [8x1 double]
 
 where ``x3`` is the thickness coordinate, ``eps`` are the strains and sig are the
 stresses. 
@@ -571,7 +564,7 @@ stresses.
 .. Note:: 
     Note the ``x3`` value that is zero corresponds to the reference surface in the shell model. 
 	
-In this example the shell offset in ANSYS was set to ``“BOT”`` so the zero appears the end:
+In this example the shell offset in ANSYS was set to ``BOT`` so the zero appears the end:
 
 .. _localFieldsDataExplanationFigure:
 .. figure:: /_static/images/localFieldsDataExplanationFigure.png
@@ -611,6 +604,8 @@ three columns correspond to resultant forces in the :math:`x_{1}`,
 three columns correspond to resultant moments about in the
 :math:`x_{1}`, :math:`x_{2}`, and :math:`x_{3}` directions (in that
 order). For example, access results such as
+
+.. code-block:: matlabsession
 
     >> result.resultantVSspan{i}
 
