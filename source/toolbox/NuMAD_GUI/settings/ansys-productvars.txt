@@ -1,0 +1,44 @@
+% This file lists the ANSYS product variable names available in the NuMAD dropdown lists.
+% You may manually edit this file to add/remove entries or change the description as you please.
+% If you delete this file, the default content will regenerate when NuMAD restarts.
+% See "INSTALLATION AND LICENSING Chapter 6: Product Variable Table" of ANSYS (14.0) help for a list of valid product variable names.
+% Any line beginning with '%' is ignored.
+% NAME    DESCRIPTION
+ANE3FL    Multiphysics
+ANE3FL1   Multiphysics 1
+ANE3FL2   Multiphysics 2
+ANE3FL3   Multiphysics 3
+ANE3FLDS  Multiphysics/LS-DYNA
+ANE3FLDP  Multiphysics/LS-DYNA PrepPost
+ANSYS     Mechanical
+ANE3      Mechanical/Emag
+ANFL      Mechanical/FLOTRAN
+ANSYSDS   Mechanical/LS-DYNA
+ANE3DS    Mechanical/Emag/LS-DYNA
+ANFLDS    Mechanical/CFD-Flo/LS-DYNA
+ANSYSDP   Mechanical/LS-DYNA PrepPost
+ANE3DP    Mechanical/Emag/LS-DYNA PrepPost
+ANFLDP    Mechanical/CFD-Flo/LS-DYNA PrepPost
+ANCFX     Mechanical/CFD-Flo
+STRUCT    Structural
+STE3      Structural/Emag
+STFL      Structural/FLOTRAN
+STE3FL    Structural/Emag/CFD-Flo
+STRUCTDS  Structural/LS-DYNA
+STE3DS    Structural/Emag/LS-DYNA
+STFLDS    Structural/CFD-Flo/LS-DYNA
+STE3FLDS  Structural/Emag/CFD-Flo/LS-DYNA
+STRUCTDP  Structural/LS-DYNA PrepPost
+STE3DP    Structural/Emag/LS-DYNA PrepPost
+STFLDP    Structural/CFD-Flo/LS-DYNA PrepPost
+STE3FLDP  Structural/Emag/CFD-Flo/LS-DYNA PrepPost
+STCFX     Structural/CFD-Flo
+PRF       Professional NLT
+PRFNLS    Professional NLS
+PRFE3     Professional NLT Emag
+PRFFL     Professional/FLOTRAN
+PRFE3FL   Professional/Emag/FLOTRAN
+AA_A      ANSYS Academic Associate
+AA_R      ANSYS Academic Research
+AA_R_ME   ANSYS Academic Research Mechanical
+AA_T_ME   ANSYS Academic Teaching Mechanical

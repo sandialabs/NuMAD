@@ -3,7 +3,6 @@
 .DS_Store
 *.~m
 *.m~
-*.mat
 *.tws
 
 # GUI
