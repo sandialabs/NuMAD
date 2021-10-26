@@ -37,7 +37,7 @@ set) and a flag indicating whether to run in parallel, as shown below:
 
 .. code-block:: matlabsession
 
-    >> ``output = runIEC(DLC,simflag,parflag)``
+    >> output = runIEC(DLC,simflag,parflag)
 
 The inputs ``simflag`` and ``parflag`` should be set to 1 for yes and 0
 for no. The design load case list ``DLC`` should be a cell array of
@@ -49,7 +49,8 @@ connected to electric load. Simulations run with normal atmospheric
 turbulence model, and 50-year-maximum loads are extrapolated based on
 peak values in simulation results. Simulations are run for the range of
 wind speeds and the number turbulence seeds specified in the variables
-``params.ws`` and ``params.numSeeds`` in the ``runIEC_ipt.m`` file (``\examples\runIEC_ipt--EXAMPLE.m``).
+``params.ws`` and ``params.numSeeds`` in the ``runIEC_ipt.m`` file 
+(``\examples\runIEC_ipt--EXAMPLE.m``).
 
 **1.2:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with normal atmospheric
@@ -60,7 +61,8 @@ turbulence seeds specified in the variables params.ws and
 params.numSeeds in the ``runIEC_ipt.m`` file. 
 
 .. Note::
-    DLC's 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.
+    DLC's 1.1 and 1.2 call for the same simulation conditions, and if 
+    both are requested a single set of results is generated for both cases.
 
 **1.3:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with extreme turbulence
@@ -93,7 +95,7 @@ cases 1.1, 1.3, and 6.1 without using parallel processing:
 
 .. code-block:: matlabsession
 
-    >> ``output = runIEC({'1.1','1.3','6.1'},1,0)``
+    >> output = runIEC({'1.1','1.3','6.1'},1,0)
 
 The output of the ``runIEC`` function is a data structure reporting a
 compilation of critical values from the results of all the simulations
@@ -259,7 +261,11 @@ bounds. It does not suffer from extreme gradient/slope values or
 stability concerns.
 
 .. Note:: 
-    There can be slight differences between the 50-year extrapolation results obtained using different methods, and it is difficult to assert that any given approach is certainly more accurate or superior to another. The extrapolation process remains subject to further modifications and improvements moving forward.
+    There can be slight differences between the 50-year extrapolation 
+    results obtained using different methods, and it is difficult to 
+    assert that any given approach is certainly more accurate or superior
+    to another. The extrapolation process remains subject to further 
+    modifications and improvements moving forward.
 
 
 .. _toolsForOpenFast:

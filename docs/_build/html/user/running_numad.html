@@ -220,7 +220,8 @@ type <code class="docutils literal notranslate"><span class="pre">BladeDef</span
 the object called <code class="docutils literal notranslate"><span class="pre">blade</span></code>, which can be printed out and modified as
 desired as further explained in <a class="reference internal" href="#bladevarassign"><span class="std std-ref">Blade Variable Assignment</span></a>. Many types of analysis and
 operations can be performed once a blade model is stored as a blade
-object in this way. If it is desired to run aeroelastic simulation with
+object in this way.</p>
+<p>If it is desired to run aeroelastic simulation with
 <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, or to generate loads from FAST-generated output files as
 described in <a class="reference internal" href="fea.html#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>, it is advisable to update the FAST input files
 in the blade’s main working directory to ensure that certain quantities
@@ -232,7 +233,7 @@ commands</p>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> script initializes a data structure named <code class="docutils literal notranslate"><span class="pre">params</span></code>, which
-stores variables related to the analysis and simulation (<code class="docutils literal notranslate"><span class="pre">NuMAD\examples\runIEC_ipt--EXAMPLE.m</span></code>),
+stores variables related to the analysis and simulation (<code class="docutils literal notranslate"><span class="pre">NuMAD\examples\lost+found\runIEC_ipt--EXAMPLE.m</span></code>),
 and is passed along with the blade object into the update
 function.</p>
 <p>After all desired analyses and modifications are complete, a new,

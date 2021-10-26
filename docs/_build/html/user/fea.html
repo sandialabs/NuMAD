@@ -207,7 +207,7 @@ NuMAD 2.0, before attempting to run this function. See <a class="reference inter
 </div>
 <p>As an example, the following call would build a mesh for the blade blade
 object</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">layupDesign_ANSYSmesh</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">config</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">layupDesign_ANSYSmesh</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">config</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The function also issues commands that calls ANSYS to write a textfile
@@ -522,14 +522,14 @@ to <code class="docutils literal notranslate"><span class="pre">'FEmodel'</span>
 each solve. It defaults to 1.</p>
 <p>The output and it is a variable length struct. Depending on
 which analysis flags are active, results can be accessed with</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">result</span><span class="p">=</span><span class="n">layupDesign_ANSYSmesh</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">config</span><span class="p">)</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">globalBuckling</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">localBuckling</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">deflection</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">failure</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">fatigue</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">resultantVSspan</span>``<span class="w"></span>
-<span class="gp">&gt;&gt; </span><span class="w"> </span>``<span class="n">result</span><span class="p">.</span><span class="n">mass</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">=</span><span class="n">layupDesign_ANSYSmesh</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">config</span><span class="p">)</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">globalBuckling</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">localBuckling</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">deflection</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">failure</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">fatigue</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">resultantVSspan</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">mass</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="section" id="linear-static-analysis">
@@ -654,10 +654,9 @@ directions are utilized for a single evaluation of fatigue damage (e.g.
 one fatigue evaluation is the combined effect of flap loads and edge
 loads). Furthermore, it assumes that the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> is arranged in
 ascending order for the loads direction angle. This is already accounted
-for if <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> was constructed from <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code>.</p>
-<p>Make sure to set</p>
-<p><code class="docutils literal notranslate"><span class="pre">params.fatigueCriterion</span> <span class="pre">=</span> <span class="pre">'Shifted</span> <span class="pre">Goodman'</span></code></p>
-<p>in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file.</p>
+for if <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> was constructed from <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code>.
+Make sure to set <code class="docutils literal notranslate"><span class="pre">params.fatigueCriterion</span> <span class="pre">=</span> <span class="pre">'Shifted</span> <span class="pre">Goodman'</span></code>
+in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file.</p>
 <p>Fatigue damage is computed at the root and at the locations of the FAST
 gages. In this document, these will be referred to as the <em>spanwise
 fatigue locations</em>. Fatigue results are restricted to the spanwise

@@ -20,7 +20,7 @@ object
 
 .. code-block:: matlabsession
 
-    >> ``layupDesign_ANSYSmesh(blade,config)``
+    >> layupDesign_ANSYSmesh(blade,config)
 
 The function also issues commands that calls ANSYS to write a textfile
 called ``NLIST.lis``. For each node on the wetted area of the blade, this
@@ -325,14 +325,14 @@ which analysis flags are active, results can be accessed with
 
 .. code-block:: matlabsession
 
-    >> ``result=layupDesign_ANSYSmesh(blade,config)``
-    >> 	``result.globalBuckling``
-    >> 	``result.localBuckling``
-    >> 	``result.deflection``
-    >> 	``result.failure``
-    >> 	``result.fatigue``
-    >> 	``result.resultantVSspan``
-    >> 	``result.mass``
+    >> result=layupDesign_ANSYSmesh(blade,config)
+    >> result.globalBuckling
+    >> result.localBuckling
+    >> result.deflection
+    >> result.failure
+    >> result.fatigue
+    >> result.resultantVSspan
+    >> result.mass
 
 
 .. _linearFEA:
@@ -462,11 +462,7 @@ one fatigue evaluation is the combined effect of flap loads and edge
 loads). Furthermore, it assumes that the ``loadsTable`` is arranged in
 ascending order for the loads direction angle. This is already accounted
 for if ``loadsTable`` was constructed from ``FastLoads4ansys.m``.
-
-Make sure to set
-
-``params.fatigueCriterion = 'Shifted Goodman'``
-
+Make sure to set ``params.fatigueCriterion = 'Shifted Goodman'`` 
 in the ``runIEC_ipt.m`` file.
 
 Fatigue damage is computed at the root and at the locations of the FAST

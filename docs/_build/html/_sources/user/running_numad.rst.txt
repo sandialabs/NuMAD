@@ -49,7 +49,9 @@ After entering these commands, the blade model data will be stored in
 the object called ``blade``, which can be printed out and modified as
 desired as further explained in :ref:`bladeVarAssign`. Many types of analysis and
 operations can be performed once a blade model is stored as a blade
-object in this way. If it is desired to run aeroelastic simulation with
+object in this way. 
+
+If it is desired to run aeroelastic simulation with
 ``runIEC``, or to generate loads from FAST-generated output files as
 described in :ref:`FEAOps`, it is advisable to update the FAST input files
 in the blade's main working directory to ensure that certain quantities
@@ -63,9 +65,12 @@ commands
     >> 	updateFASTFromBLADEDef(params,blade)
 
 The ``runIEC_ipt.m`` script initializes a data structure named ``params``, which
-stores variables related to the analysis and simulation (``NuMAD\examples\runIEC_ipt--EXAMPLE.m``), 
+stores variables related to the analysis and simulation (``NuMAD\examples\lost+found\runIEC_ipt--EXAMPLE.m``), 
 and is passed along with the blade object into the update
 function.
+
+.. NOTE:
+	``runIEC_ipt`` must be saved in the working directory
 
 After all desired analyses and modifications are complete, a new,
 updated ``.yaml`` file can be generated to represent the optimized, or

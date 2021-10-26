@@ -212,7 +212,7 @@ turbine at each time step for every simulation.</p>
 requested set of design load cases, a flag indicating whether to run the
 aeroelastic analysis (as opposed to just processing an existing output
 set) and a flag indicating whether to run in parallel, as shown below:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">(</span><span class="n">DLC</span><span class="p">,</span><span class="n">simflag</span><span class="p">,</span><span class="n">parflag</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">(</span><span class="n">DLC</span><span class="p">,</span><span class="n">simflag</span><span class="p">,</span><span class="n">parflag</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The inputs <code class="docutils literal notranslate"><span class="pre">simflag</span></code> and <code class="docutils literal notranslate"><span class="pre">parflag</span></code> should be set to 1 for yes and 0
@@ -224,7 +224,8 @@ connected to electric load. Simulations run with normal atmospheric
 turbulence model, and 50-year-maximum loads are extrapolated based on
 peak values in simulation results. Simulations are run for the range of
 wind speeds and the number turbulence seeds specified in the variables
-<code class="docutils literal notranslate"><span class="pre">params.ws</span></code> and <code class="docutils literal notranslate"><span class="pre">params.numSeeds</span></code> in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file (<code class="docutils literal notranslate"><span class="pre">\examples\runIEC_ipt--EXAMPLE.m</span></code>).</p>
+<code class="docutils literal notranslate"><span class="pre">params.ws</span></code> and <code class="docutils literal notranslate"><span class="pre">params.numSeeds</span></code> in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file
+(<code class="docutils literal notranslate"><span class="pre">\examples\runIEC_ipt--EXAMPLE.m</span></code>).</p>
 <p><strong>1.2:</strong> Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with normal atmospheric
 turbulence model, and fatigue damage is predicted based on cycle
@@ -234,7 +235,8 @@ turbulence seeds specified in the variables params.ws and
 params.numSeeds in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> file.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>DLC’s 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.</p>
+<p>DLC’s 1.1 and 1.2 call for the same simulation conditions, and if
+both are requested a single set of results is generated for both cases.</p>
 </div>
 <p><strong>1.3:</strong> Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with extreme turbulence
@@ -258,7 +260,7 @@ with the turbine in a parked or idle state. Simulations run with extreme
 turbulence model, maximum loads taken directly from simulation results.</p>
 <p>As an example, the following call would run the FAST simulation for
 cases 1.1, 1.3, and 6.1 without using parallel processing:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span>``<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">({</span><span class="s">&#39;1.1&#39;</span><span class="p">,</span><span class="s">&#39;1.3&#39;</span><span class="p">,</span><span class="s">&#39;6.1&#39;</span><span class="p">},</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>``<span class="w"></span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">({</span><span class="s">&#39;1.1&#39;</span><span class="p">,</span><span class="s">&#39;1.3&#39;</span><span class="p">,</span><span class="s">&#39;6.1&#39;</span><span class="p">},</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The output of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function is a data structure reporting a
@@ -398,7 +400,11 @@ bounds. It does not suffer from extreme gradient/slope values or
 stability concerns.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There can be slight differences between the 50-year extrapolation results obtained using different methods, and it is difficult to assert that any given approach is certainly more accurate or superior to another. The extrapolation process remains subject to further modifications and improvements moving forward.</p>
+<p>There can be slight differences between the 50-year extrapolation
+results obtained using different methods, and it is difficult to
+assert that any given approach is certainly more accurate or superior
+to another. The extrapolation process remains subject to further
+modifications and improvements moving forward.</p>
 </div>
 </div>
 <div class="section" id="tools-for-processing-openfast-input-files">

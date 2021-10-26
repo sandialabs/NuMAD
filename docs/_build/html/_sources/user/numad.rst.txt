@@ -15,7 +15,7 @@ For example the function can be used as:
 
 .. code-block:: matlabsession
 	
-	``BladeDef_to_NuMADfile(blade,'numad.nmd','MatDBsi.txt')``
+    >> BladeDef_to_NuMADfile(blade,'numad.nmd','MatDBsi.txt')
 
 where ``blade`` is a blade object, ``'numad.nmd'``\ is the desired name
 to be given to the NuMAD file and ``'MatDBsi.txt'`` is the desired
