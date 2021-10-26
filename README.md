@@ -13,10 +13,11 @@ For any questions or to request more information, send an e-mail to: numad@sandi
 
 ## Installation Instructions
 1. Install [Matlab](https://www.mathworks.com/products/matlab.html)
-2. Open `paths.m` in an editor and set the `NuMAD_path` to the `source` directory in the repo. Save and close `paths.m`.
-3. Move the `paths.m` file to the MATLAB directory of your user account (e.g. C:\Users\username\Documents\MATLAB)
+2. Open `addNumadPaths.m` in an editor and set the `NuMAD_path` to the `source` directory in the repo. It is highly recommended that the contents of the repo be located at ``C:\DesignCodes\NuMAD``.
+3. If you plan to use ANSYS, update the ``ANSYS_Path`` variable to the actual path to your ANSYS executable. Save and close `addNumadPaths.m`.
+4. Move the `addNumadPaths.m` file to the MATLAB directory of your user account (e.g. C:\Users\username\Documents\MATLAB)
 
-Every time a new MATLAB session is started type `paths` to be able to run NuMAD
+Every time a new MATLAB session is started type `addNumadPaths` to be able to run NuMAD.
 ### Models
 
 Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/examples) folder on GitHub. 

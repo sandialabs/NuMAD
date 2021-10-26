@@ -7,7 +7,7 @@ Blade definition and terminology
 In NuMAD, a blade is uniquely defined with the ``BladeDef`` object or blade
 object for short. As defined in
 
-``source\preNuMAD\BladeDef.m``,
+``source\objects\BladeDef.m``,
 
 many of the properties are parameterized by spanwise location. Refer to
 :numref:`bladeDefTable` in the :ref:`appendix` for a complete listing of ``BladeDef`` properties.
@@ -70,23 +70,23 @@ Getting Started with NuMAD
 The code containing all open-source tools for NuMAD can be downloaded or
 cloned as a repository from the `NuMAD
 GitHub <https://github.com/sandialabs/NuMAD>`__. There
-are 3 main folders within the root ``source`` directory, named ``NuMAD_toolbox``,
-``preNuMAD``, and ``rotor_optimization``. It is advisable to save these
-in a directory called ``DesignCodes`` on, for example, the C drive if possible. If another
+are 3 main folders within the root ``source`` directory, named ``toolbox``,
+``objects``, and ``optimization``. It is advisable to save these
+in a directory called ``DesignCodes\NuMAD`` on, for example, the C drive if possible. If another
 path location is desired, some path definitions in the ``runIEC_ipt.m``
 input settings script may need to be modified, as described further in the
 :ref:`AeroelasticSimRunIEC` section, and the :ref:`appendix`. Before beginning any design or analysis of a
 blade, the paths of these folders should be added to the MATLAB domain
-of working directories, using the script ``paths.m``. All tools and
+of working directories, using the script ``addNumadPaths.m``. All tools and
 functions available in NuMAD 3.0 will then be available to invoke from a
 script or the command window. If you intend to use NuMAD in conjunction with ANSYS then the global variable 
 ``ANSYS_Path`` needs to be modified to your ANSYS working directory file path name.
 
-The ``NuMAD_toolbox`` folder contains basic functions and operations needed
+The ``toolbox`` folder contains basic functions and operations needed
 for performing analysis with packages such as PreComp, BPE, and ANSYS.
-The ``preNuMAD`` folder mainly contains the class definition of the blade
+The ``objects`` folder mainly contains the class definition of the blade
 object, which stores the geometric, airfoil and material data for a
-given blade design. The ``rotor_optimization`` folder contains bundles of
+given blade design. The ``optimization`` folder contains bundles of
 tools for several purposes, including ``runIEC``, as explained further in the
 :ref:`AeroelasticSimRunIEC` section, file processing functions for input and output from other
 programs such as FAST and Crunch, and setup and execution of ANSYS
@@ -292,7 +292,7 @@ A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
 the blade under a range of expected wind and loading conditions. NuMAD’s
 capability for performing this analysis is contained in the
-``source\rotor_optimization\runIEC`` directory of the standard design codes
+``source\optimization\runIEC`` directory of the standard design codes
 package. In the following sections the basic capability and
 functionality of the ``runIEC`` package will be described, followed by
 recent updates related to its operation from previous versions.
@@ -305,7 +305,7 @@ Use and Functionality of ``runIEC``
 The main function called to perform aeroelastic analysis of a NuMAD
 blade is
 
-``source\rotor_optimization\runIEC\runIEC.m.``
+``source\optimization\runIEC\runIEC.m.``
 
 This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
@@ -566,7 +566,7 @@ These tools primarily read different types OpenFAST input files, storing
 the data in a MATLAB struct object which can then be edited and modified
 for the purposes of design and optimization. Updated versions of the
 input files can then be re-written from the modified data. The tools can
-be found in the ``source\rotor_optimization\runIEC`` directory, along with
+be found in the ``source\optimization\runIEC`` directory, along with
 their FAST v7 counterparts.
 
 As of the release of this document, OpenFAST remains in a state of
@@ -587,7 +587,7 @@ Mesh Generation
 The function called to generate the FE shell model in ANSYS of a NuMAD
 blade is
 
-``source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m``
+``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details. Thus, NuMAD 3.0 currently relies on NuMAD 2.0 to create an ANSYS mesh. As time and buget allow, the ``blade.generateFEA()`` will be fixed so that ``layupDesign_ANSYSmesh`` is not needed.
@@ -1233,9 +1233,7 @@ In addition, an example optimization script to demonstrate the application of th
 ``examples/exampleOptimizationDir``
 
 This folder contains the main optimization script, ``optimizationExample.m``, the objective defined as a MATLAB function, ``objectiveExample.m``, along with a folder containing the ``.yaml`` file and loading data for the example blade.  The loading data is pre-generated using ``runIEC`` and the functions descriped in :ref:`AeroelasticSimRunIEC` and :ref:`FEAOps`.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute ``optimizationExample.m``.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections :ref:`definingObjective` through :ref:`choosingOpimizationAlgor`. 
-
-.. Note::
-    Please update the ``ansysPath`` variable in the input settings to the actual path to your ANSYS executable.  
+  
 
 
 .. _definingObjective:
@@ -1452,15 +1450,15 @@ the sake of completeness.
 In the current version when forces are compiled from the FAST/OpenFAST
 output in the functions:
 
-``source\rotor_optimization\sim_tools\FastLoads4Ansys.m``
+``source\optimization\sim_tools\FastLoads4Ansys.m``
 
-``source\rotor_optimization\sim_tools\getForceDistributionAtTime.m``
+``source\optimization\sim_tools\getForceDistributionAtTime.m``
 
 the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
 modifications were also made to the function:
 
-``source\NuMAD_toolbox\ad2ansys.m``
+``source\toolbox\ad2ansys.m``
 
 to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
@@ -1471,7 +1469,7 @@ system before being applied to the model. There is a new function
 available to process a given output file, perform the transformation and
 return the data in global coordinates:
 
-``source\rotor_optimization\sim_tools\loadFASTOutDataGageRot.m``
+``source\optimization\sim_tools\loadFASTOutDataGageRot.m``
 
 Finally, when performing structural optimization, the blade model is
 typically defined primarily by a ``.yaml`` file, which is read into an
@@ -1483,7 +1481,7 @@ directory. To make sure the necessary information in these files is
 consistent with that in the ``.yaml`` file, a convenient function was
 built, named
 
-``source\rotor_optimization\sim_tools\updateFASTFromBladeDef.m``
+``source\optimization\sim_tools\updateFASTFromBladeDef.m``
 
 which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the ``.yaml``
@@ -1499,7 +1497,7 @@ Once the ``BladeDef`` object is defined, it is possible to interface
 with prior versions of NuMAD which were GUI-centric. The function that
 writes the input file to older versions of NuMAD from a blade object is
 
-``source\preNuMAD\BladeDef_to_NuMADfile.m``
+``source\objects\BladeDef_to_NuMADfile.m``
 
 For example the function can be used as
 

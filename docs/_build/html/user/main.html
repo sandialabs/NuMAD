@@ -129,7 +129,7 @@
 <span id="bladedefandterms"></span><h1>Blade definition and terminology<a class="headerlink" href="#blade-definition-and-terminology" title="Permalink to this headline"></a></h1>
 <p>In NuMAD, a blade is uniquely defined with the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object or blade
 object for short. As defined in</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\preNuMAD\BladeDef.m</span></code>,</p>
+<p><code class="docutils literal notranslate"><span class="pre">source\objects\BladeDef.m</span></code>,</p>
 <p>many of the properties are parameterized by spanwise location. Refer to
 <a class="reference internal" href="appendix.html#bladedeftable"><span class="std std-numref">Table 5</span></a> in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a> for a complete listing of <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> properties.</p>
 <p>First and foremost there are <em>stations</em>. A station is an airfoil at a
@@ -195,22 +195,22 @@ additionally defined in the</p>
 <p>The code containing all open-source tools for NuMAD can be downloaded or
 cloned as a repository from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD
 GitHub</a>. There
-are 3 main folders within the root <code class="docutils literal notranslate"><span class="pre">source</span></code> directory, named <code class="docutils literal notranslate"><span class="pre">NuMAD_toolbox</span></code>,
-<code class="docutils literal notranslate"><span class="pre">preNuMAD</span></code>, and <code class="docutils literal notranslate"><span class="pre">rotor_optimization</span></code>. It is advisable to save these
-in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes</span></code> on, for example, the C drive if possible. If another
+are 3 main folders within the root <code class="docutils literal notranslate"><span class="pre">source</span></code> directory, named <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
+<code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>. It is advisable to save these
+in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes\NuMAD</span></code> on, for example, the C drive if possible. If another
 path location is desired, some path definitions in the <code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code>
 input settings script may need to be modified, as described further in the
 <a class="reference internal" href="#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, and the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>. Before beginning any design or analysis of a
 blade, the paths of these folders should be added to the MATLAB domain
-of working directories, using the script <code class="docutils literal notranslate"><span class="pre">paths.m</span></code>. All tools and
+of working directories, using the script <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code>. All tools and
 functions available in NuMAD 3.0 will then be available to invoke from a
 script or the command window. If you intend to use NuMAD in conjunction with ANSYS then the global variable
 <code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> needs to be modified to your ANSYS working directory file path name.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">NuMAD_toolbox</span></code> folder contains basic functions and operations needed
+<p>The <code class="docutils literal notranslate"><span class="pre">toolbox</span></code> folder contains basic functions and operations needed
 for performing analysis with packages such as PreComp, BPE, and ANSYS.
-The <code class="docutils literal notranslate"><span class="pre">preNuMAD</span></code> folder mainly contains the class definition of the blade
+The <code class="docutils literal notranslate"><span class="pre">objects</span></code> folder mainly contains the class definition of the blade
 object, which stores the geometric, airfoil and material data for a
-given blade design. The <code class="docutils literal notranslate"><span class="pre">rotor_optimization</span></code> folder contains bundles of
+given blade design. The <code class="docutils literal notranslate"><span class="pre">optimization</span></code> folder contains bundles of
 tools for several purposes, including <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, as explained further in the
 <a class="reference internal" href="#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, file processing functions for input and output from other
 programs such as FAST and Crunch, and setup and execution of ANSYS
@@ -372,7 +372,7 @@ are discussed in detail in <a class="reference internal" href="#feaops"><span cl
 performing aeroelastic analysis to predict the behavior and response of
 the blade under a range of expected wind and loading conditions. NuMAD’s
 capability for performing this analysis is contained in the
-<code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC</span></code> directory of the standard design codes
+<code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC</span></code> directory of the standard design codes
 package. In the following sections the basic capability and
 functionality of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> package will be described, followed by
 recent updates related to its operation from previous versions.</p>
@@ -380,7 +380,7 @@ recent updates related to its operation from previous versions.</p>
 <span id="useandfunctofruniec"></span><h2>Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code><a class="headerlink" href="#use-and-functionality-of-runiec" title="Permalink to this headline"></a></h2>
 <p>The main function called to perform aeroelastic analysis of a NuMAD
 blade is</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC\runIEC.m.</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC\runIEC.m.</span></code></p>
 <p>This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
 aeroelastic analysis for a set of requested simulation cases or by
@@ -595,7 +595,7 @@ OpenFAST input files to supplement what is currently there for FAST v7.</p>
 the data in a MATLAB struct object which can then be edited and modified
 for the purposes of design and optimization. Updated versions of the
 input files can then be re-written from the modified data. The tools can
-be found in the <code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\runIEC</span></code> directory, along with
+be found in the <code class="docutils literal notranslate"><span class="pre">source\optimization\runIEC</span></code> directory, along with
 their FAST v7 counterparts.</p>
 <p>As of the release of this document, OpenFAST remains in a state of
 development, and new modules are coming online that will be increasingly
@@ -610,7 +610,7 @@ to change to accommodate new input file formats, etc. moving forward.</p>
 <span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this headline"></a></h2>
 <p>The function called to generate the FE shell model in ANSYS of a NuMAD
 blade is</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is currently necessary to have created the NuMAD input file from NuMAD 2.0, before attempting to run this function. See <a class="reference internal" href="#numad2p0"><span class="std std-ref">Coupling to NuMAD 2.0</span></a> for further details. Thus, NuMAD 3.0 currently relies on NuMAD 2.0 to create an ANSYS mesh. As time and buget allow, the <code class="docutils literal notranslate"><span class="pre">blade.generateFEA()</span></code> will be fixed so that <code class="docutils literal notranslate"><span class="pre">layupDesign_ANSYSmesh</span></code> is not needed.</p>
@@ -1283,10 +1283,6 @@ process.</p>
 <p>In addition, an example optimization script to demonstrate the application of the following concepts is included in</p>
 <p><code class="docutils literal notranslate"><span class="pre">examples/exampleOptimizationDir</span></code></p>
 <p>This folder contains the main optimization script, <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>, the objective defined as a MATLAB function, <code class="docutils literal notranslate"><span class="pre">objectiveExample.m</span></code>, along with a folder containing the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file and loading data for the example blade.  The loading data is pre-generated using <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> and the functions descriped in <a class="reference internal" href="#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> and <a class="reference internal" href="#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.  An airfoil database directory is included as well, for reference in the NuMAD input file generation process.  To run the example script, place the exampleOptimizationDir folder with all its contents in a working directory of your choosing, and execute <code class="docutils literal notranslate"><span class="pre">optimizationExample.m</span></code>.  The user is encouraged to read through the source code in main script and the objective function to understand the steps to the process, and the calls to NuMAD functions for various operations.  A good approach to putting together a customized optimization is to begin from these scripts and modify according to the specific needs at hand, while being mindful of the concepts presented in Sections <a class="reference internal" href="#definingobjective"><span class="std std-ref">Defining the Objective Function</span></a> through <a class="reference internal" href="#choosingopimizationalgor"><span class="std std-ref">Choosing an Optimization Algorithm</span></a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please update the <code class="docutils literal notranslate"><span class="pre">ansysPath</span></code> variable in the input settings to the actual path to your ANSYS executable.</p>
-</div>
 <section id="defining-the-objective-function">
 <span id="definingobjective"></span><h3>Defining the Objective Function<a class="headerlink" href="#defining-the-objective-function" title="Permalink to this headline"></a></h3>
 <p>The first critical step in setting up an optimization is defining a
@@ -1473,12 +1469,12 @@ direction to account for centrifugal effects and torsional moments for
 the sake of completeness.</p>
 <p>In the current version when forces are compiled from the FAST/OpenFAST
 output in the functions:</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\sim_tools\FastLoads4Ansys.m</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\sim_tools\getForceDistributionAtTime.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\sim_tools\FastLoads4Ansys.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\sim_tools\getForceDistributionAtTime.m</span></code></p>
 <p>the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
 modifications were also made to the function:</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\NuMAD_toolbox\ad2ansys.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\toolbox\ad2ansys.m</span></code></p>
 <p>to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
 coordinate system at each point along the blade, which rotates along
@@ -1487,7 +1483,7 @@ forces and moments are now transformed to the blade global coordinate
 system before being applied to the model. There is a new function
 available to process a given output file, perform the transformation and
 return the data in global coordinates:</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\sim_tools\loadFASTOutDataGageRot.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\sim_tools\loadFASTOutDataGageRot.m</span></code></p>
 <p>Finally, when performing structural optimization, the blade model is
 typically defined primarily by a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file, which is read into an
 instance of the NuMAD blade object for processing and design iteration.
@@ -1497,7 +1493,7 @@ structural twist is taken from the FAST/OpenFAST files in the model
 directory. To make sure the necessary information in these files is
 consistent with that in the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file, a convenient function was
 built, named</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\rotor_optimization\sim_tools\updateFASTFromBladeDef.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\sim_tools\updateFASTFromBladeDef.m</span></code></p>
 <p>which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>
 file, and before performing any analysis to ensure the consistency of
@@ -1509,7 +1505,7 @@ data.</p>
 <p>Once the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> object is defined, it is possible to interface
 with prior versions of NuMAD which were GUI-centric. The function that
 writes the input file to older versions of NuMAD from a blade object is</p>
-<p><code class="docutils literal notranslate"><span class="pre">source\preNuMAD\BladeDef_to_NuMADfile.m</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">source\objects\BladeDef_to_NuMADfile.m</span></code></p>
 <p>For example the function can be used as</p>
 <p><code class="docutils literal notranslate"><span class="pre">BladeDef_to_NuMADfile(blade,'numad.nmd','MatDBsi.txt')</span></code></p>
 <p>where <code class="docutils literal notranslate"><span class="pre">blade</span></code> is a blade object, <code class="docutils literal notranslate"><span class="pre">'numad.nmd'</span></code>is the desired name
