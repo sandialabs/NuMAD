@@ -20,7 +20,7 @@ object
 
 .. code-block:: matlabsession
 
-    >> ``layupDesign_ANSYSmesh(blade,config)``
+    >> layupDesign_ANSYSmesh(blade)
 
 The function also issues commands that calls ANSYS to write a textfile
 called ``NLIST.lis``. For each node on the wetted area of the blade, this
@@ -325,14 +325,14 @@ which analysis flags are active, results can be accessed with
 
 .. code-block:: matlabsession
 
-    >> ``result=layupDesign_ANSYSmesh(blade,config)``
-    >> 	``result.globalBuckling``
-    >> 	``result.localBuckling``
-    >> 	``result.deflection``
-    >> 	``result.failure``
-    >> 	``result.fatigue``
-    >> 	``result.resultantVSspan``
-    >> 	``result.mass``
+    >> result=layupDesign_ANSYSmesh(blade)
+          result.globalBuckling
+          result.localBuckling
+          result.deflection
+          result.failure
+          result.fatigue
+          result.resultantVSspan
+          result.mass
 
 
 .. _linearFEA:
@@ -553,8 +553,8 @@ two fields:
 .. code-block:: matlabsession
 
     >> myresult
-	element1950: [1x1 struct]
-	element2558: [1x1 struct]
+	     element1950: [1x1 struct]
+	     element2558: [1x1 struct]
 
 Looking at the first struct shows:
 

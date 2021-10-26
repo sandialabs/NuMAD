@@ -63,5 +63,4 @@ References
    (2012). 
 
 
-.. Kelley: Are these NuMAD publications? Or are these documentation references?
    

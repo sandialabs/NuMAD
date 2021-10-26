@@ -42,8 +42,8 @@ type ``BladeDef`` and calling the reader function, as shown:
 
 .. code-block:: matlabsession
 
-    >> ``blade = BladeDef``
-    >> ``blade.readYAML(<yamlfilename>)``
+    >> blade = BladeDef
+    >> blade.readYAML(<yamlfilename>)
 
 After entering these commands, the blade model data will be stored in
 the object called ``blade``, which can be printed out and modified as
@@ -59,8 +59,8 @@ commands
 
 .. code-block:: matlabsession
 
-    >> 	``runIEC_ipt``
-    >> 	``updateFASTFromBLADEDef(params,blade)``
+    >> 	runIEC_ipt
+    >> 	updateFASTFromBLADEDef(params,blade)
 
 The ``runIEC_ipt.m`` script initializes a data structure named ``params``, which
 stores variables related to the analysis and simulation (``NuMAD\examples\runIEC_ipt--EXAMPLE.m``), and is passed along with the blade object into the update
@@ -72,7 +72,7 @@ re-designed blade. To do this issue the command:
 
 .. code-block:: matlabsession
 
-    >> ``writeYAML(blade,<newyamlfilename>);``
+    >> writeYAML(blade,<newyamlfilename>)
 
 The new file name should be of the form ``<originalfile>_mod.yaml``, adding
 an ``_mod`` extension to the name of the original ``.yaml`` file from which
@@ -109,7 +109,7 @@ second station at 3.5 meters, the command
 
 .. code-block:: matlabsession
 
-    >> ``blade.stations(2).spanlocation = 3.5``
+    >> blade.stations(2).spanlocation = 3.5
 
 could be used. Many variables are arrays with multiple values, and can
 be set according using standard MATLAB syntax. The coordinates of the
@@ -119,7 +119,7 @@ array, and can be set as follows:
 
 .. code-block:: matlabsession
 
-    >> ``blade.stations(2).airfoil.coordinates = [X1, Y1; X2, Y2; ... XN, YN]``
+    >> blade.stations(2).airfoil.coordinates = [X1, Y1; X2, Y2; ... XN, YN]
 
 There are several properties that each define some aspect of the blade's
 shape with a value at any given spanwise location, including chord
@@ -131,8 +131,8 @@ specified at 10 equally spaced points, they could set
 
 .. code-block:: matlabsession
 
-    >> ``blade.span = linspace(0,<bladeLength>,10);``
-    >>	``blade.prebend = k*blade.span.^3;``
+    >> blade.span = linspace(0,<bladeLength>,10)
+    >> blade.prebend = k*blade.span.^3
 
 The bulk of the structural properties of the blade's components are
 stored in ``blade.components`` variable. A single component contains a name,
@@ -148,7 +148,7 @@ could set
 
 .. code-block:: matlabsession
 
-    >> ``blade.components(3).cp = [0, 10; 50, 2];``
+    >> blade.components(3).cp = [0, 10; 50, 2]
 
 The width of the spar caps and the leading edge and trailing edge bands
 are single nominal values for the entire length of the blade, stored in
@@ -168,7 +168,7 @@ these few examples, a user should run the command
 
 .. code-block:: matlabsession
 
-    >> ``blade.UpdateBlade()``
+    >> blade.UpdateBlade()
 
 This function updates numerous internal private variables based on the
 edited values in the public variables. Among other things, it

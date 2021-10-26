@@ -37,7 +37,7 @@ set) and a flag indicating whether to run in parallel, as shown below:
 
 .. code-block:: matlabsession
 
-    >> ``output = runIEC(DLC,simflag,parflag)``
+    >> output = runIEC(DLC,simflag,parflag)
 
 The inputs ``simflag`` and ``parflag`` should be set to 1 for yes and 0
 for no. The design load case list ``DLC`` should be a cell array of
@@ -49,7 +49,7 @@ connected to electric load. Simulations run with normal atmospheric
 turbulence model, and 50-year-maximum loads are extrapolated based on
 peak values in simulation results. Simulations are run for the range of
 wind speeds and the number turbulence seeds specified in the variables
-``params.ws`` and ``params.numSeeds`` in the ``runIEC_ipt.m`` file (``\examples\runIEC_ipt--EXAMPLE.m``).
+``params.ws`` and ``params.numSeeds`` in the ``runIEC_ipt.m`` file (``\examples\exampleOptimizationDir\exampleBlade\runIEC_ipt.m``).
 
 **1.2:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with normal atmospheric
@@ -93,7 +93,7 @@ cases 1.1, 1.3, and 6.1 without using parallel processing:
 
 .. code-block:: matlabsession
 
-    >> ``output = runIEC({'1.1','1.3','6.1'},1,0)``
+    >> output = runIEC({'1.1','1.3','6.1'},1,0)
 
 The output of the ``runIEC`` function is a data structure reporting a
 compilation of critical values from the results of all the simulations
