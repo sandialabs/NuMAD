@@ -1,0 +1,645 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Appendix &mdash; NuMAD  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Troubleshooting" href="conclusion.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NuMAD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numad.html">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blade-class">Blade Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#material-class">Material Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#station-class">Station Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#component-class">Component Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#airfoil-class">Airfoil Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-class">Stack Class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NuMAD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">User’s Guide</a> &raquo;</li>
+        
+      <li>Appendix</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/appendix.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="appendix">
+<span id="id1"></span><h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="blade-class">
+<h2>Blade Class<a class="headerlink" href="#blade-class" title="Permalink to this headline">¶</a></h2>
+<span id="bladedeftable"></span><table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>: A class definition for wind &amp; water turbine blades.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>BladeDef Property</strong></p></th>
+<th class="head"><p><strong>Property Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">span</span></code></p></td>
+<td><p>Spanwise location of distributed properties [m]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">degreestwist</span></code></p></td>
+<td><p>Twist distribution [degrees]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chord</span></code></p></td>
+<td><p>Chord length distribution [m]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">percentthick</span></code></p></td>
+<td><p>Percent thickness of airfoil [%]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chordoffset</span></code></p></td>
+<td><p>Chordwise offset (in attrition to natural offset)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">aerocenter</span></code></p></td>
+<td><p>Aerodynamic center of airfoil</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sweep</span></code></p></td>
+<td><p>Reference axis location along <span class="math notranslate nohighlight">\(x_{1}\)</span> [m] (see Figure 2‑1)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prebend</span></code></p></td>
+<td><p>Reference axis location along <span class="math notranslate nohighlight">\(x_{2}\)</span> [m] (see Figure 2‑1)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">materials</span></code></p></td>
+<td><p>MaterialDef – See <a class="reference internal" href="#materialdeftable"><span class="std std-numref">Table 7</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stations</span></code></p></td>
+<td><p>StationDef – See <a class="reference internal" href="#stationdeftable"><span class="std std-numref">Table 8</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">components</span></code></p></td>
+<td><p>ComponentDef – See <a class="reference internal" href="#componentdeftable"><span class="std std-numref">Table 9</span></a>. Blade components such as spar, panels, etc…</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sparcapwidth</span></code></p></td>
+<td><p>1 × 2  array. Defines distance between keypoints b &amp; c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sparcapoffset</span></code></p></td>
+<td><p>1 × 2  array. (Does Nothing)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">leband</span></code></p></td>
+<td><p>Defines location of keypoint a</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">teband</span></code></p></td>
+<td><p>Defines location of keypoint d</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ispan</span></code></p></td>
+<td><p>Spanwise locations of interpolated output [m]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">naturaloffset=1</span></code></p></td>
+<td><p>1: offset by max thickness, 0: do not offset to max thickness</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rotorspin</span> <span class="pre">=</span> <span class="pre">1</span></code></p></td>
+<td><p>1: CW rotation looking downwind, -1: CCW rotation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">swtwisted</span></code></p></td>
+<td><p>0: planar shear webs, 1: shearwebs twisted by blade twist</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
+<td><p>Approximate element edge size for FE model [m]</p></td>
+</tr>
+</tbody>
+</table>
+<span id="bladedefmethodstable"></span><table class="colwidths-given docutils align-default" id="id3">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">List of Methods for <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Method Name</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set.naturaloffset</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set.rotorspin</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set.swtwisted</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">addStation</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">addComponent</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">addMaterial</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updateBlade</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updateGeometry</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updateKeypoints</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updateBOM</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">readYAML</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writeYAML</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">establishPaths</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generateBeamModel</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generateFEA</span> <span class="pre">(not</span> <span class="pre">working)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writeBOMxls</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">writePlot3D</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getprofileTEtype</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">downsampleProfile</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">delete</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">surf</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotregions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotgeom</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotbom</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotprofile</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">findLayerExtents</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">findRegionExtents</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getTEtype</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fprintf_matrix</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="material-class">
+<h2>Material Class<a class="headerlink" href="#material-class" title="Permalink to this headline">¶</a></h2>
+<span id="materialdeftable"></span><table class="colwidths-given docutils align-default" id="id4">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>MaterialDef Property</strong></p></th>
+<th class="head"><p><strong>Property Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>User selected name of the material</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p>Two options: <code class="docutils literal notranslate"><span class="pre">‘isotropic’</span></code> or <code class="docutils literal notranslate"><span class="pre">‘orthotropic’</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layerthickness</span></code></p></td>
+<td><p>Layer thickness [mm]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ex</span></code></p></td>
+<td><p>Longitudinal elastic modulus [Pa]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ey</span></code></p></td>
+<td><p>Transverse elastic modulus [Pa]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ez</span></code></p></td>
+<td><p>Through-the-thickness elastic modulus in the principal material coordinates [Pa]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gxy</span></code></p></td>
+<td><p>In-plane shear modulus [Pa]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gyz</span></code></p></td>
+<td><p>Transverse shear modulus [Pa]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gxz</span></code></p></td>
+<td><p>Transverse shear modulus [Pa]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prxy</span></code></p></td>
+<td><p>In-plane Poisson ratio [   ]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pryz</span></code></p></td>
+<td><p>Transverse Poisson ratio [   ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prxz</span></code></p></td>
+<td><p>Transverse Poisson ratio [   ]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>Cured mass density [kg/m<sup>2</sup>]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">drydensity</span></code></p></td>
+<td><p>Density of fabric</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">uts</span></code></p></td>
+<td><p>1 × 3 array of ultimate tensile strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{L}\)</span>,<span class="math notranslate nohighlight">\(\ S_{T}\)</span>, <span class="math notranslate nohighlight">\(S_{z}\)</span>. 1 × 1 for isotropic.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ucs</span></code></p></td>
+<td><p>1 × 3 array of ultimate compressive strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{L}\)</span>,<span class="math notranslate nohighlight">\(\ S_{T}\)</span>, <span class="math notranslate nohighlight">\(S_{z}\)</span>. 1 × 1 for isotropic.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">uss</span></code></p></td>
+<td><p>1 × 3 array of ultimate shear strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{LT}\)</span>,<span class="math notranslate nohighlight">\(\ S_{Tz}\)</span>, <span class="math notranslate nohighlight">\(S_{Lz}\)</span>. 1 × 1 for isotropic.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xzit</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(Lz\)</span> tensile inclination parameter for Puck failure index</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xzic</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(Lz\)</span> compressive inclination parameter for Puck failure index</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yzit</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(Tz\)</span> tensile inclination parameter for Puck failure index</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yzic</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(Tz\)</span> compressive inclination parameter for Puck failure index</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g1g2</span></code></p></td>
+<td><p>Fracture toughness ratio between G<sub>I</sub> (mode I) and G<sub>II</sub> (mode II) [   ]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alp0</span></code></p></td>
+<td><p>Fracture angle under pure transverse compression [degrees]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">etat</span></code></p></td>
+<td><p>Transverse friction coefficient for Larc [  ]</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">etal</span></code></p></td>
+<td><p>Longitudinal friction coefficient for Larc [  ]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
+<td><p>Fatigue slope exponent [  ]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="station-class">
+<h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
+<span id="stationdeftable"></span><table class="colwidths-given docutils align-default" id="id5">
+<caption><span class="caption-number">Table 8 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>: A class definition for blade stations.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>StationDef Property</p></th>
+<th class="head"><p>Property Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>airfoil</p></td>
+<td><p>AirfoilDef – See <a class="reference internal" href="#airfoildeftable"><span class="std std-numref">Table 10</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>spanlocation</p></td>
+<td><p>Spanwise location where station is defined [m]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="component-class">
+<h2>Component Class<a class="headerlink" href="#component-class" title="Permalink to this headline">¶</a></h2>
+<span id="componentdeftable"></span><table class="colwidths-given docutils align-default" id="id6">
+<caption><span class="caption-number">Table 9 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>: A class definition for blade components.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>ComponentDef Property</strong></p></th>
+<th class="head"><p><strong>Property Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
+<td><p>0: blade, 1: first shear web, 2: second shear web, etc.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">materialid</span></code></p></td>
+<td><p>string such as <code class="docutils literal notranslate"><span class="pre">'spar'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fabricangle</span></code></p></td>
+<td><p>material id number from <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hpextents</span></code></p></td>
+<td><p>The extent of the airfoil covered by the component. High pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lpextents</span></code></p></td>
+<td><p>The extent of the airfoil covered by the component. Low pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cp</span></code></p></td>
+<td><p>Material thickness distribution along blade span. <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">×</span> <span class="pre">2</span></code> array. First column is nondimension span location where thickness is to be defined. Second column is material thickness [mm].</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imethod</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'pchip'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pinnedends</span></code></p></td>
+<td><p>Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> by default.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="airfoil-class">
+<h2>Airfoil Class<a class="headerlink" href="#airfoil-class" title="Permalink to this headline">¶</a></h2>
+<span id="airfoildeftable"></span><table class="colwidths-given docutils align-default" id="id7">
+<caption><span class="caption-number">Table 10 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>AirfoilDef Property</strong></p></th>
+<th class="head"><p><strong>Property Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>User selected character array</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reference</span></code></p></td>
+<td><p>any header info in file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">coordinates</span></code></p></td>
+<td><p>profile data in two columns</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
+<td><p>Computed by NuAMD.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">camber</span></code></p></td>
+<td><p>Camber line as a function of x. Distance in percent chord between LP and HP curves. Computed by NuAMD.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">thickness</span></code></p></td>
+<td><p>Relative thickness as a function of the x coordinate. Values between 0 and 1 where 1 corresponds to maximum thickness. Computed by NuAMD.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">percentthick</span></code></p></td>
+<td><p>Maximum airfoil thickness as a percentage of chord length [%]</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">maxthick</span></code></p></td>
+<td><p>Scalar values the airfoild thickness as a percentage of chord. Values between 0 and 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tetype</span></code></p></td>
+<td><p>Three options: <code class="docutils literal notranslate"><span class="pre">‘round'</span></code> or <code class="docutils literal notranslate"><span class="pre">'sharp'</span></code> or <code class="docutils literal notranslate"><span class="pre">'flat'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>Horizontal axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
+<td><p>Vertical axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="stack-class">
+<h2>Stack Class<a class="headerlink" href="#stack-class" title="Permalink to this headline">¶</a></h2>
+<span id="stackdeftable"></span><table class="docutils align-default" id="id8">
+<caption><span class="caption-number">Table 11 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>StackDef
+Property</strong></p></th>
+<th class="head"><p><strong>Property Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>Name of the stack / composite material used by
+NuMAD</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plygroups</span></code></p></td>
+<td><p>Array of ply structures, one for each ply.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ply</span> <span class="pre">=</span> <span class="pre">struct('component'),...%</span> <span class="pre">parent</span> <span class="pre">comp</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'materialid',[],...%</span> <span class="pre">materialid</span> <span class="pre">of</span> <span class="pre">ply</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'thickness',[],...</span> <span class="pre">%</span> <span class="pre">thickness</span> <span class="pre">[mm]</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">of</span> <span class="pre">single</span> <span class="pre">ply</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'angle',[],...</span> <span class="pre">%</span> <span class="pre">ply</span> <span class="pre">angle</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'nPlies',[]);</span> <span class="pre">%</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">plies</span></code></p>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">indices</span></code></p></td>
+<td><p>Indices of stack</p>
+<p>[in board station, out board station, 1<sup>st</sup>
+kepoint, 2<sup>nd</sup> keypoint]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="conclusion.html" class="btn btn-neutral float-left" title="Troubleshooting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2013, National Technology &amp; Engineering Solutions of Sandia, LLC (NTESS).
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-88158104-1', 'auto');
+    
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>
