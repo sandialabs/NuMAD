@@ -11,14 +11,12 @@ NuMAD is developed in MATLAB, and requires the following software packages:
 **Required Packages**        **Oldest Compatible Version**
 MATLAB                      Version 9.9  (R2020b)
 FAST (Optional)		    v7
-ANSYS (Optional)	    
-PreComp (Optional)
-BModes (Optional)
-FAST (Optional)
-PLOT3D (Optional)
+ANSYS (Optional)	    R12
+PreComp (Optional)      v1.00.03
+BModes (Optional)       v3.00.00
+Crunch (Optional)       v3.00.00
 ==========================  =============================
 
-.. Kelley: add version requirements
  
 
 Installing NuMAD 
