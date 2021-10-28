@@ -124,7 +124,7 @@ for i = 1:length(data.materials)
     try
         mat(i).layerthickness = data.materials{i}.ply_t*1000;
     catch
-        disp(['Error! material ply thickness ' data.materials{i}.name  ' not defined, assuming 1 mm thickness'])
+        disp(['Warning! material ply thickness ' data.materials{i}.name  ' not defined, assuming 1 mm thickness'])
         mat(i).layerthickness = 1;
     end
 
