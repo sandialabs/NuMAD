@@ -14,8 +14,8 @@
     <xy_genline>20 50</xy_genline>
     <xy_plot3d>20 50</xy_plot3d>
     <xy_flutterinput>20 50</xy_flutterinput>
-    <xy_pathconfig>20 50</xy_pathconfig>
+    <xy_pathconfig>269 376</xy_pathconfig>
     <xy_bpesegments>20 50 800 300</xy_bpesegments>
   <gui_layout>
-  <job_path>C:\data\BARproject\exampleOptimizationDir\parworker1\NuMAD\</job_path>
+  <job_path>C:\data\BARproject\NuMAD\</job_path>
 </numad_settings>
