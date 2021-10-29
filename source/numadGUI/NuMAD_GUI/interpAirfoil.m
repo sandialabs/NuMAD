@@ -1,5 +1,5 @@
     function  [newaf,newchord] = interpAirfoil( coords, chord, spanloc, newspanloc)
-% INTERPAIRFOIL Interpolate to form new airfoil shape.  
+% INTERPAIRFOIL Interpolate existing shapes to form new airfoil shape.
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
 % * Developed by Sandia National Laboratories Wind Energy Technologies *
