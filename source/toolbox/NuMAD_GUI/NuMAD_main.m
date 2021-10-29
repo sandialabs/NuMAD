@@ -3479,7 +3479,7 @@ function cb_generate(cbo,~)
                 %tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
                 cd(app.settings.job_path);
                 ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',...
-                    'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe',app.settings.ansys_product,shell7_name)
+                    'C:\Program Files\ANSYS Inc\v201\ansys\bin\winx64\ANSYS201.exe',app.settings.ansys_product,shell7_name)
                 [status,result] = dos(ansys_call);  % the windows system call to run the above ansys command
                 
                 if isequal(status,0)
