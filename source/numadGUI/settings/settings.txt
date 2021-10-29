@@ -4,7 +4,7 @@
   <bmodes_path>C:\DesignCodes\BModes_v3.00.00\BModes.exe</bmodes_path>
   <precomp_path>C:\DesignCodes\PreComp_v1.00.03\PreComp.exe</precomp_path>
   <gui_layout monitors="1 1 1920 1200 1921 1 1920 1200 3841 905 1280 720 ">
-    <xy_main>352 80 1400 800</xy_main>
+    <xy_main>361 135 1400 800</xy_main>
     <xy_materials>20 50</xy_materials>
     <xy_isotropic>20 50</xy_isotropic>
     <xy_orthotropic>20 50</xy_orthotropic>
