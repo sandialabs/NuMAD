@@ -1,4 +1,4 @@
-function beamForceToAnsysShell(maptype,nlistfile,loads,outfile)
+function ad2ansys(maptype,nlistfile,loads,outfile)
 %AD2ANSYS  Maps AeroDyn forces to an ANSYS blade FE model
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *

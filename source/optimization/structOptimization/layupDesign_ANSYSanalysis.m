@@ -72,7 +72,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
         forcefilename='forces';
         
 
-        beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
+        ad2ansys('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
 
         disp('Forces mapped to ANSYS model')
 
