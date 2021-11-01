@@ -3377,6 +3377,7 @@ function cb_bladerotation(cbo,~)
 end
 
 function cb_generate(cbo,~)
+    global ansysPath
     app = guidata(cbo);  % load application data
     blade = NuMAD_appdata('get','blade');
     

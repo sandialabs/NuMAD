@@ -1,4 +1,4 @@
-<numad_settings release="v2.0.1">
+<numad_settings release="v3.0.0">
   <ansys_path>C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe</ansys_path>
   <ansys_product>ANSYS</ansys_product>
   <bmodes_path>C:\DesignCodes\BModes_v3.00.00\BModes.exe</bmodes_path>
