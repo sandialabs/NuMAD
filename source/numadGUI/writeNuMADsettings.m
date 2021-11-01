@@ -27,7 +27,7 @@ if isempty(workID) % not running on parallel node/worker - write settings
     end
     
     try
-        ReleaseVersion = 'v2.0.1';
+        ReleaseVersion = 'v3.0.0';
         fprintf(fid,'<numad_settings release="%s">\n',ReleaseVersion);
         fprintf(fid,'  <ansys_path>%s</ansys_path>\n',settings.ansys_path);
         fprintf(fid,'  <ansys_product>%s</ansys_product>\n',settings.ansys_product);
