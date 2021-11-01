@@ -180,7 +180,7 @@ obtained by
     components (i.e. flap-wise and edge-wise bending) at a span location
     were projected onto 12 directions as defined by :math:`y_{1}` in 
     :numref:`loadDirections`. All of the :math:`P_{i}\ `\ then transformed 
-    to the :math:`x_{i}` system in ``ad2ansys``.
+    to the :math:`x_{i}` system in ``beamForceToAnsysShell``.
 
 .. _loadDirections:
 .. figure:: /_static/images/loadDirections.png
@@ -247,7 +247,7 @@ where :math:`k` is the number of cross-sections with resultant moment
 data.
 
 The load distributions are then transferred to nodal loads by
-``ad2ansys.m``. ``ad2ansys.m`` generates a text file (usually called forces.src)
+``beamForceToAnsysShell.m``. ``beamForceToAnsysShell.m`` generates a text file (usually called forces.src)
 containing the APDL commands to apply nodal forces for every node on the
 wetted area of the blade. Details of the approach are found in Ref. [1]
 but with modifications to add axial loads. 

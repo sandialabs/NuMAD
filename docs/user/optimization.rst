@@ -269,7 +269,7 @@ and ``source\optimization\sim_tools\getForceDistributionAtTime.m``
 
 the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
-modifications were also made to the function: ``source\toolbox\ad2ansys.m``
+modifications were also made to the function: ``source\toolbox\beamForceToAnsysShell.m``
 to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
 coordinate system at each point along the blade, which rotates along
