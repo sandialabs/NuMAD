@@ -1,5 +1,6 @@
 function [output,outputAllFiles]=runIECDLC6p3(params,output)
-
+global fastPath
+global adamsPath
 CaseName='IECDLC6p3EWM01';
 
 % Switches:
@@ -86,7 +87,7 @@ parfor n=1:length(windLabels)
         switch params.fastsim
             case 'fast'
                 disp('Starting FAST model from Matlab.....')
-                dos([params.fast_path ' ' thisFastName '.fst']);
+                dos([fastPath ' ' thisFastName '.fst']);
                 outname=[CaseName '_' windLabels{n}(1:end-4) '.out'];
                 try movefile([thisFastName '.out'],[params.parDir 'out/' outname]);
                 catch err; warning(err.message); end
@@ -121,8 +122,8 @@ parfor n=1:length(windLabels)
                 fst.Init.TTDspFA=0;
                 fst.Init.TTDspSS=0;
                 writeFastMain(fst,[params.fstfn '_4ADAMS.fst']);
-                dos([fast_path ' ' params.fstfn '_4ADAMS.fst']);
-                dos([adams_path ' ' params.fstfn '_4ADAMS_ADAMS.acf']);
+                dos([fastPath ' ' params.fstfn '_4ADAMS.fst']);
+                dos([adamsPath ' ' params.fstfn '_4ADAMS_ADAMS.acf']);
                 disp('Starting ADAMS model from Matlab.....')
                 outname=[CaseName '_' windLabels{n}(1:end-4) '.out'];
                 try movefile([params.fstfn '_4ADAMS_ADAMS.plt'], [params.parDir 'out/' outname])

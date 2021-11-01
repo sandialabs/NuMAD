@@ -1,5 +1,11 @@
 function output=runIECDLC1p1(params,output)
 
+global fastPath
+global adamsPath  
+global turbsimPath
+
+
+
 CaseName='IECDLC1p1NTM';
 
 % Switches:
@@ -63,7 +69,7 @@ load('seeds')
 % %         tsim.GridHeight=fst.TurbConf.TipRad*2*1.15;
 % %         tsim.GridWidth=tsim.GridHeight;
 % %         writeTurbSim(tsim,['turb_DLC1p1_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp']);
-% %         dos([params.turbsim_path ' turb_DLC1p1_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
+% %         dos([turbsimPath ' turb_DLC1p1_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
 % %         cd(hm)
 % %     end
 % % end
@@ -105,7 +111,7 @@ load('seeds')
 % % %         tsim.GridHeight=fst.TurbConf.TipRad*2*1.15;
 % % %         tsim.GridWidth=tsim.GridHeight;
 % % %         writeTurbSim(tsim,['turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp']);
-% % %         dos([params.turbsim_path ' turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp'],'-echo');
+% % %         dos([turbsimPath ' turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp'],'-echo');
 % % %         cd(hm)
 % % %     end
 % %
@@ -139,7 +145,7 @@ load('seeds')
 % %         switch fastadams
 % %             case 'fast'
 % %                 disp('Starting FAST model from Matlab.....')
-% %                 dos([params.fast_path ' ' thisFastName '.fst']);
+% %                 dos([fastPath ' ' thisFastName '.fst']);
 % %                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.out'];
 % %                 try copyfile([thisFastName '.out'],['out/' outname]);
 % %                 catch err; warning(err.message); end
@@ -170,8 +176,8 @@ load('seeds')
 % %                 fst.Init.TTDspFA=0;
 % %                 fst.Init.TTDspSS=0;
 % %                 writeFastMain(fst,[thisFastName '_4ADAMS.fst']);
-% %                 dos([params.fast_path ' ' thisFastName '_4ADAMS.fst']);
-% %                 dos([params.adams_path ' ' thisFastName '_4ADAMS_ADAMS.acf']);
+% %                 dos([fastPath ' ' thisFastName '_4ADAMS.fst']);
+% %                 dos([adamsPath ' ' thisFastName '_4ADAMS_ADAMS.acf']);
 % %                 disp('Starting ADAMS model from Matlab.....')
 % %                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.out'];
 % %                 try movefile([thisFastName '_4ADAMS_ADAMS.plt'], ['out/' outname])
@@ -234,7 +240,7 @@ for yaw = params.yaw
             tsim.GridHeight=fst.TurbConf.TipRad*2*1.15;
             tsim.GridWidth=tsim.GridHeight;
             writeTurbSim(tsim,['turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp']);
-            dos([params.turbsim_path ' turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp'],'-echo');
+            dos([turbsimPath ' turb_DLC1p1_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.inp'],'-echo');
             cd(hm)
         end
         
@@ -271,7 +277,7 @@ for yaw = params.yaw
             switch params.fastsim
                 case 'fast'
                     disp('Starting FAST model from Matlab.....')
-                    dos([params.fast_path ' ' thisFastName '.fst']);
+                    dos([fastPath ' ' thisFastName '.fst']);
                     outname=[CaseName '_yaw' num2str(yaw) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.out'];
                     try movefile([thisFastName '.out'],['out/' outname]);
                     catch err; warning(err.message); end
@@ -307,8 +313,8 @@ for yaw = params.yaw
                     fst.Init.TTDspFA=0;
                     fst.Init.TTDspSS=0;
                     writeFastMain(fst,[params.fstfn id '_4ADAMS.fst']);
-                    dos([fast_path ' ' params.fstfn id '_4ADAMS.fst']);
-                    dos([adams_path ' ' params.fstfn id '_4ADAMS_ADAMS.acf']);
+                    dos([fastPath ' ' params.fstfn id '_4ADAMS.fst']);
+                    dos([adamsPath ' ' params.fstfn id '_4ADAMS_ADAMS.acf']);
                     disp('Starting ADAMS model from Matlab.....')
                     outname=[CaseName '_yaw' num2str(yaw) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '.out'];
                     %                     try eval(['copyfile ' params.fstfn '_4ADAMS_ADAMS.plt ' 'out/' outname]);

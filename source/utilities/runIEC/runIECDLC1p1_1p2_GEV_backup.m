@@ -1,4 +1,9 @@
-function [output,outputAllFiles1p2,Dminer]=runIECDLC1p1_1p2(params,matData,output,DLCoptions)
+function [output,outputAllFiles1p2,Dminer]=runIECDLC1p1_1p2_GEV_backup(params,matData,output,DLCoptions)
+global fastPath
+global adamsPath  %not used?
+global turbsimPath
+global crunchPath
+
 
 CaseName='IECDLC1p1NTM';
 
@@ -76,7 +81,7 @@ if runturbsim
         tsim.GridHeight=fst.TurbConf.TipRad*2*1.15;
         tsim.GridWidth=tsim.GridHeight;
         writeTurbSim(tsim,['turb_DLC1p2_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp']);
-        dos([params.turbsim_path ' turb_DLC1p2_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
+        dos([turbsimPath ' turb_DLC1p2_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
         cd(hm)
     end
 end
@@ -133,7 +138,7 @@ parfor ii=1:numel(ctr.w)
         switch params.fastsim
             case 'fast'
                 disp('Starting FAST model from Matlab.....')
-                dos([params.fast_path ' ' thisFastName '.fst']);
+                dos([fastPath ' ' thisFastName '.fst']);
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '_dir' num2str(ctr.d(ii)) '.out'];
                 try movefile([thisFastName '.out'],['out/' outname]);
                 catch err; warning(err.message); end
@@ -169,8 +174,8 @@ parfor ii=1:numel(ctr.w)
                 fst.Init.TTDspFA=0;
                 fst.Init.TTDspSS=0;
                 writeFastMain(fst,[thisFastName '_4ADAMS.fst']);
-                dos([params.fast_path ' ' thisFastName '_4ADAMS.fst']);
-                dos([params.adams_path ' ' thisFastName '_4ADAMS_ADAMS.acf']);
+                dos([fastPath ' ' thisFastName '_4ADAMS.fst']);
+                dos([adamsPath ' ' thisFastName '_4ADAMS_ADAMS.acf']);
                 disp('Starting ADAMS model from Matlab.....')
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '_dir' num2str(ctr.d(ii)) '.out'];
                 try movefile([thisFastName '_4ADAMS_ADAMS.plt'], ['out/' outname])
@@ -669,7 +674,7 @@ if runcrunch % Setup and run Crunch for rainflow cycle counting
         disp('...Crunch file generated')
         
         % run crunch
-        dos([params.crunch_path ' ' cru.JobOpt.AggRoot '.cru']);
+        dos([crunchPath ' ' cru.JobOpt.AggRoot '.cru']);
         cd(hm);
         
         % Move rcc files from out/ to rcc/

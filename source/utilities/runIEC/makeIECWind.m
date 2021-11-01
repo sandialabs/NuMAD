@@ -1,5 +1,8 @@
 function iecwind=makeIECWind(params)
-
+global turbsimPath
+global iecwindPath
+global crunchPath
+global mbcPath
 fst=readFastMain([params.fstfn '.fst']);
 ad=readFastAD(strrep(fst.ADFile,'"',''));
 
@@ -43,7 +46,7 @@ while exist(inputFile,'file') ~= 0
     inputFile = ['IEC' num2str(ctr) '.ipt'];
 end
 writeIECWind(iecwind, 'IEC.ipt');%inputFile); % NOTE: IECWIND WILL NOT WORK FOR INPUT FILES UNLESS THEY ARE NAMES 
-dos([params.iecwind_path ' ' inputFile],'-echo');
+dos([iecwindPath ' ' inputFile],'-echo');
 % delete(inputFile)
 % ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

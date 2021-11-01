@@ -1,5 +1,6 @@
 function output=runIECSweep(params,output)
-
+global fastPath
+global adamsPath
 CaseName='IECSweep';
 
 % Switches:
@@ -34,7 +35,7 @@ for n=1:length(windLabels)
         switch params.fastsim
             case 'fast'
                 disp('Starting FAST model from Matlab.....')
-                dos([params.fast_path ' ' thisFastName '.fst']);
+                dos([fastPath ' ' thisFastName '.fst']);
                 outname=[CaseName '_' windLabels{n}(1:end-4) '.out'];
                 movefile([thisFastName '.out'],[params.parDir 'out/' outname]);
                 delete([thisFastName '.elm'], [thisFastName '.fsm'], [thisFastName '.opt']);
@@ -64,8 +65,8 @@ for n=1:length(windLabels)
                 fast.Init.TTDspFA=0;
                 fast.Init.TTDspSS=0;
                 writeFastMain(fast,[params.fstfn '_4ADAMS.fst']);
-                dos([fast_path ' ' params.fstfn '_4ADAMS.fst']);
-                dos([adams_path ' ' params.fstfn '_4ADAMS_ADAMS.acf']);
+                dos([fastPath ' ' params.fstfn '_4ADAMS.fst']);
+                dos([adamsPath ' ' params.fstfn '_4ADAMS_ADAMS.acf']);
                 disp('Starting ADAMS model from Matlab.....')
                 outname=[CaseName '_' windLabels '.out'];
                 eval(['movefile ' params.fstfn '_4ADAMS_ADAMS.plt ' params.parDir 'out/' outname]);

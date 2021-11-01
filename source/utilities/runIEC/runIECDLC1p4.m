@@ -1,4 +1,6 @@
 function [output,outputAllFiles]=runIECDLC1p4(params,output)
+global fastPath
+global adamsPath  
 
 CaseName='IECDLC1p4ECD';
 
@@ -83,7 +85,7 @@ for ii=1:length(ctr.windLabels)
         switch params.fastsim
             case 'fast'
                 disp('Starting FAST model from Matlab.....')
-                dos([params.fast_path ' ' thisFastName '.fst']);
+                dos([fastPath ' ' thisFastName '.fst']);
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' ctr.windLabels{ii}(1:end-4) '_dir' num2str(ctr.d(ii)) '.out'];
                 try movefile([thisFastName '.out'],['out/' outname]);
                 catch err; warning(err.message); end
@@ -119,8 +121,8 @@ for ii=1:length(ctr.windLabels)
                 fst.Init.TTDspFA=0;
                 fst.Init.TTDspSS=0;
                 writeFastMain(fst,[thisFastName '_4ADAMS.fst']);
-                dos([params.fast_path ' ' thisFastName '_4ADAMS.fst']);
-                dos([params.adams_path ' ' thisFastName '_4ADAMS_ADAMS.acf']);
+                dos([fastPath ' ' thisFastName '_4ADAMS.fst']);
+                dos([adamsPath ' ' thisFastName '_4ADAMS_ADAMS.acf']);
                 disp('Starting ADAMS model from Matlab.....')
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' ctr.windLabels{ii}(1:end-4) '.out'];
                 try movefile([thisFastName '_4ADAMS_ADAMS.plt'], ['out/' outname])

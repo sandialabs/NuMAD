@@ -1,4 +1,5 @@
 function output=runLinear(params)
+global fastPath
 
 CaseName='Linear';
 
@@ -60,7 +61,7 @@ if params.simulate
         writeFastAD(ad,strrep(fst.ADFile,'"',''));
         
         disp('Starting FAST model from Matlab.....')
-        dos([params.fast_path ' ' thisFastName '.fst']);
+        dos([fastPath ' ' thisFastName '.fst']);
         outname=sprintf('%s_%dmps.lin',CaseName,ws);
         copyfile([thisFastName '.lin'],['out/' outname]);
         disp('LINearization output files saved under new names.')

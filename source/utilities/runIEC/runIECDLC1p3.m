@@ -1,4 +1,7 @@
 function [output,outputAllFiles]=runIECDLC1p3(params,output)
+global fastPath
+global adamsPath  %not used?
+global turbsimPath
 
 CaseName='IECDLC1p3ETM';
 
@@ -55,7 +58,7 @@ if runturbsim
         tsim.GridHeight=fst.TurbConf.TipRad*2*1.15;
         tsim.GridWidth=tsim.GridHeight;
         writeTurbSim(tsim,['turb_DLC1p3_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp']);
-        dos([params.turbsim_path ' turb_DLC1p3_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
+        dos([turbsimPath ' turb_DLC1p3_' num2str(ctr.w1(ii)) 'mps_seed' num2str(ctr.s1(ii)) '.inp'],'-echo');
         cd(hm)
     end
 end
@@ -110,7 +113,7 @@ parfor ii=1:numel(ctr.w)
         switch params.fastsim
             case 'fast'
                 disp('Starting FAST model from Matlab.....')
-                dos([params.fast_path ' ' thisFastName '.fst']);
+                dos([fastPath ' ' thisFastName '.fst']);
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '_dir' num2str(ctr.d(ii)) '.out'];
                 try movefile([thisFastName '.out'],[params.parDir 'out/' outname]);
                 catch err; warning(err.message); end
@@ -146,8 +149,8 @@ parfor ii=1:numel(ctr.w)
                 fst.Init.TTDspFA=0;
                 fst.Init.TTDspSS=0;
                 writeFastMain(fst,[thisFastName '_4ADAMS.fst']);
-                dos([params.fast_path ' ' thisFastName '_4ADAMS.fst']);
-                dos([params.adams_path ' ' thisFastName '_4ADAMS_ADAMS.acf']);
+                dos([fastPath ' ' thisFastName '_4ADAMS.fst']);
+                dos([adamsPath ' ' thisFastName '_4ADAMS_ADAMS.acf']);
                 disp('Starting ADAMS model from Matlab.....')
                 outname=[CaseName '_yaw' num2str(ctr.y(ii)) '_' num2str(ctr.w(ii)) 'mps_seed' num2str(ctr.s(ii)) '_dir' num2str(ctr.d(ii)) '.out'];
                 try movefile([thisFastName '_4ADAMS_ADAMS.plt'], [params.parDir 'out/' outname])

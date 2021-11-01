@@ -1,5 +1,10 @@
 runIEC_ipt
-
+global fastPath
+global adamsPath  %not used?
+global turbsimPath
+global iecwindPath
+global crunchPath
+global mbcPath
 % initialize arrays
 rotCampbell=[];
 rotSpd=[];
@@ -7,7 +12,7 @@ tmp=[];
 id=1;l=0;
 
 % point to MBC analysis scripts
-addpath(params.mbc_path);
+addpath(mbcPath);
 
 % if ~isfield(params,'ratedSpeed')
 if 0
@@ -80,7 +85,7 @@ for ws=[0 (5:2:22)]
 end
 
 DescStates
-rmpath(params.mbc_path);
+rmpath(mbcPath);
 
 for i=1:length(tmp)
     temp=[zeros(l-length(tmp{i}.freq),1); tmp{i}.freq];
