@@ -71,8 +71,7 @@ blade = BladeDef;
 blade.readYAML(yamlFile);
 blade.mesh = 0.4;
 
-%%  Set ANSYS .exe path in blade object
-blade.paths.ansys = ANSYS_Path;
+%%  Set paths in blade object
 
 if(contains(defLoadsPath,'.'))
     load(defLoadsPath,'defLoadsTable');

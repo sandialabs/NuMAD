@@ -90,7 +90,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable)
     if(isfield(config,'freqConfig'))
         delete 'file.lock';
         rotorFreq = config.freqConfig.ansys.rpm/60;
-        Freq = layupDesign_ANSYSfrequency(config.freqConfig,blade);
+        Freq = layupDesign_ANSYSfrequency(config.freqConfig);
         objVal = objVal + c1*(rotorFreq/(Freq(1)))^2;
     else
         Freq = [1,1];

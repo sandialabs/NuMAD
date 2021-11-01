@@ -1,5 +1,4 @@
-function [freq] = layupDesign_ANSYSfrequency(config,blade)
-    ansys_path = blade.paths.ansys;
+function [freq] = layupDesign_ANSYSfrequency(config)
     ansys_product = 'ANSYS';
     script_name = 'freqAnalysis.mac';
     script_out = 'output.txt';
@@ -62,7 +61,7 @@ function [freq] = layupDesign_ANSYSfrequency(config,blade)
     
     delete 'file.lock';
     ansys_call = sprintf('SET KMP_STACKSIZE=2048k & "%s" -b -p %s -I %s -o %s -np %i',...
-            ansys_path,ansys_product,script_name,script_out,np);
+            ansysPath,ansys_product,script_name,script_out,np);
     disp(ansys_call)
         
     status = 1;

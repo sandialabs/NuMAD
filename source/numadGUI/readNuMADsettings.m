@@ -18,6 +18,9 @@ function settings = readNuMADsettings(filename)
 % ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % don't read settings file when in parallel
 workID = getCurrentWorker;
+global ansysPath
+global bmodesPath
+global precompPath
 if isempty(workID) % not running on parallel node/worker - read settings
     
     
@@ -187,26 +190,11 @@ if isempty(workID) % not running on parallel node/worker - read settings
 else % running on parallel worker -- don't read settings file
     % define settings file for parallel operation    
     disp('Parallel Operation: do not read NuMAD settings file...')
-    
-    settingsFile = which('numad');
-    [baseFolder,~,~] = fileparts(settingsFile);
-%     app.userpath = fullfile(baseFolder, 'settings');    
-    designCodes_path = baseFolder(1:strfind(baseFolder,'DesignCodes')+10);
-    precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-    bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-    
-    if contains(workID.Host,'thor','IgnoreCase',true) % running on Thor
-        ansys_path = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-    elseif contains(workID.Host,'sandia.gov','IgnoreCase',true) % running on local machine
-        ansys_path = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-    else
-        error('hmmm...')
-    end
-    
-    settings.ansys_path = ansys_path;
+
+    settings.ansys_path = ansysPath;
     settings.ansys_product = 'ANSYS';
-    settings.bmodes_path = bmodes_path;
-    settings.precomp_path = precomp_path;
+    settings.bmodes_path = bmodesPath;
+    settings.precomp_path = precompPath;
     settings.monitors = '';
     settings.xy_main = [20 50 1000 600];
     settings.xy_materials = [20 50];

@@ -24,7 +24,7 @@ if isempty(workID) % not running on parallel node/worker - write settings
     fid = fopen(filename,'wt');
     if (fid == -1)
         error('Could not open file "%s"',filename);
-    end
+    end 
     
     try
         ReleaseVersion = 'v3.0.0';

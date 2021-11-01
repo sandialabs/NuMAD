@@ -32,8 +32,9 @@ function varargout = develop__write_shell7(blade,filename)
 
 %tcl: Copy macros into the working directory
 %jcb:  need to decide when (in what script) to copy macros over
+global numadPath
 if isequal(0,nargout)
-    parent_pn = blade.paths.numad;
+    parent_pn = numadPath;
     [success,message,~] = copyfile(fullfile(parent_pn,'FEA','macros','*.mac'),blade.paths.job);
     if ~success
         errordlg(message,'write_shell7: error copying macros');

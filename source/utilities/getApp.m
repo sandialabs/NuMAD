@@ -21,7 +21,7 @@ else
 end
 app.debugging = 0;  % with debugging==1, the data structure is sent to the 
                     % workspace after the gui is constructed
-app.ReleaseVersion = 'v2.0.1';
+app.ReleaseVersion = 'v3.0.0';
 if USING_MATLAB_COMPILER
     app.numadpath = '.';  % point to current directory
 else
@@ -39,78 +39,17 @@ end
 % pc: %APPDATA%\NuMAD\
 % unix: $HOME/.numad/
 % mac:   ???
-ansys_path = ''; precomp_path = ''; bmodes_path = ''; parFlag = false; 
-parID = gcp('nocreate'); workID = getCurrentWorker;
-if ~isempty(parID) % running in parallel, but not in a worker
-    parFlag = true;
-    if contains(parID.Cluster.Profile,'thor','IgnoreCase',true)
-        settingsFile = which('numad');
-        [baseFolder,~,~] = fileparts(settingsFile);
-        app.userpath = fullfile(baseFolder, 'settings');
-        
-        ansys_path = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-        designCodes_path = [parID.Cluster.JobStorageLocation '\DesignCodes'];
-        precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-        bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-        
-    elseif contains(parID.Cluster.Profile,'local','IgnoreCase',true)
-        settingsFile = which('numad');
-        [baseFolder,~,~] = fileparts(settingsFile);
-        app.userpath = fullfile(baseFolder, 'settings');
+parFlag = false; 
 
-        ansys_path = '';
-        designCodes_path = baseFolder(1:strfind(baseFolder,'DesignCodes')+10);
-        precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-        bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
+global ansysPath
+global bmodesPath
+global precompPath
+
+parID = gcp('nocreate'); workID = getCurrentWorker;
+if ~isempty(parID) || ~isempty(workID)% running in parallel, 
+    parFlag = true;
         
-    else % other case, important for batch simulations
-        'parID = Parallel pool cannot be accessed on the workers';
-        % in worker, not parallel
-        settingsFile = which('numad');
-        [baseFolder,~,~] = fileparts(settingsFile);
-        app.userpath = fullfile(baseFolder, 'settings');
-        
-        ansys_path = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-        designCodes_path = baseFolder(1:strfind(baseFolder,'DesignCodes')+10);
-        precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-        bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');    
-    end
-    
-elseif ~isempty(workID) % running in parallel, in a worker (gcp does not work)
-    parFlag = true; 
-    writeSettings = false;
-    
-    if contains(workID.Host,'thor','IgnoreCase',true)
-        % running on the Thor cluster
-        settingsFile = which('numad');
-        [baseFolder,~,~] = fileparts(settingsFile);
-        app.userpath = fullfile(baseFolder, 'settings');
-        
-        ansys_path = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-        designCodes_path = baseFolder(1:strfind(baseFolder,'DesignCodes')+10);
-        precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-        bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-        
-    elseif contains(workID.Host,'sandia.gov','IgnoreCase',true)
-        % running locally
-        settingsFile = which('numad');
-        [baseFolder,~,~] = fileparts(settingsFile);
-        app.userpath = fullfile(baseFolder, 'settings');
-        
-        ansys_path = '';
-        designCodes_path = baseFolder(1:strfind(baseFolder,'DesignCodes')+10);
-        precomp_path = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-        bmodes_path = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-    else
-        error('hmmm...')
-    end    
-    
 elseif ispc
-    % get the windows %APPDATA% path, 
-    % ( typically C:\Users\{username}\AppData\Roaming )    
-% <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ble.
-% change app.userpath so that it saves in the local NuMAD folder
-% % ble.    app.userpath = getenv('APPDATA');
     settingsFile = which('numad');
     [baseFolder,~,~] = fileparts(settingsFile);
     app.userpath = fullfile(baseFolder, 'settings');
@@ -118,17 +57,6 @@ elseif ispc
         mkdir(app.userpath)
     end
     numadfolder = 'NuMAD';
-% % ble.    if isequal(0,exist(fullfile(app.userpath,numadfolder),'dir'))
-% %         % NuMAD folder not found in %APPDATA%, try creating directory
-% %         [success,message,messageid] = mkdir(app.userpath,numadfolder);
-% %         if isequal(0,success)
-% %             errordlg('Could not create NuMAD folder in %APPDATA%','Error');
-% %             error(messageid,message);
-% %             return;
-% %         end
-% %     end 
-% % ble.    app.userpath = fullfile(app.userpath,numadfolder);
-% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ble.
 
 elseif isunix
     % get the unix/linux $HOME path
@@ -156,17 +84,16 @@ else
     return;
 end
 
-
 % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 if isequal(2,exist(fullfile(app.userpath,'settings.txt'),'file'))
     % settings file found, read settings
     app.settings = readNuMADsettings(fullfile(app.userpath,'settings.txt'));
 else
     % settings file not found; create default settings
-    app.settings.ansys_path = ansys_path;
+    app.settings.ansys_path = ansysPath;
     app.settings.ansys_product = 'ANSYS';
-    app.settings.bmodes_path = bmodes_path;
-    app.settings.precomp_path = precomp_path;
+    app.settings.bmodes_path = bmodesPath;
+    app.settings.precomp_path = precompPath;
     app.settings.monitors = '';
     app.settings.xy_main = [20 50 1000 600];
     app.settings.xy_materials = [20 50];

@@ -1,8 +1,7 @@
 function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
-    
-    ansys_path = blade.paths.ansys;
+    global ansysPath
     ansys_product = 'ANSYS';
 
     if isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection) &&config.ansys.analysisFlags.globalBuckling ==0
@@ -525,7 +524,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
         fclose(fid);
 
         ansys_call = sprintf('SET KMP_STACKSIZE=2048k & "%s" -b -p %s -I %s -o %s -np %s',...
-            ansys_path,ansys_product,script_name,script_out,int2str(ncpus));
+            ansysPath,ansys_product,script_name,script_out,int2str(ncpus));
 %         KMP_STACKSIZE is 512k by default. This is not enough therefore SET
 %         KMP_STACKSIZE=2048k has been specifed. 2048k may not be enough for other
 %         simulations. EC
@@ -690,7 +689,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
             for jj=1:length(imperfection)
                 for ii=1:length(linearLoadFactors) 
                    % For each load factor, create a new jobname and database and run a nonlinear static analysis 
-                   nonlinearLoadFactors(ii,jj)=nonlinearBuckling(ansysFilename,ansys_path,ansys_product,config,ii,jj);
+                   nonlinearLoadFactors(ii,jj)=nonlinearBuckling(ansysFilename,ansysPath,ansys_product,config,ii,jj);
                    [wrinklingLimitingElementData(ii,:,jj)]=wrinklingForNonlinearBuckling(blade,config.ansys.analysisFlags.localBuckling,settings,ncpus,ansysFilename,ii,jj);
                 end
                 [minnLLF,minnLLFMode]=min(nonlinearLoadFactors(:,jj))
@@ -785,7 +784,7 @@ end
 
 
 %% Non-linear Buckling Analysis Script
-function nonlinearLoadFactors=nonlinearBuckling(ansysFilename,ansys_path,ansys_product,config,ii,jj)
+function nonlinearLoadFactors=nonlinearBuckling(ansysFilename,ansysPath,ansys_product,config,ii,jj)
     warning('output designvar. Currently does not work for nonlinear cases')
 
 
@@ -850,7 +849,7 @@ function nonlinearLoadFactors=nonlinearBuckling(ansysFilename,ansys_path,ansys_p
     fclose(fid);
 
     %%%%%% RUN ANSYS%%%%%%%
-    ansys_call = sprintf('SET KMP_STACKSIZE=2048k & "%s" -b -p %s -I %s -o %s -np %s',ansys_path,ansys_product,script_name,script_out,int2str(ncpus))    % KMP_STACKSIZE is 512k by default. This is not enough therefore SET
+    ansys_call = sprintf('SET KMP_STACKSIZE=2048k & "%s" -b -p %s -I %s -o %s -np %s',ansysPath,ansys_product,script_name,script_out,int2str(ncpus))    % KMP_STACKSIZE is 512k by default. This is not enough therefore SET
     % KMP_STACKSIZE=2048k has been specifed. 2048k may not be enough for other
     % simulations. EC
     % 

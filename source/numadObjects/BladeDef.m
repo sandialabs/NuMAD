@@ -983,92 +983,18 @@ classdef BladeDef < handle
            BladeDef_to_YAML(obj,file); 
         end
         
-        function establishPaths(obj)
-            % BLE: should call this function (ONCE) as an initialization 
-            % step for design tool path location, if performing analysis
-                       
-            obj.paths.job = pwd; % this may/may not be used -- likely needs to be defined in each loop (not here)
-            
-            % ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            % copied from NuMAD GUI ---------------------------------------
-            
-            USING_MATLAB_COMPILER = false;
-% %             if nargin > 1
-% %                 batchrun = true;
-% %             else
-% %                 batchrun = false;
-% %             end
-            debugging = 0;  % with debugging==1, the data structure is sent to the
-            % workspace after the gui is constructed
-            if USING_MATLAB_COMPILER
-                obj.paths.numad = '.';  % point to current directory
-            else
-                numadmain = which('BladeDef'); % THIS CAUSES PROBLEMS IN COMPILED VERSION
-                if isempty(numadmain)
-                    errordlg('Could not discover NuMAD path.','error');
-                    error('Could not discover NuMAD path.');
-                end
-                [obj.paths.numad,~,~] = fileparts(numadmain);
-            end
-            designCodes_path = obj.paths.numad(1:strfind(obj.paths.numad,'DesignCodes')+10);
-
-            parID = gcp('nocreate'); workID = getCurrentWorker;
-            
-            if ~isempty(parID) % running in parallel, but not in a worker
-                
-                if contains(parID.Cluster.Profile,'thor','IgnoreCase',true)
-                    obj.paths.ansys = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-                    designCodes_path = [parID.Cluster.JobStorageLocation '\DesignCodes'];
-                    obj.paths.precomp = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-                    obj.paths.bmodes = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-                    
-                elseif contains(parID.Cluster.Profile,'local','IgnoreCase',true)
-                    obj.paths.ansys = 'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-                    obj.paths.precomp = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-                    obj.paths.bmodes = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-                    
-                else % other case, important for batch simulations
-                    'parID = Parallel pool cannot be accessed on the workers';
-                    % in worker, not parallel                  
-                    obj.paths.ansys = '\\thor-storage\CLUSTERAPPS\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-                    obj.paths.precomp = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-                    obj.paths.bmodes = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-                end
-                obj.paths.batch_run = true;
-                
-            elseif ispc
-                global ANSYS_Path
-                obj.paths.ansys = ANSYS_Path;%'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
-                obj.paths.precomp = fullfile(designCodes_path,'PreComp_v1.00.03','PreComp.exe');
-                obj.paths.bmodes = fullfile(designCodes_path,'BModes_v3.00.00','BModes.exe');
-                obj.paths.batch_run = false;
-                
-            elseif isunix
-                % get the unix/linux $HOME path
-                userpath = getenv('HOME');
-                numadfolder = '.numad';
-                if isequal(0,exist(fullfile(userpath,numadfolder),'dir'))
-                    % NuMAD folder not found in %APPDATA%, try creating directory
-                    [success,message,messageid] = mkdir(userpath,numadfolder);
-                    if isequal(0,success)
-                        errordlg('Could not create .numad folder in $HOME','Error');
-                        error(messageid,message);
-                        return;
-                    end
-                end
-                obj.paths.batch_run = false;
-                
-            elseif ismac
-                errordlg('Mac is not currently supported by NuMAD.','Error');
-                error('Mac is not currently supported by NuMAD.');
-                
-            else
-                errordlg('Your system is not supported by NuMAD.','Error');
-                error('Your system is not supported by NuMAD.');
-            end            
-        end
                 
         function bmodesFrequencies = generateBeamModel(obj)
+            global precompPath
+            global bmodesPath
+            
+            parID = gcp('nocreate'); 
+            if ~isempty(parID) % running in parallel, but not in a worker
+                batchRun = true;
+            else
+                batchRun = false;
+            end
+            
             % generate blade sectional properties to be used for
             % aeroelastic analyses
             
@@ -1096,12 +1022,12 @@ classdef BladeDef < handle
             % create precomp input files
             precomp = Blade2PreComp(obj,obj.matdb);
             % run precomp
-            PreComp_SectionData = runPreCompAnalysis(precomp,obj.paths.precomp,obj.paths.batch_run);
+            PreComp_SectionData = runPreCompAnalysis(precomp,precompPath,batchRun);
             
             % Use BModes to calculate mode shapes based on section properties from PreComp
-            bmodesFrequencies = BModes4Blade2PreComp2FASTBlade(obj,obj.paths.bmodes,PreComp_SectionData.data);
+            bmodesFrequencies = BModes4Blade2PreComp2FASTBlade(obj,bmodesPath,PreComp_SectionData.data);
             % fit polynomials to the modes
-            if obj.paths.batch_run
+            if batchRun
                 modeShapes=polyfitmodes([1 3 2]); % should change this to automatically assign mode order
             else
                 modeShapes=polyfitmodes;
@@ -1109,12 +1035,12 @@ classdef BladeDef < handle
                         
             % Generate FAST Blade file from this analysis
             warning('need PresweepRef and PrecurveRef variables from NuMAD')
-            PreComp2FASTBlade_BladeDef(obj,PreComp_SectionData.data,modeShapes,obj.paths.batch_run);
+            PreComp2FASTBlade_BladeDef(obj,PreComp_SectionData.data,modeShapes,batchRun);
             
             disp('FAST Blade file has been written: FASTBlade_precomp.dat')
             
             % Input file cleanup
-            if obj.paths.batch_run
+            if batchRun
                 qu='Yes'; % always cleanup during batch runs
             else
                 qu=questdlg('Delete all miscellaneous input/output files?','File Cleanup...','Yes','No','No');
@@ -1137,16 +1063,15 @@ classdef BladeDef < handle
         
         function generateFEA(obj) % can add flags into the call -- e.g., element type, ...
             % NOTES: ******************************************************
-            % 1. you need to run "blade.establishPaths" to establish ANSYS file path first
-            % 2. check that functionality from original code is not needed
-            % 3. FIXED -- shell7 needs to read MatDBsi.txt file, store this
+            % 1. check that functionality from original code is not needed
+            % 2. FIXED -- shell7 needs to read MatDBsi.txt file, store this
             % internally if the file isn't used elsewhere (blade.matdb)
-            % 4. FIX -- in shell7 file, need to define PrecurveRef and
+            % 3. FIX -- in shell7 file, need to define PrecurveRef and
             % PresweepRef (currently set to zero)
-            % 5. FIX -- web data not saved in same format as NuMAD
+            % 4. FIX -- web data not saved in same format as NuMAD
             % (data.shearweb structure in NuMAD)
             % *************************************************************
-
+            global ansysPath
             % define ANSYS model settings (can be options in generateFEA)
             config.ansys.BoundaryCondition = 'cantilered';
             config.ansys.ElementSystem = '181';
@@ -1163,63 +1088,7 @@ classdef BladeDef < handle
             config.ansys.FailureCriteria(:,1) = fcopts';
             config.ansys.FailureCriteria(:,2) = deal({false});
             
-                        
-            % ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            % code from NuMAD GUI -- check to see what should be added
-% %             blade = NuMAD_appdata('get','blade');
-% %             
-% %             cb_checkbladedata(cbo,[]);
-% %             cb_checkmatdata(cbo,[]);
-% %             
-% %             if app.checkpassed
-% %                 if app.ansys.shell7gen
-% %                     shell7_name = 'shell7.src';
-% %                 else
-% %                     shell7_name = '_TMP_shell7.src';
-% %                 end
-% %                 filename = fullfile(app.settings.job_path,shell7_name);
-% %                 write_shell7(app,blade,filename);
-% %                 if app.ansys.dbgen
-% %                     if isempty(app.settings.ansys_path)
-% %                         errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted');
-% %                         return;
-% %                     end
-% %                     old_dir = pwd;
-% %                     try
-% %                         %tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
-% %                         cd(app.settings.job_path);
-% %                         ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',...
-% %                             app.settings.ansys_path,app.settings.ansys_product,shell7_name);
-% %                         [status,result] = dos(ansys_call);  % the windows system call to run the above ansys command
-% %                         
-% %                         if isequal(status,0)
-% %                             % dos command completed successfully; log written to output.txt
-% %                             if app.batchrun
-% %                                 disp('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.');
-% %                             else
-% %                                 helpdlg('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed');
-% %                             end
-% %                         end
-% %                         if isequal(status,7)
-% %                             % an error has occured which is stored in output.txt
-% %                             if app.batchrun
-% %                                 disp('Could not complete ANSYS call. See "output.txt" for details.');
-% %                             else
-% %                                 warndlg('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call');
-% %                             end
-% %                         end
-% %                         if 0==app.ansys.shell7gen
-% %                             delete(shell7_name);  % shell7 not requested, delete temp file
-% %                         end
-% %                         cd(old_dir);
-% %                     catch ME
-% %                         cd(old_dir);
-% %                         rethrow(ME);
-% %                     end
-% %                 end
-% %             end
-            % original code from NuMAD GUI ended --------------------------
-            % ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                       
             
             
             % Generate a mesh using shell elements -- can add options here
@@ -1230,14 +1099,14 @@ classdef BladeDef < handle
             develop__write_shell7(obj,filename);
             
             if obj.ansys.dbgen
-                if isempty(obj.paths.ansys)
+                if isempty(ansysPath)
                     errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted');
                     return;
                 end                
                 try
                     %tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
                     ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',...
-                        obj.paths.ansys,ansys_product,shell7_name);
+                        ansysPath,ansys_product,shell7_name);
                     [status,result] = dos(ansys_call);  % the windows system call to run the above ansys command
                     
                     if isequal(status,0)

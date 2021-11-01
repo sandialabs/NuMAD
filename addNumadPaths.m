@@ -1,13 +1,18 @@
-% add NuMAD source and ANSYS *.exe to MATLAB path
+% set up paths 
 clc
-
 % add path for NuMAD toolbox
-NuMAD_path = 'C:\DesignCodes\NuMAD\source\';
-addpath(genpath(NuMAD_path))
+
+global numadPath
+global ansysPath
+global bmodesPath
+global precompPath
+numadPath = 'C:\DesignCodes\NuMAD\source\';
+ansysPath = 'C:\Program Files\ANSYS Inc\v181\ansys\bin\winx64\ANSYS181.exe';
+precompPath = 'C:\DesignCodes\PreComp_v1.00.03\PreComp.exe';
+bmodesPath = 'C:\DesignCodes\BModes_v3.00.00\BModes.exe';
 
 
-% add path for ANSYS
-global ANSYS_Path
-ANSYS_Path = 'C:\Program Files\ANSYS Inc\v201\ansys\bin\winx64\ANSYS201.exe';
 
-disp('NuMAD source added to MATLAB path, including: objects, optimization, and toolbox')
+addpath(genpath(numadPath))
+
+disp('Design Code path setup script complete.)')
