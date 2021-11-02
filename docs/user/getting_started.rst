@@ -10,13 +10,16 @@ NuMAD is developed in MATLAB, and requires the following software packages:
 ==========================  =============================
 **Required Packages**        **Oldest Compatible Version**
 MATLAB                      Version 9.9  (R2020b)
-FAST (Optional)		    v7
 ANSYS (Optional)	    R12
+FAST (Optional)		    v7
+AeroDyn (Optional)      v13.00.00
 PreComp (Optional)      v1.00.03
+TurbSim (Optional)      v1.50
+IECWind (Optional)      v5.01.01
 BModes (Optional)       v3.00.00
 Crunch (Optional)       v3.00.00
 ==========================  =============================
-
+.. Unsupported IECWind, ADAMS
  
 
 Installing NuMAD 
@@ -30,8 +33,8 @@ There are 3 directories within ``NuMAD/source`` : ``toolbox``,
 ============================ ===================================================
 Source Directory       	 	Description
 ============================ ===================================================
-``toolbox``			contains basic functions and operations needed for performing analysis with packages such as precomp, BPE, and ANSYS
-``objects``			contains the class definition of the blade object, which stores the geometric, airfoil and material data for a given blade design
+``numadGUI``			contains files related to the graphical user interface (GUI) which was introduced in NuMAD v2.0.
+``objects``			contains files associated to the class definition of the blade object and ``.yaml`` file capabilities.
 ``optimization``		contains bundles of tools for several purposes, including ``runIEC``, as explained further in the :ref:`AeroelasticSimRunIEC` section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading
 ============================ ===================================================
 
