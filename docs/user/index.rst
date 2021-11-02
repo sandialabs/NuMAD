@@ -8,11 +8,12 @@ User’s Guide
    :maxdepth: 2
    
    getting_started.rst
+   operation_modes.rst
    blade_definition.rst
    running_numad.rst
    aero_sim.rst
    fea.rst
    optimization.rst
-   numad.rst
+   gui_coupling.rst
    conclusion.rst
    appendix.rst

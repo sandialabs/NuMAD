@@ -7,9 +7,12 @@ Finite Element Analysis Operations
 
 Mesh Generation
 ---------------
-
 The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is ``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
+blade is 
+ 
+    >> blade.generateFEA
+
+``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from 
@@ -206,7 +209,7 @@ ANSYS model. Moreover, both create the ``loadsTable`` variable needed by
 section. ``getForceDistributionAtTime.m`` handles can be called for the
 loads at a given time while ``FastLoads4ansys.m``} builds the ``loadsTable`` for
 each analysis direction. The ``loadsTable`` variable
-is\ :math:`\ 1 \times n` MATLAB cell array where :math:`\text{\ n}` is
+is\ :math:`\ 1 \times n` MATLAB cell array where :math:`n` is
 the number of analysis directions. 
 
 .. Note:: 
