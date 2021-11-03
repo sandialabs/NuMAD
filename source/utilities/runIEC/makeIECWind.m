@@ -1,8 +1,7 @@
 function iecwind=makeIECWind(params)
-global turbsimPath
+
 global iecwindPath
-global crunchPath
-global mbcPath
+
 fst=readFastMain([params.fstfn '.fst']);
 ad=readFastAD(strrep(fst.ADFile,'"',''));
 
