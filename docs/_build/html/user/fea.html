@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
@@ -118,7 +119,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="numad.html">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
@@ -199,11 +200,15 @@
 <div class="section" id="mesh-generation">
 <span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this headline">¶</a></h2>
 <p>The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is <code class="docutils literal notranslate"><span class="pre">source\optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
+blade is</p>
+<blockquote>
+<div><p>&gt;&gt; blade.generateFEA</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">source\optimization\structOptimization\layupDesign_ANSYSmesh.m</span></code></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is currently necessary to have created the NuMAD input file from
-NuMAD 2.0, before attempting to run this function. See <a class="reference internal" href="numad.html#numad2p0"><span class="std std-ref">Coupling to NuMAD 2.0</span></a> for further details.</p>
+NuMAD 2.0, before attempting to run this function. See <a class="reference internal" href="../introduction/release_notes.html#numadv2"><span class="std std-ref">NuMAD v2.0</span></a> for further details.</p>
 </div>
 <p>As an example, the following call would build a mesh for the blade blade
 object</p>
@@ -340,7 +345,7 @@ design use. Also unlike the deflection case, the two bending-moment
 components (i.e. flap-wise and edge-wise bending) at a span location
 were projected onto 12 directions as defined by <span class="math notranslate nohighlight">\(y_{1}\)</span> in
 <a class="reference internal" href="#loaddirections"><span class="std std-numref">Fig. 4</span></a>. All of the <span class="math notranslate nohighlight">\(P_{i}\ \)</span>then transformed
-to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">ad2ansys</span></code>.</p>
+to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell</span></code>.</p>
 </div>
 <div class="figure align-default" id="id3">
 <span id="loaddirections"></span><a class="reference internal image-reference" href="../_images/loadDirections.png"><img alt="../_images/loadDirections.png" src="../_images/loadDirections.png" style="width: 3.06468in; height: 1.72388in;" /></a>
@@ -361,7 +366,7 @@ ANSYS model. Moreover, both create the <code class="docutils literal notranslate
 section. <code class="docutils literal notranslate"><span class="pre">getForceDistributionAtTime.m</span></code> handles can be called for the
 loads at a given time while <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code>} builds the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> for
 each analysis direction. The <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable
-is<span class="math notranslate nohighlight">\(\ 1 \times n\)</span> MATLAB cell array where <span class="math notranslate nohighlight">\(\text{\ n}\)</span> is
+is<span class="math notranslate nohighlight">\(\ 1 \times n\)</span> MATLAB cell array where <span class="math notranslate nohighlight">\(n\)</span> is
 the number of analysis directions.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -403,7 +408,7 @@ the following linear system of equations for
 <p>where <span class="math notranslate nohighlight">\(k\)</span> is the number of cross-sections with resultant moment
 data.</p>
 <p>The load distributions are then transferred to nodal loads by
-<code class="docutils literal notranslate"><span class="pre">ad2ansys.m</span></code>. <code class="docutils literal notranslate"><span class="pre">ad2ansys.m</span></code> generates a text file (usually called forces.src)
+<code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell.m</span></code>. <code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell.m</span></code> generates a text file (usually called forces.src)
 containing the APDL commands to apply nodal forces for every node on the
 wetted area of the blade. Details of the approach are found in Ref. [1]
 but with modifications to add axial loads.</p>
@@ -423,7 +428,7 @@ moment, in the <span class="math notranslate nohighlight">\(w_{i}\)</span> coord
 case is as follows</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="p">=</span><span class="n">layupDesign_FASTanalysis</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">DLCoptions</span><span class="p">,</span><span class="n">runFASTAnal</span><span class="p">,</span><span class="n">useParallel</span><span class="p">)</span><span class="w"> </span>
 <span class="n">loadsTable</span><span class="w"> </span><span class="p">=</span><span class="n">FastLoads4ansys</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="n">fast_gage</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="w"></span>
-<span class="n">ad2ansys</span><span class="p">(</span><span class="n">maptype</span><span class="p">,</span><span class="n">nlistfile</span><span class="p">,</span><span class="w"> </span><span class="n">loadsTable</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="n">outfile</span><span class="p">)</span><span class="w"></span>
+<span class="n">beamForceToAnsysShell</span><span class="p">(</span><span class="n">maptype</span><span class="p">,</span><span class="n">nlistfile</span><span class="p">,</span><span class="w"> </span><span class="n">loadsTable</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="n">outfile</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>where maptype is either <code class="docutils literal notranslate"><span class="pre">'map2D_fxM0'</span></code> or <code class="docutils literal notranslate"><span class="pre">'map3D_fxM0'</span></code>. Note that these
@@ -449,10 +454,10 @@ wrinkling</p></li>
 </ul>
 <p>The required inputs are a blade object, the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>, and the <code class="docutils literal notranslate"><span class="pre">config</span></code>
 variable. The script knows which analysis types it should run based on
-config. See <a class="reference internal" href="#configtable"><span class="std std-numref">Table 2</span></a> for the structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code>
+config. See <a class="reference internal" href="#configtable"><span class="std std-numref">Table 3</span></a> for the structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code>
 variable.</p>
 <span id="configtable"></span><table class="colwidths-given docutils align-default" id="id5">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">Structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20%" />
 <col style="width: 20%" />
@@ -560,10 +565,10 @@ respectively.</p>
 <div class="section" id="failure">
 <span id="failurefea"></span><h3>Failure<a class="headerlink" href="#failure" title="Permalink to this headline">¶</a></h3>
 <p>If material failure is being considered in an analysis, set
-<code class="docutils literal notranslate"><span class="pre">config.ansys.failure</span></code> equal to any one of the entries in <a class="reference internal" href="#failurecriteriaoptions"><span class="std std-numref">Table 3</span></a>. An
+<code class="docutils literal notranslate"><span class="pre">config.ansys.failure</span></code> equal to any one of the entries in <a class="reference internal" href="#failurecriteriaoptions"><span class="std std-numref">Table 4</span></a>. An
 empty string will skip any material failure analyses.</p>
 <span id="failurecriteriaoptions"></span><table class="colwidths-given docutils align-default" id="id6">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Supported failure criteria and associated <code class="docutils literal notranslate"><span class="pre">config</span></code> flags.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Supported failure criteria and associated <code class="docutils literal notranslate"><span class="pre">config</span></code> flags.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -669,9 +674,9 @@ fraction at each spanwise fatigue location or several fatigue damage
 fractions each corresponding to a region in <a class="reference internal" href="blade_definition.html#bladekeypoints"><span class="std std-numref">Fig. 1</span></a>. The former is
 accomplished by setting <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.fatigue</span> <span class="pre">=</span> <span class="pre">[&quot;ALL&quot;]</span></code>.
 The latter is accomplished by setting <code class="docutils literal notranslate"><span class="pre">config.ansys.analysisFlags.fatigue</span></code>
-to a MATLAB string array where any and all Region Names in <a class="reference internal" href="#regionnames"><span class="std std-numref">Table 4</span></a> are allowed.</p>
+to a MATLAB string array where any and all Region Names in <a class="reference internal" href="#regionnames"><span class="std std-numref">Table 5</span></a> are allowed.</p>
 <span id="regionnames"></span><table class="colwidths-given docutils align-default" id="id7">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">Region Names to specify in config for fatigue analyses.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Region Names to specify in config for fatigue analyses.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />

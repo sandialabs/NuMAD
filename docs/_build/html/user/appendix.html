@@ -95,12 +95,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="numad.html">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
@@ -189,7 +190,7 @@
 <div class="section" id="blade-class">
 <h2>Blade Class<a class="headerlink" href="#blade-class" title="Permalink to this headline">¶</a></h2>
 <span id="bladedeftable"></span><table class="colwidths-given docutils align-default" id="id2">
-<caption><span class="caption-number">Table 5 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>: A class definition for wind &amp; water turbine blades.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 6 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>: A class definition for wind &amp; water turbine blades.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -225,13 +226,13 @@
 <td><p>Reference axis location along <span class="math notranslate nohighlight">\(x_{2}\)</span> [m] (see Figure 2‑1)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">materials</span></code></p></td>
-<td><p>MaterialDef – See <a class="reference internal" href="#materialdeftable"><span class="std std-numref">Table 7</span></a></p></td>
+<td><p>MaterialDef – See <a class="reference internal" href="#materialdeftable"><span class="std std-numref">Table 8</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stations</span></code></p></td>
-<td><p>StationDef – See <a class="reference internal" href="#stationdeftable"><span class="std std-numref">Table 8</span></a></p></td>
+<td><p>StationDef – See <a class="reference internal" href="#stationdeftable"><span class="std std-numref">Table 9</span></a></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">components</span></code></p></td>
-<td><p>ComponentDef – See <a class="reference internal" href="#componentdeftable"><span class="std std-numref">Table 9</span></a>. Blade components such as spar, panels, etc…</p></td>
+<td><p>ComponentDef – See <a class="reference internal" href="#componentdeftable"><span class="std std-numref">Table 10</span></a>. Blade components such as spar, panels, etc…</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sparcapwidth</span></code></p></td>
 <td><p>1 × 2  array. Defines distance between keypoints b &amp; c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap</p></td>
@@ -263,7 +264,7 @@
 </tbody>
 </table>
 <span id="bladedefmethodstable"></span><table class="colwidths-given docutils align-default" id="id3">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text">List of Methods for <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 7 </span><span class="caption-text">List of Methods for <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 100%" />
 </colgroup>
@@ -296,39 +297,37 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writeYAML</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">establishPaths</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generateBeamModel</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generateBeamModel</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generateFEA</span> <span class="pre">(not</span> <span class="pre">working)</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generateFEA</span> <span class="pre">(not</span> <span class="pre">working)</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">writeBOMxls</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writeBOMxls</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writePlot3D</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">writePlot3D</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getprofileTEtype</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getprofileTEtype</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">downsampleProfile</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">downsampleProfile</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delete</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">delete</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">surf</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">surf</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotregions</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotregions</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotgeom</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotgeom</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotbom</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotbom</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotprofile</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotprofile</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">findLayerExtents</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">findLayerExtents</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">findRegionExtents</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">findRegionExtents</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getTEtype</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">getTEtype</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fprintf_matrix</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fprintf_matrix</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -336,7 +335,7 @@
 <div class="section" id="material-class">
 <h2>Material Class<a class="headerlink" href="#material-class" title="Permalink to this headline">¶</a></h2>
 <span id="materialdeftable"></span><table class="colwidths-given docutils align-default" id="id4">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 8 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -431,7 +430,7 @@
 <div class="section" id="station-class">
 <h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
 <span id="stationdeftable"></span><table class="colwidths-given docutils align-default" id="id5">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>: A class definition for blade stations.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 9 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>: A class definition for blade stations.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -443,7 +442,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>airfoil</p></td>
-<td><p>AirfoilDef – See <a class="reference internal" href="#airfoildeftable"><span class="std std-numref">Table 10</span></a></p></td>
+<td><p>AirfoilDef – See <a class="reference internal" href="#airfoildeftable"><span class="std std-numref">Table 11</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>spanlocation</p></td>
 <td><p>Spanwise location where station is defined [m]</p></td>
@@ -454,7 +453,7 @@
 <div class="section" id="component-class">
 <h2>Component Class<a class="headerlink" href="#component-class" title="Permalink to this headline">¶</a></h2>
 <span id="componentdeftable"></span><table class="colwidths-given docutils align-default" id="id6">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>: A class definition for blade components.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 10 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>: A class definition for blade components.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -495,7 +494,7 @@
 <div class="section" id="airfoil-class">
 <h2>Airfoil Class<a class="headerlink" href="#airfoil-class" title="Permalink to this headline">¶</a></h2>
 <span id="airfoildeftable"></span><table class="colwidths-given docutils align-default" id="id7">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 11 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -545,7 +544,7 @@
 <div class="section" id="stack-class">
 <h2>Stack Class<a class="headerlink" href="#stack-class" title="Permalink to this headline">¶</a></h2>
 <span id="stackdeftable"></span><table class="docutils align-default" id="id8">
-<caption><span class="caption-number">Table 11 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />

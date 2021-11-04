@@ -20,10 +20,11 @@ analyses, and the object-oriented data structures.
    International Energy Agency (IEA) Wind Task 37 blade ontology. This
    is known to have enhanced collaboration.
 
--  Although analysis of tip-deflection, buckling, material rupture,
-   total mass, and frequencies were possible in NuMAD 2.0, the new
-   version automates the transfer of those data from ANSYS back to NuMAD
-   for the optimizer or post-processing.
+-  3D FEA shell analyses have been detached from the GUI and can now be 
+   parameterized for various parameter studies and optimization. Data I/O for 
+   ANSYS has been automated for mesh generation as well as various analyses, 
+   such as tip-deflection, buckling, material rupture, total mass, and
+   frequencies. 
 
 -  A technique was developed to determine the design loads. The
    thousands of section forces and moments that occurred during the
@@ -65,6 +66,8 @@ Prior Releases
 
 NuMAD v2.0
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. TODO: Link to release on GitHub and add DOI
+
 * Initial release of NuMAD is on the `NuMAD2p0 static branch <https://github.com/sandialabs/NuMAD/tree/NuMAD2p0>`_ 
 
 * Refer to the former user’s manual in PDF form (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012-7028.pdf>`__).

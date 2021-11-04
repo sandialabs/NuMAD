@@ -40,7 +40,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Blade Definition" href="blade_definition.html" />
+    <link rel="next" title="Modes of Operation" href="operation_modes.html" />
     <link rel="prev" title="User’s Guide" href="index.html" /> 
 </head>
 
@@ -102,12 +102,13 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="numad.html">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
@@ -190,33 +191,36 @@
 <p>NuMAD is developed in MATLAB, and requires the following software packages:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 46%" />
-<col style="width: 54%" />
+<col style="width: 70%" />
+<col style="width: 30%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Required Packages</strong></p></td>
 <td><p><strong>Oldest Compatible Version</strong></p></td>
 </tr>
-<tr class="row-even"><td><p>MATLAB</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></td>
 <td><p>Version 9.9  (R2020b)</p></td>
 </tr>
-<tr class="row-odd"><td><p>FAST (Optional)</p></td>
-<td><p>v7</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/fastv7.html">FAST (Optional)</a></p></td>
+<td><p>v7.02.00d</p></td>
 </tr>
-<tr class="row-even"><td><p>ANSYS (Optional)</p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.ansys.com/">ANSYS (Optional)</a></p></td>
+<td><p>R12</p></td>
 </tr>
-<tr class="row-odd"><td><p>PreComp (Optional)</p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/precomp.html">PreComp (Optional)</a></p></td>
+<td><p>v1.00.03</p></td>
 </tr>
-<tr class="row-even"><td><p>BModes (Optional)</p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/turbsim.html">TurbSim (Optional)</a></p></td>
+<td><p>v1.50</p></td>
 </tr>
-<tr class="row-odd"><td><p>FAST (Optional)</p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/iecwind.html">IECWind (Optional)</a></p></td>
+<td><p>v5.01.01</p></td>
 </tr>
-<tr class="row-even"><td><p>PLOT3D (Optional)</p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/bmodes.html">BModes (Optional)</a></p></td>
+<td><p>v3.00.00</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/crunch.html">Crunch (Optional)</a></p></td>
+<td><p>v3.00.00</p></td>
 </tr>
 </tbody>
 </table>
@@ -224,8 +228,8 @@
 <div class="section" id="installing-numad">
 <h2>Installing NuMAD<a class="headerlink" href="#installing-numad" title="Permalink to this headline">¶</a></h2>
 <p>The code containing all open-source tools for NuMAD can be downloaded or
-cloned from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.
-There are 3 directories within <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> : <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
+cloned from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.</p>
+<p>There are 3 directories within <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> : <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
 <code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>, their purpose is described in the table below:</p>
 <table class="docutils align-default">
 <colgroup>
@@ -238,40 +242,26 @@ There are 3 directories within <code class="docutils literal notranslate"><span 
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">toolbox</span></code></p></td>
-<td><p>contains basic functions and operations needed for performing analysis with packages such as precomp, BPE, and ANSYS</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numadGUI</span></code></p></td>
+<td><p>contains files related to the graphical user interface (GUI) which was introduced in NuMAD v2.0.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">objects</span></code></p></td>
-<td><p>contains the class definition of the blade object, which stores the geometric, airfoil and material data for a given blade design</p></td>
+<td><p>contains files associated to the class definition of the blade object and <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file capabilities.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimization</span></code></p></td>
 <td><p>contains bundles of tools for several purposes, including <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, as explained further in the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading</p></td>
 </tr>
 </tbody>
 </table>
-<p>It is advisable to save the NuMAD source
-in a directory called <code class="docutils literal notranslate"><span class="pre">DesignCodes\NuMAD</span></code>, for example <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code>.
-Before beginning any design or analysis of a
-blade, the paths of these folders should be added to the MATLAB domain
-of working directories, using the script <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code>. All tools and
-functions distrubuted with the NuMAD source code will then be accessible from from a MATLAB
-script or the command window. If you intend to use NuMAD in conjuction with ANSYS then the global variable
-<code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> needs to be modified to your ANSYS working directory file path name.</p>
 <div class="section" id="installation-steps">
 <h3>Installation Steps<a class="headerlink" href="#installation-steps" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Install <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></li>
-<li><p>Open <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> in an editor and set the <code class="docutils literal notranslate"><span class="pre">NuMAD_path</span></code> to the source directory in the repo. It is highly recommended that the contents of the repo be located at <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD</span></code>.</p></li>
-<li><p>If you plan to use ANSYS, update the <code class="docutils literal notranslate"><span class="pre">ANSYS_Path</span></code> variable to the actual path to your ANSYS executable. Save and close <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m.</span></code></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> in an editor and set the <code class="docutils literal notranslate"><span class="pre">numadPath</span></code> to point to the source directory in the repo.</p></li>
+<li><p>If you plan to use ANSYS or other analysis programs, update the corresponding path variable to the actual path of each executable you plan to use. Save and close <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m.</span></code></p></li>
 <li><p>Move the <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> file to the MATLAB directory of your user account (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Users\username\Documents\MATLAB</span></code>)</p></li>
 </ol>
 <p>Every time a new MATLAB session is started type <code class="docutils literal notranslate"><span class="pre">addNumadPaths</span></code> to be able to run NuMAD.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If a path other than <code class="docutils literal notranslate"><span class="pre">C:\DesignCodes\NuMAD\source\</span></code> is used, path definitions in the
-<code class="docutils literal notranslate"><span class="pre">runIEC_ipt.m</span></code> input settings script may need to be modified, as described further in
-the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, and the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>.</p>
-</div>
 </div>
 </div>
 </div>
@@ -282,7 +272,7 @@ the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><spa
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="blade_definition.html" class="btn btn-neutral float-right" title="Blade Definition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="operation_modes.html" class="btn btn-neutral float-right" title="Modes of Operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="User’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

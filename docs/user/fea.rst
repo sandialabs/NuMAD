@@ -16,7 +16,7 @@ blade is
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from 
-    NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
+    NuMAD 2.0, before attempting to run this function. See :ref:`NuMADv2` for further details.
 
 As an example, the following call would build a mesh for the blade blade
 object

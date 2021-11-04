@@ -83,7 +83,7 @@ feedback from maintainers and users of the code.
 Coding conventions
 -------------------
 
-Start reading our code and you'll get the hang of it. We optimize for readability:
+These are the conventions we require. Note that these have not necessarily been followed in the past but moving forward the will:
 
 - We indent using four spaces (soft tabs)
 - We ALWAYS put spaces after list items and method parameters (`[1, 2, 3]`, not `[1,2,3]`), around operators (`x += 1`, not `x+=1`), and around hash arrows.

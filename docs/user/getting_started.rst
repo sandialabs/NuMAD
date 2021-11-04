@@ -7,8 +7,7 @@ Software Requirements
 ----------------------
 NuMAD is developed in MATLAB, and requires the following software packages:
 
-
-==========================  						=============================
+=====================================================================  =============================
 **Required Packages**        						**Oldest Compatible Version**
 `MATLAB <https://www.mathworks.com/products/matlab.html>`_  		Version 9.9  (R2020b)
 `FAST (Optional) <https://www.nrel.gov/wind/nwtc/fastv7.html>`_ 	v7.02.00d
@@ -18,7 +17,8 @@ NuMAD is developed in MATLAB, and requires the following software packages:
 `IECWind (Optional) <https://www.nrel.gov/wind/nwtc/iecwind.html>`_     v5.01.01
 `BModes (Optional) <https://www.nrel.gov/wind/nwtc/bmodes.html>`_       v3.00.00
 `Crunch (Optional) <https://www.nrel.gov/wind/nwtc/crunch.html>`_       v3.00.00
-========================== 						=============================
+=====================================================================  =============================
+
 .. Unsupported IECWind, ADAMS
  
 

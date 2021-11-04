@@ -41,7 +41,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Use Cases" href="numad.html" />
+    <link rel="next" title="One-way Coupling to GUI" href="gui_coupling.html" />
     <link rel="prev" title="Finite Element Analysis Operations" href="fea.html" /> 
 </head>
 
@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
@@ -111,7 +112,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#recent-updates">Recent Updates</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="numad.html">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
@@ -419,7 +420,7 @@ output in the functions: <code class="docutils literal notranslate"><span class=
 and <code class="docutils literal notranslate"><span class="pre">source\optimization\sim_tools\getForceDistributionAtTime.m</span></code></p>
 <p>the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
-modifications were also made to the function: <code class="docutils literal notranslate"><span class="pre">source\toolbox\ad2ansys.m</span></code>
+modifications were also made to the function: <code class="docutils literal notranslate"><span class="pre">source\toolbox\beamForceToAnsysShell.m</span></code>
 to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
 coordinate system at each point along the blade, which rotates along
@@ -451,7 +452,7 @@ data.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="numad.html" class="btn btn-neutral float-right" title="Use Cases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gui_coupling.html" class="btn btn-neutral float-right" title="One-way Coupling to GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="fea.html" class="btn btn-neutral float-left" title="Finite Element Analysis Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
