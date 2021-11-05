@@ -1,33 +1,54 @@
 function output=runIEC(DLCoptions,simFlag,parFlag)
-% options.  String array specifying which DLC's to run.  For example,
-%    DLCoptions = {'1.2' '1.4' '6.1' '2.1'};
-% or
-%    DLCoptions = 'all'
-% simFlag = 0/1; (1) call FAST and perform simulations or (0) just process existing data
+% This function runs IEC design load cases and creates an
+% ``output`` structure
+%
+% Parameters
+% ------------
+%     DLCoptions : string
+%         String array specifying which design load cases to run, 
+%         Options = {'1.2' '1.4' '6.1' '2.1'} or 'all', Default = ?
+%     
+%     simFlag : int
+%         On/Off flag, Options: 1 = call FAST and perform simulations, 
+%         0 = process existing data, Default = ?
+%     
+%     parFlag : int
+%         On/Off flag, Options: 0 = ?, 1 = ?, Default = ?
+%
+% Returns
+% ------------
+%     output : struct
+%         output structure      
 %
 
 % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+% Run IECDef methods to check inputs and set average wind speed
+params.checkInputs
+params.setAvgWindSpeed
+
 if exist('parFlag','var')
 	if parFlag == 1
-% % 		run('..\runIEC_ipt.m');
-        runIEC_ipt
+        iecInputFile
 		copyfile(['..\' params.fstfn '.fst'], [params.fstfn '.fst'])
 		fst=readFastMain([params.fstfn '.fst']);
 		copyfile(['..\' strrep(fst.ADFile,'"','')], strrep(fst.ADFile,'"',''))
 		copyfile('..\pitch.ipt', 'pitch.ipt')
 		params.parDir = '..\';
 	else
-		runIEC_ipt
+		iecInputFile
         fst=readFastMain([params.fstfn '.fst']); 
 		params.parDir = '';
 	end
 else
-	runIEC_ipt
+	iecInputFile
 	fst=readFastMain([params.fstfn '.fst']);   
 	params.parDir = '';
 end
+
 % read AD input data
 ad=readFastAD(strrep(fst.ADFile,'"',''));
+
 % read Blade input data
 bld1=readFastBlade(strrep(fst.BldFile{1},'"',''));
 
@@ -35,10 +56,12 @@ bld1=readFastBlade(strrep(fst.BldFile{1},'"',''));
 addpath(genpath(params.simulinkModelFolder));
 
 % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-params.fullLoads = 1;                   % perform full loads analysis?
+%Moved to IECDef Class
+    % params.fullLoads = 1;                   % perform full loads analysis?
+    % params.combinedStrain = 1;              % perform fatigue calculations on combined bending and normal strain for spar
 gageSetCase = 'set1';%'set2';%
-params.simulate=simFlag;
-params.combinedStrain = 1;              % perform fatigue calculations on combined bending and normal strain for spar
+% Call IECDef method to set simulation flag
+params.setSimFlag(simFlag)
 % ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 % change FAST input file parameters for analysis
@@ -49,21 +72,23 @@ fst.Out.NcIMUyn = 0.00;
 fst.Out.NcIMUzn = 0.63;
 
 % set up blade gages and locations
-fst.Out.BldGagNd=params.BldGagNd;  % Units: -
-fst.Out.NBlGages=length(fst.Out.BldGagNd);  % Units: -
-for ss = 1:fst.Out.NBlGages
-    params.bladeGageLabels_MLx{ss} = ['Spn' num2str(fst.Out.BldGagNd(ss)) 'MLxb1']; %#ok<*AGROW>
-    params.bladeGageLabels_MLy{ss} = ['Spn' num2str(fst.Out.BldGagNd(ss)) 'MLyb1'];
-    params.bladeGageLabels_MLz{ss} = '';
-    params.bladeGageLabels_FLx{ss} = '';
-    params.bladeGageLabels_FLy{ss} = '';
-    params.bladeGageLabels_FLz{ss} = '';
-end
-
-params.bladeGageLabels = [params.bladeGageLabels_MLx params.bladeGageLabels_MLy];%...
-    %params.bladeGageLabels_MLz params.bladeGageLabels_FLx...
-    %params.bladeGageLabels_FLy params.bladeGageLabels_FLz];
-
+params.setGageLabels
+    
+% replaced with params, moved to method
+    % fst.Out.BldGagNd=params.BldGagNd;  % Units: -
+	% fst.Out.NBlGages=length(params.BldGagNd);  % Units: -
+%     for ss = 1:length(params.BldGagNd)
+%         params.bladeGageLabels_MLx{ss} = ['Spn' num2str(params.BldGagNd(ss)) 'MLxb1']; %#ok<*AGROW>
+%         params.bladeGageLabels_MLy{ss} = ['Spn' num2str(params.BldGagNd(ss)) 'MLyb1'];
+%         params.bladeGageLabels_MLz{ss} = '';
+%         params.bladeGageLabels_FLx{ss} = '';
+%         params.bladeGageLabels_FLy{ss} = '';
+%         params.bladeGageLabels_FLz{ss} = '';
+%     end
+% 
+%     params.bladeGageLabels = [params.bladeGageLabels_MLx params.bladeGageLabels_MLy];%...
+%         %params.bladeGageLabels_MLz params.bladeGageLabels_FLx...
+%         %params.bladeGageLabels_FLy params.bladeGageLabels_FLz];   
 
 % this script must be run twice for the first 9 gages, and then for the additional gages.
 switch gageSetCase
@@ -79,14 +104,14 @@ BldGagMinSpanLoc = 0;     % minimum span location of a strain gage (no gage here
 drSpan = (BldGagMaxSpanLoc - 0) / totalBladeGageNumber;
 gagSpan = BldGagMinSpanLoc + drSpan : drSpan : BldGagMaxSpanLoc;
 bladeCoordinateSpanStations = (ad.RNodes - fst.TurbConf.HubRad) ./ (fst.TurbConf.TipRad-fst.TurbConf.HubRad);
-fst.Out.BldGagNd = 0;
+params.BldGagNd = 0;
 params.bladeGageLabels_MLx = {}; params.bladeGageLabels_MLy = {}; params.bladeGageLabels_MLz = {};
 params.bladeGageLabels_FLx = {}; params.bladeGageLabels_FLy = {}; params.bladeGageLabels_FLz = {};
 params.bladeGageLabels = {};
 for bb = 1%:3 %number of blades
     for ss = 1:length(setGag)%fst.Out.NBlGages
         [~, rGagSpan(ss)] = min(abs(bladeCoordinateSpanStations - gagSpan(setGag(ss))));
-        fst.Out.BldGagNd(ss) = rGagSpan(ss);
+        params.BldGagNd(ss) = rGagSpan(ss);
         if bb == 1
             params.bladeGageLabels_MLx{ss} = ['Spn' num2str(ss) 'MLxb' num2str(bb)]; %#ok<*AGROW>
             params.bladeGageLabels_MLy{ss} = ['Spn' num2str(ss) 'MLyb' num2str(bb)];
@@ -121,62 +146,9 @@ gagStrcTwst = interp1(bld1.prop.BlFract, bld1.prop.StrcTwst, gagSpan);
 params.bladeGageCoordinateRotation = gagStrcTwst;
 
 
-if false(params.fullLoads)
-    % define the necessary FAST outputs
-    fst.OutList=[{'WindVxi','WindVyi','WindVzi',...
-        'HorWindV','NacYawErr',...  % add these channels for JCB's yaw controller
-        'GenPwr','HSShftTq','HSSBrTq','GenSpeed','RotSpeed','TSR',...
-        'TeetDefl','Azimuth','NacYaw','TTDspFA','TTDspSS',...
-        'NcIMUTAxs','NcIMUTAys',...
-        'BldPitch1',...
-        'OoPDefl1','OoPDefl2','OoPDefl3',...
-        'TipClrnc1','TipClrnc2','TipClrnc3',...
-        'TipDxb1','TipDxb2','TipDxb3'}...
-        params.bladeGageLabels...
-        {'LSShftFxs','LSShftMxs',...
-        ...%'RootMxc1','RootMyc1',...
-        ...%'RootMxc2','RootMyc2',...
-        ...%'RootMxc3','RootMyc3' ...
-        'RootMxb1','RootMyb1','RootMzb1',...
-        'RootMxb2','RootMyb2','RootMzb2',...
-        'RootMxb3','RootMyb3','RootMzb3'}];   
-else
-    % set up analysis for complete loads determination to ensure turbine
-    % operation within structure loads envelope
-    fst.OutList=[{'WindVxi','WindVyi','WindVzi',...
-        'HorWindV','NacYawErr',...  % add these channels for JCB's yaw controller
-        'GenPwr','HSShftTq','HSSBrTq','GenSpeed','RotSpeed','TSR',...
-        'TeetDefl','Azimuth','NacYaw','TTDspFA','TTDspSS',...
-        'NcIMUTAxs','NcIMUTAys',...
-        'BldPitch1',...
-        'OoPDefl1','OoPDefl2','OoPDefl3',...
-        'TipClrnc1','TipClrnc2','TipClrnc3',...
-        'TipDxb1','TipDxb2','TipDxb3'}...
-        params.bladeGageLabels...
-        ... SOME NEW CHANNELS TO ADD:
-        {...%'RootFxc1','RootFxc2','RootFxc3',...
-        ...%'RootFyc1','RootFyc2','RootFyc3',...
-        'RootFxb1','RootFxb2','RootFxb3',...
-        'RootFyb1','RootFyb2','RootFyb3',...
-        'RootFzb1','RootFzb2','RootFzb3',...
-        ...%'RootMxc1','RootMxc2','RootMxc3',...
-        ...%'RootMyc1','RootMyc2','RootMyc3',...
-        'RootMxb1','RootMxb2','RootMxb3',...
-        'RootMyb1','RootMyb2','RootMyb3',...
-        'RootMzb1','RootMzb2','RootMzb3',...
-        'YawBrFxn','YawBrFyn','YawBrFzn',...
-        'YawBrFxp','YawBrFyp',...
-        'YawBrMxn','YawBrMyn','YawBrMzn',...
-        'YawBrMxp','YawBrMyp',...
-        'RotThrust','LSShftTq',...
-        ...%'LSShftFya','LSShftFza',...    
-        ...%'LSSTipMya','LSSTipMza',...
-        'LSShftFxs','LSShftFys','LSShftFzs',...
-        'LSShftMxs','LSSTipMys','LSSTipMzs',...
-        'TwrBsFxt','TwrBsFyt','TwrBsFzt',...
-        'TwrBsMxt','TwrBsMyt','TwrBsMzt',...
-        }];
-end
+% Run IECDef method to run full loads or
+params.runFullLoads
+
 disp(fst.OutList)
 t = getCurrentTask;
 if isempty(t)

@@ -1,10 +1,12 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 classdef ComponentDef < handle
-%ComponentDef  A class definition for blade components.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``ComponentDef``  A class definition for blade components.
 %
 %   Usage examples: 
 %     comp_obj = ComponentDef();
@@ -21,20 +23,22 @@ classdef ComponentDef < handle
 %     .imethod     = 'pchip'
 %
 %   See also xlsBlade, BladeDef, BladeDef.addComponent
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     properties
-        group
-        name
-        materialid
-        fabricangle
-        hpextents
-        lpextents
-        cp
-        imethod
-        pinnedends = false;
+        group                   % Integar, Options: 0 = blade, 1 = first shear web, 2 = second shear web, etc., Default = ?
+        name = ''               % String, same such as 'spar', Default = ''
+        materialid = ''         % Srring, material id number from blade.materials
+        fabricangle             % Float, fiber angle
+        hpextents = {'b','c'}   % String array of keypoints, Default = {'b','c'}
+        lpextents = {'b','c'}	% String array of keypoints, Default = {'b','c'}
+        cp                      % ?, control points defining layer distributio
+        imethod = 'pchip'       % String, Default = 'pchip'
+        pinnedends = false;     % On/Off, Default = false
     end
     properties (Hidden)
-        hCtrl
-        hLine
+        hCtrl                   % ?
+        hLine                   % ?
     end
     
     methods 

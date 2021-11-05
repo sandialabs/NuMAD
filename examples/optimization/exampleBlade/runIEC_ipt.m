@@ -28,14 +28,14 @@ params.designLife = 30;             % years of life
 params.BldGagNd=[1,2,3,4,5,6,7];  % vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
 params.fatigueCriterion = 'Shifted Goodman';
 
-% switch params.Class
-%     case 1
-%         params.avgws=0.2*50; % m/s, average wind speed of IEC Class I site (Vref=50m/s); IEC Section 6.3.1.1 Eqn (9)
-%     case 2
-%         params.avgws=0.2*42.5; % m/s, average wind speed of IEC Class II site (Vref=42.5m/s); IEC Section 6.3.1.1 Eqn (9)
-%     case 3
-%         params.avgws=0.2*37.5; % m/s, average wind speed of IEC Class III site (Vref=37.5m/s); IEC Section 6.3.1.1 Eqn (9)
-% end
+switch params.Class
+    case 1
+        params.avgws=0.2*50; % m/s, average wind speed of IEC Class I site (Vref=50m/s); IEC Section 6.3.1.1 Eqn (9)
+    case 2
+        params.avgws=0.2*42.5; % m/s, average wind speed of IEC Class II site (Vref=42.5m/s); IEC Section 6.3.1.1 Eqn (9)
+    case 3
+        params.avgws=0.2*37.5; % m/s, average wind speed of IEC Class III site (Vref=37.5m/s); IEC Section 6.3.1.1 Eqn (9)
+end
 
 % Material properties for fatigue analyses
 matData(1).Name='s1-fiberglass';
