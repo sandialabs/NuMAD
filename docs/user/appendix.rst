@@ -4,7 +4,6 @@
 Appendix
 ========
 
-
 .. _bladeClass:
 
 Blade Class
@@ -95,14 +94,56 @@ Blade Methods
 ..    :header-rows: 1
 
 
+.. _materialClass:
+
 Material Class
 ------------------
+
+.. autoclass:: numadObjects.MaterialDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
+	
+Material Properties	
+~~~~~~~~~~~~~~~~~~~
+
+.. autoattribute:: numadObjects.MaterialDef.name
+.. autoattribute:: numadObjects.MaterialDef.type
+.. autoattribute:: numadObjects.MaterialDef.layerthickness
+.. autoattribute:: numadObjects.MaterialDef.ex
+.. autoattribute:: numadObjects.MaterialDef.ey
+.. autoattribute:: numadObjects.MaterialDef.ez
+.. autoattribute:: numadObjects.MaterialDef.gxy
+.. autoattribute:: numadObjects.MaterialDef.gyz
+.. autoattribute:: numadObjects.MaterialDef.gxz
+.. autoattribute:: numadObjects.MaterialDef.prxy
+.. autoattribute:: numadObjects.MaterialDef.pryz
+.. autoattribute:: numadObjects.MaterialDef.prxz
+.. autoattribute:: numadObjects.MaterialDef.density
+.. autoattribute:: numadObjects.MaterialDef.drydensity
+.. autoattribute:: numadObjects.MaterialDef.uts
+.. autoattribute:: numadObjects.MaterialDef.ucs
+.. autoattribute:: numadObjects.MaterialDef.uss
+.. autoattribute:: numadObjects.MaterialDef.xzit
+.. autoattribute:: numadObjects.MaterialDef.xzic
+.. autoattribute:: numadObjects.MaterialDef.yzit
+.. autoattribute:: numadObjects.MaterialDef.yzic
+.. autoattribute:: numadObjects.MaterialDef.g1g2
+.. autoattribute:: numadObjects.MaterialDef.alp0
+.. autoattribute:: numadObjects.MaterialDef.etat
+.. autoattribute:: numadObjects.MaterialDef.etal
+.. autoattribute:: numadObjects.MaterialDef.m
+.. autoattribute:: numadObjects.MaterialDef.reference
+	
+.. Kelley: remove these tables
    
 .. _materialDefTable:
-.. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
-   :file: materialDefTable.csv
-   :widths: 1,2
-   :header-rows: 1
+.. .. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
+..    :file: materialDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1
 
 
 Station Class

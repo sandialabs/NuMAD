@@ -164,7 +164,7 @@ respectively.
 The data defining the properties of all the materials used throughout
 the blade are stored in the variable ``blade.materials``. Each entry in
 ``blade.materials`` is a ``MaterialDef`` object, which stores a name, elastic
-properties, density, and strength properties among others (see :numref:`materialDefTable` in the :ref:`appendix`). 
+properties, density, and strength properties among others (see :ref:`materialClass` in the :ref:`appendix`). 
 It also stores the thickness that a single layer of that material in a 
 composite is assumed to be, which can be important to know or edit when 
 defining the thickness distribution of the blade's components as just described.

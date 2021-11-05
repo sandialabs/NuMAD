@@ -5,19 +5,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 classdef BladeDef < handle
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % ``BladeDef``  A class definition for wind & water turbine blades.
-    %
-    % Example:
-    %
-    %     ``blade = BladeDef();``
-    %
-    % Refer to:
-    %       ``BladeDef_to_NuMADfile``,
-    %       ``xlsBlade``, ``AirfoilDef``, ``StationDef``, ``ComponentDef``,
-    %       ``StackDef``
-    %
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``BladeDef``  A class definition for wind & water turbine blades.
+%
+% Example:
+%
+%     ``blade = BladeDef();``
+%
+% See also ``BladeDef_to_NuMADfile``, ``xlsBlade``, ``AirfoilDef``, 
+% ``StationDef``, ``ComponentDef``, ``StackDef``
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     properties (SetAccess = 'public', GetAccess = 'public')
         aerocenter          % Aerodynamic center of airfoil (used only by NuMAD->FAST)

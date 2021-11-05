@@ -1,68 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 classdef MaterialDef < handle
-%MaterialDef  A class definition for blade materials.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``MaterialDef``  A class definition for blade materials.
 %
-%   Usage examples: 
-%     mat_obj = ComponentDef();
-%     mat_obj = ComponentDef(mat_struct);
+% Examples: 
+% 
+%     ``mat_obj = ComponentDef();``
 %
-%   mat_struct:
-%     .name
-%     .type
-%     .layerthickness
-%     .ex
-%     .ey
-%     .ez
-%     .gxy
-%     .gyz
-%     .gxz
-%     .prxy
-%     .pryz
-%     .prxz
-%     .density
-%     .drydensity
-%     .uts
-%     .ucs
-%     .uss
-%     .g1g2
-%     .alp0
-%     .etat
-%     .etal
-%     .reference
-%
-%   See also xlsBlade, BladeDef, BladeDef.addMaterial
+% See also ``xlsBlade``, ``BladeDef``, ``BladeDef.addMaterial``
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
-        name
-        type
-        layerthickness
-        ex
-        ey
-        ez
-        gxy
-        gyz
-        gxz
-        prxy
-        pryz
-        prxz
-        density
-        drydensity
-        uts
-        ucs
-        uss
-        xzit
-        xzic
-        yzit
-        yzic
-        g1g2
-        alp0
-        etat
-        etal
-        m
-        reference
+        name            % User selected name of the material
+        type            % Two options: ‘isotropic’ or ‘orthotropic’
+        layerthickness  % Layer thickness [mm]
+        ex              % Longitudinal elastic modulus [Pa]
+        ey              % Transverse elastic modulus [Pa]
+        ez              % Through-the-thickness elastic modulus in the principal material coordinates [Pa]
+        gxy             % In-plane shear modulus [Pa]
+        gyz             % Transverse shear modulus [Pa]
+        gxz             % Transverse shear modulus [Pa]
+        prxy            % In-plane Poisson ratio [ ]
+        pryz            % Transverse Poisson ratio [ ]
+        prxz            % Transverse Poisson ratio [ ]
+        density         % Cured mass density [kg/m2]
+        drydensity      % Density of fabric
+        uts             % 1 × 3 array of ultimate tensile strength design values. Sequence: SL , ST, Sz, 1 × 1 for isotropic.
+        ucs             % 1 × 3 array of ultimate compressive strength design values. Sequence: SL , ST, Sz, 1 × 1 for isotropic.
+        uss             % 1 × 3 array of ultimate shear strength design values. Sequence: SLT , STz, SLz, 1 × 1 for isotropic.
+        xzit            % Lz tensile inclination parameter for Puck failure index
+        xzic            % Lz compressive inclination parameter for Puck failure index
+        yzit            % Tz tensile inclination parameter for Puck failure index
+        yzic            % Tz compressive inclination parameter for Puck failure index
+        g1g2            % Fracture toughness ratio between GI (mode I) and GII (mode II) [ ]
+        alp0            % Fracture angle under pure transverse compression [degrees]
+        etat            % Transverse friction coefficient for Larc [ ]
+        etal            % Longitudinal friction coefficient for Larc [ ]
+        m               % Fatigue slope exponent [ ]
+        reference       % 
     end
     
     methods
