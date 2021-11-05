@@ -43,7 +43,7 @@ Blade Properties
 
 Blade Methods
 ~~~~~~~~~~~~~~~~~~
-.. NOTE:`set.naturaloffset` syntax isn't compatible with autodocs, e.g. `setNaturaloffset` would be
+.. Kelley:`set.naturaloffset` syntax isn't compatible with autodocs, e.g. `setNaturaloffset` would be
 .. TODO: .. autoattribute:: numadObjects.BladeDef.set.naturaloffset
 .. TODO: .. autoattribute:: numadObjects.BladeDef.set.rotorspin
 .. TODO: .. autoattribute:: numadObjects.BladeDef.set.swtwisted
@@ -71,27 +71,11 @@ Blade Methods
 .. autoattribute:: numadObjects.BladeDef.plotbom
 .. autoattribute:: numadObjects.BladeDef.plotprofile
 
-.. NOTE: these functions are not included within the object, they are appended at the end
+.. Kelley: these functions are not included within the object, they are appended at the end
 .. TODO: .. autoattribute:: numadObjects.BladeDef.findLayerExtents
 .. TODO: .. autoattribute:: numadObjects.BladeDef.findRegionExtents
 .. TODO: .. autoattribute:: numadObjects.BladeDef.getTEtype
 .. TODO: .. autoattribute:: numadObjects.BladeDef.fprintf_matrix
-
-
-
-.. Kelley: remove these tables
-.. .. _bladeDefTable:
-.. .. csv-table:: ``BladeDef``: A class definition for wind & water turbine blades.
-..    :file: bladeDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
-
-
-.. .. _bladeDefMethodsTable:
-.. .. csv-table::  List of Methods for ``BladeDef`` class.
-..    :file: bladeDefMethodsTable.csv
-..    :widths: 1
-..    :header-rows: 1
 
 
 .. _materialClass:
@@ -136,34 +120,51 @@ Material Properties
 .. autoattribute:: numadObjects.MaterialDef.etal
 .. autoattribute:: numadObjects.MaterialDef.m
 .. autoattribute:: numadObjects.MaterialDef.reference
-	
-.. Kelley: remove these tables
-   
-.. _materialDefTable:
-.. .. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
-..    :file: materialDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
 
+
+
+.. _StationClass:
 
 Station Class
 ------------------
 
-.. _stationDefTable:
-.. csv-table::  ``StationDef``: A class definition for blade stations.
-   :file: stationDefTable.csv
-   :widths: 1,2
-   :header-rows: 1
+.. autoclass:: numadObjects.StationDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
+	
+Station Properties	
+~~~~~~~~~~~~~~~~~~~
+
+.. autoattribute:: numadObjects.StationDef.airfoil
+.. autoattribute:: numadObjects.StationDef.spanlocation
 
 
 Component Class
 ------------------
 
-.. _componentDefTable:
-.. csv-table::  ``ComponentDef``: A class definition for blade components.
-   :file: componentDefTable.csv
-   :widths: 1,2
-   :header-rows: 1
+.. autoclass:: numadObjects.ComponentDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
+	
+Component Properties	
+~~~~~~~~~~~~~~~~~~~~
+
+.. autoattribute:: numadObjects.ComponentDef.group
+.. autoattribute:: numadObjects.ComponentDef.name
+.. autoattribute:: numadObjects.ComponentDef.materialid
+.. autoattribute:: numadObjects.ComponentDef.fabricangle
+.. autoattribute:: numadObjects.ComponentDef.hpextents
+.. autoattribute:: numadObjects.ComponentDef.lpextents
+.. autoattribute:: numadObjects.ComponentDef.cp
+.. autoattribute:: numadObjects.ComponentDef.imethod
+.. autoattribute:: numadObjects.ComponentDef.pinnedends
+
 
 
 Airfoil Class
@@ -213,3 +214,35 @@ Stack Class
    
    
 
+.. Kelley: remove these tables   
+
+.. .. _bladeDefTable:
+.. .. csv-table:: ``BladeDef``: A class definition for wind & water turbine blades.
+..    :file: bladeDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1
+
+
+.. .. _bladeDefMethodsTable:
+.. .. csv-table::  List of Methods for ``BladeDef`` class.
+..    :file: bladeDefMethodsTable.csv
+..    :widths: 1
+..    :header-rows: 1
+
+.. _materialDefTable:
+.. .. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
+..    :file: materialDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1
+
+.. .. _stationDefTable:
+.. .. csv-table::  ``StationDef``: A class definition for blade stations.
+..    :file: stationDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1
+
+.. .. _componentDefTable:
+.. .. csv-table::  ``ComponentDef``: A class definition for blade components.
+..    :file: componentDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1

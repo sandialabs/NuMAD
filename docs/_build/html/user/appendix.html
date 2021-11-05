@@ -114,8 +114,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#material-properties">Material Properties</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#station-class">Station Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#component-class">Component Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#station-class">Station Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#station-properties">Station Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#component-class">Component Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#component-properties">Component Properties</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#airfoil-class">Airfoil Class</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#stack-class">Stack Class</a></li>
 </ul>
@@ -702,76 +708,124 @@ currently used by BladeDef_to_NuMADfile and develop__write_shell7</p>
 <span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">reference</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.reference" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<span class="target" id="materialdeftable"></span></div>
+</div>
 </div>
 <div class="section" id="station-class">
-<h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
-<span id="stationdeftable"></span><table class="colwidths-given docutils align-default" id="id2">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>: A class definition for blade stations.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>StationDef Property</p></th>
-<th class="head"><p>Property Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>airfoil</p></td>
-<td><p>AirfoilDef – See <a class="reference internal" href="#airfoildeftable"><span class="std std-numref">Table 8</span></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>spanlocation</p></td>
-<td><p>Spanwise location where station is defined [m]</p></td>
-</tr>
-</tbody>
-</table>
+<span id="stationclass"></span><h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.StationDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">StationDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">af</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.StationDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>  A class definition for blade stations.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">sta</span> <span class="pre">=</span> <span class="pre">StationDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">sta</span> <span class="pre">=</span> <span class="pre">StationDef(af);</span></code> where <code class="docutils literal notranslate"><span class="pre">af</span></code> = airfoil filename or <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.addStation</span></code></p>
+</dd></dl>
+
+<div class="section" id="station-properties">
+<h3>Station Properties<a class="headerlink" href="#station-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StationDef.airfoil">
+<span class="sig-prename descclassname"><span class="pre">StationDef.</span></span><span class="sig-name descname"><span class="pre">airfoil</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StationDef.airfoil" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StationDef.spanlocation">
+<span class="sig-prename descclassname"><span class="pre">StationDef.</span></span><span class="sig-name descname"><span class="pre">spanlocation</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StationDef.spanlocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spanwise location where station is defined [m]</p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="component-class">
 <h2>Component Class<a class="headerlink" href="#component-class" title="Permalink to this headline">¶</a></h2>
-<span id="componentdeftable"></span><table class="colwidths-given docutils align-default" id="id3">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>: A class definition for blade components.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>ComponentDef Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
-<td><p>0: blade, 1: first shear web, 2: second shear web, etc.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">materialid</span></code></p></td>
-<td><p>string such as <code class="docutils literal notranslate"><span class="pre">'spar'</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fabricangle</span></code></p></td>
-<td><p>material id number from <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hpextents</span></code></p></td>
-<td><p>The extent of the airfoil covered by the component. High pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lpextents</span></code></p></td>
-<td><p>The extent of the airfoil covered by the component. Low pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cp</span></code></p></td>
-<td><p>Material thickness distribution along blade span. <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">×</span> <span class="pre">2</span></code> array. First column is nondimension span location where thickness is to be defined. Second column is material thickness [mm].</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imethod</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'pchip'</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pinnedends</span></code></p></td>
-<td><p>Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> by default.</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">ComponentDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">comp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.ComponentDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>  A class definition for blade components.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">comp_obj</span> <span class="pre">=</span> <span class="pre">ComponentDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">comp_obj</span> <span class="pre">=</span> <span class="pre">ComponentDef(comp_struct);</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.addComponent</span></code></p>
+</dd></dl>
+
+<div class="section" id="component-properties">
+<h3>Component Properties<a class="headerlink" href="#component-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.group">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">group</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>0 = blade, 1 = first shear web, 2 = second shear web, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Integar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.name">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''&quot;</span></em><a class="headerlink" href="#numadObjects.ComponentDef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>such as ‘spar’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.materialid">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">materialid</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.materialid" title="Permalink to this definition">¶</a></dt>
+<dd><p>material id number from blade.materials</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.fabricangle">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">fabricangle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.fabricangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>fiber angle</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.hpextents">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">hpextents</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.hpextents" title="Permalink to this definition">¶</a></dt>
+<dd><p>cell array of keypoints such as {‘b’,’c’}</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.lpextents">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">lpextents</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.lpextents" title="Permalink to this definition">¶</a></dt>
+<dd><p>cell array of keypoints such as {‘b’,’c’}</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.cp">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.cp" title="Permalink to this definition">¶</a></dt>
+<dd><p>control points defining layer distribution</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.imethod">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">imethod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'pchip'&quot;</span></em><a class="headerlink" href="#numadObjects.ComponentDef.imethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>imethod</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.pinnedends">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">pinnedends</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'false'</span></em><a class="headerlink" href="#numadObjects.ComponentDef.pinnedends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 <div class="section" id="airfoil-class">
 <h2>Airfoil Class<a class="headerlink" href="#airfoil-class" title="Permalink to this headline">¶</a></h2>
-<span id="airfoildeftable"></span><table class="colwidths-given docutils align-default" id="id4">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<span id="airfoildeftable"></span><table class="colwidths-given docutils align-default" id="id2">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -820,8 +874,8 @@ currently used by BladeDef_to_NuMADfile and develop__write_shell7</p>
 </div>
 <div class="section" id="stack-class">
 <h2>Stack Class<a class="headerlink" href="#stack-class" title="Permalink to this headline">¶</a></h2>
-<span id="stackdeftable"></span><table class="docutils align-default" id="id5">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<span id="stackdeftable"></span><table class="docutils align-default" id="id3">
+<caption><span class="caption-number">Table 7 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 29%" />
 <col style="width: 71%" />
@@ -855,7 +909,7 @@ kepoint, 2<sup>nd</sup> keypoint]</p>
 </tr>
 </tbody>
 </table>
-</div>
+<span class="target" id="materialdeftable"></span></div>
 </div>
 
 

@@ -13,6 +13,7 @@ classdef MaterialDef < handle
 %     ``mat_obj = ComponentDef();``
 %
 % See also ``xlsBlade``, ``BladeDef``, ``BladeDef.addMaterial``
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
         name            % User selected name of the material
