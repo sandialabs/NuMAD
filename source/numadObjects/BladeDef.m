@@ -5,42 +5,41 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 classdef BladeDef < handle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ``BladeDef``  A class definition for wind & water turbine blades.
-%
-%   Usage: 
-%     blade = BladeDef();
-%
-%   See also ``BladeDef.updateGeometry``, ``BladeDef.updateKeypoints``,
-%            ``BladeDef.updateBOM``, ``BladeDef.writeBOMxls``,
-%            ``BladeDef_to_NuMADfile``
-%            ``xlsBlade``, ``AirfoilDef``, ``StationDef``, ``ComponentDef``,
-%            ``StackDef``
-%
-% .. autoattribute:: preNuMAD.BladeDef.addStation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % ``BladeDef``  A class definition for wind & water turbine blades.
+    %
+    % Example:
+    %
+    %     ``blade = BladeDef();``
+    %
+    % Refer to:
+    %       ``BladeDef_to_NuMADfile``,
+    %       ``xlsBlade``, ``AirfoilDef``, ``StationDef``, ``ComponentDef``,
+    %       ``StackDef``
+    %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
     properties (SetAccess = 'public', GetAccess = 'public')
-        span                % spanwise location of distributed properties [m]
-        degreestwist        % twist distribution [degrees]
-        chord               % chord distribution [m] 
-        percentthick        % percent thickness of airfoil [%]
-        chordoffset         % chordwise offset (in addition to natural offset)
-        aerocenter          % aerodynamic center of airfoil (used only by NuMAD->FAST)
-        sweep               % blade sweep
-        prebend             % blade prebend
-        materials           % material properties
-        stations            % blade stations which define the camber and thickness along the blade
-        components          % blade components such as spar, panels, etc.
-        sparcapwidth        % defines locations of keypoints b & c
-        sparcapoffset = 0;
-        leband              % defines location of keypoint a
-        teband              % defines location of keypoint d
+        aerocenter          % Aerodynamic center of airfoil (used only by NuMAD->FAST)
+        chord               % Chord distribution [m] 
+        chordoffset         % Chordwise offset (in addition to natural offset)
+        components          % Blade components such as spar, panels, etc., refer to ``ComponentDef``
+        degreestwist        % Twist distribution [degrees]
         ispan               % Spanwise locations of interpolated output
-        naturaloffset = 1;  % 1: offset by max thickness location, 0: do not offset to max thickness
-        rotorspin = 1;      % 1: CW rotation looking downwind, -1: CCW rotation
-        swtwisted = 0;      % 0: planar shear webs, 1: shear webs twisted by blade twist
-        mesh = 0.10;        % added by brr, temporary, JB might come up with a better way to do this, but for now I'm using it in my layup design tools
+        leband              % Location of keypoint a
+        materials           % Material properties, refer to ``MaterialDef``
+        mesh = 0.10;        % Approximate element edge size for FE model [m]
+        naturaloffset = 1;  % Integar : 1= offset by max thickness location, 0= do not offset to max thickness
+        percentthick        % Percent thickness of airfoil [%]
+        prebend             % Blade prebend, reference axis location along x2 [m]
+        rotorspin = 1;      % Integar: Rotor Spin, 1= CW rotation looking downwind, -1= CCW rotation
+        span                % Spanwise location of distributed properties [m]
+        sparcapoffset = 0;  % 1 × 2 array. (Does Nothing)
+        sparcapwidth        % Locations of keypoints b & c, defines distance between keypoints b & c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap
+        stations            % Blade Stations, define the camber and thickness along the blade, refer to `StationDef``
+        sweep               % Blade Sweep, Reference axis location along x1 [m] 
+        swtwisted = 0;      % Integar : Shear Web, 0 = planar shear webs, 1= shear webs twisted by blade twist
+        teband              % Location of keypoint d        
     end
     properties (SetAccess=private)
         idegreestwist       % (read-only) interpolated twist
@@ -133,9 +132,12 @@ classdef BladeDef < handle
         end
         
         function addStation(obj,af,spanlocation)
-            % blade.addStation(af,spanlocation)
-            %   af = airfoil filename or AirfoilDef object
-            %   See also StationDef, AirfoilDef
+            % This method adds a station
+            % 
+            % Example:
+            %            
+            %   ``blade.addStation(af,spanlocation)`` where  ``af`` = airfoil filename or ``AirfoilDef`` object
+            %             
             N = numel(obj.stations);
             k = N + 1;
             if k>1
@@ -148,9 +150,12 @@ classdef BladeDef < handle
         end
         
         function addComponent(obj,comp)
-            % blade.addComponent(comp_struct)
-            %   comp_struct = input structure used by ComponentDef
-            %   See also ComponentDef
+            % This method adds a Component
+            % 
+            % Example:
+            %            
+            %   ``blade.addComponent(comp_struct)`` where ``comp_struct`` = input structure used by ``ComponentDef``
+            %               
             N = numel(obj.components);
             k = N + 1;
             if k>1
@@ -161,9 +166,12 @@ classdef BladeDef < handle
         end
         
         function addMaterial(obj,mat)
-            % blade.addMaterial(mat_struct)
-            %   mat_struct = input structure used by MaterialDef
-            %   See also MaterialDef
+            % This method adds Material
+            % 
+            % Example:
+            %            
+            %   ``blade.addMaterial(mat_struct)`` where ``mat_struct`` = input structure used by ``MaterialDef``
+            %   
             N = numel(obj.materials);
             k = N + 1;
             if k>1
@@ -174,14 +182,14 @@ classdef BladeDef < handle
         end
         
         function updateBlade(obj)
-            % update the BladeDef model
+            % This method updates the BladeDef model
             obj.updateGeometry;
             obj.updateKeypoints;
             obj.updateBOM;
         end
             
         function updateGeometry(obj)
-            % Updates the blade's interpolated parameters.
+            % This method updates the interpolated blade parameters
             
             % update the interpolated station profiles
             nStations = numel(obj.stations);
@@ -354,10 +362,14 @@ classdef BladeDef < handle
         end
         
         function updateKeypoints(obj)
-            % blade.updateKeypoints
-            %   Updates the keypoints (a,b,c,...) which define the blade
-            %   regions.
-            
+            % This method updates the keypoints (a,b,c,...) which define the blade
+            % regions.
+            % 
+            % Example:
+            %            
+            %   ``blade.updateKeypoints``            
+            %               
+                        
             % find the curves which bound each blade region
             N = numel(obj.ispan);   % number of interpolated span stations
             M = 12;      % number of areas around airfoil profile; must be even (see calc of web areas)
@@ -677,19 +689,19 @@ classdef BladeDef < handle
         end
         
         function updateBOM(obj)
-            % blade.updateBOM
-            %        Bill-of-Materials
+            % This method updates the Bill-of-Materials
             % Cell array columns of blade.bom: 
-            %   1. Layer #
-            %   2  material ID
-            %   3. component or region name
-            %   4. begin station   (m)
-            %   5. end station     (m)
-            %   6. max width       (m)
-            %   7. average width   (m)
-            %   8. 3D area         (m^2)
-            %   9. layer thickness (mm)
-            %  10. computed dry layer weight (g)
+            % 1. Layer #
+            % 2. Material ID
+            % 3. Component or region name
+            % 4. Begin station   (m)
+            % 5. End station     (m)
+            % 6. Max width       (m)
+            % 7. Average width   (m)
+            % 8. 3D area         (m^2)
+            % 9. Layer thickness (mm)
+            % 10. Computed dry layer weight (g)
+            %
             
             % initialize structures
             obj.bom = struct('hp',cell(0),'lp',cell(0),'sw',cell(0),...
@@ -971,20 +983,23 @@ classdef BladeDef < handle
         end
         
         function readYAML(obj,file)
-           % this function should call a separate matlab function and send it 
-           % the YAML file ('file') and blade object ('obj') and return the
+           % This method calls a separate matlab function, sends
+           % the YAML file ('file') and blade object ('obj'), and returns the
            % blade object generated using the YAML file converter           
            obj = YAML_to_BladeDef(obj, file); 
         end
         
         function writeYAML(obj,file)
-           % this function should call a separate matlab function to write the 
+           % This method calls a separate matlab function to write the 
            % the Blade Object ('obj') to a YAML file ('file')           
            BladeDef_to_YAML(obj,file); 
         end
         
                 
         function bmodesFrequencies = generateBeamModel(obj)
+            % This method generates blade sectional properties used for
+            % aeroelastic analyses
+            
             global precompPath
             global bmodesPath
             
@@ -994,10 +1009,7 @@ classdef BladeDef < handle
             else
                 batchRun = false;
             end
-            
-            % generate blade sectional properties to be used for
-            % aeroelastic analyses
-            
+                        
             % NOTES: ******************************************************
             % 1. FIXED -- needs to read MatDBsi.txt file, store this
             % internally (blade.matdb)
@@ -1061,8 +1073,9 @@ classdef BladeDef < handle
             make_c_array_BladeDef(obj)
         end
         
-        function generateFEA(obj) % can add flags into the call -- e.g., element type, ...
-            % NOTES: ******************************************************
+        function generateFEA(obj) 
+            % This method generates FEA    
+            
             % 1. check that functionality from original code is not needed
             % 2. FIXED -- shell7 needs to read MatDBsi.txt file, store this
             % internally if the file isn't used elsewhere (blade.matdb)
@@ -1070,7 +1083,9 @@ classdef BladeDef < handle
             % PresweepRef (currently set to zero)
             % 4. FIX -- web data not saved in same format as NuMAD
             % (data.shearweb structure in NuMAD)
-            % *************************************************************
+            %             
+            
+            % NOTE:can add flags into the call -- e.g., element type, ...
             global ansysPath
             % define ANSYS model settings (can be options in generateFEA)
             config.ansys.BoundaryCondition = 'cantilered';
@@ -1132,11 +1147,13 @@ classdef BladeDef < handle
         end
         
         function writeBOMxls(obj,file)
-            % blade.writeBOMxls('bom.xlsx')
-            %   Write the bill-of-materials out to a spreadsheet.
+            % This method writes the bill-of-materials out to a spreadsheet.
+            %            
+            % Example:
+            %            
+            %   ``bladeDef.writeBOMxls('bom.xlsx')``
             
-            m_to_mm = 1e3;
-            
+            m_to_mm = 1e3;            
             if exist('BOM_template.xlsx','file')
                 copyfile('BOM_template.xlsx',file)
             end
@@ -1178,13 +1195,15 @@ classdef BladeDef < handle
         end
         
         function writePlot3D(obj,file,breakpoints)
-            % BladeDef.writePlot3D(filename,[breakpoints])
-            %
             % Write the current blade geometry in Plot3D format.
-            %   breakpoints   is a list of chord fractions at which the
-            %                 surface geometry is divided into blocks
+            % breakpoints is a list of chord fractions at which the
+            % surface geometry is divided into blocks
             %
-            % blade.writePlot3D('file.p3d',[-.3, .3]);
+            % Examples:
+            %            
+            %   ``BladeDef.writePlot3D(filename,[breakpoints])``
+            %                        
+            %   ``BladeDef.writePlot3D('file.p3d',[-.3, .3]);``
             %
             
             if ~exist('breakpoints','var')
@@ -1383,8 +1402,14 @@ classdef BladeDef < handle
         end
         
         function plotprofile(obj,k)
-        %   blade.plotprofile(1);
-        %   blade.plotprofile(1:N);
+            % This method plots profiles
+            %            
+            % Examples:
+            %            
+            %   ``blade.plotprofile(1);``
+            %
+            %   ``blade.plotprofile(1:N);``
+            %                        
             plot(squeeze(obj.profiles(:,1,k)),...
                  squeeze(obj.profiles(:,2,k)),'.-')
         end
@@ -1393,6 +1418,8 @@ classdef BladeDef < handle
 end
 
 function [beginSta,endSta] = findLayerExtents(layerDist,layerN)
+    % This method... 
+    
     assert(isscalar(layerN),'second argument ''layerN'' must be a scalar');
     staLogical = layerDist >= layerN;
     prev = 0;
@@ -1413,6 +1440,8 @@ function [beginSta,endSta] = findLayerExtents(layerDist,layerN)
 end
 
 function [hpRegion, lpRegion, swRegion] = findRegionExtents(keylabels,comp)
+    % This method...
+    
     le = find(1==strcmpi('le',keylabels));
     % "keylabels" is expected to wrap from te on hp side around to te on lp side
     if length(comp.hpextents)==2
@@ -1445,6 +1474,8 @@ function [hpRegion, lpRegion, swRegion] = findRegionExtents(keylabels,comp)
 end
 
 function tetype = getTEtype(xy)
+    % This method...
+    
     if abs(xy(2,2)-xy(end-1,2)) > 1e-5
         % y-diff of second and end-1 points is non-zero for flatback
         tetype = 'flat';
@@ -1467,6 +1498,8 @@ function tetype = getTEtype(xy)
 end
 
 function fprintf_matrix(fid,matrixData,columnsPerLine)
+    % This method...
+
     kColumn = 1;
     for kData=1:numel(matrixData)
         fprintf(fid,'%g ',matrixData(kData));
