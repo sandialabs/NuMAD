@@ -22,7 +22,7 @@ classdef IECDef < handle
         fatigueCriterion = 'Shifted Goodman';   % Fatigue Criteria, Options: 'Shifted Goodman'
         fstfn= 'NOT DEFINED';   	% FAST path, Default = "NOT DEFINED"
         fullLoads = 1;              % Perform full loads analysis, Options: 1 = On, 0 = Off, Default = 1
-        gageSetCase = 'set1'       % Gage set case, Options= 'set1', 'set 2', Default = 'set1'
+        gageSetCase = 'set1'        % Gage set case, Options= 'set1', 'set 2', Default = 'set1'
         lin=10;                     % Range of steady wind speeds for linearizations, Default = 10
         momentMaxRotation = 45;     % Angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate) (deg)
         numadfn='NOT DEFINED';      % NuMAD path, including extension, Default = "NOT DEFINED"

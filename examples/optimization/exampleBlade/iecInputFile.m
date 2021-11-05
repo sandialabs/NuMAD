@@ -30,7 +30,6 @@ params.designLife = 30;                 % years of life
 params.BldGagNd=[1,2,3,4,5,6,7];        % vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
 params.fatigueCriterion = 'Shifted Goodman';
 
-
 %% Material properties for fatigue analyses
 
 % Section 1: Fiberglass
