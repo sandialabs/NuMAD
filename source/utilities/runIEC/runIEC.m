@@ -21,12 +21,6 @@ function output=runIEC(DLCoptions,simFlag,parFlag)
 %         output structure      
 %
 
-% ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-% Run IECDef methods to check inputs and set average wind speed
-params.checkInputs
-params.setAvgWindSpeed
-
 if exist('parFlag','var')
 	if parFlag == 1
         iecInputFile
@@ -46,52 +40,52 @@ else
 	params.parDir = '';
 end
 
-% read AD input data
+% Run IECDef methods to check inputs and set average wind speed
+params.checkInputs
+params.setAvgWindSpeed
+
+% Read AD input data
 ad=readFastAD(strrep(fst.ADFile,'"',''));
 
-% read Blade input data
+% Read Blade input data
 bld1=readFastBlade(strrep(fst.BldFile{1},'"',''));
 
-% add Simulink controller path -- removed at end of script so it can change
+% Add Simulink controller path -- removed at end of script so it can change
 addpath(genpath(params.simulinkModelFolder));
 
-% ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % Run IECDef method to set simulation flag
 params.setSimFlag(simFlag)
 
-%Moved to IECDef Class
+    %Moved to IECDef Class
     % params.fullLoads = 1;                   % perform full loads analysis?
     % params.combinedStrain = 1;              % perform fatigue calculations on combined bending and normal strain for spar
     % params.gageSetCase = 'set1';%'set2';%
-% ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% change FAST input file parameters for analysis
+% Change FAST input file parameters for analysis
 fst.Out.TStart=params.delay;
-% change IMU location to match the safety system accelerometer switch location
+
+% Change IMU location to match the safety system accelerometer switch location
 fst.Out.NcIMUxn = 0.965;
 fst.Out.NcIMUyn = 0.00;
 fst.Out.NcIMUzn = 0.63;
 
 % Run IECDef method to set up blade gages and locations
-params.setGageLabels(fst)
+params.setGageLabels(fst,ad)
     
-% replaced with params, moved to method
+    % Moved to IEfDec, replaced with params
     % fst.Out.BldGagNd=params.BldGagNd;  % Units: -
 	% fst.Out.NBlGages=length(params.BldGagNd);  % Units: -
 
-
-% calculate the coordinate transformation from local blade coordinate
+% Calculate the coordinate transformation from local blade coordinate
 % system used for spanwise gages to the root blade coordinate system
 gagStrcTwst = interp1(bld1.prop.BlFract, bld1.prop.StrcTwst, gagSpan);    
-% Moved to IECDef method
-    % params.bladeGageCoordinateRotation = gagStrcTwst;
-params.setBladeGageCoordinateRotation(gagStrcTwst);
 
+% Run IECDef method to set gage coordinate rotation
+params.setBladeGageCoordinateRotation(gagStrcTwst);
 
 % Run IECDef method to run full loads or
 params.runFullLoads
 
-disp(fst.OutList)
 t = getCurrentTask;
 if isempty(t)
     pause(5)
@@ -130,6 +124,7 @@ end
 % Run IECDef method to set random seeds
 params.setRandomSeeds
 
+% Generate output structure
 output.MaxBladeFlapBendingMoment=[]; % set up output structure
 output.MinBladeFlapBendingMoment=[];
 output.MaxFlapStrain=[];
@@ -228,10 +223,12 @@ end
 
 % % runLinear(params); % run linearization
 
-% save the structure output file
+% Save the structure output file
 save output output
+
 % Write results to Excel file
 xlsfn='IECDLC_Results.xlsx';
+
 %ble:<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % fix errors from optimization run by not saving data
 try writeResult(output,xlsfn);
@@ -239,60 +236,59 @@ catch, error('error with saving') % do nothing
 end
 %ble:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-% remove Simulink controller path -- removed at end of script so it can change
+% Remove Simulink controller path -- removed at end of script so it can change
 rmpath(genpath(params.simulinkModelFolder));
-
 end
 
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 function writeResult(output,xlsfn)
-names=fieldnames(output);
-numDLC = size(output,1);
-xlsData=[];
+    names=fieldnames(output);
+    numDLC = size(output,1);
+    xlsData=[];
 
-csvfn = strrep(xlsfn,'.xlsx','.csv');
-fid  = fopen(csvfn,'w');
-for i=1:length(names)
-% %     xlsData=[xlsData; {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'}];
-    combinedOut.(names{i}) = [output.(names{i})];
-    hdrTxt = {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'};
-    fprintf(fid, '%s,%s,%s,%s,%s\n', hdrTxt{1},hdrTxt{2},hdrTxt{3},hdrTxt{4},hdrTxt{5});
-    for j=1:numDLC
-% %         xlsData=[xlsData;...
-% %             {getfield(combinedOut,names{i},{j},'Name'),...
-% %             getfield(combinedOut,names{i},{j},'data'),...
-% %             getfield(combinedOut,names{i},{j},'time'),...
-% %             getfield(combinedOut,names{i},{j},'Chan'),...
-% %             getfield(combinedOut,names{i},{j},'File')}];
-        dlcTxt = {getfield(combinedOut,names{i},{j},'Name'),...
-            getfield(combinedOut,names{i},{j},'data'),...
-            getfield(combinedOut,names{i},{j},'time'),...
-            getfield(combinedOut,names{i},{j},'Chan'),...
-            getfield(combinedOut,names{i},{j},'File')};
-        fprintf(fid, '%s,%f,%f,%s,%s\n', dlcTxt{1},dlcTxt{2},dlcTxt{3},dlcTxt{4},dlcTxt{5});
+    csvfn = strrep(xlsfn,'.xlsx','.csv');
+    fid  = fopen(csvfn,'w');
+    for i=1:length(names)
+    % %     xlsData=[xlsData; {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'}];
+        combinedOut.(names{i}) = [output.(names{i})];
+        hdrTxt = {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'};
+        fprintf(fid, '%s,%s,%s,%s,%s\n', hdrTxt{1},hdrTxt{2},hdrTxt{3},hdrTxt{4},hdrTxt{5});
+        for j=1:numDLC
+    % %         xlsData=[xlsData;...
+    % %             {getfield(combinedOut,names{i},{j},'Name'),...
+    % %             getfield(combinedOut,names{i},{j},'data'),...
+    % %             getfield(combinedOut,names{i},{j},'time'),...
+    % %             getfield(combinedOut,names{i},{j},'Chan'),...
+    % %             getfield(combinedOut,names{i},{j},'File')}];
+            dlcTxt = {getfield(combinedOut,names{i},{j},'Name'),...
+                getfield(combinedOut,names{i},{j},'data'),...
+                getfield(combinedOut,names{i},{j},'time'),...
+                getfield(combinedOut,names{i},{j},'Chan'),...
+                getfield(combinedOut,names{i},{j},'File')};
+            fprintf(fid, '%s,%f,%f,%s,%s\n', dlcTxt{1},dlcTxt{2},dlcTxt{3},dlcTxt{4},dlcTxt{5});
+        end
     end
-end
-fclose(fid);
+    fclose(fid);
 
-% xlswrite(xlsfn,xlsData,1);
+    % xlswrite(xlsfn,xlsData,1);
 
-% names=fieldnames(output);
-% xlsData=[];
-% 
-% for i=1:length(names)
-%     data=getfield(output,names{i});
-%     xlsData=[xlsData; {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'}];
-%     for j=1:length(data)
-%         xlsData=[xlsData;...
-%             {getfield(output,names{i},{j},'Name'),...
-%             getfield(output,names{i},{j},'data'),...
-%             getfield(output,names{i},{j},'time'),...
-%             getfield(output,names{i},{j},'Chan'),...
-%             getfield(output,names{i},{j},'File')}];
-%     end
-%     %     xlswrite(xlsfn,xlsData,names{i});
-% end
-% xlswrite(xlsfn,xlsData,1);
+    % names=fieldnames(output);
+    % xlsData=[];
+    % 
+    % for i=1:length(names)
+    %     data=getfield(output,names{i});
+    %     xlsData=[xlsData; {'DLC Name',names{i},'Occurring at time (sec)','on Channel','in File'}];
+    %     for j=1:length(data)
+    %         xlsData=[xlsData;...
+    %             {getfield(output,names{i},{j},'Name'),...
+    %             getfield(output,names{i},{j},'data'),...
+    %             getfield(output,names{i},{j},'time'),...
+    %             getfield(output,names{i},{j},'Chan'),...
+    %             getfield(output,names{i},{j},'File')}];
+    %     end
+    %     %     xlswrite(xlsfn,xlsData,names{i});
+    % end
+    % xlswrite(xlsfn,xlsData,1);
 
 end

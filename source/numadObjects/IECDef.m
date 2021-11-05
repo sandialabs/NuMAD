@@ -9,7 +9,7 @@ classdef IECDef < handle
 % ``IECDef``  A class definition for IEC input parameters
 %
 %   Usage: 
-%     params = IECDef();
+%     params = IECDef(Class,'TurbClass');
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -44,7 +44,7 @@ classdef IECDef < handle
     end
     
     properties (SetAccess=private)
-        avgws=0                     % Average wind speed, Default = 0 (m/s)
+        avgws                       % Average wind speed, Default = [] (m/s)
         bladeGageCoordinateRotation
         bladeGageLabels
         bladeGageLabels_MLx
@@ -53,7 +53,7 @@ classdef IECDef < handle
         bladeGageLabels_FLx
         bladeGageLabels_FLy
         bladeGageLabels_FLz        
-        combinedStrain = 1;         % perform fatigue calculations on combined bending and normal strain for spar
+        combinedStrain = 1;         % perform fatigue calculations on combined bending and normal strain for spar, Default = 1
         seeds                       % random seeds
         simulate                    % On/Off flag, Options: 1 = call FAST and perform simulations, 0 = process existing data, Default = []                  
     end
@@ -116,7 +116,7 @@ classdef IECDef < handle
             obj.bladeGageCoordinateRotation=simFlag;
         end        
         
-        function setGageLabels(obj,fst)
+        function setGageLabels(obj,fst,ad)
             % This method sets the blade gage labels
             for ss = 1:length(obj.BldGagNd)
                 obj.bladeGageLabels_MLx{ss} = ['Spn' num2str(obj.BldGagNd(ss)) 'MLxb1']; %#ok<*AGROW>
@@ -180,8 +180,7 @@ classdef IECDef < handle
             disp('Press F5 to confirm the strain gage locations and proceed...')        
         end
         
-        
-        
+                
         function runFullLoads(obj)
             % This methods runs the full loads analysis if specified
             if false(obj.fullLoads)
@@ -239,6 +238,7 @@ classdef IECDef < handle
                     'TwrBsFxt','TwrBsFyt','TwrBsFzt',...
                     'TwrBsMxt','TwrBsMyt','TwrBsMzt',...
                     }];
+                disp(fst.OutList)
             end            
         
         end
