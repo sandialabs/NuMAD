@@ -56,12 +56,13 @@ bld1=readFastBlade(strrep(fst.BldFile{1},'"',''));
 addpath(genpath(params.simulinkModelFolder));
 
 % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+% Run IECDef method to set simulation flag
+params.setSimFlag(simFlag)
+
 %Moved to IECDef Class
     % params.fullLoads = 1;                   % perform full loads analysis?
     % params.combinedStrain = 1;              % perform fatigue calculations on combined bending and normal strain for spar
-gageSetCase = 'set1';%'set2';%
-% Call IECDef method to set simulation flag
-params.setSimFlag(simFlag)
+    % params.gageSetCase = 'set1';%'set2';%
 % ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 % change FAST input file parameters for analysis
@@ -71,79 +72,20 @@ fst.Out.NcIMUxn = 0.965;
 fst.Out.NcIMUyn = 0.00;
 fst.Out.NcIMUzn = 0.63;
 
-% set up blade gages and locations
-params.setGageLabels
+% Run IECDef method to set up blade gages and locations
+params.setGageLabels(fst)
     
 % replaced with params, moved to method
     % fst.Out.BldGagNd=params.BldGagNd;  % Units: -
 	% fst.Out.NBlGages=length(params.BldGagNd);  % Units: -
-%     for ss = 1:length(params.BldGagNd)
-%         params.bladeGageLabels_MLx{ss} = ['Spn' num2str(params.BldGagNd(ss)) 'MLxb1']; %#ok<*AGROW>
-%         params.bladeGageLabels_MLy{ss} = ['Spn' num2str(params.BldGagNd(ss)) 'MLyb1'];
-%         params.bladeGageLabels_MLz{ss} = '';
-%         params.bladeGageLabels_FLx{ss} = '';
-%         params.bladeGageLabels_FLy{ss} = '';
-%         params.bladeGageLabels_FLz{ss} = '';
-%     end
-% 
-%     params.bladeGageLabels = [params.bladeGageLabels_MLx params.bladeGageLabels_MLy];%...
-%         %params.bladeGageLabels_MLz params.bladeGageLabels_FLx...
-%         %params.bladeGageLabels_FLy params.bladeGageLabels_FLz];   
 
-% this script must be run twice for the first 9 gages, and then for the additional gages.
-switch gageSetCase
-    case 'set1'
-        setGag = 1:9; % *set 1*
-    case 'set2'
-        setGag = 10:14; % *set 2*
-end
-fst.Out.NBlGages = length(setGag);
-totalBladeGageNumber = 9;   % actual number of gages to be used
-BldGagMaxSpanLoc = 0.95;
-BldGagMinSpanLoc = 0;     % minimum span location of a strain gage (no gage here currently; RootMxb1...)
-drSpan = (BldGagMaxSpanLoc - 0) / totalBladeGageNumber;
-gagSpan = BldGagMinSpanLoc + drSpan : drSpan : BldGagMaxSpanLoc;
-bladeCoordinateSpanStations = (ad.RNodes - fst.TurbConf.HubRad) ./ (fst.TurbConf.TipRad-fst.TurbConf.HubRad);
-params.BldGagNd = 0;
-params.bladeGageLabels_MLx = {}; params.bladeGageLabels_MLy = {}; params.bladeGageLabels_MLz = {};
-params.bladeGageLabels_FLx = {}; params.bladeGageLabels_FLy = {}; params.bladeGageLabels_FLz = {};
-params.bladeGageLabels = {};
-for bb = 1%:3 %number of blades
-    for ss = 1:length(setGag)%fst.Out.NBlGages
-        [~, rGagSpan(ss)] = min(abs(bladeCoordinateSpanStations - gagSpan(setGag(ss))));
-        params.BldGagNd(ss) = rGagSpan(ss);
-        if bb == 1
-            params.bladeGageLabels_MLx{ss} = ['Spn' num2str(ss) 'MLxb' num2str(bb)]; %#ok<*AGROW>
-            params.bladeGageLabels_MLy{ss} = ['Spn' num2str(ss) 'MLyb' num2str(bb)];
-            params.bladeGageLabels_MLz{ss} = ['Spn' num2str(ss) 'MLzb' num2str(bb)];
-            params.bladeGageLabels_FLx{ss} = ['Spn' num2str(ss) 'FLxb' num2str(bb)];
-            params.bladeGageLabels_FLy{ss} = ['Spn' num2str(ss) 'FLyb' num2str(bb)];
-            params.bladeGageLabels_FLz{ss} = ['Spn' num2str(ss) 'FLzb' num2str(bb)];
-            rowName{ss} = ['gage' num2str(ss)];
-        else
-            params.bladeGageLabels_MLx{end+1} = ['Spn' num2str(ss) 'MLxb' num2str(bb)]; %#ok<*AGROW>
-            params.bladeGageLabels_MLy{end+1} = ['Spn' num2str(ss) 'MLyb' num2str(bb)];
-            params.bladeGageLabels_MLz{end+1} = ['Spn' num2str(ss) 'MLzb' num2str(bb)];
-            params.bladeGageLabels_FLx{end+1} = ['Spn' num2str(ss) 'FLxb' num2str(bb)];
-            params.bladeGageLabels_FLy{end+1} = ['Spn' num2str(ss) 'FLyb' num2str(bb)];
-            params.bladeGageLabels_FLz{end+1} = ['Spn' num2str(ss) 'FLzb' num2str(bb)];
-        end
-    end
-end
-params.bladeGageLabels = [params.bladeGageLabels_MLx params.bladeGageLabels_MLy...
-    params.bladeGageLabels_MLz params.bladeGageLabels_FLx...
-    params.bladeGageLabels_FLy params.bladeGageLabels_FLz];
-
-tbl = array2table([gagSpan(setGag)' bladeCoordinateSpanStations(rGagSpan) rGagSpan']);
-tbl.Properties.VariableNames = {'GageSpanLocation_bladeCoordinates' 'ActualSpanLocations_bladeCoordinates' 'ADlocation'};
-tbl.Properties.RowNames = rowName;
-disp(tbl)
-disp('Press F5 to confirm the strain gage locations and proceed...')
 
 % calculate the coordinate transformation from local blade coordinate
 % system used for spanwise gages to the root blade coordinate system
 gagStrcTwst = interp1(bld1.prop.BlFract, bld1.prop.StrcTwst, gagSpan);    
-params.bladeGageCoordinateRotation = gagStrcTwst;
+% Moved to IECDef method
+    % params.bladeGageCoordinateRotation = gagStrcTwst;
+params.setBladeGageCoordinateRotation(gagStrcTwst);
 
 
 % Run IECDef method to run full loads or
@@ -185,21 +127,8 @@ else
     load carray
 end
 
-% Set random seeds
-if ~exist([params.parDir 'seeds.mat'],'file')
-    seeds=randi(123456,1,params.numSeeds);
-    save([params.parDir 'seeds'],'seeds')
-else
-    load([params.parDir 'seeds'])
-    % ble: added this check - seeds file can exist but not be correct.
-    if length(seeds) ~= params.numSeeds
-        clear seeds
-        seeds=randi(123456,1,params.numSeeds);
-        save([params.parDir 'seeds'],'seeds')
-    end
-    % ble: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-end
-params.seeds = seeds; %ble: seeds needs to be saved this way for parallel operation.
+% Run IECDef method to set random seeds
+params.setRandomSeeds
 
 output.MaxBladeFlapBendingMoment=[]; % set up output structure
 output.MinBladeFlapBendingMoment=[];

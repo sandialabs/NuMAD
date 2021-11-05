@@ -22,12 +22,14 @@ classdef IECDef < handle
         fatigueCriterion = 'Shifted Goodman';   % Fatigue Criteria, Options: 'Shifted Goodman'
         fstfn= 'NOT DEFINED';   	% FAST path, Default = "NOT DEFINED"
         fullLoads = 1;              % Perform full loads analysis, Options: 1 = On, 0 = Off, Default = 1
+        gageSetCase = 'set1'       % Gage set case, Options= 'set1', 'set 2', Default = 'set1'
         lin=10;                     % Range of steady wind speeds for linearizations, Default = 10
         momentMaxRotation = 45;     % Angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate) (deg)
         numadfn='NOT DEFINED';      % NuMAD path, including extension, Default = "NOT DEFINED"
         NumGrid=10              	% Number of grid points in turbsim 4-D wind field, Default = 10
         numSeeds=6;                 % Number of seeds - number of 10-minute simulations - for turbulent simulations
         operatingPoints=[0 0 0];    % Operating Points: [Cutin RatedSpeed CutOut], Defaults = [0 0 0]
+        parDir = '';                % Directory, Default = '';             
         ratedSpeed=12;              % Rated speed (rpm)
         sf_fat=0;                   % Total fatigue safety factor, Default = 0
         sf_uts=0;                   % Total ultimate strength safety factor, Default = 0
@@ -43,6 +45,7 @@ classdef IECDef < handle
     
     properties (SetAccess=private)
         avgws=0                     % Average wind speed, Default = 0 (m/s)
+        bladeGageCoordinateRotation
         bladeGageLabels
         bladeGageLabels_MLx
         bladeGageLabels_MLy
@@ -51,6 +54,7 @@ classdef IECDef < handle
         bladeGageLabels_FLy
         bladeGageLabels_FLz        
         combinedStrain = 1;         % perform fatigue calculations on combined bending and normal strain for spar
+        seeds                       % random seeds
         simulate                    % On/Off flag, Options: 1 = call FAST and perform simulations, 0 = process existing data, Default = []                  
     end
     
@@ -103,11 +107,16 @@ classdef IECDef < handle
         end
         
         function setSimFlag(obj,simFlag)
-            %This method sets the simulate cflag
+            %This method sets the simulate flag
             obj.simulate=simFlag;
         end
+
+        function setBladeGageCoordinateRotation(obj,simFlag)
+            %This method sets the blade gage coordinate roation
+            obj.bladeGageCoordinateRotation=simFlag;
+        end        
         
-        function setGageLabels(obj)
+        function setGageLabels(obj,fst)
             % This method sets the blade gage labels
             for ss = 1:length(obj.BldGagNd)
                 obj.bladeGageLabels_MLx{ss} = ['Spn' num2str(obj.BldGagNd(ss)) 'MLxb1']; %#ok<*AGROW>
@@ -119,7 +128,56 @@ classdef IECDef < handle
             end
             obj.bladeGageLabels = [obj.bladeGageLabels_MLx obj.bladeGageLabels_MLy];%...
                 %obj.bladeGageLabels_MLz obj.bladeGageLabels_FLx...
-                %obj.bladeGageLabels_FLy obj.bladeGageLabels_FLz];        
+                %obj.bladeGageLabels_FLy obj.bladeGageLabels_FLz];       
+            % this script must be run twice for the first 9 gages, and then for the additional gages.
+            switch obj.gageSetCase
+                case 'set1'
+                    setGag = 1:9; % *set 1*
+                case 'set2'
+                    setGag = 10:14; % *set 2*
+            end                
+            NBlGages = length(setGag);
+            totalBladeGageNumber = 9;   % actual number of gages to be used
+            BldGagMaxSpanLoc = 0.95;
+            BldGagMinSpanLoc = 0;     % minimum span location of a strain gage (no gage here currently; RootMxb1...)
+            drSpan = (BldGagMaxSpanLoc - 0) / totalBladeGageNumber;
+            gagSpan = BldGagMinSpanLoc + drSpan : drSpan : BldGagMaxSpanLoc;
+            bladeCoordinateSpanStations = (ad.RNodes - fst.TurbConf.HubRad) ./ (fst.TurbConf.TipRad-fst.TurbConf.HubRad);
+            obj.BldGagNd = 0;
+            obj.bladeGageLabels_MLx = {}; obj.bladeGageLabels_MLy = {}; obj.bladeGageLabels_MLz = {};
+            obj.bladeGageLabels_FLx = {}; obj.bladeGageLabels_FLy = {}; obj.bladeGageLabels_FLz = {};
+            obj.bladeGageLabels = {};
+            for bb = 1%:3 %number of blades
+                for ss = 1:length(setGag)
+                    [~, rGagSpan(ss)] = min(abs(bladeCoordinateSpanStations - gagSpan(setGag(ss))));
+                    obj.BldGagNd(ss) = rGagSpan(ss);
+                    if bb == 1
+                        obj.bladeGageLabels_MLx{ss} = ['Spn' num2str(ss) 'MLxb' num2str(bb)]; %#ok<*AGROW>
+                        obj.bladeGageLabels_MLy{ss} = ['Spn' num2str(ss) 'MLyb' num2str(bb)];
+                        obj.bladeGageLabels_MLz{ss} = ['Spn' num2str(ss) 'MLzb' num2str(bb)];
+                        obj.bladeGageLabels_FLx{ss} = ['Spn' num2str(ss) 'FLxb' num2str(bb)];
+                        obj.bladeGageLabels_FLy{ss} = ['Spn' num2str(ss) 'FLyb' num2str(bb)];
+                        obj.bladeGageLabels_FLz{ss} = ['Spn' num2str(ss) 'FLzb' num2str(bb)];
+                        rowName{ss} = ['gage' num2str(ss)];
+                    else
+                        obj.bladeGageLabels_MLx{end+1} = ['Spn' num2str(ss) 'MLxb' num2str(bb)]; %#ok<*AGROW>
+                        obj.bladeGageLabels_MLy{end+1} = ['Spn' num2str(ss) 'MLyb' num2str(bb)];
+                        obj.bladeGageLabels_MLz{end+1} = ['Spn' num2str(ss) 'MLzb' num2str(bb)];
+                        obj.bladeGageLabels_FLx{end+1} = ['Spn' num2str(ss) 'FLxb' num2str(bb)];
+                        obj.bladeGageLabels_FLy{end+1} = ['Spn' num2str(ss) 'FLyb' num2str(bb)];
+                        obj.bladeGageLabels_FLz{end+1} = ['Spn' num2str(ss) 'FLzb' num2str(bb)];
+                    end
+                end
+            end            
+            obj.bladeGageLabels = [obj.bladeGageLabels_MLx obj.bladeGageLabels_MLy...
+            obj.bladeGageLabels_MLz obj.bladeGageLabels_FLx...
+            obj.bladeGageLabels_FLy obj.bladeGageLabels_FLz];
+        
+            tbl = array2table([gagSpan(setGag)' bladeCoordinateSpanStations(rGagSpan) rGagSpan']);
+            tbl.Properties.VariableNames = {'GageSpanLocation_bladeCoordinates' 'ActualSpanLocations_bladeCoordinates' 'ADlocation'};
+            tbl.Properties.RowNames = rowName;
+            disp(tbl)
+            disp('Press F5 to confirm the strain gage locations and proceed...')        
         end
         
         
@@ -185,8 +243,26 @@ classdef IECDef < handle
         
         end
         
+        function setRandomSeeds(obj)
+            % This method setd random seeds
+            if ~exist([obj.parDir 'seeds.mat'],'file')
+                seeds=randi(123456,1,obj.numSeeds);
+                save([obj.parDir 'seeds'],'seeds')
+            else
+                load([obj.parDir 'seeds'])
+                % ble: added this check - seeds file can exist but not be correct.
+                if length(seeds) ~= obj.numSeeds
+                    clear seeds
+                    seeds=randi(123456,1,obj.numSeeds);
+                    save([obj.parDir 'seeds'],'seeds')
+                end
+                % ble: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            end
+            obj.seeds = seeds; %ble: seeds needs to be saved this way for parallel operation.                                
+        end
+        
         function saveOuput(obj)
-                        
+%             consider moving runIEC scripts to save output to this method
         end
         
     end            
