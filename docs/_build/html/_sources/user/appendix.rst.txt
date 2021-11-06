@@ -1,6 +1,5 @@
 .. _appendix:
 
-
 Appendix
 ========
 
@@ -39,7 +38,6 @@ Blade Properties
 .. autoattribute:: numadObjects.BladeDef.sweep
 .. autoattribute:: numadObjects.BladeDef.swtwisted
 .. autoattribute:: numadObjects.BladeDef.teband
-
 
 Blade Methods
 ~~~~~~~~~~~~~~~~~~
@@ -122,7 +120,6 @@ Material Properties
 .. autoattribute:: numadObjects.MaterialDef.reference
 
 
-
 .. _StationClass:
 
 Station Class
@@ -141,6 +138,8 @@ Station Properties
 .. autoattribute:: numadObjects.StationDef.airfoil
 .. autoattribute:: numadObjects.StationDef.spanlocation
 
+
+.. _ComponentClass:
 
 Component Class
 ------------------
@@ -166,55 +165,61 @@ Component Properties
 .. autoattribute:: numadObjects.ComponentDef.pinnedends
 
 
+.. _AirfoilClass:
 
 Airfoil Class
 ------------------
 
-.. _airfoilDefTable:
-.. csv-table::  ``AirfoilDef``: A class definition for airfoil profiles.
-   :file: airfoilDefTable.csv
-   :widths: 1,2
-   :header-rows: 1
-   
+.. autoclass:: numadObjects.AirfoilDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
+	
+Airfoil Properties	
+~~~~~~~~~~~~~~~~~~~~
+
+.. autoattribute:: numadObjects.AirfoilDef.name
+.. autoattribute:: numadObjects.AirfoilDef.reference
+.. autoattribute:: numadObjects.AirfoilDef.coordinates
+.. autoattribute:: numadObjects.AirfoilDef.c
+.. autoattribute:: numadObjects.AirfoilDef.camber	
+.. autoattribute:: numadObjects.AirfoilDef.thickness
+.. autoattribute:: numadObjects.AirfoilDef.percentthick
+.. autoattribute:: numadObjects.AirfoilDef.maxthick
+.. autoattribute:: numadObjects.AirfoilDef.TEtype
+.. autoattribute:: numadObjects.AirfoilDef.x
+.. autoattribute:: numadObjects.AirfoilDef.y
+
+
+.. _StackClass:
 
 Stack Class
 ------------------ 
 
-.. _stackDefTable:
-.. table:: ``StackDef``: A class definition for a stack of composite layers.
+.. autoclass:: numadObjects.StackDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
 
-    +---------------------+----------------------------------------------------+
-    | **StackDef          | **Property Description**                           |
-    | Property**          |                                                    |
-    +=====================+====================================================+
-    | ``name``            | Name of the stack / composite material used by     |
-    |                     | NuMAD                                              |
-    +---------------------+----------------------------------------------------+
-    | ``plygroups``       | Array of ply structures, one for each ply.         |
-    |                     |                                                    |
-    |                     | ``ply = struct('component'),...% parent comp``     |
-    |                     |                                                    |
-    |                     | ``'materialid',[],...% materialid of ply``         |
-    |                     |                                                    |
-    |                     | ``'thickness',[],... % thickness [mm]``            |
-    |                     |                                                    |
-    |                     | ``% of single ply``                                |
-    |                     |                                                    |
-    |                     | ``'angle',[],... % ply angle``                     |
-    |                     |                                                    |
-    |                     | ``'nPlies',[]); % number of plies``                |
-    +---------------------+----------------------------------------------------+
-    | ``indices``         | Indices of stack                                   |
-    |                     |                                                    |
-    |                     | [in board station, out board station, 1\ :sup:`st` |
-    |                     | kepoint, 2\ :sup:`nd` keypoint]                    |
-    +---------------------+----------------------------------------------------+
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
+	
+Stack Properties	
+~~~~~~~~~~~~~~~~~~~~
 
+.. autoattribute:: numadObjects.StackDef.name
+.. autoattribute:: numadObjects.StackDef.plygroups
+.. autoattribute:: numadObjects.StackDef.indices
 
+Stack Methods
+~~~~~~~~~~~~~~~~~~~~
+
+.. autoattribute:: numadObjects.StackDef.addply
    
    
 
-.. Kelley: remove these tables   
+.. Kelley: remove these legacy tables and excel spreadsheets
 
 .. .. _bladeDefTable:
 .. .. csv-table:: ``BladeDef``: A class definition for wind & water turbine blades.
@@ -246,3 +251,39 @@ Stack Class
 ..    :file: componentDefTable.csv
 ..    :widths: 1,2
 ..    :header-rows: 1
+
+.. .. _airfoilDefTable:
+.. .. csv-table::  ``AirfoilDef``: A class definition for airfoil profiles.
+..    :file: airfoilDefTable.csv
+..    :widths: 1,2
+..    :header-rows: 1
+
+.. .. _stackDefTable:
+.. .. table:: ``StackDef``: A class definition for a stack of composite layers.
+.. 
+..     +---------------------+----------------------------------------------------+
+..     | **StackDef          | **Property Description**                           |
+..     | Property**          |                                                    |
+..     +=====================+====================================================+
+..     | ``name``            | Name of the stack / composite material used by     |
+..     |                     | NuMAD                                              |
+..     +---------------------+----------------------------------------------------+
+..     | ``plygroups``       | Array of ply structures, one for each ply.         |
+..     |                     |                                                    |
+..     |                     | ``ply = struct('component'),...% parent comp``     |
+..     |                     |                                                    |
+..     |                     | ``'materialid',[],...% materialid of ply``         |
+..     |                     |                                                    |
+..     |                     | ``'thickness',[],... % thickness [mm]``            |
+..     |                     |                                                    |
+..     |                     | ``% of single ply``                                |
+..     |                     |                                                    |
+..     |                     | ``'angle',[],... % ply angle``                     |
+..     |                     |                                                    |
+..     |                     | ``'nPlies',[]); % number of plies``                |
+..     +---------------------+----------------------------------------------------+
+..     | ``indices``         | Indices of stack                                   |
+..     |                     |                                                    |
+..     |                     | [in board station, out board station, 1\ :sup:`st` |
+..     |                     | kepoint, 2\ :sup:`nd` keypoint]                    |
+..     +---------------------+----------------------------------------------------+   
