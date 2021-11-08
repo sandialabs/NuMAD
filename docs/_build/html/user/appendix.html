@@ -34,7 +34,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -106,12 +105,32 @@
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Appendix</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#blade-class">Blade Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#material-class">Material Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#station-class">Station Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#component-class">Component Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#airfoil-class">Airfoil Class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#stack-class">Stack Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blade-class">Blade Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#blade-properties">Blade Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#blade-methods">Blade Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#material-class">Material Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#material-properties">Material Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#station-class">Station Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#station-properties">Station Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#component-class">Component Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#component-properties">Component Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#airfoil-class">Airfoil Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#airfoil-properties">Airfoil Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stack-class">Stack Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stack-properties">Stack Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stack-methods">Stack Methods</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -188,396 +207,801 @@
   <div class="section" id="appendix">
 <span id="id1"></span><h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="blade-class">
-<h2>Blade Class<a class="headerlink" href="#blade-class" title="Permalink to this headline">¶</a></h2>
-<span id="bladedeftable"></span><table class="colwidths-given docutils align-default" id="id2">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>: A class definition for wind &amp; water turbine blades.</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>BladeDef Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">span</span></code></p></td>
-<td><p>Spanwise location of distributed properties [m]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">degreestwist</span></code></p></td>
-<td><p>Twist distribution [degrees]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chord</span></code></p></td>
-<td><p>Chord length distribution [m]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">percentthick</span></code></p></td>
-<td><p>Percent thickness of airfoil [%]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chordoffset</span></code></p></td>
-<td><p>Chordwise offset (in attrition to natural offset)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">aerocenter</span></code></p></td>
-<td><p>Aerodynamic center of airfoil</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sweep</span></code></p></td>
-<td><p>Reference axis location along <span class="math notranslate nohighlight">\(x_{1}\)</span> [m] (see Figure 2‑1)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prebend</span></code></p></td>
-<td><p>Reference axis location along <span class="math notranslate nohighlight">\(x_{2}\)</span> [m] (see Figure 2‑1)</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">materials</span></code></p></td>
-<td><p>MaterialDef – See <a class="reference internal" href="#materialdeftable"><span class="std std-numref">Table 8</span></a></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stations</span></code></p></td>
-<td><p>StationDef – See <a class="reference internal" href="#stationdeftable"><span class="std std-numref">Table 9</span></a></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">components</span></code></p></td>
-<td><p>ComponentDef – See <a class="reference internal" href="#componentdeftable"><span class="std std-numref">Table 10</span></a>. Blade components such as spar, panels, etc…</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sparcapwidth</span></code></p></td>
-<td><p>1 × 2  array. Defines distance between keypoints b &amp; c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sparcapoffset</span></code></p></td>
-<td><p>1 × 2  array. (Does Nothing)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">leband</span></code></p></td>
-<td><p>Defines location of keypoint a</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">teband</span></code></p></td>
-<td><p>Defines location of keypoint d</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ispan</span></code></p></td>
-<td><p>Spanwise locations of interpolated output [m]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">naturaloffset=1</span></code></p></td>
-<td><p>1: offset by max thickness, 0: do not offset to max thickness</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rotorspin</span> <span class="pre">=</span> <span class="pre">1</span></code></p></td>
-<td><p>1: CW rotation looking downwind, -1: CCW rotation</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">swtwisted</span></code></p></td>
-<td><p>0: planar shear webs, 1: shearwebs twisted by blade twist</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
-<td><p>Approximate element edge size for FE model [m]</p></td>
-</tr>
-</tbody>
-</table>
-<span id="bladedefmethodstable"></span><table class="colwidths-given docutils align-default" id="id3">
-<caption><span class="caption-number">Table 7 </span><span class="caption-text">List of Methods for <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class.</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>Method Name</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set.naturaloffset</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set.rotorspin</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set.swtwisted</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">addStation</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">addComponent</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">addMaterial</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updateBlade</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updateGeometry</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">updateKeypoints</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">updateBOM</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">readYAML</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writeYAML</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generateBeamModel</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">generateFEA</span> <span class="pre">(not</span> <span class="pre">working)</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">writeBOMxls</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writePlot3D</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getprofileTEtype</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">downsampleProfile</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delete</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">surf</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotregions</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotgeom</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">plotbom</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plotprofile</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">findLayerExtents</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">findRegionExtents</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">getTEtype</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fprintf_matrix</span></code></p></td>
-</tr>
-</tbody>
-</table>
+<span id="bladeclass"></span><h2>Blade Class<a class="headerlink" href="#blade-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">BladeDef</span></span><a class="headerlink" href="#numadObjects.BladeDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>  A class definition for wind &amp; water turbine blades.</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade</span> <span class="pre">=</span> <span class="pre">BladeDef();</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">BladeDef_to_NuMADfile</span></code>, <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>,
+<code class="docutils literal notranslate"><span class="pre">StationDef</span></code>, <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StackDef</span></code></p>
+</dd></dl>
+
+<div class="section" id="blade-properties">
+<h3>Blade Properties<a class="headerlink" href="#blade-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.aerocenter">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">aerocenter</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.aerocenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aerodynamic center of airfoil (used only by NuMAD-&gt;FAST)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.chord">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">chord</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.chord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chord distribution [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.chordoffset">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">chordoffset</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.chordoffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chordwise offset (in addition to natural offset)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.components">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">components</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blade components such as spar, panels, etc., refer to <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.degreestwist">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">degreestwist</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.degreestwist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Twist distribution [degrees]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.ispan">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">ispan</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.ispan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spanwise locations of interpolated output</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.leband">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">leband</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.leband" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of keypoint a</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.materials">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">materials</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.materials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material properties, refer to <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.mesh">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">mesh</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0.10'</span></em><a class="headerlink" href="#numadObjects.BladeDef.mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Approximate element edge size for FE model [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.naturaloffset">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">naturaloffset</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'1'</span></em><a class="headerlink" href="#numadObjects.BladeDef.naturaloffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>1= offset by max thickness location, 0= do not offset to max thickness</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Integar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.percentthick">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">percentthick</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.percentthick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Percent thickness of airfoil [%]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.prebend">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">prebend</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.prebend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blade prebend, reference axis location along x2 [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.rotorspin">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">rotorspin</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'1'</span></em><a class="headerlink" href="#numadObjects.BladeDef.rotorspin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rotor Spin, 1= CW rotation looking downwind, -1= CCW rotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Integar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.span">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">span</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.span" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spanwise location of distributed properties [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.sparcapoffset">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">sparcapoffset</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0'</span></em><a class="headerlink" href="#numadObjects.BladeDef.sparcapoffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 × 2 array. (Does Nothing)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.sparcapwidth">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">sparcapwidth</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.sparcapwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locations of keypoints b &amp; c, defines distance between keypoints b &amp; c [mm]. First entry is the HP spar cap. Second entry is the LP spar cap</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.stations">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">stations</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.stations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blade Stations, define the camber and thickness along the blade, refer to <cite>StationDef`</cite></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.sweep">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">sweep</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blade Sweep, Reference axis location along x1 [m]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.swtwisted">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">swtwisted</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0'</span></em><a class="headerlink" href="#numadObjects.BladeDef.swtwisted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shear Web, 0 = planar shear webs, 1= shear webs twisted by blade twist</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Integar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.teband">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">teband</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.BladeDef.teband" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location of keypoint d</p>
+</dd></dl>
+
+</div>
+<div class="section" id="blade-methods">
+<h3>Blade Methods<a class="headerlink" href="#blade-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.addStation">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">addStation</span></span><a class="headerlink" href="#numadObjects.BladeDef.addStation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method adds a station</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.addStation(af,spanlocation)</span></code> where  <code class="docutils literal notranslate"><span class="pre">af</span></code> = airfoil filename or <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.addComponent">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">addComponent</span></span><a class="headerlink" href="#numadObjects.BladeDef.addComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method adds a Component</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.addComponent(comp_struct)</span></code> where <code class="docutils literal notranslate"><span class="pre">comp_struct</span></code> = input structure used by <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.addMaterial">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">addMaterial</span></span><a class="headerlink" href="#numadObjects.BladeDef.addMaterial" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method adds Material</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.addMaterial(mat_struct)</span></code> where <code class="docutils literal notranslate"><span class="pre">mat_struct</span></code> = input structure used by <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.updateBlade">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">updateBlade</span></span><a class="headerlink" href="#numadObjects.BladeDef.updateBlade" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method updates the BladeDef model</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.updateGeometry">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">updateGeometry</span></span><a class="headerlink" href="#numadObjects.BladeDef.updateGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method updates the interpolated blade parameters</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.updateKeypoints">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">updateKeypoints</span></span><a class="headerlink" href="#numadObjects.BladeDef.updateKeypoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method updates the keypoints (a,b,c,…) which define the blade
+regions.</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.updateKeypoints</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.updateBOM">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">updateBOM</span></span><a class="headerlink" href="#numadObjects.BladeDef.updateBOM" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method updates the Bill-of-Materials
+Cell array columns of blade.bom:
+1. Layer #
+2. Material ID
+3. Component or region name
+4. Begin station   (m)
+5. End station     (m)
+6. Max width       (m)
+7. Average width   (m)
+8. 3D area         (m^2)
+9. Layer thickness (mm)
+10. Computed dry layer weight (g)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.readYAML">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">readYAML</span></span><a class="headerlink" href="#numadObjects.BladeDef.readYAML" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method calls a separate matlab function, sends
+the YAML file (‘file’) and blade object (‘obj’), and returns the
+blade object generated using the YAML file converter</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.writeYAML">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">writeYAML</span></span><a class="headerlink" href="#numadObjects.BladeDef.writeYAML" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method calls a separate matlab function to write the
+the Blade Object (‘obj’) to a YAML file (‘file’)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.generateBeamModel">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">generateBeamModel</span></span><a class="headerlink" href="#numadObjects.BladeDef.generateBeamModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method generates blade sectional properties used for
+aeroelastic analyses</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.generateFEA">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">generateFEA</span></span><a class="headerlink" href="#numadObjects.BladeDef.generateFEA" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method generates FEA</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.writeBOMxls">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">writeBOMxls</span></span><a class="headerlink" href="#numadObjects.BladeDef.writeBOMxls" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method writes the bill-of-materials out to a spreadsheet.</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">bladeDef.writeBOMxls('bom.xlsx')</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.writePlot3D">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">writePlot3D</span></span><a class="headerlink" href="#numadObjects.BladeDef.writePlot3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the current blade geometry in Plot3D format.
+breakpoints is a list of chord fractions at which the
+surface geometry is divided into blocks</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">BladeDef.writePlot3D(filename,[breakpoints])</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">BladeDef.writePlot3D('file.p3d',[-.3,</span> <span class="pre">.3]);</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.getprofileTEtype">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">getprofileTEtype</span></span><a class="headerlink" href="#numadObjects.BladeDef.getprofileTEtype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.downsampleProfile">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">downsampleProfile</span></span><a class="headerlink" href="#numadObjects.BladeDef.downsampleProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>can this be deleted?? Doesn’t precisely control the
+number of points. replace with resampleAirfoil_ble
+currently used by BladeDef_to_NuMADfile and develop__write_shell7</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ble</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.delete">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><a class="headerlink" href="#numadObjects.BladeDef.delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.surf">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">surf</span></span><a class="headerlink" href="#numadObjects.BladeDef.surf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.plotregions">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">plotregions</span></span><a class="headerlink" href="#numadObjects.BladeDef.plotregions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.plotgeom">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">plotgeom</span></span><a class="headerlink" href="#numadObjects.BladeDef.plotgeom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.plotbom">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">plotbom</span></span><a class="headerlink" href="#numadObjects.BladeDef.plotbom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.BladeDef.plotprofile">
+<span class="sig-prename descclassname"><span class="pre">BladeDef.</span></span><span class="sig-name descname"><span class="pre">plotprofile</span></span><a class="headerlink" href="#numadObjects.BladeDef.plotprofile" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method plots profiles</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.plotprofile(1);</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.plotprofile(1:N);</span></code></p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="material-class">
-<h2>Material Class<a class="headerlink" href="#material-class" title="Permalink to this headline">¶</a></h2>
-<span id="materialdeftable"></span><table class="colwidths-given docutils align-default" id="id4">
-<caption><span class="caption-number">Table 8 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>MaterialDef Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>User selected name of the material</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">type</span></code></p></td>
-<td><p>Two options: <code class="docutils literal notranslate"><span class="pre">‘isotropic’</span></code> or <code class="docutils literal notranslate"><span class="pre">‘orthotropic’</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">layerthickness</span></code></p></td>
-<td><p>Layer thickness [mm]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ex</span></code></p></td>
-<td><p>Longitudinal elastic modulus [Pa]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ey</span></code></p></td>
-<td><p>Transverse elastic modulus [Pa]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ez</span></code></p></td>
-<td><p>Through-the-thickness elastic modulus in the principal material coordinates [Pa]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gxy</span></code></p></td>
-<td><p>In-plane shear modulus [Pa]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gyz</span></code></p></td>
-<td><p>Transverse shear modulus [Pa]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gxz</span></code></p></td>
-<td><p>Transverse shear modulus [Pa]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prxy</span></code></p></td>
-<td><p>In-plane Poisson ratio [   ]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pryz</span></code></p></td>
-<td><p>Transverse Poisson ratio [   ]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prxz</span></code></p></td>
-<td><p>Transverse Poisson ratio [   ]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
-<td><p>Cured mass density [kg/m<sup>2</sup>]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">drydensity</span></code></p></td>
-<td><p>Density of fabric</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">uts</span></code></p></td>
-<td><p>1 × 3 array of ultimate tensile strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{L}\)</span>,<span class="math notranslate nohighlight">\(\ S_{T}\)</span>, <span class="math notranslate nohighlight">\(S_{z}\)</span>. 1 × 1 for isotropic.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ucs</span></code></p></td>
-<td><p>1 × 3 array of ultimate compressive strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{L}\)</span>,<span class="math notranslate nohighlight">\(\ S_{T}\)</span>, <span class="math notranslate nohighlight">\(S_{z}\)</span>. 1 × 1 for isotropic.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">uss</span></code></p></td>
-<td><p>1 × 3 array of ultimate shear strength design values. Sequence: <span class="math notranslate nohighlight">\(S_{LT}\)</span>,<span class="math notranslate nohighlight">\(\ S_{Tz}\)</span>, <span class="math notranslate nohighlight">\(S_{Lz}\)</span>. 1 × 1 for isotropic.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">xzit</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(Lz\)</span> tensile inclination parameter for Puck failure index</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xzic</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(Lz\)</span> compressive inclination parameter for Puck failure index</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yzit</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(Tz\)</span> tensile inclination parameter for Puck failure index</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">yzic</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(Tz\)</span> compressive inclination parameter for Puck failure index</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g1g2</span></code></p></td>
-<td><p>Fracture toughness ratio between G<sub>I</sub> (mode I) and G<sub>II</sub> (mode II) [   ]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">alp0</span></code></p></td>
-<td><p>Fracture angle under pure transverse compression [degrees]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">etat</span></code></p></td>
-<td><p>Transverse friction coefficient for Larc [  ]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">etal</span></code></p></td>
-<td><p>Longitudinal friction coefficient for Larc [  ]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
-<td><p>Fatigue slope exponent [  ]</p></td>
-</tr>
-</tbody>
-</table>
+<span id="materialclass"></span><h2>Material Class<a class="headerlink" href="#material-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">MaterialDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.MaterialDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code>  A class definition for blade materials.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">mat_obj</span> <span class="pre">=</span> <span class="pre">ComponentDef();</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.addMaterial</span></code></p>
+</dd></dl>
+
+<div class="section" id="material-properties">
+<h3>Material Properties<a class="headerlink" href="#material-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.name">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>User selected name of the material</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.type">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">type</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘isotropic’ or ‘orthotropic’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Two options</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.layerthickness">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">layerthickness</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.layerthickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Layer thickness [mm]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.ex">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">ex</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.ex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Longitudinal elastic modulus [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.ey">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">ey</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.ey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse elastic modulus [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.ez">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">ez</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.ez" title="Permalink to this definition">¶</a></dt>
+<dd><p>Through-the-thickness elastic modulus in the principal material coordinates [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.gxy">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">gxy</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.gxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>In-plane shear modulus [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.gyz">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">gyz</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.gyz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse shear modulus [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.gxz">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">gxz</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.gxz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse shear modulus [Pa]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.prxy">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">prxy</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.prxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>In-plane Poisson ratio [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.pryz">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">pryz</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.pryz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse Poisson ratio [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.prxz">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">prxz</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.prxz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse Poisson ratio [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.density">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">density</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cured mass density [kg/m2]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.drydensity">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">drydensity</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.drydensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Density of fabric</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.uts">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">uts</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.uts" title="Permalink to this definition">¶</a></dt>
+<dd><p>SL , ST, Sz, 1 × 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>1 × 3 array of ultimate tensile strength design values. Sequence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.ucs">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">ucs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.ucs" title="Permalink to this definition">¶</a></dt>
+<dd><p>SL , ST, Sz, 1 × 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>1 × 3 array of ultimate compressive strength design values. Sequence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.uss">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">uss</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.uss" title="Permalink to this definition">¶</a></dt>
+<dd><p>SLT , STz, SLz, 1 × 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>1 × 3 array of ultimate shear strength design values. Sequence</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.xzit">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">xzit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.xzit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lz tensile inclination parameter for Puck failure index</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.xzic">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">xzic</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.xzic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lz compressive inclination parameter for Puck failure index</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.yzit">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">yzit</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.yzit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tz tensile inclination parameter for Puck failure index</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.yzic">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">yzic</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.yzic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tz compressive inclination parameter for Puck failure index</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.g1g2">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">g1g2</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.g1g2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fracture toughness ratio between GI (mode I) and GII (mode II) [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.alp0">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">alp0</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.alp0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fracture angle under pure transverse compression [degrees]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.etat">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">etat</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.etat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transverse friction coefficient for Larc [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.etal">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">etal</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.etal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Longitudinal friction coefficient for Larc [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.m">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">m</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fatigue slope exponent [ ]</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.MaterialDef.reference">
+<span class="sig-prename descclassname"><span class="pre">MaterialDef.</span></span><span class="sig-name descname"><span class="pre">reference</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.MaterialDef.reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 <div class="section" id="station-class">
-<h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
-<span id="stationdeftable"></span><table class="colwidths-given docutils align-default" id="id5">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>: A class definition for blade stations.</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>StationDef Property</p></th>
-<th class="head"><p>Property Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>airfoil</p></td>
-<td><p>AirfoilDef – See <a class="reference internal" href="#airfoildeftable"><span class="std std-numref">Table 11</span></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>spanlocation</p></td>
-<td><p>Spanwise location where station is defined [m]</p></td>
-</tr>
-</tbody>
-</table>
+<span id="stationclass"></span><h2>Station Class<a class="headerlink" href="#station-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.StationDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">StationDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">af</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.StationDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">StationDef</span></code>  A class definition for blade stations.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">sta</span> <span class="pre">=</span> <span class="pre">StationDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">sta</span> <span class="pre">=</span> <span class="pre">StationDef(af);</span></code> where <code class="docutils literal notranslate"><span class="pre">af</span></code> = airfoil filename or <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.addStation</span></code></p>
+</dd></dl>
+
+<div class="section" id="station-properties">
+<h3>Station Properties<a class="headerlink" href="#station-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StationDef.airfoil">
+<span class="sig-prename descclassname"><span class="pre">StationDef.</span></span><span class="sig-name descname"><span class="pre">airfoil</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StationDef.airfoil" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StationDef.spanlocation">
+<span class="sig-prename descclassname"><span class="pre">StationDef.</span></span><span class="sig-name descname"><span class="pre">spanlocation</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StationDef.spanlocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spanwise location where station is defined [m]</p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="component-class">
-<h2>Component Class<a class="headerlink" href="#component-class" title="Permalink to this headline">¶</a></h2>
-<span id="componentdeftable"></span><table class="colwidths-given docutils align-default" id="id6">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>: A class definition for blade components.</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>ComponentDef Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">group</span></code></p></td>
-<td><p>0: blade, 1: first shear web, 2: second shear web, etc.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">materialid</span></code></p></td>
-<td><p>string such as <code class="docutils literal notranslate"><span class="pre">'spar'</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fabricangle</span></code></p></td>
-<td><p>material id number from <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hpextents</span></code></p></td>
-<td><p>The extent of the airfoil covered by the component. High pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">lpextents</span></code></p></td>
-<td><p>The extent of the airfoil covered by the component. Low pressure side. Eg. <code class="docutils literal notranslate"><span class="pre">{‘a’}</span></code>    <code class="docutils literal notranslate"><span class="pre">{‘b’}</span></code>. See Figure 1‑1.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cp</span></code></p></td>
-<td><p>Material thickness distribution along blade span. <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">×</span> <span class="pre">2</span></code> array. First column is nondimension span location where thickness is to be defined. Second column is material thickness [mm].</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">imethod</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'pchip'</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pinnedends</span></code></p></td>
-<td><p>Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> by default.</p></td>
-</tr>
-</tbody>
-</table>
+<span id="componentclass"></span><h2>Component Class<a class="headerlink" href="#component-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">ComponentDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">comp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.ComponentDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>  A class definition for blade components.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">comp_obj</span> <span class="pre">=</span> <span class="pre">ComponentDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">comp_obj</span> <span class="pre">=</span> <span class="pre">ComponentDef(comp_struct);</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.addComponent</span></code></p>
+</dd></dl>
+
+<div class="section" id="component-properties">
+<h3>Component Properties<a class="headerlink" href="#component-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.group">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">group</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>0 = blade, 1 = first shear web, 2 = second shear web, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Integar</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.name">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''&quot;</span></em><a class="headerlink" href="#numadObjects.ComponentDef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>such as ‘spar’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.materialid">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">materialid</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.materialid" title="Permalink to this definition">¶</a></dt>
+<dd><p>material id number from blade.materials</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.fabricangle">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">fabricangle</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.fabricangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>fiber angle</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.hpextents">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">hpextents</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.hpextents" title="Permalink to this definition">¶</a></dt>
+<dd><p>cell array of keypoints such as {‘b’,’c’}</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.lpextents">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">lpextents</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.lpextents" title="Permalink to this definition">¶</a></dt>
+<dd><p>cell array of keypoints such as {‘b’,’c’}</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.cp">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.ComponentDef.cp" title="Permalink to this definition">¶</a></dt>
+<dd><p>control points defining layer distribution</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.imethod">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">imethod</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'pchip'&quot;</span></em><a class="headerlink" href="#numadObjects.ComponentDef.imethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>imethod</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.ComponentDef.pinnedends">
+<span class="sig-prename descclassname"><span class="pre">ComponentDef.</span></span><span class="sig-name descname"><span class="pre">pinnedends</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'false'</span></em><a class="headerlink" href="#numadObjects.ComponentDef.pinnedends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 <div class="section" id="airfoil-class">
-<h2>Airfoil Class<a class="headerlink" href="#airfoil-class" title="Permalink to this headline">¶</a></h2>
-<span id="airfoildeftable"></span><table class="colwidths-given docutils align-default" id="id7">
-<caption><span class="caption-number">Table 11 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>: A class definition for airfoil profiles.</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>AirfoilDef Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>User selected character array</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reference</span></code></p></td>
-<td><p>any header info in file</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">coordinates</span></code></p></td>
-<td><p>profile data in two columns</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
-<td><p>Computed by NuAMD.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">camber</span></code></p></td>
-<td><p>Camber line as a function of x. Distance in percent chord between LP and HP curves. Computed by NuAMD.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">thickness</span></code></p></td>
-<td><p>Relative thickness as a function of the x coordinate. Values between 0 and 1 where 1 corresponds to maximum thickness. Computed by NuAMD.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">percentthick</span></code></p></td>
-<td><p>Maximum airfoil thickness as a percentage of chord length [%]</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">maxthick</span></code></p></td>
-<td><p>Scalar values the airfoild thickness as a percentage of chord. Values between 0 and 1.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tetype</span></code></p></td>
-<td><p>Three options: <code class="docutils literal notranslate"><span class="pre">‘round'</span></code> or <code class="docutils literal notranslate"><span class="pre">'sharp'</span></code> or <code class="docutils literal notranslate"><span class="pre">'flat'</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
-<td><p>Horizontal axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0).</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></td>
-<td><p>Vertical axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0).</p></td>
-</tr>
-</tbody>
-</table>
+<span id="airfoilclass"></span><h2>Airfoil Class<a class="headerlink" href="#airfoil-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">AirfoilDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.AirfoilDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>  A class definition for airfoil profiles.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">af</span> <span class="pre">=</span> <span class="pre">AirfoilDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">af</span> <span class="pre">=</span> <span class="pre">AirfoilDef(FILENAME);</span></code> where FILENAME is the file containing airfoil profile data in various</p>
+<blockquote>
+<div><p>2-column formats including NuMAD-xml</p>
+</div></blockquote>
+<p>See also <code class="docutils literal notranslate"><span class="pre">AirfoilDef.resample</span></code>, <code class="docutils literal notranslate"><span class="pre">AirfoilDef.writeAirfoil</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AirfoilDef.convertAirfoil</span></code>, <code class="docutils literal notranslate"><span class="pre">AirfoilDef.plot</span></code>
+<code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StationDef</span></code></p>
+</dd></dl>
+
+<div class="section" id="airfoil-properties">
+<h3>Airfoil Properties<a class="headerlink" href="#airfoil-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.name">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''&quot;</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>User selected airfoil name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.reference">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">reference</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Header info in file</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.coordinates">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">coordinates</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Profile data in two columns</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.c">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">c</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computed by NuAMD</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.camber">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">camber</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.camber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Camber line as a function of x. Distance in percent chord between LP and HP curves. Computed by NuAMD.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.thickness">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">thickness</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.thickness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relative thickness as a function of the x coordinate. Values between 0 and 1, where 1 corresponds to maximum thickness. Computed by NuAMD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.percentthick">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">percentthick</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.percentthick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum airfoil thickness as a percentage of chord length [%]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.maxthick">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">maxthick</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.maxthick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Airfoil thickness as a percentage of chord. Values between 0 and 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.TEtype">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">TEtype</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''\t&quot;</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.TEtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Options, <code class="docutils literal notranslate"><span class="pre">‘round'</span></code>, <code class="docutils literal notranslate"><span class="pre">'sharp'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'flat'</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.x">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">x</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Horizontal axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0). Needed only by <code class="docutils literal notranslate"><span class="pre">AirfoilDef.plot</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.AirfoilDef.y">
+<span class="sig-prename descclassname"><span class="pre">AirfoilDef.</span></span><span class="sig-name descname"><span class="pre">y</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.AirfoilDef.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vertical axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0). Needed only by <code class="docutils literal notranslate"><span class="pre">AirfoilDef.plot</span></code></p>
+</dd></dl>
+
+</div>
 </div>
 <div class="section" id="stack-class">
-<h2>Stack Class<a class="headerlink" href="#stack-class" title="Permalink to this headline">¶</a></h2>
-<span id="stackdeftable"></span><table class="docutils align-default" id="id8">
-<caption><span class="caption-number">Table 12 </span><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>: A class definition for a stack of composite layers.</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 71%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>StackDef
-Property</strong></p></th>
-<th class="head"><p><strong>Property Description</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>Name of the stack / composite material used by
-NuMAD</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">plygroups</span></code></p></td>
-<td><p>Array of ply structures, one for each ply.</p>
-<p><code class="docutils literal notranslate"><span class="pre">ply</span> <span class="pre">=</span> <span class="pre">struct('component'),...%</span> <span class="pre">parent</span> <span class="pre">comp</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">'materialid',[],...%</span> <span class="pre">materialid</span> <span class="pre">of</span> <span class="pre">ply</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">'thickness',[],...</span> <span class="pre">%</span> <span class="pre">thickness</span> <span class="pre">[mm]</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">of</span> <span class="pre">single</span> <span class="pre">ply</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">'angle',[],...</span> <span class="pre">%</span> <span class="pre">ply</span> <span class="pre">angle</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">'nPlies',[]);</span> <span class="pre">%</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">plies</span></code></p>
-</td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">indices</span></code></p></td>
-<td><p>Indices of stack</p>
-<p>[in board station, out board station, 1<sup>st</sup>
-kepoint, 2<sup>nd</sup> keypoint]</p>
-</td>
-</tr>
-</tbody>
-</table>
+<span id="stackclass"></span><h2>Stack Class<a class="headerlink" href="#stack-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.StackDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">StackDef</span></span><a class="headerlink" href="#numadObjects.StackDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">StackDef</span></code>  A class definition for a stack of composite layers.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">stack</span> <span class="pre">=</span> <span class="pre">StackDef();</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef.updateBOM</span></code></p>
+</dd></dl>
+
+<div class="section" id="stack-properties">
+<h3>Stack Properties<a class="headerlink" href="#stack-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StackDef.name">
+<span class="sig-prename descclassname"><span class="pre">StackDef.</span></span><span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''&quot;</span></em><a class="headerlink" href="#numadObjects.StackDef.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the stack or composite material used by NuMAD, e.g. <code class="docutils literal notranslate"><span class="pre">'000000_HP_LE_PANEL'</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StackDef.plygroups">
+<span class="sig-prename descclassname"><span class="pre">StackDef.</span></span><span class="sig-name descname"><span class="pre">plygroups</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StackDef.plygroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array of <code class="docutils literal notranslate"><span class="pre">ply</span></code> structures, one for each <code class="docutils literal notranslate"><span class="pre">ply</span></code>, <code class="docutils literal notranslate"><span class="pre">plygroups</span> <span class="pre">=</span> <span class="pre">struct('component','','materialid',[],'thickness',[],'angle',[],'nPlies',[])</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StackDef.indices">
+<span class="sig-prename descclassname"><span class="pre">StackDef.</span></span><span class="sig-name descname"><span class="pre">indices</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.StackDef.indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indices of stack, <code class="docutils literal notranslate"><span class="pre">[in</span> <span class="pre">board</span> <span class="pre">station,</span> <span class="pre">out</span> <span class="pre">board</span> <span class="pre">station,</span> <span class="pre">1st</span> <span class="pre">kepoint,</span> <span class="pre">2nd</span> <span class="pre">keypoint]</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">[ibSta,obSta,keypt1,keypt2]</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="stack-methods">
+<h3>Stack Methods<a class="headerlink" href="#stack-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.StackDef.addply">
+<span class="sig-prename descclassname"><span class="pre">StackDef.</span></span><span class="sig-name descname"><span class="pre">addply</span></span><a class="headerlink" href="#numadObjects.StackDef.addply" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method adds <code class="docutils literal notranslate"><span class="pre">ply</span></code> to Stack</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">StackDef.addply(ply)</span></code></p>
+<p>where</p>
+<p><code class="docutils literal notranslate"><span class="pre">ply</span> <span class="pre">=</span> <span class="pre">struct('component','',...</span>&#160; <span class="pre">%</span> <span class="pre">parent</span> <span class="pre">component</span></code></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">'materialid',[],...</span> <span class="pre">%</span> <span class="pre">materialid</span> <span class="pre">of</span> <span class="pre">ply</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'thickness',[],...</span>&#160; <span class="pre">%</span> <span class="pre">thickness</span> <span class="pre">[mm]</span> <span class="pre">of</span> <span class="pre">single</span> <span class="pre">ply</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'angle',[],...</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">%</span> <span class="pre">ply</span> <span class="pre">angle</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">'nPlies',[]);</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">%</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">plies</span></code></p>
+</div></blockquote>
+</dd></dl>
+
+<span class="target" id="materialdeftable"></span></div>
 </div>
 </div>
 

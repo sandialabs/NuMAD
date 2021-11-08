@@ -1,21 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 classdef StationDef < handle
-%StationDef  A class definition for blade stations.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``StationDef``  A class definition for blade stations.
 %
-%   Usage examples: 
-%     sta = StationDef();
-%     sta = StationDef(af);
+% Examples: 
+% 
+%	``sta = StationDef();``
+% 
+%	``sta = StationDef(af);`` where ``af`` = airfoil filename or ``AirfoilDef`` object
 %
-%   af = airfoil filename or AirfoilDef object
+% See also ``xlsBlade``, ``BladeDef``, ``BladeDef.addStation``
 %
-%   See also xlsBlade, BladeDef, BladeDef.addStation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
-        airfoil
-        spanlocation
+        airfoil                 % ``AirfoilDef`` object
+        spanlocation            % Spanwise location where station is defined [m]
     end
     properties (Dependent = true, SetAccess = private)
         degreestwist

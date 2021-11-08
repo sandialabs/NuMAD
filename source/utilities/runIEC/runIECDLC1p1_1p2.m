@@ -685,7 +685,7 @@ params.simtime=params.numSeeds*(fst.SimCtrl.TMax-params.delay); % simulated and 
 params.fatigueCriterion = 'Shifted Goodman';%'Goodman';%  % fatigue failure criterion
 params.fatigueStress = 'Equivalent';%'Amplitude Only';%  % stress to use for fatigue failure ('Equivalent','Amplitude Only',...)
 
-Dminer=MFatigue_ble(wt,rccdata,cs,EIs,matData,params);
+Dminer=MFatigue(wt,rccdata,cs,EIs,matData,params);
 
 % % Find and sort extreme values
 % outName={};

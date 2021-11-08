@@ -7,7 +7,6 @@ Software Requirements
 ----------------------
 NuMAD is developed in MATLAB, and requires the following software packages:
 
-
 =====================================================================  =============================
 **Required Packages**        						**Oldest Compatible Version**
 `MATLAB <https://www.mathworks.com/products/matlab.html>`_  		Version 9.9  (R2020b)
