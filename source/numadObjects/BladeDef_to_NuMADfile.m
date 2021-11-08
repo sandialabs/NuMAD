@@ -291,9 +291,13 @@ for k=1:length(blade.materials)
     matdb(k).xcmp   = blade.materials(k).ucs(1);
     matdb(k).ycmp   = blade.materials(k).ucs(1);
     matdb(k).zcmp   = blade.materials(k).ucs(1);
-    matdb(k).xy     = blade.materials(k).uss(1);
-    matdb(k).yz     = blade.materials(k).uss(1);
-    matdb(k).xz     = blade.materials(k).uss(1);   
+    try 
+        matdb(k).xy     = blade.materials(k).uss(1);
+        matdb(k).yz     = blade.materials(k).uss(1);
+        matdb(k).xz     = blade.materials(k).uss(1);
+    catch
+        %Do Nothing
+    end
     else % orthotropic
     matdb(k).xten   = blade.materials(k).uts(1);
     matdb(k).yten   = blade.materials(k).uts(2);

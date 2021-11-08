@@ -84,19 +84,31 @@ classdef MaterialDef < handle
                 obj.drydensity     = mat.drydensity;
                 obj.uts            = mat.uts;
                 obj.ucs            = mat.ucs;
-                obj.uss            = mat.uss;
-                obj.xzit           = mat.xzit;
-                obj.xzic           = mat.xzic;
-                obj.yzit           = mat.yzit;
-                obj.yzic           = mat.yzic;
-                obj.g1g2           = mat.g1g2;
-                obj.alp0           = mat.alp0;
-                obj.etat           = mat.etat;
-                obj.etal           = mat.etal;
                 try
-                    obj.m          = mat.m;
+                    obj.uss            = mat.uss;
                 catch
                     %Do nothing
+                end
+                try
+                    obj.xzit           = mat.xzit;
+                    obj.xzic           = mat.xzic;
+                    obj.yzit           = mat.yzit;
+                    obj.yzic           = mat.yzic;
+                catch
+                    %Do nothing
+                end
+                try
+                    obj.g1g2           = mat.g1g2;                    
+                    obj.alp0           = mat.alp0;
+                    obj.etat           = mat.etat;
+                    obj.etal           = mat.etal;
+                catch
+                    %Do nothing
+                end
+                try
+                        obj.m          = mat.m;
+                catch
+                        %Do nothing
                 end
                 obj.reference      = mat.reference;
             end
