@@ -1,5 +1,5 @@
-function out = MFatigue(cs,EIs,matData,simtime,avgws,Yr,sf)
-% MFATIGUE  Calculates fatigue damage using rainflow cycle count data
+function out = MFatigue(wt,rccdata,cs,EIs,matData,params)
+%% MFATIGUE  Calculates fatigue damage using rainflow cycle count data
 %                          Under Construction
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
@@ -63,63 +63,38 @@ function out = MFatigue(cs,EIs,matData,simtime,avgws,Yr,sf)
 % S=M*c/EI*E
 %
 
-% Matlab file 'rccdata.mat' is created by running the aeroelastic
-% simulation scripts followed by Crunch analysis
-load rccdata.mat
-
-% determine the wind speeds that are saved in rccdata
-for w=1:size(rccdata,2)
-    ws(w)=rccdata{1,w}.windspeed;
-end
-
-% check to make sure wind speeds are spaced evenly
-if ~isempty(find(diff(diff(ws))~=0))
-    disp(num2str(ws))
-    error('Your windspeeds are not spaced evenly');
-end
-
-% define bin edges based on wind speeds in rccdata
-binwidth=ws(2)-ws(1);
-binedges=[ws(1)-binwidth/2 ws+binwidth/2];
-% define wind bins
-for j=1:length(binedges)-1
-    windbins(j,:)=[binedges(j) binedges(j+1)];
-end
-% Calculate weights for each bin according to Rayleigh distribution
-sig=avgws/sqrt(pi/2);
-% find PDF and CDF of Rayleigh distribution
-pdf=windbins.*exp(-windbins.^2/(2*sig^2))/sig^2;
-cdf=1-exp(-windbins.^2/(2*sig^2)); 
-% calculate weights
-wt=diff(cdf,1,2)
-% show sum of weights (should be close to one, and not greater than one)
-disp(' ');
-disp(['Sum of the Rayleigh weights is ' num2str(sum(wt))]);
-disp(' ');
-
-% check to make sure that the number of weights is equal to the number of
-% simulated wind speeds in rccdata
-if length(wt)~=size(rccdata,2)
-    error('The number of Rayleigh weights is not equal to the number of wind speeds contained in the rccdata.mat file');
-end
-
-
-% For each material and each channel, find the total cumulative fatigue
+Yr=params.designLife;
+simtime=params.simtime;
+N_save = [];
+%% For each material and each channel, find the total cumulative fatigue
 %  damage due to the entire range of wind speeds
+
+% TODO remove material properties from the DLCDef. Import from blade object
+% and/or GUI.
 for mat=1:length(matData)
-    E=matData(mat).E;
-    b=matData(mat).b;
-    C=matData(mat).C;
-    for ch=1:size(rccdata,1)
+    E=matData(mat).E; % (Pa)
+    m=matData(mat).m; % fatigue slope exponent
+    uts=max(matData(mat).Sk);  % assumes ultimate strength format S = [UCS UTS] (Pa)
+    ucs=min(matData(mat).Sk);    % ultimate compressive strength (equal to UTS if S = [UTS])
+    %ble: ultimate strains could be added in material properties or
+    %calculated as done below
+    eps_uts = uts/E;
+    eps_ucs = ucs/E;
+    % material reduction factors are applied to the characteristic strength
+    gamma_ms = matData(mat).gamma_ms;
+    gamma_mf = matData(mat).gamma_mf;
+    FSloads = 1.35; % from IEC design standard for DLC 1.2
+    
+    for ch=1:size(rccdata,1)                
         % reset D for each new channel
         % D = sum( ni/Nfi, i = 1:total number of cycles)
-        D=0;
-        mxstr=0;
+        Dminer=0;
+        
         % determine the blade span location of the channel
-        if ~isempty(strfind(rccdata{ch,1}.label,'Root'))
+        if contains(rccdata{ch,1}.label,'Root')
             chSpan = 1; % root location along blade span        
-        elseif ~isempty(strfind(rccdata{ch,1}.label,'Spn'))
-            chSpan = str2num(rccdata{ch,1}.label(4));
+        elseif contains(rccdata{ch,1}.label,'Spn')
+            chSpan = str2num(rccdata{ch,1}.label(4))+1;
         else 
             error('MFatigue does not recognize the variable channel in rccdata')
         end
@@ -127,31 +102,119 @@ for mat=1:length(matData)
         for w=1:size(rccdata,2)
             % put data from rccdata structure for this channel and wind speed into a temporary variable, data
             data=rccdata{ch,w};
+            % save the ultimate strain for the cycle respecting magnitude
+            mean_negative = data.means<0;
+            eps_u = repmat(eps_uts,size(data.means));
+            eps_u(mean_negative) = eps_ucs;
+            
+            % determine the scaling for bending moments (ignore forces)
+            if contains(data.label,'M') && contains(data.label,'x')
+                % EI and neutral axis location, c, for edgewise moment (Mxb in FAST)
+                cy = cs(chSpan,1);
+                EIedge = EIs(chSpan,1);
+                c=cy; EI=EIedge;
+            elseif contains(data.label,'M') && contains(data.label,'y')
+                % EI and neutral axis location, c, for flapwise moment (Myb in FAST)
+                cx = cs(chSpan,2);
+                EIflap = EIs(chSpan,2);
+                c=cx;EI=EIflap;
+            else % forces, torsional moments, and some calculated channels
+                c=0; % don't report fatigue damage, not currently calculated
+                EI=1;
+            end            
+                        
             % Find total fatigue damage due to operation over entire wind
             %  speed range
-            for j=1:length(data.cycles)
-                M=data.amplitudes(j);
-                c=cs(chSpan);
-                EI=EIs(chSpan);
-                % Calculate strain values based on cyclic moments from simulation
-                %  Assumptions:
-                %    om=stress=M*c/I
-                %    ep=strain=M*c/(E*I)
-                tmp=M*c/EI;
-                if tmp>mxstr,mxstr=tmp;end
-                S=M*c/EI*E;
-                Nf=(1/C*S*sf)^-b;
-                n=data.cycles(j)/simtime * (60*60*24*365.24*Yr) * wt(w);  % cycles per second times number of seconds in Yr years times Rayleigh weight factor
-                D=D+n/Nf;
+            for jj=1:length(data.cycles)
+                
+                if contains(data.label,'eps')
+                    % calculate failure based on the strain state (combined loads)
+                    eps_a = data.amplitudes(jj);
+                    eps_m = data.means(jj);
+                    
+                else % calculate failure based on the stress state
+                    M_a = data.amplitudes(jj);
+                    M_m = data.means(jj);
+                    
+                    % Calculate strain values based on cyclic moments from simulation
+                    %  Assumptions:
+                    %    om=stress=M*c/I
+                    %    eps=strain=M*c/(E*I)
+                    eps_a = M_a*c/EI;
+                    eps_m = M_m*c/EI;
+                    
+                    sigma_a = M_a*c/EI * E;
+                    sigma_m = M_m*c/EI * E;
+                    
+                    % check data by plotting the strain levels
+                    if contains(data.label,'M') && contains(data.label,'y')
+                        eps_My_a(jj,1) = eps_a;
+                        eps_My_m(jj,1) = eps_m;
+                    end
+                end
+                
+                
+                
+                % Determine the maximum number of cycles for failure based
+                % on available fatigue failure criterion or from data
+                switch params.fatigueCriterion
+                    case 'Goodman'
+                        % Use load amplitude only or use the equivalent load
+                        switch params.fatigueStress
+                            case 'Amplitude Only'
+                                eps = eps_a;
+                                sigma = sigma_a;
+                            case 'Equivalent'
+                                % eps_u is the ultimate strain of the material
+                                eps = eps_a/(1-abs(eps_m/eps_u(jj)));
+%                                 sigma = sigma_a/(1-sigma_m/sigma_u);
+                        end
+                        % Goodman line for failure
+                        Nf=((eps*gamma_mf*FSloads)/abs(eps_u(jj)))^-m;
+                    case 'Shifted Goodman'
+                        % add later
+                        Nf=((eps_uts+abs(eps_ucs)-abs(2*eps_m*gamma_ms*FSloads-eps_uts+abs(eps_ucs)))/(2*eps_a*gamma_mf*FSloads))^m;
+                    case 'Fatigue Data'
+                        % add 5 or 7 point fatigue data and calculations
+                end
+                
+                % error checks
+                if Nf < 0
+                    Nf=1;
+                    warning('check calculations for failure cycles')
+                end
+                
+                % use Miner's rule for fatigue damage calculation 
+                % NOTE: failure assumed for D=1
+                n=data.cycles(jj)/simtime * (60*60*24*365.24*Yr) * wt(w);  % cycles per second times number of seconds in Yr years times Rayleigh weight factor
+                Dminer=Dminer+n/Nf;
             end
+            
+% %             if 0%contains(rccdata{ch,1}.label,'eps') && w == 4 && mat == 1
+% %                 disp(mat)
+% %                 disp(w)
+% %                 pause(0.2)
+% %                 figure
+% %                 plot(data.means.*1e6, data.amplitudes.*1e6, 'x'); grid on
+% %                 title(['Channel: ' data.label ', wind speed = ' num2str(data.windspeed) ' m/s'])
+% %                 ylabel('mean strain')
+% %                 xlabel('alternating strain')
+% %             end
+% %             
+% %             if 0%contains(data.label,'M') && contains(data.label,'y') && w == 4 && mat == 1              
+% %                 figure
+% %                 plot(eps_My_m.*1e6, eps_My_a.*1e6, 'rx'); grid on
+% %                 title(['Channel: ' data.label ', wind speed = ' num2str(data.windspeed) ' m/s'])
+% %                 ylabel('mean strain')
+% %                 xlabel('alternating strain')
+% %             end
         end
         % Display results on screen
-%         disp(sprintf('%s (E=%3.1fGPa,C=%3.0fMPa,b=%3.1f), %s (c=%5.4fm,EI=%4.2fGPa) %4.3g',matData(mat).Name,E/1e9,C/1e6,b,data.label,cs(ch),EIs(ch)/1e9,D))
-        out(ch,mat)=D;
+%         fprintf('%s (E=%3.1fGPa,UTS=%3.0fMPa,UCS=%3.0fMPa,b=%3.1f), %s (c=%5.4fm,EI=%4.2fGPa) %4.3g\n',matData(mat).Name,E/1e9,uts/1e6,ucs/1e6,m,data.label,cs(chSpan),EIs(chSpan)/1e9,Dminer)
+        out(ch,mat)=Dminer;
     end
 end
 
-xlsfn='IECDLC_1p2_F.xlsx';
 xlsData={''};
 for i=1:length(matData)  % step across columns for various materials
     xlsData=[xlsData, {matData(i).Name}];
@@ -164,8 +227,23 @@ for ch=1:size(rccdata,1) % step down rows for all the computed gage locations
     xlsData=[xlsData; tmp];
 end
 
-try xlswrite(xlsfn,xlsData,1);
-catch keyboard, end
+csvfn = 'IECDLC_1p2_F.csv';
+if exist(csvfn, 'file')
+    delete(csvfn);
+end
+
+try % save the file as a .csv to prevent errors with saving in Excel
+    saveFmt1 = [repmat('%s,',1,length(matData)+1) '\n'];
+    saveFmt2 = ['%s,' repmat('%.4e,',1,length(matData)) '\n'];
+    fid = fopen(csvfn,'w');
+    fprintf(fid,saveFmt1,xlsData{1,:});    
+    for ii = 2:size(xlsData,1)
+        fprintf(fid,saveFmt2,xlsData{ii,:});
+    end
+    fclose(fid);
+catch
+    error('file save issue')
+end
 
 end
 
