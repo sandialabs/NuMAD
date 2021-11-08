@@ -8,33 +8,25 @@ classdef ComponentDef < handle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ``ComponentDef``  A class definition for blade components.
 %
-%   Usage examples: 
-%     comp_obj = ComponentDef();
-%     comp_obj = ComponentDef(comp_struct);
+% Examples: 
+% 
+%	``comp_obj = ComponentDef();``
+% 
+%	``comp_obj = ComponentDef(comp_struct);``
 %
-%   comp_struct:
-%     .group  = 0: blade, 1: first shear web, 2: second shear web, etc.
-%     .name        = string such as 'spar'
-%     .materialid  = material id number from blade.materials
-%     .fabricangle = fiber angle
-%     .hpextents   = cell array of keypoints such as {'b','c'}
-%     .lpextents   = cell array of keypoints such as {'b','c'}
-%     .cp          = control points defining layer distribution
-%     .imethod     = 'pchip'
-%
-%   See also xlsBlade, BladeDef, BladeDef.addComponent
+% See also ``xlsBlade``, ``BladeDef``, ``BladeDef.addComponent``
+% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
     properties
-        group                   % Integar, Options: 0 = blade, 1 = first shear web, 2 = second shear web, etc., Default = ?
-        name = ''               % String, same such as 'spar', Default = ''
-        materialid = ''         % Srring, material id number from blade.materials
-        fabricangle             % Float, fiber angle
-        hpextents = {'b','c'}   % String array of keypoints, Default = {'b','c'}
-        lpextents = {'b','c'}	% String array of keypoints, Default = {'b','c'}
-        cp                      % ?, control points defining layer distributio
-        imethod = 'pchip'       % String, Default = 'pchip'
-        pinnedends = false;     % On/Off, Default = false
+        group                   % Integar: 0 = blade, 1 = first shear web, 2 = second shear web, etc.
+        name = ''               % String: Name, such as 'spar'
+        materialid              % String: Material id number from blade.materials
+        fabricangle             % Float: Fiber angle
+        hpextents               % String Array: Array of keypoints such as {'b','c'}
+        lpextents               % String Array: Array of keypoints such as {'b','c'}
+        cp                      % control points defining layer distribution
+        imethod = 'pchip'       % String: imethod
+        pinnedends = false;     %
     end
     properties (Hidden)
         hCtrl                   % ?

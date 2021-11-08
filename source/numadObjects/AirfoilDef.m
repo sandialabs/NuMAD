@@ -1,36 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 classdef AirfoilDef < handle
-%AirfoilDef  A class definition for airfoil profiles.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
-%
-%   Usage examples: 
-%     af = AirfoilDef();
-%     af = AirfoilDef(FILENAME);
-%
-%   Where FILENAME is the file containing airfoil profile data in various
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``AirfoilDef``  A class definition for airfoil profiles.
+% 
+% Examples: 
+% 
+%	``af = AirfoilDef();``
+% 
+%	``af = AirfoilDef(FILENAME);`` where FILENAME is the file containing airfoil profile data in various
 %   2-column formats including NuMAD-xml
 %
-%   See also AirfoilDef.resample, AirfoilDef.writeAirfoil,
-%            AirfoilDef.convertAirfoil, AirfoilDef.plot
-%            xlsBlade, BladeDef, StationDef
+% See also ``AirfoilDef.resample``, ``AirfoilDef.writeAirfoil``,
+% ``AirfoilDef.convertAirfoil``, ``AirfoilDef.plot``
+% ``xlsBlade``, ``BladeDef``, ``StationDef``
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
-        name          % defaults to filename without extension
-        reference     % any header info in file
-        coordinates   % profile data in two columns
-        c
-        camber        
-        thickness
-        percentthick
-        maxthick
-		TEtype
+        name   = ''     % String: User selected airfoil name
+        reference       % Header info in file
+        coordinates     % Profile data in two columns
+        c               % Computed by NuAMD
+        camber          % Camber line as a function of x. Distance in percent chord between LP and HP curves. Computed by NuAMD.
+        thickness       % Float: Relative thickness as a function of the x coordinate. Values between 0 and 1, where 1 corresponds to maximum thickness. Computed by NuAMD.
+        percentthick    % Float: Maximum airfoil thickness as a percentage of chord length [%]
+        maxthick        % Float: Airfoil thickness as a percentage of chord. Values between 0 and 1.
+		TEtype  = ''	% String: Options, ``‘round'``, ``'sharp'``, or ``'flat'``
     end
     
     properties (Dependent)
-        x  % (needed only by AirfoilDef.plot)
-        y  % (needed only by AirfoilDef.plot)
+        x               % Horizontal axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0). Needed only by ``AirfoilDef.plot``
+        y               % Vertical axis of Airfoil shape coordinates Working clockwise starting from the TE to the LE and back to the TE. LE must be at (1,0) and TE at (0,0). Needed only by ``AirfoilDef.plot``
     end
     
     methods
