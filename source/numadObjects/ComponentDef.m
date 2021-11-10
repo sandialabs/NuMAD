@@ -19,18 +19,18 @@ classdef ComponentDef < handle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
         group                   % Integar: 0 = blade, 1 = first shear web, 2 = second shear web, etc.
-        name = ''               % String: such as 'spar'
-        materialid              % material id number from blade.materials
-        fabricangle             % fiber angle
-        hpextents               % cell array of keypoints such as {'b','c'}
-        lpextents               % cell array of keypoints such as {'b','c'}
+        name = ''               % String: Name, such as 'spar'
+        materialid              % String: Material id number from blade.materials
+        fabricangle             % Float: Fiber angle
+        hpextents               % String Array: Array of keypoints such as {'b','c'}
+        lpextents               % String Array: Array of keypoints such as {'b','c'}
         cp                      % control points defining layer distribution
         imethod = 'pchip'       % String: imethod
         pinnedends = false;     %
     end
     properties (Hidden)
-        hCtrl
-        hLine
+        hCtrl                   % ?
+        hLine                   % ?
     end
     
     methods 
