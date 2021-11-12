@@ -22,21 +22,46 @@ NuMAD is developed in MATLAB, and requires the following software packages:
 .. Unsupported IECWind, ADAMS
  
 
-Installing NuMAD 
+Download NuMAD
 ----------------
-The code containing all open-source tools for NuMAD can be downloaded or
-cloned from the `NuMAD GitHub repository <https://github.com/sandialabs/NuMAD>`_. 
 
-There are 3 directories within ``NuMAD/source`` : ``toolbox``,
-``objects``, and ``optimization``, their purpose is described in the table below:  
+The NuMAD source code is hosted on the `NuMAD GitHub repository <https://github.com/sandialabs/NuMAD>`_. 
+NuMAD users are recommended to clone the Github repository.
+Developers who wish to contribute to NuMAD should see the corresponding Developer :ref:`dev-getting-started` section.
+Cloning the repository allows users to easily pull the latest updates to the NuMAD source code.
+These updates may improve the code's speed, accuracy and add additional functionality or advanced features.
 
-============================ ===================================================
-Source Directory       	 	Description
-============================ ===================================================
-``numadGUI``			contains files related to the graphical user interface (GUI) which was introduced in NuMAD v2.0.
-``objects``			contains files associated to the class definition of the blade object and ``.yaml`` file capabilities.
-``optimization``		contains bundles of tools for several purposes, including ``runIEC``, as explained further in the :ref:`AeroelasticSimRunIEC` section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading
-============================ ===================================================
+ 
+To install NuMAD using `git <https://git-scm.com/>`_, type the following in a git interface:: 
+
+    >> git clone https://github.com/sandialabs/NuMAD.git
+
+The local copy of NuMAD can easily be updated to the latest version of the 
+code hosted on the GitHub repository by using the pull command:: 
+
+    >> git pull
+
+For users who are new to git, it is recommended to go through examples on 
+`GitHub <https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github>`_ 
+or other sources while getting started. 
+If you have problems downloading or installing please see the :ref:`troubleshooting` page.
+
+.. Note::
+    Users may also download a static version of NuMAD from the latest tagged 
+    `NuMAD Release <https://github.com/sandialabs/NuMAD/releases>`_.  This is 
+    the easiest way to obtain the NuMAD code, however it is more difficult to 
+    manually download future updates.
+
+
+.. _user-install:
+
+Install NuMAD
+---------------
+
+Once you have downloaded the NuMAD source code, take the following steps to 
+install the NuMAD code. The directory where the NuMAD code is contained is 
+referred to as ``$NuMAD`` (e.g. ``C:/User/Documents/GitHub/NuMAD``). 
+
 
 
 Installation Steps
@@ -48,4 +73,7 @@ Installation Steps
 4.    Move the ``addNumadPaths.m`` file to the MATLAB directory of your user account (e.g. ``C:\Users\username\Documents\MATLAB``)
 
 Every time a new MATLAB session is started type ``addNumadPaths`` to be able to run NuMAD.
+
+
+
 

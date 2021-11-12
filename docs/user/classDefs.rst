@@ -1,7 +1,7 @@
-.. _appendix:
+.. _classDefs:
 
-Appendix
-========
+Object Classes, Properties, and Methods
+=======================================
 
 .. _bladeClass:
 

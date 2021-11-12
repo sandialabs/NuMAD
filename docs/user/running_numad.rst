@@ -103,7 +103,7 @@ way. The NuMAD blade object contains a collection of variables that
 represent these properties, and can be set and modified by value
 assignment within a MATLAB script or in the command line. A
 comprehensive list of all public variables in the ``BladeDef`` class used in
-NuMAD is given in the :ref:`appendix`.
+NuMAD is given in the :ref:`classDefs`.
 
 Here we give some highlighted examples of key variables within the blade
 object and their basic access. The overall shape of the blade is defined
@@ -164,7 +164,7 @@ respectively.
 The data defining the properties of all the materials used throughout
 the blade are stored in the variable ``blade.materials``. Each entry in
 ``blade.materials`` is a ``MaterialDef`` object, which stores a name, elastic
-properties, density, and strength properties among others (see :ref:`materialClass` in the :ref:`appendix`). 
+properties, density, and strength properties among others (see :ref:`materialClass` in the :ref:`classDefs`). 
 It also stores the thickness that a single layer of that material in a 
 composite is assumed to be, which can be important to know or edit when 
 defining the thickness distribution of the blade's components as just described.
