@@ -6,13 +6,9 @@ clc
 
 addNumadPaths
 
-%% Design folder
-
-
+%% Load blade object from excel sheet
 designFile = 'Excel2ObjectExample.xlsx';
-
 blade = xlsBlade(designFile);
-
 
 %% update the blade object
 blade.updateBlade
@@ -26,5 +22,5 @@ BladeDef_to_NuMADfile(blade,NuMADfile,'MatDBsi.txt');
 numad(NuMADfile)
 
 %% generate an ANSYS mesh
-% blade.mesh = 0.1; % mesh size for ANSYS [m?]
-% layupDesign_ANSYSmesh(blade,NuMADfile);
+blade.mesh = 0.1; % mesh size for ANSYS 
+layupDesign_ANSYSmesh(blade,NuMADfile);
