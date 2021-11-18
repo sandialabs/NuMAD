@@ -216,7 +216,62 @@ Stack Methods
 ~~~~~~~~~~~~~~~~~~~~
 
 .. autoattribute:: numadObjects.StackDef.addply
-   
+
+
+
+.. _IecClass:
+
+IEC Class
+------------------
+
+.. autoclass:: numadObjects.IECDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+	
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)
+
+IEC Properties	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.IECDef.BldGagNd
+.. autoattribute:: numadObjects.IECDef.Class
+.. autoattribute:: numadObjects.IECDef.delay
+.. autoattribute:: numadObjects.IECDef.designLife
+.. autoattribute:: numadObjects.IECDef.fastsim
+.. autoattribute:: numadObjects.IECDef.fatigueCriterion
+.. autoattribute:: numadObjects.IECDef.fstfn
+.. autoattribute:: numadObjects.IECDef.fullLoads
+.. autoattribute:: numadObjects.IECDef.gageSetCase
+.. autoattribute:: numadObjects.IECDef.lin
+.. autoattribute:: numadObjects.IECDef.momentMaxRotation
+.. autoattribute:: numadObjects.IECDef.numadfn
+.. autoattribute:: numadObjects.IECDef.NumGrid
+.. autoattribute:: numadObjects.IECDef.numSeeds
+.. autoattribute:: numadObjects.IECDef.operatingPoints
+.. autoattribute:: numadObjects.IECDef.parDir
+.. autoattribute:: numadObjects.IECDef.ratedSpeed
+.. autoattribute:: numadObjects.IECDef.sf_fat
+.. autoattribute:: numadObjects.IECDef.sf_uts
+.. autoattribute:: numadObjects.IECDef.sf_tow
+.. autoattribute:: numadObjects.IECDef.SimTime
+.. autoattribute:: numadObjects.IECDef.simulinkModel
+.. autoattribute:: numadObjects.IECDef.simulinkModelFolder
+.. autoattribute:: numadObjects.IECDef.TurbClass
+.. autoattribute:: numadObjects.IECDef.ws
+.. autoattribute:: numadObjects.IECDef.wd
+.. autoattribute:: numadObjects.IECDef.yaw
+
+
+
+IEC Methods	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.IECDef.checkInputs
+.. autoattribute:: numadObjects.IECDef.setAvgWindSpeed
+.. autoattribute:: numadObjects.IECDef.setBladeGageCoordinateRotation
+.. autoattribute:: numadObjects.IECDef.setGageLabels
+.. autoattribute:: numadObjects.IECDef.setSimFlag
+.. autoattribute:: numadObjects.IECDef.runFullLoads
+.. autoattribute:: numadObjects.IECDef.setRandomSeeds
    
 
 .. Kelley: remove these legacy tables and excel spreadsheets

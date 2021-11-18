@@ -132,6 +132,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#stack-methods">Stack Methods</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#iec-class">IEC Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#iec-properties">IEC Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iec-methods">IEC Methods</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1020,6 +1025,266 @@ currently used by BladeDef_to_NuMADfile and develop__write_shell7</p>
 <p><code class="docutils literal notranslate"><span class="pre">'angle',[],...</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">%</span> <span class="pre">ply</span> <span class="pre">angle</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">'nPlies',[]);</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">%</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">plies</span></code></p>
 </div></blockquote>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="iec-class">
+<span id="iecclass"></span><h2>IEC Class<a class="headerlink" href="#iec-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.IECDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">IECDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Class</span></em>, <em class="sig-param"><span class="pre">TurbClass</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.IECDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">IECDef</span></code>  A class definition for IEC input parameters</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Usage:</dt><dd><p>params = IECDef(Class,’TurbClass’);</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<div class="section" id="iec-properties">
+<h3>IEC Properties<a class="headerlink" href="#iec-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.BldGagNd">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">BldGagNd</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'[1,2,3,4,5,6,7]'</span></em><a class="headerlink" href="#numadObjects.IECDef.BldGagNd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.Class">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">Class</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'3'</span></em><a class="headerlink" href="#numadObjects.IECDef.Class" title="Permalink to this definition">¶</a></dt>
+<dd><p>1, 2, 3, Default = 3</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Turbine Class, Options</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.delay">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">delay</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'29'</span></em><a class="headerlink" href="#numadObjects.IECDef.delay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulation delay, discardedsimulated data at the beginning of each simulation (turbulent and otherwise), Default = 29 (s)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.designLife">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">designLife</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'30'</span></em><a class="headerlink" href="#numadObjects.IECDef.designLife" title="Permalink to this definition">¶</a></dt>
+<dd><p>Years of life</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.fastsim">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">fastsim</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'fast'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.fastsim" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘fast’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Fast simulation, Options</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>‘fast’, ‘fast simulink’, ‘adams’, Default</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.fatigueCriterion">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">fatigueCriterion</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'Shifted</span> <span class="pre">Goodman'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.fatigueCriterion" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘Shifted Goodman’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Fatigue Criteria, Options</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.fstfn">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">fstfn</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'NOT</span> <span class="pre">DEFINED';</span>&#160;&#160; <span class="pre">\t&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.fstfn" title="Permalink to this definition">¶</a></dt>
+<dd><p>FAST path, Default = “NOT DEFINED”</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.fullLoads">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">fullLoads</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'1'</span></em><a class="headerlink" href="#numadObjects.IECDef.fullLoads" title="Permalink to this definition">¶</a></dt>
+<dd><p>1 = On, 0 = Off, Default = 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Perform full loads analysis, Options</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.gageSetCase">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">gageSetCase</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'set1'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.gageSetCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gage set case, Options= ‘set1’, ‘set 2’, Default = ‘set1’</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.lin">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">lin</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'10'</span></em><a class="headerlink" href="#numadObjects.IECDef.lin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Range of steady wind speeds for linearizations, Default = 10</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.momentMaxRotation">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">momentMaxRotation</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'45'</span></em><a class="headerlink" href="#numadObjects.IECDef.momentMaxRotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate) (deg)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.numadfn">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">numadfn</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'NOT</span> <span class="pre">DEFINED'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.numadfn" title="Permalink to this definition">¶</a></dt>
+<dd><p>NuMAD path, including extension, Default = “NOT DEFINED”</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.NumGrid">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">NumGrid</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'10</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">\t'</span></em><a class="headerlink" href="#numadObjects.IECDef.NumGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of grid points in turbsim 4-D wind field, Default = 10</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.numSeeds">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">numSeeds</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'6'</span></em><a class="headerlink" href="#numadObjects.IECDef.numSeeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of seeds - number of 10-minute simulations - for turbulent simulations</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.operatingPoints">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">operatingPoints</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'[0</span> <span class="pre">0</span> <span class="pre">0]'</span></em><a class="headerlink" href="#numadObjects.IECDef.operatingPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>[Cutin RatedSpeed CutOut], Defaults = [0 0 0]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Operating Points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.parDir">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">parDir</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;''&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.parDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Directory, Default = ‘’;</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.ratedSpeed">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">ratedSpeed</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'12'</span></em><a class="headerlink" href="#numadObjects.IECDef.ratedSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rated speed (rpm)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.sf_fat">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">sf_fat</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0'</span></em><a class="headerlink" href="#numadObjects.IECDef.sf_fat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total fatigue safety factor, Default = 0</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.sf_uts">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">sf_uts</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0'</span></em><a class="headerlink" href="#numadObjects.IECDef.sf_uts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total ultimate strength safety factor, Default = 0</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.sf_tow">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">sf_tow</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'0'</span></em><a class="headerlink" href="#numadObjects.IECDef.sf_tow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total tower clearance safety factor, Default = 0</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.SimTime">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">SimTime</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'600'</span></em><a class="headerlink" href="#numadObjects.IECDef.SimTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total simulation time, Default = 600 (s)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.simulinkModel">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">simulinkModel</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'NOT</span> <span class="pre">DEFINED'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.simulinkModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulink model file, Default = “NOT DEFINED”</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.simulinkModelFolder">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">simulinkModelFolder</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'NOT</span> <span class="pre">DEFINED'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.simulinkModelFolder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simulink model directory, Default = “NOT DEFINED”</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.TurbClass">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">TurbClass</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;'C'&quot;</span></em><a class="headerlink" href="#numadObjects.IECDef.TurbClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘A’, ‘B’, ‘C’, Default = ‘C’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Turbulence Class, Options</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.ws">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">ws</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'[3:2:25]'</span></em><a class="headerlink" href="#numadObjects.IECDef.ws" title="Permalink to this definition">¶</a></dt>
+<dd><p>Range of mean wind speeds for turbulent simulations (m/s)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.wd">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">wd</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'[180]'</span></em><a class="headerlink" href="#numadObjects.IECDef.wd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Range of “wind direction” bias for look-up table simulations - programmed as yaw position (units)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.yaw">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">yaw</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'[0]'</span></em><a class="headerlink" href="#numadObjects.IECDef.yaw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intentional yaw misalignment, degrees (for DLC 1.1)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="iec-methods">
+<h3>IEC Methods<a class="headerlink" href="#iec-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.checkInputs">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">checkInputs</span></span><a class="headerlink" href="#numadObjects.IECDef.checkInputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks NuMAD user inputs and generates error
+messages if parameters are not properly defined.</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.setAvgWindSpeed">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setAvgWindSpeed</span></span><a class="headerlink" href="#numadObjects.IECDef.setAvgWindSpeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sets the average wind speed based on the
+obj.Class</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.setBladeGageCoordinateRotation">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setBladeGageCoordinateRotation</span></span><a class="headerlink" href="#numadObjects.IECDef.setBladeGageCoordinateRotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sets the blade gage coordinate roation</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.setGageLabels">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setGageLabels</span></span><a class="headerlink" href="#numadObjects.IECDef.setGageLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sets the blade gage labels</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.setSimFlag">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setSimFlag</span></span><a class="headerlink" href="#numadObjects.IECDef.setSimFlag" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sets the simulate flag</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.runFullLoads">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">runFullLoads</span></span><a class="headerlink" href="#numadObjects.IECDef.runFullLoads" title="Permalink to this definition">¶</a></dt>
+<dd><p>This methods runs the full loads analysis if specified</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.IECDef.setRandomSeeds">
+<span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setRandomSeeds</span></span><a class="headerlink" href="#numadObjects.IECDef.setRandomSeeds" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method setd random seeds</p>
 </dd></dl>
 
 <span class="target" id="materialdeftable"></span></div>
