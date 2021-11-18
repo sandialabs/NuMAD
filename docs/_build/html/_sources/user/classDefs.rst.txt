@@ -274,6 +274,69 @@ IEC Methods
 .. autoattribute:: numadObjects.IECDef.setRandomSeeds
    
 
+
+.. _polarClass:
+
+Polar Class
+------------------
+
+.. autoclass:: numadObjects.PolarDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+	
+.. TODO: properties and methods should be autopopulated (above), manual for now (below)
+
+Polar Properties	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.PolarDef.file
+.. autoattribute:: numadObjects.PolarDef.source
+.. autoattribute:: numadObjects.PolarDef.titleLine
+.. autoattribute:: numadObjects.PolarDef.notes
+.. autoattribute:: numadObjects.PolarDef.param
+.. autoattribute:: numadObjects.PolarDef.rawlist
+.. autoattribute:: numadObjects.PolarDef.rawdata
+.. autoattribute:: numadObjects.PolarDef.modopts
+.. autoattribute:: numadObjects.PolarDef.modlist
+.. autoattribute:: numadObjects.PolarDef.moddata
+
+Polar Methods	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.PolarDef.getRawData
+.. autoattribute:: numadObjects.PolarDef.getModData
+.. autoattribute:: numadObjects.PolarDef.getParam
+.. autoattribute:: numadObjects.PolarDef.matchModList
+.. autoattribute:: numadObjects.PolarDef.plotRaw
+.. autoattribute:: numadObjects.PolarDef.plotMod
+.. autoattribute:: numadObjects.PolarDef.resetModData
+.. autoattribute:: numadObjects.PolarDef.updateModData
+.. autoattribute:: numadObjects.PolarDef.getModOpts
+.. autoattribute:: numadObjects.PolarDef.addModOpts
+.. autoattribute:: numadObjects.PolarDef.clearModOpts
+.. autoattribute:: numadObjects.PolarDef.apply3DStall
+.. autoattribute:: numadObjects.PolarDef.applyExtrap
+.. autoattribute:: numadObjects.PolarDef.applyResample
+.. autoattribute:: numadObjects.PolarDef.calcDynStall
+.. autoattribute:: numadObjects.PolarDef.updateIntrinsic
+.. autoattribute:: numadObjects.PolarDef.setIntrinsic
+.. autoattribute:: numadObjects.PolarDef.blend
+.. autoattribute:: numadObjects.PolarDef.plotInterp
+.. autoattribute:: numadObjects.PolarDef.plotIntrinsic
+.. autoattribute:: numadObjects.PolarDef.writePolar
+.. autoattribute:: numadObjects.PolarDef.cylinderPolar
+.. autoattribute:: numadObjects.PolarDef.createModOpts
+.. autoattribute:: numadObjects.PolarDef.findZeroCL
+.. autoattribute:: numadObjects.PolarDef.findMaxCL
+.. autoattribute:: numadObjects.PolarDef.findMaxLoD
+.. autoattribute:: numadObjects.PolarDef.findAlphaTrend
+.. autoattribute:: numadObjects.PolarDef.recolorplot
+
+
+.. Kelley: several functions are not included within the class, they are appended at the end
+
+
+
+
 .. Kelley: remove these legacy tables and excel spreadsheets
 
 .. .. _bladeDefTable:

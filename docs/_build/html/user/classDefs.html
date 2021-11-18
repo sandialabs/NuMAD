@@ -137,6 +137,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#iec-methods">IEC Methods</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#polar-class">Polar Class</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#polar-properties">Polar Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#polar-methods">Polar Methods</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1035,12 +1040,8 @@ currently used by BladeDef_to_NuMADfile and develop__write_shell7</p>
 <dt class="sig sig-object mat" id="numadObjects.IECDef">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">IECDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">Class</span></em>, <em class="sig-param"><span class="pre">TurbClass</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.IECDef" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">IECDef</span></code>  A class definition for IEC input parameters</p>
-<blockquote>
-<div><dl class="simple">
-<dt>Usage:</dt><dd><p>params = IECDef(Class,’TurbClass’);</p>
-</dd>
-</dl>
-</div></blockquote>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">params</span> <span class="pre">=</span> <span class="pre">IECDef(Class,'TurbClass');</span></code></p>
 </dd></dl>
 
 <div class="section" id="iec-properties">
@@ -1285,6 +1286,295 @@ obj.Class</p>
 <dt class="sig sig-object mat" id="numadObjects.IECDef.setRandomSeeds">
 <span class="sig-prename descclassname"><span class="pre">IECDef.</span></span><span class="sig-name descname"><span class="pre">setRandomSeeds</span></span><a class="headerlink" href="#numadObjects.IECDef.setRandomSeeds" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method setd random seeds</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="polar-class">
+<span id="polarclass"></span><h2>Polar Class<a class="headerlink" href="#polar-class" title="Permalink to this headline">¶</a></h2>
+<dl class="mat class">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">numadObjects.</span></span><span class="sig-name descname"><span class="pre">PolarDef</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">filedescrip</span></em>, <em class="sig-param"><span class="pre">fileformat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#numadObjects.PolarDef" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">PolarDef</span></code>  A class definition for airfoil polar data.</p>
+<p class="rubric">Examples</p>
+<p><code class="docutils literal notranslate"><span class="pre">pol</span> <span class="pre">=</span> <span class="pre">PolarDef();</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pol</span> <span class="pre">=</span> <span class="pre">PolarDef(FILENAME);</span></code></p>
+<p>Where FILENAME is the file containing airfoil polar data</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pol.rawlist</span></code>  is the data column names</p>
+<p><code class="docutils literal notranslate"><span class="pre">pol.param</span></code>    is groups of Key=Value parameter structures</p>
+</div></blockquote>
+<p>See also <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>, <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StationDef</span></code></p>
+</dd></dl>
+
+<div class="section" id="polar-properties">
+<h3>Polar Properties<a class="headerlink" href="#polar-properties" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.file">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">file</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&quot;struct('name','','date','','bytes',0)&quot;</span></em><a class="headerlink" href="#numadObjects.PolarDef.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>stucture describing data file</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.source">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">source</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>source of data (cell array of strings)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.titleLine">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">titleLine</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.titleLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>title line from file</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.notes">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">notes</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.notes" title="Permalink to this definition">¶</a></dt>
+<dd><p>notes from file; user may add more cells manually</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.param">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">param</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'struct()'</span></em><a class="headerlink" href="#numadObjects.PolarDef.param" title="Permalink to this definition">¶</a></dt>
+<dd><p>grouped parameters (source, AeroDyn, …)</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.rawlist">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">rawlist</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.rawlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>data column names for rawdata</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.rawdata">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">rawdata</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.rawdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>polar data, raw from source</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.modopts">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">modopts</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'cell(0)'</span></em><a class="headerlink" href="#numadObjects.PolarDef.modopts" title="Permalink to this definition">¶</a></dt>
+<dd><p>options used to modify polar data</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.modlist">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">modlist</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.modlist" title="Permalink to this definition">¶</a></dt>
+<dd><p>data column names for moddata</p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.moddata">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">moddata</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#numadObjects.PolarDef.moddata" title="Permalink to this definition">¶</a></dt>
+<dd><p>polar data, modified</p>
+</dd></dl>
+
+</div>
+<div class="section" id="polar-methods">
+<h3>Polar Methods<a class="headerlink" href="#polar-methods" title="Permalink to this headline">¶</a></h3>
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.getRawData">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">getRawData</span></span><a class="headerlink" href="#numadObjects.PolarDef.getRawData" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">obj.getRawData(VARNAME);</span></code>
+where <code class="docutils literal notranslate"><span class="pre">'VARNAME'</span></code> is a string from obj.rawlist
+and matching is not case sensitive (‘CL’==’cl’)</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">obj.getRawData('alpha');</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.getModData">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">getModData</span></span><a class="headerlink" href="#numadObjects.PolarDef.getModData" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">obj.getModData(VARNAME);</span></code>
+where <code class="docutils literal notranslate"><span class="pre">'VARNAME'</span></code> is a string from obj.modlist
+and matching is not case sensitive (‘CL’==’cl’)</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">obj.getModData('alpha');</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.getParam">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">getParam</span></span><a class="headerlink" href="#numadObjects.PolarDef.getParam" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.matchModList">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">matchModList</span></span><a class="headerlink" href="#numadObjects.PolarDef.matchModList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.plotRaw">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">plotRaw</span></span><a class="headerlink" href="#numadObjects.PolarDef.plotRaw" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">obj.plotRaw(XVAR,YVAR);</span></code>
+where <code class="docutils literal notranslate"><span class="pre">'XVAR'</span></code> and <code class="docutils literal notranslate"><span class="pre">'YVAR'</span></code> are strings from
+<code class="docutils literal notranslate"><span class="pre">obj.rawlist</span></code></p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">obj.plotRaw('alpha','CL');</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.plotMod">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">plotMod</span></span><a class="headerlink" href="#numadObjects.PolarDef.plotMod" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">obj.plotMod(XVAR,YVAR);</span></code>
+where <code class="docutils literal notranslate"><span class="pre">'XVAR'</span></code> and <code class="docutils literal notranslate"><span class="pre">'YVAR'</span></code> are strings from
+<code class="docutils literal notranslate"><span class="pre">obj.modlist</span></code></p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">obj.plotMod('alpha','CL');</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.resetModData">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">resetModData</span></span><a class="headerlink" href="#numadObjects.PolarDef.resetModData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.updateModData">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">updateModData</span></span><a class="headerlink" href="#numadObjects.PolarDef.updateModData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.getModOpts">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">getModOpts</span></span><a class="headerlink" href="#numadObjects.PolarDef.getModOpts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.addModOpts">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">addModOpts</span></span><a class="headerlink" href="#numadObjects.PolarDef.addModOpts" title="Permalink to this definition">¶</a></dt>
+<dd><p>OPTIONS for <code class="docutils literal notranslate"><span class="pre">'3DStall'</span></code>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ModType</span></code> = <code class="docutils literal notranslate"><span class="pre">'3DStall'</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">RPM</span></code> = rotor speed in rpm</p>
+<p><code class="docutils literal notranslate"><span class="pre">R</span></code> = rotor radius R</p>
+<p><code class="docutils literal notranslate"><span class="pre">V</span></code> = wind speed</p>
+<p><code class="docutils literal notranslate"><span class="pre">rOverR</span></code> = r/R location of airfoil section</p>
+<p><code class="docutils literal notranslate"><span class="pre">Chord</span></code> = chord at r/R</p>
+<p><code class="docutils literal notranslate"><span class="pre">AlphaEnd</span></code> = end of correction</p>
+<p><code class="docutils literal notranslate"><span class="pre">AlphaTrend</span></code> = [minAlpha maxAlpha] for CL slope calc</p>
+</div></blockquote>
+<p>OPTIONS for <code class="docutils literal notranslate"><span class="pre">'Extrap'</span></code>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ModType</span></code> = <code class="docutils literal notranslate"><span class="pre">'Extrap'</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">CDMax</span></code> = maximum drag coefficient in extrapolation</p>
+<p><code class="docutils literal notranslate"><span class="pre">UseCM</span></code> = use CM data (if available)</p>
+<p><code class="docutils literal notranslate"><span class="pre">AlphaFP</span></code> = (optional) Get CD from flat-plate theory for abs(angle) &gt; AlphaFP. Viterna method (recommended) used when AlphaFP not set or empty [].</p>
+</div></blockquote>
+<p>OPTIONS for <code class="docutils literal notranslate"><span class="pre">'DynStall'</span></code>:</p>
+<blockquote>
+<div><blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ModType</span></code> = <code class="docutils literal notranslate"><span class="pre">'DynStall'</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">StallAngle</span></code> = stall angle in degrees</p>
+<p><code class="docutils literal notranslate"><span class="pre">NegStallCn</span></code> = Cn at stall for negative angle of attack</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">AlphaTrend</span></code> = <code class="docutils literal notranslate"><span class="pre">[minAlpha</span> <span class="pre">maxAlpha]</span></code> for CN slope calc</p>
+</div></blockquote>
+<p>OPTIONS for <code class="docutils literal notranslate"><span class="pre">'Resample'</span></code>:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ModType</span></code> = <code class="docutils literal notranslate"><span class="pre">'Resample'</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">Alpha</span></code> = array of Alpha values</p>
+<p><code class="docutils literal notranslate"><span class="pre">method</span></code> = interpolation method:
+<code class="docutils literal notranslate"><span class="pre">'linear'</span></code>, <code class="docutils literal notranslate"><span class="pre">'spline'</span></code>, <code class="docutils literal notranslate"><span class="pre">'pchip'</span></code></p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.clearModOpts">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">clearModOpts</span></span><a class="headerlink" href="#numadObjects.PolarDef.clearModOpts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.apply3DStall">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">apply3DStall</span></span><a class="headerlink" href="#numadObjects.PolarDef.apply3DStall" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">obj.apply3DStall(mopts)</span></code></p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">mopts</span> <span class="pre">=</span>
+<span class="pre">struct('RPM',12,'R',35,'V',8,'rOverR',0.9,'Chord',1.2,'AlphaEnd',14,'AlphaTrend',[0</span> <span class="pre">5])</span></code></p>
+</dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.applyExtrap">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">applyExtrap</span></span><a class="headerlink" href="#numadObjects.PolarDef.applyExtrap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.applyResample">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">applyResample</span></span><a class="headerlink" href="#numadObjects.PolarDef.applyResample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.calcDynStall">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">calcDynStall</span></span><a class="headerlink" href="#numadObjects.PolarDef.calcDynStall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.updateIntrinsic">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">updateIntrinsic</span></span><a class="headerlink" href="#numadObjects.PolarDef.updateIntrinsic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.setIntrinsic">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">setIntrinsic</span></span><a class="headerlink" href="#numadObjects.PolarDef.setIntrinsic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.blend">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">blend</span></span><a class="headerlink" href="#numadObjects.PolarDef.blend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.plotInterp">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">plotInterp</span></span><a class="headerlink" href="#numadObjects.PolarDef.plotInterp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.plotIntrinsic">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">plotIntrinsic</span></span><a class="headerlink" href="#numadObjects.PolarDef.plotIntrinsic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.writePolar">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">writePolar</span></span><a class="headerlink" href="#numadObjects.PolarDef.writePolar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.cylinderPolar">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">cylinderPolar</span></span><a class="headerlink" href="#numadObjects.PolarDef.cylinderPolar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.createModOpts">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">createModOpts</span></span><a class="headerlink" href="#numadObjects.PolarDef.createModOpts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.findZeroCL">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">findZeroCL</span></span><a class="headerlink" href="#numadObjects.PolarDef.findZeroCL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.findMaxCL">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">findMaxCL</span></span><a class="headerlink" href="#numadObjects.PolarDef.findMaxCL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.findMaxLoD">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">findMaxLoD</span></span><a class="headerlink" href="#numadObjects.PolarDef.findMaxLoD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.findAlphaTrend">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">findAlphaTrend</span></span><a class="headerlink" href="#numadObjects.PolarDef.findAlphaTrend" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="mat attribute">
+<dt class="sig sig-object mat" id="numadObjects.PolarDef.recolorplot">
+<span class="sig-prename descclassname"><span class="pre">PolarDef.</span></span><span class="sig-name descname"><span class="pre">recolorplot</span></span><a class="headerlink" href="#numadObjects.PolarDef.recolorplot" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">recolorplot(StackIndex,ColorOrder)</span></code>
+where <code class="docutils literal notranslate"><span class="pre">StackIndex</span></code> specifies which axes children to change
+(Note that the last child to be added shows up first on the “stack”)
+<code class="docutils literal notranslate"><span class="pre">ColorOrder</span></code> is the list of colors to use
+Modify last six axes children (top six on stack):</p>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">recolorplot(1:6,jet(6));</span></code></p>
 </dd></dl>
 
 <span class="target" id="materialdeftable"></span></div>

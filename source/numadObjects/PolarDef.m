@@ -1,22 +1,27 @@
-classdef PolarDef < handle 
-%PolarDef  A class definition for airfoil polar data.
-% **********************************************************************
-% *                   Part of the SNL NuMAD Toolbox                    *
-% * Developed by Sandia National Laboratories Wind Energy Technologies *
-% *             See license.txt for disclaimer information             *
-% **********************************************************************
-%
-%   Usage examples: 
-%     pol = PolarDef();
-%     pol = PolarDef(FILENAME);
-%
-%   Where FILENAME is the file containing airfoil polar data
-%
-%     pol.rawlist  is the data column names
-%     pol.param    is groups of Key=Value parameter structures
-%
-%   See also AirfoilDef, xlsBlade, BladeDef, StationDef
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    Part of the SNL NuMAD Toolbox                    
+%  Developed by Sandia National Laboratories Wind Energy Technologies 
+%              See license.txt for disclaimer information             
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+classdef PolarDef < handle 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ``PolarDef``  A class definition for airfoil polar data.
+%
+% Examples: 
+% 
+%	``pol = PolarDef();``
+% 
+%	``pol = PolarDef(FILENAME);``
+%
+% Where FILENAME is the file containing airfoil polar data
+%
+%	``pol.rawlist``  is the data column names
+% 
+%	``pol.param``    is groups of Key=Value parameter structures
+%
+% See also ``AirfoilDef``, ``xlsBlade``, ``BladeDef``, ``StationDef``
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     properties
         file = struct('name','','date','','bytes',0);  % stucture describing data file
         source                 % source of data (cell array of strings)
@@ -112,10 +117,14 @@ classdef PolarDef < handle
         end
                 
         function x = getRawData(obj,xvar)
-            % x = obj.getRawData(VARNAME);
-            %   where VARNAME is a string from obj.rawlist
-            %   and matching is not case sensitive ('CL'=='cl')
-            % x = obj.getRawData('alpha');
+            % ``x = obj.getRawData(VARNAME);``
+            % where ``'VARNAME'`` is a string from obj.rawlist
+            % and matching is not case sensitive ('CL'=='cl')
+            %
+            % Example:
+            %
+            %	``x = obj.getRawData('alpha');``
+            %
             msg = sprintf(['Method getRawData requires scalar object:\n',...
                            '   obj(k).getRawData   if numel(obj) > 1']);
             assert(isscalar(obj),msg)
@@ -137,10 +146,14 @@ classdef PolarDef < handle
         end
         
         function x = getModData(obj,xvar)
-            % x = obj.getModData(VARNAME);
-            %   where VARNAME is a string from obj.modlist
-            %   and matching is not case sensitive ('CL'=='cl')
-            % x = obj.getModData('alpha');
+            % ``x = obj.getModData(VARNAME);``
+            % where ``'VARNAME'`` is a string from obj.modlist
+            % and matching is not case sensitive ('CL'=='cl')
+            %
+            % Example:
+            %
+            %	``x = obj.getModData('alpha');``
+            %
             msg = sprintf(['Method getModData requires scalar object:\n',...
                            '   obj(k).getModData   if numel(obj) > 1']);
             assert(isscalar(obj),msg)
@@ -193,9 +206,14 @@ classdef PolarDef < handle
         end
         
         function plotRaw(obj,xvar,yvar,varargin)
-            % obj.plotRaw(XVAR,YVAR);
-            %   where XVAR and YVAR are strings from obj.rawlist
-            % obj.plotRaw('alpha','CL');
+            % ``obj.plotRaw(XVAR,YVAR);``
+            % where ``'XVAR'`` and ``'YVAR'`` are strings from
+            % ``obj.rawlist``
+            %
+            % Example:
+            %
+            %	``obj.plotRaw('alpha','CL');``
+            %            
             N = numel(obj);
             for k = 1:N
                 x = obj(k).getRawData(xvar);
@@ -211,9 +229,14 @@ classdef PolarDef < handle
         end
         
         function plotMod(obj,xvar,yvar,varargin)
-            % obj.plotMod(XVAR,YVAR);
-            %   where XVAR and YVAR are strings from obj.modlist
-            % obj.plotMod('alpha','CL');
+            % ``obj.plotMod(XVAR,YVAR);``
+            % where ``'XVAR'`` and ``'YVAR'`` are strings from
+            % ``obj.modlist``
+            %
+            % Example:
+            %
+            %	``obj.plotMod('alpha','CL');``
+            %
             N = numel(obj);
             for k = 1:N
                 x = obj(k).getModData(xvar);
@@ -294,36 +317,53 @@ classdef PolarDef < handle
         end
         
         function addModOpts(obj,varargin)
-            % OPTIONS for "3DStall":
-            %    'ModType' = '3DStall'
-            %        'RPM' = rotor speed in rpm
-            %          'R' = rotor radius R
-            %          'V' = wind speed
-            %     'rOverR' = r/R location of airfoil section
-            %      'Chord' = chord at r/R
-            %   'AlphaEnd' = end of correction
-            % 'AlphaTrend' = [minAlpha maxAlpha] for CL slope calc
+            % OPTIONS for ``'3DStall'``:
             %
-            % OPTIONS for "Extrap"
-            %    'ModType' = 'Extrap'
-            %      'CDMax' = maximum drag coefficient in extrapolation
-            %      'UseCM' = use CM data (if available)
-            %    'AlphaFP' = (optional) Get CD from flat-plate theory
-            %                for abs(angle) > AlphaFP.
-            %                Viterna method (recommended) used when 
-            %                AlphaFP not set or empty [].
+            %	``ModType`` = ``'3DStall'``
             %
-            % OPTIONS for "DynStall"
-            %    'ModType' = 'DynStall'
-            % 'StallAngle' = stall angle in degrees
-            % 'NegStallCn' = Cn at stall for negative angle of attack
-            % 'AlphaTrend' = [minAlpha maxAlpha] for CN slope calc
+            %	``RPM`` = rotor speed in rpm
             %
-            % OPTIONS for "Resample"
-            %    'ModType' = 'Resample'
-            %      'Alpha' = array of Alpha values
-            %     'method' = interpolation method
-            %                {'linear','spline','pchip'}
+            %	``R`` = rotor radius R
+            %
+            %	``V`` = wind speed
+            %
+            %	``rOverR`` = r/R location of airfoil section
+            %
+            %	``Chord`` = chord at r/R
+            %
+            %	``AlphaEnd`` = end of correction
+            %
+            %	``AlphaTrend`` = [minAlpha maxAlpha] for CL slope calc
+            %
+            % OPTIONS for ``'Extrap'``:
+            %
+            %	``ModType`` = ``'Extrap'``
+            %
+            %	``CDMax`` = maximum drag coefficient in extrapolation
+            %
+            %	``UseCM`` = use CM data (if available)
+            %
+            %	``AlphaFP`` = (optional) Get CD from flat-plate theory for abs(angle) > AlphaFP. Viterna method (recommended) used when AlphaFP not set or empty [].
+            %
+            % OPTIONS for ``'DynStall'``:
+            %
+            %	``ModType`` = ``'DynStall'``
+            %
+            %	``StallAngle`` = stall angle in degrees
+            %
+            %	``NegStallCn`` = Cn at stall for negative angle of attack
+            %
+            %   ``AlphaTrend`` = ``[minAlpha maxAlpha]`` for CN slope calc
+            %
+            % OPTIONS for ``'Resample'``:
+            %
+            %	``ModType`` = ``'Resample'``
+            %
+            %	``Alpha`` = array of Alpha values
+            %
+            %	``method`` = interpolation method:
+            %	``'linear'``, ``'spline'``, ``'pchip'``
+            %
             mopts = PolarDef.createModOpts(varargin{:});
             N = numel(obj);
             for k=1:N
@@ -339,9 +379,13 @@ classdef PolarDef < handle
         end
         
         function apply3DStall(obj,mopts)
-            % obj.apply3DStall(mopts)   where, for example
-            % mopts = struct('RPM',12,'R',35,'V',8,'rOverR',0.9,...
-            %                'Chord',1.2,'AlphaEnd',14,'AlphaTrend',[0 5])
+            % ``obj.apply3DStall(mopts)``   
+            %
+            % Example:
+            %
+            %	``mopts =
+            %	struct('RPM',12,'R',35,'V',8,'rOverR',0.9,'Chord',1.2,'AlphaEnd',14,'AlphaTrend',[0 5])``
+            %
             RPM      = mopts.RPM;
             R        = mopts.R;
             V        = mopts.V;
@@ -861,13 +905,16 @@ classdef PolarDef < handle
         end
         
         function recolorplot(StackIndex,ColorOrder)
-            % recolorplot(StackIndex,ColorOrder)
-            %   where StackIndex specifies which axes children to change 
-            %   (Note that the last child to be added shows up 
-            %    first on the "stack")
-            %   and ColorOrder is the list of colors to use
+            % ``recolorplot(StackIndex,ColorOrder)``
+            % where ``StackIndex`` specifies which axes children to change 
+            % (Note that the last child to be added shows up first on the "stack")
+            % ``ColorOrder`` is the list of colors to use
             % Modify last six axes children (top six on stack):
-            % recolorplot(1:6,jet(6));  
+            %
+            % Example:
+            %
+            %	``recolorplot(1:6,jet(6));``
+            %
             h = get(gca,'Children');
             assert(all(StackIndex>0),'all N must be positive');
             assert(max(StackIndex)<=numel(h),'max(N) must be <= number of axes children');
