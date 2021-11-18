@@ -26,7 +26,7 @@ with interpolated stations.
 
 Material properties, layup information, and thicknesses and widths are
 additionally defined in the ``MaterialDef``, ``StackDef``, and ``ComponentDef`` respectively.
-Refer to the :ref:`appendix` for more information.
+Refer to the :ref:`classDefs` for more information.
 
 .. _bladeKeyPoints:
 .. figure:: /_static/images/bladeKeyPoints.png

@@ -27,9 +27,11 @@ Download NuMAD
 
 The NuMAD source code is hosted on the `NuMAD GitHub repository <https://github.com/sandialabs/NuMAD>`_. 
 NuMAD users are recommended to clone the Github repository.
-Developers who wish to contribute to NuMAD should see the corresponding Developer :ref:`dev-getting-started` section.
 Cloning the repository allows users to easily pull the latest updates to the NuMAD source code.
 These updates may improve the code's speed, accuracy and add additional functionality or advanced features.
+
+.. TODO: this section doesn't exist
+.. Developers who wish to contribute to NuMAD should see the corresponding Developer :ref:`dev-getting-started` section.
 
  
 To install NuMAD using `git <https://git-scm.com/>`_, type the following in a git interface:: 
