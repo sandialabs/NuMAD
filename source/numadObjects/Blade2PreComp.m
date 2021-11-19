@@ -86,6 +86,7 @@ end
 % Convert NuMAD Keypoints to PreComp airfoil coords and create shape files
 % ble: save the airfoil coordinates ensuring that the region keypoints are
 % saved as points in the data (non-dimensional)
+
 for ii=1:N_sections
     x=blade.profiles(:,1,ii)';
     y=blade.profiles(:,2,ii)';
@@ -119,6 +120,8 @@ for ii=1:N_sections
     % (could just resample the airfoil at this point using resampleAirfoil.m)
     newx=x(1);
     newy=y(1);
+    
+        
     for j=2:length(x)
         % ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         % change this so flatbacks can have multiple points specified at
@@ -146,10 +149,11 @@ for ii=1:N_sections
     x=x*r;
     y=y*r;
     
+
     % make sure trailing edge is at 1,0 for sharp and round airfoils
-    if ~strcmpi(blade.TEtype(ii),'flat')        
+    if ~strcmpi(blade.TEtype(ii),'flat')     
         pointer=find(x>(1-0.000001)&x<(1+0.000001));
-        if numel(pointer)>1
+        if numel(pointer)>1 && abs(y(pointer(1)) - y(pointer(2))) > 1e-10
             keyboard
             error('too many TE points')
         end

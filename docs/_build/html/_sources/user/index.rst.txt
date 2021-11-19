@@ -10,10 +10,11 @@ User’s Guide
    getting_started.rst
    operation_modes.rst
    blade_definition.rst
+   examples.rst
    running_numad.rst
    aero_sim.rst
    fea.rst
    optimization.rst
    gui_coupling.rst
    conclusion.rst
-   appendix.rst
+   classDefs.rst
