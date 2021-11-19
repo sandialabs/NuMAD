@@ -1,10 +1,8 @@
 %% Example how to construct blade from excel sheet and build .yaml
+% Verify the NuMAD paths are added prior to running this example.
+% This can be done by executing the ``addNumadPaths`` script, shown below.
 
-close all
-clear all
-clc
-
-addNumadPaths
+run('../../addNumadPaths')
 
 %% Load blade object from excel sheet
 designFile = 'Excel2ObjectExample.xlsx';
