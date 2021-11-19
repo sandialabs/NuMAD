@@ -3,19 +3,19 @@
   <ansys_product>ANSYS</ansys_product>
   <bmodes_path>C:\DesignCodes\BModes_v3.00.00\BModes.exe</bmodes_path>
   <precomp_path>C:\DesignCodes\PreComp_v1.00.03\PreComp.exe</precomp_path>
-  <gui_layout monitors="1 1 1536 864 1537 -2.974000e+02 2560 1440 ">
-    <xy_main>1.899400e+03 233 1000 600</xy_main>
+  <gui_layout monitors="3841 905 1280 720 1921 1 1920 1200 1 1 1920 1200 ">
+    <xy_main>20 50 1000 600</xy_main>
     <xy_materials>20 50</xy_materials>
     <xy_isotropic>20 50</xy_isotropic>
     <xy_orthotropic>20 50</xy_orthotropic>
     <xy_composite>20 50</xy_composite>
     <xy_activelist>20 50</xy_activelist>
-    <xy_ansys>385 109</xy_ansys>
+    <xy_ansys>20 50</xy_ansys>
     <xy_genline>20 50</xy_genline>
     <xy_plot3d>20 50</xy_plot3d>
     <xy_flutterinput>20 50</xy_flutterinput>
     <xy_pathconfig>20 50</xy_pathconfig>
-    <xy_bpesegments>6.858000e+02 3.466000e+02 800 300</xy_bpesegments>
+    <xy_bpesegments>20 50 800 300</xy_bpesegments>
   <gui_layout>
-  <job_path>C:\GitRepositories\NuMAD\examples\Excel2Object\</job_path>
+  <job_path>C:\data\BARproject\NuMAD\</job_path>
 </numad_settings>
