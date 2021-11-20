@@ -725,7 +725,7 @@ classdef BladeDef < handle
             for kc = 1:nComponents
                 comp = obj.components(kc);
                 mat = obj.materials(comp.materialid);
-                [hpRegion, lpRegion] = findRegionExtents(obj.keylabels,comp);
+                [hpRegion, lpRegion] = obj.findRegionExtents(obj.keylabels,comp);
                 nlay = comp.getNumLayers(ndspan);
                 nlay = round(nlay);
 %                 if 1
@@ -736,7 +736,7 @@ classdef BladeDef < handle
 %                     nlay = ones(size(ndspan));
 %                 end
                 for klay=1:max(nlay)
-                    [beginSta, endSta] = findLayerExtents(nlay,klay);
+                    [beginSta, endSta] = obj.findLayerExtents(nlay,klay);
                     %% EMA original:
 %                     for ks = 1:length(beginSta)
                     %% changed to :
@@ -1249,9 +1249,9 @@ classdef BladeDef < handle
                 for kblock = 1:nBlocks
                     a = indicesOfBreakpoints(kblock);
                     b = indicesOfBreakpoints(kblock+1);
-                    fprintf_matrix(fid,obj.geometry(a:b,1,:),columnsPerLine);
-                    fprintf_matrix(fid,obj.geometry(a:b,2,:),columnsPerLine);
-                    fprintf_matrix(fid,obj.geometry(a:b,3,:),columnsPerLine);
+                    obj.fprintf_matrix(fid,obj.geometry(a:b,1,:),columnsPerLine);
+                    obj.fprintf_matrix(fid,obj.geometry(a:b,2,:),columnsPerLine);
+                    obj.fprintf_matrix(fid,obj.geometry(a:b,3,:),columnsPerLine);
                 end
                 
             catch ME
@@ -1270,7 +1270,7 @@ classdef BladeDef < handle
             tetype = cell(1,length(k));
             for i = 1:length(k)
                 xy = obj.profiles(:,:,k(i));
-                tetype{i} = getTEtype(xy);
+                tetype{i} = obj.getTEtype(xy);
             end
         end
         
@@ -1417,100 +1417,101 @@ classdef BladeDef < handle
             plot(squeeze(obj.profiles(:,1,k)),...
                  squeeze(obj.profiles(:,2,k)),'.-')
         end
-        
-    end
-end
+            
+        function [beginSta,endSta] = findLayerExtents(layerDist,layerN)
+            % This method... 
 
-function [beginSta,endSta] = findLayerExtents(layerDist,layerN)
-    % This method... 
-    
-    assert(isscalar(layerN),'second argument ''layerN'' must be a scalar');
-    staLogical = layerDist >= layerN;
-    prev = 0;
-    beginSta = []; endSta = [];
-    for k=1:length(staLogical)
-        if staLogical(k)==1 && prev==0
-            beginSta(end+1) = k; %#ok<AGROW>
+            assert(isscalar(layerN),'second argument ''layerN'' must be a scalar');
+            staLogical = layerDist >= layerN;
+            prev = 0;
+            beginSta = []; endSta = [];
+            for k=1:length(staLogical)
+                if staLogical(k)==1 && prev==0
+                    beginSta(end+1) = k; %#ok<AGROW>
+                end
+                if staLogical(k)==0 && prev==1
+                    endSta(end+1) = k; %#ok<AGROW>
+
+                elseif k==length(staLogical) && prev==1
+                    endSta(end+1) = k; %#ok<AGROW>
+                end
+                prev = staLogical(k);
+
+            end
         end
-        if staLogical(k)==0 && prev==1
-            endSta(end+1) = k; %#ok<AGROW>
 
-        elseif k==length(staLogical) && prev==1
-            endSta(end+1) = k; %#ok<AGROW>
+
+        function [hpRegion, lpRegion, swRegion] = findRegionExtents(keylabels,comp)
+            % This method...
+
+            le = find(1==strcmpi('le',keylabels));
+            % "keylabels" is expected to wrap from te on hp side around to te on lp side
+            if length(comp.hpextents)==2
+                hp1 = find(1==strcmpi(comp.hpextents{1},keylabels(1:le)));
+                assert(~isempty(hp1),'HP extent label "%s" not defined.',comp.hpextents{1});
+                hp2 = find(1==strcmpi(comp.hpextents{2},keylabels(1:le)));
+                assert(~isempty(hp2),'HP extent label "%s" not defined.',comp.hpextents{2});
+                hpRegion = sort([hp1 hp2]);
+            else
+                hpRegion = [];
+            end
+            if length(comp.lpextents)==2
+                lp1 = find(1==strcmpi(comp.lpextents{1},keylabels(le:end))) + le-1;
+                assert(~isempty(lp1),'LP extent label "%s" not defined.',comp.lpextents{1});
+                lp2 = find(1==strcmpi(comp.lpextents{2},keylabels(le:end))) + le-1;
+                assert(~isempty(lp2),'LP extent label "%s" not defined.',comp.lpextents{2});
+                lpRegion = sort([lp1 lp2]);
+            else
+                lpRegion = [];
+            end
+        %     if length(comp.hpextents)==1 && length(comp.lpextents)==1
+        %         sw1 = find(1==strcmpi(comp.hpextents{1},keylabels(1:le)));
+        %         assert(~isempty(sw1),'HP extent label "%s" not defined.',comp.hpextents{1});
+        %         sw2 = find(1==strcmpi(comp.lpextents{1},keylabels(le:end))) + le-1;
+        %         assert(~isempty(sw2),'LP extent label "%s" not defined.',comp.lpextents{1});
+        %         swRegion = [sw1 sw2];
+        %     else
+                swRegion = [];
+        %     end
         end
-        prev = staLogical(k);
 
-    end
-end
 
-function [hpRegion, lpRegion, swRegion] = findRegionExtents(keylabels,comp)
-    % This method...
-    
-    le = find(1==strcmpi('le',keylabels));
-    % "keylabels" is expected to wrap from te on hp side around to te on lp side
-    if length(comp.hpextents)==2
-        hp1 = find(1==strcmpi(comp.hpextents{1},keylabels(1:le)));
-        assert(~isempty(hp1),'HP extent label "%s" not defined.',comp.hpextents{1});
-        hp2 = find(1==strcmpi(comp.hpextents{2},keylabels(1:le)));
-        assert(~isempty(hp2),'HP extent label "%s" not defined.',comp.hpextents{2});
-        hpRegion = sort([hp1 hp2]);
-    else
-        hpRegion = [];
-    end
-    if length(comp.lpextents)==2
-        lp1 = find(1==strcmpi(comp.lpextents{1},keylabels(le:end))) + le-1;
-        assert(~isempty(lp1),'LP extent label "%s" not defined.',comp.lpextents{1});
-        lp2 = find(1==strcmpi(comp.lpextents{2},keylabels(le:end))) + le-1;
-        assert(~isempty(lp2),'LP extent label "%s" not defined.',comp.lpextents{2});
-        lpRegion = sort([lp1 lp2]);
-    else
-        lpRegion = [];
-    end
-%     if length(comp.hpextents)==1 && length(comp.lpextents)==1
-%         sw1 = find(1==strcmpi(comp.hpextents{1},keylabels(1:le)));
-%         assert(~isempty(sw1),'HP extent label "%s" not defined.',comp.hpextents{1});
-%         sw2 = find(1==strcmpi(comp.lpextents{1},keylabels(le:end))) + le-1;
-%         assert(~isempty(sw2),'LP extent label "%s" not defined.',comp.lpextents{1});
-%         swRegion = [sw1 sw2];
-%     else
-        swRegion = [];
-%     end
-end
+        function tetype = getTEtype(xy)
+            % This method...
 
-function tetype = getTEtype(xy)
-    % This method...
-    
-    if abs(xy(2,2)-xy(end-1,2)) > 1e-5
-        % y-diff of second and end-1 points is non-zero for flatback
-        tetype = 'flat';
-        disp('FLATBACK AIRFOIL')
-    else
-        % y-diff of first two points is zero otherwise (point
-        % is duplicated)
-        hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
-        lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
-        if (hp_angle + lp_angle) > 0.8*pi
-            % if angle is approaching 180deg, then treat as
-            % 'round'
-            % jcb: it may be better to base this decision on
-            % continuity of slope or curvature
-            tetype = 'round';
-        else
-            tetype = 'sharp';
+            if abs(xy(2,2)-xy(end-1,2)) > 1e-5
+                % y-diff of second and end-1 points is non-zero for flatback
+                tetype = 'flat';
+                disp('FLATBACK AIRFOIL')
+            else
+                % y-diff of first two points is zero otherwise (point
+                % is duplicated)
+                hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
+                lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
+                if (hp_angle + lp_angle) > 0.8*pi
+                    % if angle is approaching 180deg, then treat as
+                    % 'round'
+                    % jcb: it may be better to base this decision on
+                    % continuity of slope or curvature
+                    tetype = 'round';
+                else
+                    tetype = 'sharp';
+                end
+            end
         end
-    end
-end
 
-function fprintf_matrix(fid,matrixData,columnsPerLine)
-    % This method...
+        function fprintf_matrix(fid,matrixData,columnsPerLine)
+            % This method...
 
-    kColumn = 1;
-    for kData=1:numel(matrixData)
-        fprintf(fid,'%g ',matrixData(kData));
-        kColumn = kColumn + 1;
-        if kColumn > columnsPerLine
-            fprintf(fid,'\n');
             kColumn = 1;
+            for kData=1:numel(matrixData)
+                fprintf(fid,'%g ',matrixData(kData));
+                kColumn = kColumn + 1;
+                if kColumn > columnsPerLine
+                    fprintf(fid,'\n');
+                    kColumn = 1;
+                end
+            end
         end
     end
 end
