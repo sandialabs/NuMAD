@@ -41,12 +41,9 @@ Blade Properties
 
 Blade Methods
 ~~~~~~~~~~~~~~~~~~
-.. Kelley:`set.naturaloffset` syntax isn't compatible with autodocs, e.g. `setNaturaloffset` would be
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.naturaloffset
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.rotorspin
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.swtwisted
-.. TODO: .. autoattribute:: numadObjects.BladeDef.findLayerExtents
-
+.. autoattribute:: numadObjects.BladeDef.checkNaturalOffset
+.. autoattribute:: numadObjects.BladeDef.checkRotorSpin
+.. autoattribute:: numadObjects.BladeDef.checkSwtwisted
 .. autoattribute:: numadObjects.BladeDef.addStation
 .. autoattribute:: numadObjects.BladeDef.addComponent
 .. autoattribute:: numadObjects.BladeDef.addMaterial

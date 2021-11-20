@@ -106,27 +106,33 @@ classdef BladeDef < handle
             if nargin > 0
                 
             end
+            obj.checkNaturalOffset
+            obj.checkRotorSpin
+            obj.checkSwtwisted
         end
         
-        function set.naturaloffset(obj,noffset)
-            if ~(isequal(noffset,0) || isequal(noffset,1))
+        function checkNaturalOffset(obj)
+            % This method checks ``naturaloffset`` values
+            % 
+            if ~(isequal(obj.naturaloffset,0) || isequal(obj.naturaloffset,1))
                 error('naturaloffset must be 0 or 1');
             end
-            obj.naturaloffset = noffset;
         end
         
-        function set.rotorspin(obj,spin)
-            if ~(isequal(spin,1) || isequal(spin,-1))
+        function checkRotorSpin(obj)
+            % This method checks ``rotorspin`` values
+            % 
+            if ~(isequal(obj.rotorspin,1) || isequal(obj.rotorspin,-1))
                 error('rotorspin must be 1 (cw) or -1 (ccw)');
             end
-            obj.rotorspin = spin;
         end
         
-        function set.swtwisted(obj,swtwist)
-            if ~(isequal(swtwist,0) || isequal(swtwist,1))
+        function checkSwtwisted(obj)
+            % This method checks ``swtwisted`` values
+            % 
+            if ~(isequal(obj.swtwisted,0) || isequal(obj.swtwisted,1))
                 error('swtwisted must be 0 or 1');
             end
-            obj.swtwisted = swtwist;
         end
         
         function addStation(obj,af,spanlocation)
