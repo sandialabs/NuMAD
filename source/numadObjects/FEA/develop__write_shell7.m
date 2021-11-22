@@ -231,7 +231,7 @@ for kStation = 1:TotalStations
 % %     if nCoordPairs > Nansys
         % resample airfoil coordinates to reduce size    
         kStation
-        af_out = resampleAirfoil_ble(station.coords, round(Nansys/2-1), 'arc');
+        af_out = resampleAirfoil(station.coords, round(Nansys/2-1), 'arc');
 
 % %         figure
 % %         hold on

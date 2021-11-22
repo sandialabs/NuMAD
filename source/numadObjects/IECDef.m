@@ -8,8 +8,9 @@ classdef IECDef < handle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ``IECDef``  A class definition for IEC input parameters
 %
-%   Usage: 
-%     params = IECDef(Class,'TurbClass');
+% Example: 
+%
+%	``params = IECDef(Class,'TurbClass');``
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

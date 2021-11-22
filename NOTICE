@@ -14,4 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
-
+Several libraries developed by external parties are used by NuMAD. 
+License information for these libraries is as follows:
+$NuMAD/source/numadObjects/yaml/YAMLMatlab_0.4.3, license in MIT-license.txt file.
+$NuMAD/source/utilities/txt2mat.m, license in license.txt file.

@@ -122,8 +122,8 @@ switch spacing
         x=x_rev(end:-1:1);
     otherwise
         error('Resampling algorithm specified is not an available option');
-        return;
 end
+
 %Calculate interpolated airfoil points. For sharp trailing edge airfoils,
 %the trailing edge point is not repeated
 HP_new=[x_rev  interp1(HP(:,1),HP(:,2),x_rev)];
@@ -131,24 +131,19 @@ HP_new=[x_rev  interp1(HP(:,1),HP(:,2),x_rev)];
 % complications when it comes ot CFD analyses!!
 HP_new(end,:)=[0 0];
 LP_new=[x  interp1(LP(:,1),LP(:,2),x)];
+% ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+% % switch te_type
+% %     case 'flatback'
+% %         af_out=[1 0; HP_new(:,:); LP_new(2:end,:)];
+% %     case 'normal'
+% %         af_out=[1 0; HP_new(:,:); LP_new(2:end-1,:); 1 0];
+% % end
 switch te_type
     case 'flatback'
         af_out=[1 0; HP_new(:,:); LP_new(2:end,:)];
     case 'normal'
-        af_out=[1 0; HP_new(:,:); LP_new(2:end-1,:); 1 0];
+        af_out=[HP_new(:,:); LP_new(2:end-1,:)];
 end
-
-if 0  % debugging plots
-    figure(701)
-    subplot(2,1,1)
-    plot(t,xy(:,1),'k-x',t,xy(:,2),'r-x',manypoints,xxyy(:,1),'b-',manypoints,xxyy(:,2),'g-')
-    xlabel('airfoil surface distance from first point')
-    ylabel('oversampled coordinate value')
-    legend('af\_in x','af\_in y','oversampled x','oversampled y','Location','North')
-    subplot(2,1,2)
-    plot(xy(:,1),xy(:,2),'r-x',xxyy(:,1),xxyy(:,2),'b',af_out(:,1),af_out(:,2),'k-o')
-    axis equal
-    legend('af\_in points',['af\_in points oversampled by factor of ' num2str(oversample)],'af\_out','Location','SouthEast')
-end
+% ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 end

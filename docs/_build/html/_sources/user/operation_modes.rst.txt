@@ -22,4 +22,4 @@ With the GUI being relatively unchanged, we comment on the GUI mode of operation
 
 The graphical user interface (GUI) can still be accessed the same as it was in prior releases. Refer to the former user manual
 (`SAND2012-7028 <https://energy.sandia.gov/wp-content/gallery/uploads/NuMAD_UserGuide_SAND2012f-7028.pdf>`__) for
-detailed instructions on how to use the GUI and for tutorials. The tutorials in the present manual are focused on operating NuMAD with the blade object. 
+detailed instructions on how to use the GUI and for step-by-step examples. The examples in the present manual are focused on operating NuMAD with the blade object. 

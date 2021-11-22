@@ -7,17 +7,16 @@ Object Classes, Properties, and Methods
 
 Blade Class
 ------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)
 
 .. autoclass:: numadObjects.BladeDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 	
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)
 
 Blade Properties	
 ~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.BladeDef.aerocenter
 .. autoattribute:: numadObjects.BladeDef.chord
 .. autoattribute:: numadObjects.BladeDef.chordoffset
@@ -41,12 +40,9 @@ Blade Properties
 
 Blade Methods
 ~~~~~~~~~~~~~~~~~~
-.. Kelley:`set.naturaloffset` syntax isn't compatible with autodocs, e.g. `setNaturaloffset` would be
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.naturaloffset
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.rotorspin
-.. TODO: .. autoattribute:: numadObjects.BladeDef.set.swtwisted
-.. TODO: .. autoattribute:: numadObjects.BladeDef.findLayerExtents
-
+.. autoattribute:: numadObjects.BladeDef.checkNaturalOffset
+.. autoattribute:: numadObjects.BladeDef.checkRotorSpin
+.. autoattribute:: numadObjects.BladeDef.checkSwtwisted
 .. autoattribute:: numadObjects.BladeDef.addStation
 .. autoattribute:: numadObjects.BladeDef.addComponent
 .. autoattribute:: numadObjects.BladeDef.addMaterial
@@ -68,29 +64,26 @@ Blade Methods
 .. autoattribute:: numadObjects.BladeDef.plotgeom
 .. autoattribute:: numadObjects.BladeDef.plotbom
 .. autoattribute:: numadObjects.BladeDef.plotprofile
-
-.. Kelley: these functions are not included within the object, they are appended at the end
-.. TODO: .. autoattribute:: numadObjects.BladeDef.findLayerExtents
-.. TODO: .. autoattribute:: numadObjects.BladeDef.findRegionExtents
-.. TODO: .. autoattribute:: numadObjects.BladeDef.getTEtype
-.. TODO: .. autoattribute:: numadObjects.BladeDef.fprintf_matrix
+.. autoattribute:: numadObjects.BladeDef.findLayerExtents
+.. autoattribute:: numadObjects.BladeDef.findRegionExtents
+.. autoattribute:: numadObjects.BladeDef.getTEtype
+.. autoattribute:: numadObjects.BladeDef.fprintf_matrix
 
 
 .. _materialClass:
 
 Material Class
 ------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)	
 
 .. autoclass:: numadObjects.MaterialDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
 	
 Material Properties	
 ~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.MaterialDef.name
 .. autoattribute:: numadObjects.MaterialDef.type
 .. autoattribute:: numadObjects.MaterialDef.layerthickness
@@ -124,17 +117,16 @@ Material Properties
 
 Station Class
 ------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)	
 
 .. autoclass:: numadObjects.StationDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
 	
 Station Properties	
 ~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.StationDef.airfoil
 .. autoattribute:: numadObjects.StationDef.spanlocation
 
@@ -143,17 +135,16 @@ Station Properties
 
 Component Class
 ------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)	
 
 .. autoclass:: numadObjects.ComponentDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
 	
 Component Properties	
 ~~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.ComponentDef.group
 .. autoattribute:: numadObjects.ComponentDef.name
 .. autoattribute:: numadObjects.ComponentDef.materialid
@@ -169,17 +160,16 @@ Component Properties
 
 Airfoil Class
 ------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)	
 
 .. autoclass:: numadObjects.AirfoilDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
 	
 Airfoil Properties	
 ~~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.AirfoilDef.name
 .. autoattribute:: numadObjects.AirfoilDef.reference
 .. autoattribute:: numadObjects.AirfoilDef.coordinates
@@ -197,93 +187,141 @@ Airfoil Properties
 
 Stack Class
 ------------------ 
+.. TODO: properties and methods should be autopopulated, manual for now (below)	
 
 .. autoclass:: numadObjects.StackDef
 	:members: 
 	:exclude-members: 
 	:no-undoc-members: 
 
-.. TODO: properties and methods should be autopopulated (above), manual for now (below)	
 	
 Stack Properties	
 ~~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.StackDef.name
 .. autoattribute:: numadObjects.StackDef.plygroups
 .. autoattribute:: numadObjects.StackDef.indices
 
 Stack Methods
 ~~~~~~~~~~~~~~~~~~~~
-
 .. autoattribute:: numadObjects.StackDef.addply
+
+
+
+.. _IecClass:
+
+IEC Class
+------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)
+
+.. autoclass:: numadObjects.IECDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+	
+
+IEC Properties	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.IECDef.BldGagNd
+.. autoattribute:: numadObjects.IECDef.Class
+.. autoattribute:: numadObjects.IECDef.delay
+.. autoattribute:: numadObjects.IECDef.designLife
+.. autoattribute:: numadObjects.IECDef.fastsim
+.. autoattribute:: numadObjects.IECDef.fatigueCriterion
+.. autoattribute:: numadObjects.IECDef.fstfn
+.. autoattribute:: numadObjects.IECDef.fullLoads
+.. autoattribute:: numadObjects.IECDef.gageSetCase
+.. autoattribute:: numadObjects.IECDef.lin
+.. autoattribute:: numadObjects.IECDef.momentMaxRotation
+.. autoattribute:: numadObjects.IECDef.numadfn
+.. autoattribute:: numadObjects.IECDef.NumGrid
+.. autoattribute:: numadObjects.IECDef.numSeeds
+.. autoattribute:: numadObjects.IECDef.operatingPoints
+.. autoattribute:: numadObjects.IECDef.parDir
+.. autoattribute:: numadObjects.IECDef.ratedSpeed
+.. autoattribute:: numadObjects.IECDef.sf_fat
+.. autoattribute:: numadObjects.IECDef.sf_uts
+.. autoattribute:: numadObjects.IECDef.sf_tow
+.. autoattribute:: numadObjects.IECDef.SimTime
+.. autoattribute:: numadObjects.IECDef.simulinkModel
+.. autoattribute:: numadObjects.IECDef.simulinkModelFolder
+.. autoattribute:: numadObjects.IECDef.TurbClass
+.. autoattribute:: numadObjects.IECDef.ws
+.. autoattribute:: numadObjects.IECDef.wd
+.. autoattribute:: numadObjects.IECDef.yaw
+
+
+
+IEC Methods	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.IECDef.checkInputs
+.. autoattribute:: numadObjects.IECDef.setAvgWindSpeed
+.. autoattribute:: numadObjects.IECDef.setBladeGageCoordinateRotation
+.. autoattribute:: numadObjects.IECDef.setGageLabels
+.. autoattribute:: numadObjects.IECDef.setSimFlag
+.. autoattribute:: numadObjects.IECDef.runFullLoads
+.. autoattribute:: numadObjects.IECDef.setRandomSeeds
    
-   
-
-.. Kelley: remove these legacy tables and excel spreadsheets
-
-.. .. _bladeDefTable:
-.. .. csv-table:: ``BladeDef``: A class definition for wind & water turbine blades.
-..    :file: bladeDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
 
 
-.. .. _bladeDefMethodsTable:
-.. .. csv-table::  List of Methods for ``BladeDef`` class.
-..    :file: bladeDefMethodsTable.csv
-..    :widths: 1
-..    :header-rows: 1
+.. _polarClass:
 
-.. _materialDefTable:
-.. .. csv-table:: ``MaterialDef``: A class definition for blade materials. Materials properties are defined in the principal material coordinate system.
-..    :file: materialDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
+Polar Class
+------------------
+.. TODO: properties and methods should be autopopulated, manual for now (below)
+.. Kelley: several PolarDef functions are not included within the class, they are appended at the end
 
-.. .. _stationDefTable:
-.. .. csv-table::  ``StationDef``: A class definition for blade stations.
-..    :file: stationDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
+.. autoclass:: numadObjects.PolarDef
+	:members: 
+	:exclude-members: 
+	:no-undoc-members: 
+	
 
-.. .. _componentDefTable:
-.. .. csv-table::  ``ComponentDef``: A class definition for blade components.
-..    :file: componentDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
+Polar Properties	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.PolarDef.file
+.. autoattribute:: numadObjects.PolarDef.source
+.. autoattribute:: numadObjects.PolarDef.titleLine
+.. autoattribute:: numadObjects.PolarDef.notes
+.. autoattribute:: numadObjects.PolarDef.param
+.. autoattribute:: numadObjects.PolarDef.rawlist
+.. autoattribute:: numadObjects.PolarDef.rawdata
+.. autoattribute:: numadObjects.PolarDef.modopts
+.. autoattribute:: numadObjects.PolarDef.modlist
+.. autoattribute:: numadObjects.PolarDef.moddata
 
-.. .. _airfoilDefTable:
-.. .. csv-table::  ``AirfoilDef``: A class definition for airfoil profiles.
-..    :file: airfoilDefTable.csv
-..    :widths: 1,2
-..    :header-rows: 1
+Polar Methods	
+~~~~~~~~~~~~~~~~~~
+.. autoattribute:: numadObjects.PolarDef.getRawData
+.. autoattribute:: numadObjects.PolarDef.getModData
+.. autoattribute:: numadObjects.PolarDef.getParam
+.. autoattribute:: numadObjects.PolarDef.matchModList
+.. autoattribute:: numadObjects.PolarDef.plotRaw
+.. autoattribute:: numadObjects.PolarDef.plotMod
+.. autoattribute:: numadObjects.PolarDef.resetModData
+.. autoattribute:: numadObjects.PolarDef.updateModData
+.. autoattribute:: numadObjects.PolarDef.getModOpts
+.. autoattribute:: numadObjects.PolarDef.addModOpts
+.. autoattribute:: numadObjects.PolarDef.clearModOpts
+.. autoattribute:: numadObjects.PolarDef.apply3DStall
+.. autoattribute:: numadObjects.PolarDef.applyExtrap
+.. autoattribute:: numadObjects.PolarDef.applyResample
+.. autoattribute:: numadObjects.PolarDef.calcDynStall
+.. autoattribute:: numadObjects.PolarDef.updateIntrinsic
+.. autoattribute:: numadObjects.PolarDef.setIntrinsic
+.. autoattribute:: numadObjects.PolarDef.blend
+.. autoattribute:: numadObjects.PolarDef.plotInterp
+.. autoattribute:: numadObjects.PolarDef.plotIntrinsic
+.. autoattribute:: numadObjects.PolarDef.writePolar
+.. autoattribute:: numadObjects.PolarDef.cylinderPolar
+.. autoattribute:: numadObjects.PolarDef.createModOpts
+.. autoattribute:: numadObjects.PolarDef.findZeroCL
+.. autoattribute:: numadObjects.PolarDef.findMaxCL
+.. autoattribute:: numadObjects.PolarDef.findMaxLoD
+.. autoattribute:: numadObjects.PolarDef.findAlphaTrend
+.. autoattribute:: numadObjects.PolarDef.recolorplot
 
-.. .. _stackDefTable:
-.. .. table:: ``StackDef``: A class definition for a stack of composite layers.
-.. 
-..     +---------------------+----------------------------------------------------+
-..     | **StackDef          | **Property Description**                           |
-..     | Property**          |                                                    |
-..     +=====================+====================================================+
-..     | ``name``            | Name of the stack / composite material used by     |
-..     |                     | NuMAD                                              |
-..     +---------------------+----------------------------------------------------+
-..     | ``plygroups``       | Array of ply structures, one for each ply.         |
-..     |                     |                                                    |
-..     |                     | ``ply = struct('component'),...% parent comp``     |
-..     |                     |                                                    |
-..     |                     | ``'materialid',[],...% materialid of ply``         |
-..     |                     |                                                    |
-..     |                     | ``'thickness',[],... % thickness [mm]``            |
-..     |                     |                                                    |
-..     |                     | ``% of single ply``                                |
-..     |                     |                                                    |
-..     |                     | ``'angle',[],... % ply angle``                     |
-..     |                     |                                                    |
-..     |                     | ``'nPlies',[]); % number of plies``                |
-..     +---------------------+----------------------------------------------------+
-..     | ``indices``         | Indices of stack                                   |
-..     |                     |                                                    |
-..     |                     | [in board station, out board station, 1\ :sup:`st` |
-..     |                     | kepoint, 2\ :sup:`nd` keypoint]                    |
-..     +---------------------+----------------------------------------------------+   
+
+
+
+
+

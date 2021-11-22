@@ -42,7 +42,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Aeroelastic Simulation and the runIEC Function" href="aero_sim.html" />
-    <link rel="prev" title="Blade Definition" href="blade_definition.html" /> 
+    <link rel="prev" title="Examples" href="examples.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -98,6 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Running NuMAD</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#blade-generation">Blade Generation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#blade-variable-assignment">Blade Variable Assignment</a></li>
@@ -111,7 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -264,7 +265,7 @@ way. The NuMAD blade object contains a collection of variables that
 represent these properties, and can be set and modified by value
 assignment within a MATLAB script or in the command line. A
 comprehensive list of all public variables in the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class used in
-NuMAD is given in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>.</p>
+NuMAD is given in the <a class="reference internal" href="classDefs.html#classdefs"><span class="std std-ref">Object Classes, Properties, and Methods</span></a>.</p>
 <p>Here we give some highlighted examples of key variables within the blade
 object and their basic access. The overall shape of the blade is defined
 largely by the stations (access: <code class="docutils literal notranslate"><span class="pre">blade.stations</span></code>). Each station
@@ -315,7 +316,7 @@ respectively.</p>
 <p>The data defining the properties of all the materials used throughout
 the blade are stored in the variable <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code>. Each entry in
 <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code> is a <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code> object, which stores a name, elastic
-properties, density, and strength properties among others (see <a class="reference internal" href="appendix.html#materialclass"><span class="std std-ref">Material Class</span></a> in the <a class="reference internal" href="appendix.html#appendix"><span class="std std-ref">Appendix</span></a>).
+properties, density, and strength properties among others (see <a class="reference internal" href="classDefs.html#materialclass"><span class="std std-ref">Material Class</span></a> in the <a class="reference internal" href="classDefs.html#classdefs"><span class="std std-ref">Object Classes, Properties, and Methods</span></a>).
 It also stores the thickness that a single layer of that material in a
 composite is assumed to be, which can be important to know or edit when
 defining the thickness distribution of the blade’s components as just described.</p>
@@ -362,7 +363,7 @@ are discussed in detail in <a class="reference internal" href="fea.html#feaops">
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="aero_sim.html" class="btn btn-neutral float-right" title="Aeroelastic Simulation and the runIEC Function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="blade_definition.html" class="btn btn-neutral float-left" title="Blade Definition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

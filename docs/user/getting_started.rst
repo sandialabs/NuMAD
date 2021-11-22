@@ -7,17 +7,20 @@ Software Requirements
 ----------------------
 NuMAD is developed in MATLAB, and requires the following software packages:
 
-=====================================================================  =============================
-**Required Packages**        						**Oldest Compatible Version**
-`MATLAB <https://www.mathworks.com/products/matlab.html>`_  		Version 9.9  (R2020b)
-`FAST (Optional) <https://www.nrel.gov/wind/nwtc/fastv7.html>`_ 	v7.02.00d
-`ANSYS (Optional) <https://www.ansys.com/>`_	    			R12
-`PreComp (Optional) <https://www.nrel.gov/wind/nwtc/precomp.html>`_ 	v1.00.03
-`TurbSim (Optional) <https://www.nrel.gov/wind/nwtc/turbsim.html>`_     v1.50
-`IECWind (Optional) <https://www.nrel.gov/wind/nwtc/iecwind.html>`_     v5.01.01
-`BModes (Optional) <https://www.nrel.gov/wind/nwtc/bmodes.html>`_       v3.00.00
-`Crunch (Optional) <https://www.nrel.gov/wind/nwtc/crunch.html>`_       v3.00.00
-=====================================================================  =============================
+===========================================================================================	=============================
+**Required Packages**        						    			**Oldest Compatible Version**
+`MATLAB <https://www.mathworks.com/products/matlab.html>`_  		    			Version 9.9  (R2020b)
+`YAMLMatlab (Included) <https://code.google.com/archive/p/yamlmatlab/>`_    			v0.4.3
+`txt2mat (Included) <https://www.mathworks.com/matlabcentral/fileexchange/18430-txt2mat>`_ 	v7.0
+`FAST (Optional) <https://www.nrel.gov/wind/nwtc/fastv7.html>`_ 	    			v7.02.00d
+`ANSYS (Optional) <https://www.ansys.com/>`_	    			    			R12
+`PreComp (Optional) <https://www.nrel.gov/wind/nwtc/precomp.html>`_         			v1.00.03
+`TurbSim (Optional) <https://www.nrel.gov/wind/nwtc/turbsim.html>`_         			v1.50
+`IECWind (Optional) <https://www.nrel.gov/wind/nwtc/iecwind.html>`_         			v5.01.01
+`BModes (Optional) <https://www.nrel.gov/wind/nwtc/bmodes.html>`_           			v3.00.00
+`Crunch (Optional) <https://www.nrel.gov/wind/nwtc/crunch.html>`_           			v3.00.00
+===========================================================================================	=============================
+
 
 .. Unsupported IECWind, ADAMS
  
@@ -27,9 +30,11 @@ Download NuMAD
 
 The NuMAD source code is hosted on the `NuMAD GitHub repository <https://github.com/sandialabs/NuMAD>`_. 
 NuMAD users are recommended to clone the Github repository.
-Developers who wish to contribute to NuMAD should see the corresponding Developer :ref:`dev-getting-started` section.
 Cloning the repository allows users to easily pull the latest updates to the NuMAD source code.
 These updates may improve the code's speed, accuracy and add additional functionality or advanced features.
+
+.. TODO: this section doesn't exist
+.. Developers who wish to contribute to NuMAD should see the corresponding Developer :ref:`dev-getting-started` section.
 
  
 To install NuMAD using `git <https://git-scm.com/>`_, type the following in a git interface:: 

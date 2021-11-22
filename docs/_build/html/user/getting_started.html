@@ -96,7 +96,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#installing-numad">Installing NuMAD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#download-numad">Download NuMAD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-numad">Install NuMAD</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#installation-steps">Installation Steps</a></li>
 </ul>
 </li>
@@ -104,6 +105,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
@@ -112,7 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
 <li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix.html">Appendix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -191,8 +193,8 @@
 <p>NuMAD is developed in MATLAB, and requires the following software packages:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 70%" />
-<col style="width: 30%" />
+<col style="width: 76%" />
+<col style="width: 24%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>Required Packages</strong></p></td>
@@ -200,6 +202,12 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></td>
 <td><p>Version 9.9  (R2020b)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://code.google.com/archive/p/yamlmatlab/">YAMLMatlab (Included)</a></p></td>
+<td><p>v0.4.3</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/18430-txt2mat">txt2mat (Included)</a></p></td>
+<td><p>v7.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/fastv7.html">FAST (Optional)</a></p></td>
 <td><p>v7.02.00d</p></td>
@@ -225,34 +233,38 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="installing-numad">
-<h2>Installing NuMAD<a class="headerlink" href="#installing-numad" title="Permalink to this headline">¶</a></h2>
-<p>The code containing all open-source tools for NuMAD can be downloaded or
-cloned from the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.</p>
-<p>There are 3 directories within <code class="docutils literal notranslate"><span class="pre">NuMAD/source</span></code> : <code class="docutils literal notranslate"><span class="pre">toolbox</span></code>,
-<code class="docutils literal notranslate"><span class="pre">objects</span></code>, and <code class="docutils literal notranslate"><span class="pre">optimization</span></code>, their purpose is described in the table below:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 7%" />
-<col style="width: 93%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Source Directory</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">numadGUI</span></code></p></td>
-<td><p>contains files related to the graphical user interface (GUI) which was introduced in NuMAD v2.0.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">objects</span></code></p></td>
-<td><p>contains files associated to the class definition of the blade object and <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file capabilities.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimization</span></code></p></td>
-<td><p>contains bundles of tools for several purposes, including <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, as explained further in the <a class="reference internal" href="aero_sim.html#aeroelasticsimruniec"><span class="std std-ref">Aeroelastic Simulation and the runIEC Function</span></a> section, file processing functions for input and output from other programs such as FAST and Crunch, and setup and execution of ANSYS models for analyzing quantities like material rupture, fatigue, and buckling under loading</p></td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="download-numad">
+<h2>Download NuMAD<a class="headerlink" href="#download-numad" title="Permalink to this headline">¶</a></h2>
+<p>The NuMAD source code is hosted on the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.
+NuMAD users are recommended to clone the Github repository.
+Cloning the repository allows users to easily pull the latest updates to the NuMAD source code.
+These updates may improve the code’s speed, accuracy and add additional functionality or advanced features.</p>
+<p>To install NuMAD using <a class="reference external" href="https://git-scm.com/">git</a>, type the following in a git interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sandialabs</span><span class="o">/</span><span class="n">NuMAD</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>The local copy of NuMAD can easily be updated to the latest version of the
+code hosted on the GitHub repository by using the pull command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">git</span> <span class="n">pull</span>
+</pre></div>
+</div>
+<p>For users who are new to git, it is recommended to go through examples on
+<a class="reference external" href="https://docs.github.com/en/free-pro-team&#64;latest/github/getting-started-with-github">GitHub</a>
+or other sources while getting started.
+If you have problems downloading or installing please see the <a class="reference internal" href="conclusion.html#troubleshooting"><span class="std std-ref">Troubleshooting</span></a> page.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users may also download a static version of NuMAD from the latest tagged
+<a class="reference external" href="https://github.com/sandialabs/NuMAD/releases">NuMAD Release</a>.  This is
+the easiest way to obtain the NuMAD code, however it is more difficult to
+manually download future updates.</p>
+</div>
+</div>
+<div class="section" id="install-numad">
+<span id="user-install"></span><h2>Install NuMAD<a class="headerlink" href="#install-numad" title="Permalink to this headline">¶</a></h2>
+<p>Once you have downloaded the NuMAD source code, take the following steps to
+install the NuMAD code. The directory where the NuMAD code is contained is
+referred to as <code class="docutils literal notranslate"><span class="pre">$NuMAD</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">C:/User/Documents/GitHub/NuMAD</span></code>).</p>
 <div class="section" id="installation-steps">
 <h3>Installation Steps<a class="headerlink" href="#installation-steps" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
