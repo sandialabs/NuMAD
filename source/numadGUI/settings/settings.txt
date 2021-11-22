@@ -17,5 +17,5 @@
     <xy_pathconfig>20 50</xy_pathconfig>
     <xy_bpesegments>6.858000e+02 3.466000e+02 800 300</xy_bpesegments>
   <gui_layout>
-  <job_path>C:\GitRepositories\NuMAD\examples\Excel2Object\</job_path>
+  <job_path>C:\GitRepositories\NuMAD\examples\ExcelToObject\</job_path>
 </numad_settings>

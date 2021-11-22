@@ -1,7 +1,6 @@
 %% Example how to construct blade from excel sheet and build .yaml
 
 close all
-clear all
 clc
 
 addNumadPaths
@@ -14,7 +13,7 @@ blade = xlsBlade(designFile);
 blade.updateBlade
 
 %% generate a blade input file using PreComp
-blade.generateBeamModel
+% blade.generateBeamModel   %If PreComp is installed you can run this command to generate beam model parameters
 
 %% generate a NuMAD file
 NuMADfile = 'Excel2ObjectExample.nmd';
