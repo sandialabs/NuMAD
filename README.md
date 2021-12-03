@@ -8,13 +8,16 @@ NuMAD (Numerical Manufacturing And Design) is an object-oriented, open-source so
 
 When used in conjunction with these other tools, NuMAD provides computation of blade cross section properties, various structural analyses, and estimation of blade aeroelastic instability. 
 
-For any questions or support `create a new issue <https://github.com/sandialabs/NuMAD/issues/new>`_ on GitHub.
+For any questions or support [create a new issue](https://github.com/sandialabs/NuMAD/issues/new) on GitHub.
 
 
+.. figure:: /_static/images/NuMADoverview.png
+   :width: 5.85771in
+   :height: 4.10039in
+   
 ## Examples
 
-Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/tree/main/examples) folder on GitHub. 
-
+Step-by-step examples are located in the [examples](https://github.com/sandialabs/NuMAD/tree/main/examples) folder on GitHub. Follow allong in the documentation.
   
 ## License
 
