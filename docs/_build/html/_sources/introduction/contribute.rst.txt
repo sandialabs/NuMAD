@@ -86,7 +86,7 @@ Coding conventions
 These are the conventions we require. Note that these have not necessarily been followed in the past but moving forward the will:
 
 - We indent using four spaces (soft tabs)
-- We ALWAYS put spaces after list items and method parameters (`[1, 2, 3]`, not `[1,2,3]`), around operators (`x += 1`, not `x+=1`), and around hash arrows.
+- Moving forward we ALWAYS put spaces after list items and method parameters (`[1, 2, 3]`, not `[1,2,3]`), around operators (`x = 1`, not `x=1`), and around hash arrows.
 - We use camelCase when naming functions and variables
 - This is open source software. Consider the people who will read your code, and make it look nice for them.
 

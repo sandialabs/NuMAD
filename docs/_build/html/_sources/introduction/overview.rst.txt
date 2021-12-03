@@ -25,4 +25,9 @@ When used in conjunction with these other tools, NuMAD provides
 computation of blade cross section properties, various structural
 analyses, and estimation of blade aeroelastic instability.
 
-.. TODO: consider adding some images of NuMAD applications here, there is where you can encourage people to use the software
+
+.. _NuMADoverview:
+.. figure:: /_static/images/NuMADoverview.png
+   :width: 5.85771in
+   :height: 4.10039in
+   
