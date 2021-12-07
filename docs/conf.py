@@ -34,7 +34,6 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinxcontrib',
-    'sphinxext.remoteliteralinclude',
 ]
 
 # autodoc settings
