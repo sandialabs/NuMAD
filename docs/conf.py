@@ -33,9 +33,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
-    'sphinxcontrib.matlabdomain',
+    'sphinxcontrib',
     'sphinxext.remoteliteralinclude',
-    'sphinx_multiversion'
 ]
 
 # autodoc settings
