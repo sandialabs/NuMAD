@@ -1,0 +1,6 @@
+# Required
+sphinx
+sphinx_rtd_theme<1
+sphinxcontrib-bibtex
+sphinxcontrib-matlabdomain 
+sphinxext-remoteliteralinclude 
