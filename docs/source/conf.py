@@ -2,7 +2,7 @@
 
 # -- Project information
 
-project = 'Numerical Manufacturing And Design (NuMAD) Tool for Wind Turbine Blades'
+project = 'NuMAD'
 copyright = 'Copyright 2013-2021, National Technology & Engineering Solutions of Sandia, LLC (NTESS).'
 author = 'NumAD Authors'
 
