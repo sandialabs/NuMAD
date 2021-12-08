@@ -9,7 +9,7 @@ The software is distributed under the BSD 3-Clause License.
 Copyright 	
 ------------
 
-.. literalinclude:: ../../NOTICE
+.. literalinclude:: ../../../NOTICE
    :language: text
 
 
@@ -17,6 +17,6 @@ Copyright
 BSD 3-Clause License
 -------------------------
 
-.. literalinclude:: ../../LICENSE
+.. literalinclude:: ../../../LICENSE
    :language: text
 
