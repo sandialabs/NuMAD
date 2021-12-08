@@ -38,6 +38,7 @@ analyses, and the object-oriented data structures.
    blades”.
 
 -  Click `here <https://github.com/sandialabs/NuMAD/releases/tag/v3.0>`_ for NuMAD v3.0
+
 .. Kelley: add DOI
 
 
