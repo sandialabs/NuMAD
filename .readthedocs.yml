@@ -7,11 +7,11 @@ build:
   tools:
     python: "3.8"
 
-#conda:
-#    file: docs/environment.yml
+conda:
+    file: docs/environment.yml
 
 sphinx:
-  configuration: docs/conf.py
+  configuration: docs/source/conf.py
 
 python:
   install:
