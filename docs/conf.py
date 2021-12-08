@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-# WecOptTool documentation build configuration file, created by
-# sphinx-quickstart on Wed Mar 09 15:08:01 2016.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
@@ -29,11 +24,15 @@ import re
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
+import sphinx_rtd_theme
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinxcontrib',
+    'sphinx_rtd_theme'
 ]
 
 # autodoc settings
@@ -60,9 +59,9 @@ matlab_src_dir = os.path.abspath("../source")
 matlab_keep_package_prefix = False
 
 # sphinx_multiversion settings
-smv_branch_whitelist = r'(master|dev)$'
-smv_tag_whitelist = None
-smv_remote_whitelist = r'^(origin)$'
+#smv_branch_whitelist = r'(main|dev)$'
+#smv_tag_whitelist = None
+#smv_remote_whitelist = r'^(origin)$'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -141,17 +140,17 @@ todo_include_todos = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
+html_theme_path = ["_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'analytics_id': 'UA-88158104-1'
-}
+#html_theme_options = {
+#    'analytics_id': 'UA-88158104-1'
+#}
 
-# Add any paths that contain custom themes here, relative to this directory.
-#html_theme_path = []
+
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 #html_title = None
@@ -261,10 +260,10 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-  (master_doc, 'NuMAD.tex', 'NuMAD Documentation',
-   'Yi-Hsiang Yu, Kelley Ruehl, Jennifer Van Rij, Nathan Tom, Dominic Forbush', 'manual'),
-]
+#latex_documents = [
+#  (master_doc, 'NuMAD.tex', 'NuMAD Documentation',
+#   'Authors', 'manual'),
+#]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
