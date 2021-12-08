@@ -1,6 +1,7 @@
 name: numad
 dependencies:
     - python=3.7
+    - pip
     - sphinx
     - sphinx_rtd_theme<1
     - sphinxcontrib-bibtex
