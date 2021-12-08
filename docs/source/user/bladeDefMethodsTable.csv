@@ -1,0 +1,30 @@
+﻿**Method Name**
+``set.naturaloffset``
+``set.rotorspin``
+``set.swtwisted``
+``addStation``
+``addComponent``
+``addMaterial``
+``updateBlade``
+``updateGeometry``
+``updateKeypoints``
+``updateBOM``
+``readYAML``
+``writeYAML``
+``establishPaths``
+``generateBeamModel``
+``generateFEA (not working)``
+``writeBOMxls``
+``writePlot3D``
+``getprofileTEtype``
+``downsampleProfile``
+``delete``
+``surf``
+``plotregions``
+``plotgeom``
+``plotbom``
+``plotprofile``
+``findLayerExtents``
+``findRegionExtents``
+``getTEtype``
+``fprintf_matrix``
