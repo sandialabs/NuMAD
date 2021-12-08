@@ -50,7 +50,7 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 
 # sphinxcontrib.bibtex settings
-bibtex_bibfiles = ['refs/usrGuide.bib']
+bibtex_bibfiles = ['refs/userGuide.bib']
 
 # sphinxcontrib.matlab settings
 primary_domain = 'mat'
@@ -65,6 +65,9 @@ source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
+
+# Enable numref
+numfig = True
 
 # -- Options for HTML output
 
@@ -83,4 +86,4 @@ html_context = {
 
 
 # -- Options for EPUB output
-epub_show_urls = 'footnote'
+#epub_show_urls = 'footnote'

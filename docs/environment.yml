@@ -1,9 +1,14 @@
-name: numad
+# File: docs/environment.yaml
+
+name: docs
+channels:
+  - conda-forge
+  - defaults
 dependencies:
-    - python=3.7
-    - pip
-    - sphinx
-    - sphinx_rtd_theme<1
-    - sphinxcontrib-bibtex
-    - sphinxcontrib-matlabdomain 
-    - sphinxext-remoteliteralinclude 
+  - sphinx==4.1.2
+  - pip:
+    - sphinx_rtd_theme==0.5.2
+    - sphinxcontrib-bibtex==2.3.0
+    - sphinxcontrib-matlabdomain==0.12.0
+    - sphinxext-remoteliteralinclude==0.3.0
+    

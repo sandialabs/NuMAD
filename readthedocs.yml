@@ -1,8 +1,0 @@
-conda:
-    #file: docs/environment.yml
-    pip
-    sphinxcontrib-bibtex
-    sphinx_rtd_theme<1
-python:
-    version: 3.7
-    setup_py_install: true
