@@ -7,7 +7,7 @@ build:
   tools:
     python: "3.8"
 
-#conda:
+conda:
     file: docs/environment.yml
 
 sphinx:
