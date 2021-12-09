@@ -53,7 +53,8 @@ bibtex_bibfiles = ['refs/userGuide.bib']
 
 # sphinxcontrib.matlab settings
 primary_domain = 'mat'
-matlab_src_dir = os.path.abspath("../../source")
+#matlab_src_dir = os.path.abspath("../../source")
+matlab_src_dir = os.path.abspath("../source")
 matlab_keep_package_prefix = False
 
 # Add any paths that contain templates here, relative to this directory.
