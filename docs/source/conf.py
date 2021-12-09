@@ -1,4 +1,4 @@
-# File: docs/conf.py for RTD COMPILE
+# File: docs/source/conf.py for LOCAL COMPILE
 # Configuration file for the Sphinx documentation builder. 
 
 import os
@@ -23,15 +23,15 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinxcontrib.bibtex',
-    'sphinxcontrib.matlabdomain',
+    'sphinxcontrib.matlab',
     'sphinxext.remoteliteralinclude',       
 ]
 
-intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
-}
-intersphinx_disabled_domains = ['std']
+#intersphinx_mapping = {
+#    'python': ('https://docs.python.org/3/', None),
+#    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
+#}
+#intersphinx_disabled_domains = ['std']
 
 # autodoc settings
 autodoc_member_order = 'bysource'
@@ -53,8 +53,7 @@ bibtex_bibfiles = ['refs/userGuide.bib']
 
 # sphinxcontrib.matlab settings
 primary_domain = 'mat'
-#matlab_src_dir = os.path.abspath("../../source")
-matlab_src_dir = os.path.abspath("../source")
+matlab_src_dir = os.path.abspath("../../source")
 matlab_keep_package_prefix = False
 
 # Add any paths that contain templates here, relative to this directory.
