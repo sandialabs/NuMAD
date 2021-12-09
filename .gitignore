@@ -10,4 +10,4 @@ source/numadGUI/settings/*
 source/numadGUI/settings/settings.txt
 
 # docs build directory
-# docs/_build
+docs/build
