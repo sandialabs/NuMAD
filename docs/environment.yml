@@ -1,6 +1,6 @@
 # File: docs/environment.yaml
 
-name: _wssphinx
+name: docs
 channels:
   - conda-forge
   - defaults
