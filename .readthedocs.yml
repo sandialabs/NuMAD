@@ -8,7 +8,7 @@ build:
     python: "3.8"
 
 conda:
-    file: docs/environment.yml
+  environment: docs/environment.yml
 
 sphinx:
   configuration: docs/source/conf.py
