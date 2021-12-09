@@ -1,14 +1,68 @@
 # File: docs/environment.yaml
 
-name: docs
+name: _wssphinx
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - sphinx==4.1.2
+  - alabaster=0.7.12=py_0
+  - babel=2.9.1=pyh44b312d_0
+  - brotlipy=0.7.0=py39hb82d6ee_1001
+  - ca-certificates=2021.5.30=h5b45459_0
+  - certifi=2021.5.30=py39hcbf5309_0
+  - cffi=1.14.6=py39h0878f49_0
+  - chardet=4.0.0=py39hcbf5309_1
+  - charset-normalizer=2.0.0=pyhd8ed1ab_0
+  - click=8.0.1=py39hcbf5309_0
+  - colorama=0.4.4=pyh9f0ad1d_0
+  - colorclass=2.2.0=py_0
+  - cryptography=3.4.7=py39hd8d06c1_0
+  - dataclasses=0.8=pyhc8e2a94_3
+  - docutils=0.15.2=py39hcbf5309_2
+  - future=0.18.2=py39hcbf5309_3
+  - git=2.33.0=h57928b3_0
+  - idna=3.1=pyhd3deb0d_0
+  - imagesize=1.2.0=py_0
+  - jinja2=3.0.1=pyhd8ed1ab_0
+  - latexcodec=2.0.1=pyh9f0ad1d_0
+  - markupsafe=2.0.1=py39hb82d6ee_0
+  - openssl=1.1.1k=h8ffe710_1
+  - packaging=21.0=pyhd8ed1ab_0
+  - pip=21.2.4=pyhd8ed1ab_0
+  - pybtex=0.24.0=py39hcbf5309_0
+  - pybtex-docutils=1.0.1=py39hcbf5309_0
+  - pycparser=2.20=pyh9f0ad1d_2
+  - pygments=2.10.0=pyhd8ed1ab_0
+  - pyopenssl=20.0.1=pyhd8ed1ab_0
+  - pyparsing=2.4.7=pyh9f0ad1d_0
+  - pysocks=1.7.1=py39hcbf5309_3
+  - python=3.9.6=h7840368_1_cpython
+  - python_abi=3.9=2_cp39
+  - pytz=2021.1=pyhd8ed1ab_0
+  - pyyaml=5.4.1=py39hb82d6ee_1
+  - requests=2.26.0=pyhd8ed1ab_0
+  - setuptools=57.4.0=py39hcbf5309_0
+  - six=1.16.0=pyh6c4a22f_0
+  - snowballstemmer=2.1.0=pyhd8ed1ab_0
+  - sphinx=4.1.2=pyh6c4a22f_1
+  - sphinx_rtd_theme=0.5.2=pyhd8ed1ab_1
+  - sphinxcontrib-applehelp=1.0.2=py_0
+  - sphinxcontrib-bibtex=2.3.0=pyhd8ed1ab_0
+  - sphinxcontrib-devhelp=1.0.2=py_0
+  - sphinxcontrib-htmlhelp=2.0.0=pyhd8ed1ab_0
+  - sphinxcontrib-jsmath=1.0.1=py_0
+  - sphinxcontrib-qthelp=1.0.3=py_0
+  - sphinxcontrib-serializinghtml=1.1.5=pyhd8ed1ab_0
+  - sqlite=3.36.0=h8ffe710_0
+  - tzdata=2021a=he74cb21_1
+  - ucrt=10.0.20348.0=h57928b3_0
+  - urllib3=1.26.6=pyhd8ed1ab_0
+  - vc=14.2=hb210afc_5
+  - vs2015_runtime=14.29.30037=h902a5da_5
+  - wheel=0.37.0=pyhd8ed1ab_1
+  - win_inet_pton=1.1.0=py39hcbf5309_2
+  - yaml=0.2.5=he774522_0
   - pip:
-    - sphinx_rtd_theme==0.5.2
-    - sphinxcontrib-bibtex==2.3.0
+    - sphinx-multiversion==0.2.4
     - sphinxcontrib-matlabdomain==0.12.0
     - sphinxext-remoteliteralinclude==0.3.0
-    

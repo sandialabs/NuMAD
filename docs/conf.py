@@ -1,3 +1,4 @@
+# File: docs/source/conf.py
 # Configuration file for the Sphinx documentation builder.
 
 import os
@@ -31,8 +32,6 @@ intersphinx_mapping = {
     'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
 }
 intersphinx_disabled_domains = ['std']
-
-templates_path = ['_templates']
 
 # autodoc settings
 autodoc_member_order = 'bysource'
