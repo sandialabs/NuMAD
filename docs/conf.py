@@ -23,7 +23,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinxcontrib.bibtex',
-    'sphinxcontrib.matlab',
+    'sphinxcontrib.matlabdomain',
     'sphinxext.remoteliteralinclude',       
 ]
 
