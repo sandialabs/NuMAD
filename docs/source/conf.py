@@ -1,4 +1,4 @@
-# File: docs/source/conf.py for LOCAL COMPILE
+# File: docs/source/conf.py 
 # Configuration file for the Sphinx documentation builder. 
 
 import os
