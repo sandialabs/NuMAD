@@ -1,4 +1,4 @@
-.. _troubleshooting
+.. _troubleshooting:
 
 Troubleshooting
 ===============
@@ -58,7 +58,7 @@ References
    Sandwich Structures & Materials* 7.3 (2005): 177-194.
 
 3. Berg, Jonathan C., and Brian R. Resor. "Numerical manufacturing and
-   design tool (NuMAD V2. 0) for wind turbine blades: user’s guide."
+   design tool (NuMAD V2. 0) for wind turbine blades: user's guide."
    *Sandia National Laboratories Technical Report, SAND2012-7028*
    (2012). 
 

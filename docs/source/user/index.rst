@@ -1,4 +1,4 @@
-.. _intro:
+.. _user_intro:
 
 ##############
 User’s Guide
