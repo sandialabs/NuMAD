@@ -1,4 +1,4 @@
-# Visit the [NuMAD website](http://sandialabs.NuMAD.github.io/NuMAD) for more information.
+# Visit the [NuMAD website](http://numad.readthedocs.io/) for more information.
 
 ## NuMAD Documentation
 
@@ -24,30 +24,28 @@ replace slashes (`/`) in paths with backslashes (`\ `).
 #### Testing the Current Branch
 
 The documentation for the current branch can be built locally for inspection 
-prior to publishing. They are built in the `docs/_build` directory. Note, 
+prior to publishing. They are built in the `docs/build` directory. Note, 
 unlike the final documentation, version tags and other branches will not be 
 available. 
 
 To test the current branch, use the following:
 
 ```
+> cd path/to/NuMAD/docs
 > conda activate _numaddocs
-(_numaddocs) > cd path/to/NuMAD
-(_numaddocs) > sphinx-build -b html docs docs/_build/html
+(_numaddocs) > make clean
+(_numaddocs) > make html
 (_numaddocs) > conda deactivate
 >
 ```
 
-NOTE: for a clean build ``(_numaddocs) > sphinx-build -b html -a docs docs/_build/html``
-
 The front page of the docs can be accessed at 
-`docs/_build/html/index.html`. 
+`docs/build/html/index.html`. 
 
 #### Publishing Final Version Remotely
 
 The NuMAD docs are rebuilt automatically following every merge commit made 
-to the master or dev branch of the [sandialabs/NuMAD](
-https://github.com/sandialabs/NuMAD) repository.
+to a branch of the [sandialabs/NuMAD](https://github.com/sandialabs/NuMAD) repository.
 
 
 ## Best Practices
