@@ -11,4 +11,4 @@ source/toolbox/NuMAD_GUI/settings/*
 source/toolbox/NuMAD_GUI/settings/settings.txt
 
 # docs build directory
-# docs/_build
+docs/build
