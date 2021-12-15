@@ -2,14 +2,7 @@
 % Verify the NuMAD paths are added prior to running this example.
 % This can be done by executing the ``addNumadPaths`` script, shown below.
 
-<<<<<<< HEAD
-close all
-clc
-
-addNumadPaths
-=======
 run('../../addNumadPaths')
->>>>>>> 61b38be64c420aef0ae10bac117569cbf17d0204
 
 %% Load blade object from excel sheet
 designFile = 'Excel2ObjectExample.xlsx';

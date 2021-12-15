@@ -1,6 +1,6 @@
-![](docs/_static/images/NuMAD-header.png) 
+![](docs/source/_static/images/NuMAD-header.png) 
 # Numerical Manufacturing And Design (NuMAD) Tool 
-NuMAD (Numerical Manufacturing And Design) is an object-oriented, open-source software program written in Matlab which simplifies the process of creating a three-dimensional model of a wind turbine blade. The tool manages all blade information including aerodynamic, and material properties as well as, material placement. The blade information can be modified by a structural-optimizer in NuMAD or it can be used to run other tools in a stand-alone mode:
+[NuMAD (Numerical Manufacturing And Design)](http://numad.readthedocs.io/) is an object-oriented, open-source software program written in Matlab which simplifies the process of creating a three-dimensional model of a wind turbine blade. The tool manages all blade information including aerodynamic, and material properties as well as, material placement. The blade information can be modified by a structural-optimizer in NuMAD or it can be used to run other tools in a stand-alone mode:
 
     The ANSYS® commercial finite element package
     The NWTC codes PreComp, BModes, Crunch, and FAST
@@ -8,13 +8,14 @@ NuMAD (Numerical Manufacturing And Design) is an object-oriented, open-source so
 
 When used in conjunction with these other tools, NuMAD provides computation of blade cross section properties, various structural analyses, and estimation of blade aeroelastic instability. 
 
-For any questions or support `create a new issue <https://github.com/sandialabs/NuMAD/issues/new>`_ on GitHub.
+For any questions or support [create a new issue](https://github.com/sandialabs/NuMAD/issues/new) on GitHub.
 
 
+![](docs/source/_static/images/NuMADoverview.png)
+   
 ## Examples
 
-Example YMAL files can be located in the [examples](https://github.com/sandialabs/NuMAD/tree/main/examples) folder on GitHub. 
-
+Step-by-step examples are located in the [examples](https://github.com/sandialabs/NuMAD/tree/main/examples) folder on GitHub. Follow allong in the documentation.
   
 ## License
 
