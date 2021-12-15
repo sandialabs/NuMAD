@@ -1,4 +1,4 @@
-function loads_table = getForceDistributionAtTime(pointer,varargin)
+function loads_table = getForceDistributionAtTime(pointer,IEC,varargin)
 % pointer.file - FAST filename
 % pointer.time - time at which to get moments
 
@@ -6,15 +6,9 @@ function loads_table = getForceDistributionAtTime(pointer,varargin)
 %% read in the FAST main files to determine span location of FAST gages
 hm = pwd;
 cd ..
-runIEC_ipt;
 
-%% EMA original:
-% fst=readFastMain(['IEC_' params.fstfn '.fst']);
-% ad=readFastAD([fst.ADFile(2:end-8) '_AD.ipt']);
-%% changed to:
-fst=readFastMain([params.fstfn '.fst']);
+fst=readFastMain([IEC.fstfn '.fst']);
 ad=readFastAD(fst.ADFile(2:end-1));
-%% END
 bld=readFastBlade(fst.BldFile{1}(2:end-1));
 
 rGage = [0; ad.RNodes(fst.Out.BldGagNd)-fst.TurbConf.HubRad];

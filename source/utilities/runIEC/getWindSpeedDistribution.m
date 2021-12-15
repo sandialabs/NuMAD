@@ -21,7 +21,7 @@ function [wt,rccdata]=getWindSpeedDistribution(avgws)
     % Calculate weights for each bin according to Rayleigh distribution
     sig=avgws/sqrt(pi/2);
     % find PDF and CDF of Rayleigh distribution
-    pdf=windbins.*exp(-windbins.^2/(2*sig^2))/sig^2;
+%     pdf=windbins.*exp(-windbins.^2/(2*sig^2))/sig^2;
     cdf=1-exp(-windbins.^2/(2*sig^2)); 
     % calculate weights
     wt=diff(cdf,1,2);

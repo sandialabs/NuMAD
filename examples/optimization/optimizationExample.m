@@ -1,27 +1,20 @@
-%% Include NuMAD code/tools in MATLAB working directories
-addNumadPaths;
 %% Input settings
 dataFolder = 'exampleBlade';  %% Folder containing the data/files for the blade model
 yamlFile = 'exampleBlade.yaml';  %% Name of .yaml file giving the initial design of the blade
 defLoadsPath = 'defLoadsTable.mat';  %% Name of the loads table object file for use in maximum tip-deflection analysis
 failLoadsPath = 'failLoadsTable.mat'; %% Name of the loads table object file for use in the failure/buckling/fatigue analysis
 rccDataPath = 'rccdata.mat';  %% Name of object storing the rain cycle counting data resulting from runIEC
+IECInput = 'IECInput.inp';  %% Name of file containing input for runIEC function.  Used here just for a few reference values.
+elSize = 0.4;  %% The nominal size of an element in the ANSYS shell model.
 DVarInit = zeros(1,4);  %% Inital values of design variables (in this case change in thickness of 17 main blade components.
 lb = -10*ones(1,4); %% Lower bound values of design variables 
 ub = 10*ones(1,4); %% Upper bound values of design variables
-optAl = 'objective';  %% Tag specifying optimization algorithm to use
+optAl = 'objective';  %% Tag specifying optimization algorithm to use: objective=evaluate objective, gradient=gradient-based optimization, particleswarm=particle swarm optimization
 maxIt = 1;  %% Maximum iterations for the optimization algorithm
-numProc = 4; %% Number of processors to use for parallel optimization
+numProc = 1; %% Number of processors to use for parallel optimization
 swarmSize = 4; %% Swarm size, if particle swarm optimization algorithm is used.
 
 %% Set all the fields for the analysis configuration as described in Section 5 of documentation
-
-%% Fields related to generating the ANSYS shell model
-allConfig.meshConfig.ansys.meshFile = 'master.db';
-allConfig.meshConfig.ansys.analysisFileName = 'bladeAnalysis';
-allConfig.meshConfig.ansys.np = 1;
-allConfig.meshConfig.ansys.analysisFlags.resultantVSspan = 0;
-allConfig.meshConfig.ansys.analysisFlags.mass = 1;
 
 %% Fields related to the maximum tip deflection analysis
 allConfig.defConfig.ansys.meshFile = 'master.db';
@@ -53,6 +46,13 @@ allConfig.freqConfig.ansys.nFrequencyModes = 10;
 
 %% End input 
 
+%% Include NuMAD code/tools in MATLAB working directories
+homeDir = pwd;  % Save current directory
+cd ..           % Return to NuMAD root directory
+cd ..
+addNumadPaths;  % Establish paths
+cd(homeDir);    % Return to original directory
+
 %% Initialize parallel working directories, based on number of processors
 for i = 1:numProc
     folderName = ['parworker' num2str(i)];
@@ -60,7 +60,6 @@ for i = 1:numProc
     mkdir([folderName '\NuMAD']);
     delete([folderName '\NuMAD\objectiveHistory.txt']);
     copyfile('airfoils',[folderName '\NuMAD\airfoils']);
-    copyfile([dataFolder '\runIEC_ipt.m'],[folderName '\runIEC_ipt.m']);
     copyfile([dataFolder '\' rccDataPath],[folderName '\rccdata.mat']);
 end
 
@@ -69,9 +68,12 @@ mainDir = pwd;
 cd(dataFolder);
 blade = BladeDef;
 blade.readYAML(yamlFile);
-blade.mesh = 0.4;
+blade.mesh = elSize;
 
-%%  Set paths in blade object
+IEC = IECDef(IECInput);
+IEC.setAvgWindSpeed();
+
+%%  Load the saved loads tables into the MATLAB workspace
 
 if(contains(defLoadsPath,'.'))
     load(defLoadsPath,'defLoadsTable');
@@ -89,17 +91,22 @@ cd(mainDir);
 
 %% Execute optimization, or just objective evaluation based on tag stored in optAl.
 if(contains(optAl,'objective'))  %% Evaluate the objective
-    objVal = objectiveExample(DVarInit,blade,allConfig,defLoadsTable,loadsTable);
+    objVal = objectiveExample(DVarInit,blade,allConfig,defLoadsTable,loadsTable,IEC);
 elseif(contains(optAl,'gradient'))  %% Run gradient-based optimization
     Aeq = [];
     beq = [];
     maxFunc = 6*maxIt*length(DVarInit);
     fdStep = 0.1*ones(1,length(DVarInit));
     typicalD = 0.5*ub;
-    options = optimoptions('fmincon','Display','iter','SpecifyObjectiveGradient',false,...
+    if(numProc > 1)
+        upar = true;
+    else
+        upar = false;
+    end
+    options = optimoptions('fmincon','SpecifyObjectiveGradient',false,...
         'FiniteDifferenceType','central','FiniteDifferenceStepSize',fdStep,'TypicalX',typicalD,...
-        'MaxIterations',maxIt,'MaxFunctionEvaluations',maxFunc,'UseParallel',true);
-    fun = @(DVar)objectiveExample(DVar,blade,allConfig,defLoadsTable,loadsTable);
+        'MaxIterations',maxIt,'MaxFunctionEvaluations',maxFunc,'UseParallel',upar);
+    fun = @(DVar)objectiveExample(DVar,blade,allConfig,defLoadsTable,loadsTable,IEC);
     A = [];
     b = [];
     nonlcon = [];
@@ -127,10 +134,15 @@ elseif(contains(optAl,'gradient'))  %% Run gradient-based optimization
     end
     fclose(outID);
 elseif(contains(optAl,'particleswarm')) %% Run Particle swarm optimization
+    if(numProc > 1)
+        upar = true;
+    else
+        upar = false;
+    end
     options = optimoptions('particleswarm','SwarmSize',swarmSize,...
-            'UseParallel',true,'PlotFcn',@pswplotbestf,'MaxIterations',maxIt);
+            'UseParallel',upar,'MaxIterations',maxIt);
 
-    fun = @(DVar)objectiveExample(DVar,blade,allConfig,defLoadsTable,loadsTable);
+    fun = @(DVar)objectiveExample(DVar,blade,allConfig,defLoadsTable,loadsTable,IEC);
     nVar = length(DVarInit);
     [DFinal,fval,exitflag,psOutput] = particleswarm(fun,nVar,lb,ub,options);
     fid = fopen('FinalDVar.txt','wt');

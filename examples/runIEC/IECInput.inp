@@ -1,0 +1,54 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INPUTS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fastFile                exampleFASTMain
+numadFile               numad.nmd    % full path, including extension
+fastSimMethod           fast    % fast, simulink, or adams
+simulinkModel           none
+simulinkModelFolder     none
+operatingPoints         3, 12, 25          % cutin ratedspeed cutout
+windSpeeds              5, 9, 13, 17, 21, 25   % range of mean wind speeds for turbulent simulations
+windDirections          180,    % range of "wind direction" bias for look-up table simulations - programmed as yaw position
+yaw                     0,      % intentional yaw misalignment, degrees (for DLC 1.1)
+maxLoadAngleIncrement   45      % [deg] The angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate)
+ratedSpeed              12      % rpm
+linearizationWS         5, 9, 13, 17, 21, 25   % range of steady wind speeds for linearizations
+fatigueSafetyFactor     1.380   % total fatigue safety factor
+ultimateSafetyFactor    1.755   % total ultimate strength safety factor
+towerSafetyFactor       1.755   % total tower clearance safety factor
+numSeeds                6       % number of seeds - number of 10-minute simulations - for turbulent simulations
+startupDelay            29      % throw away this much simulated data at the beginning of each simulation (turbulent and otherwise)
+simTime                 629     % total simulation time needed
+numGridPoints           10      % number of grid points in turbsim 4-D wind field
+class                   3       % turbine class: 1,2,3
+turbulenceClass         C       % turbulence class: A,B,C
+designLife              30      % years of life
+gageNodes               1,2,3,4,5,6,7   % vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
+fatigueCriterion        Shifted Goodman     % criterion used in fatigue analysis
+
+% Define materials and properties pertinent to fatigue analysis
+
+fatigueMaterial:
+name                    s1-fiberglass
+modulus                 42.8e9
+fatigueSlope            10      % from GL standard for uni-directional, epoxy laminate construction
+tensileStrength         1002e6
+compressiveStrength     -637e6
+strengthReductionFact   1.96     % from DNL-GL standard, fatigue strength reduction factor
+shortTermReductionFact  1.88     % from DNV-GL standard, short term strength reduction factor
+
+fatigueMaterial:
+name                    s2-baselineCF
+modulus                 157.6e9
+fatigueSlope            16.1      % from GL standard for uni-directional, epoxy laminate construction
+tensileStrength         2236e6
+compressiveStrength     -1528e6
+strengthReductionFact   1.78     % from DNL-GL standard, fatigue strength reduction factor
+shortTermReductionFact  1.71     % from DNV-GL standard, short term strength reduction factor
+
+fatigueMaterial:
+name                    s3-heavyTCF
+modulus                 160.6e9
+fatigueSlope            45.4      % from GL standard for uni-directional, epoxy laminate construction
+tensileStrength         1345e6
+compressiveStrength     -1172e6
+strengthReductionFact   1.78     % from DNL-GL standard, fatigue strength reduction factor
+shortTermReductionFact  1.71     % from DNV-GL standard, short term strength reduction factor

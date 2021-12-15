@@ -1,4 +1,4 @@
-function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
+function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,IEC)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
     global ansysPath
@@ -259,8 +259,6 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
                 fprintf(fid,'elist,all,,,0,0 \n');
                 fprintf(fid,'/output\n');
             end
-            
-
                
             if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
 
@@ -321,6 +319,9 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
 
 
                     fprintf(fid,'/POST1\n');
+                    %% EMA added:
+                    fprintf(fid,'SET,FIRST\n');
+                    %% END
                     fprintf(fid,'RSYS,SOLU\n'); %Result in the element coordinate system
 
                     % %%% Element strains and curvatures %%%
@@ -775,10 +776,9 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config)
     %After all load directions are solved compute fatige damage if needed
     if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
         cd ..
-        runIEC_ipt  %get params
-        [wt,rccdata]=getWindSpeedDistribution(params.avgws);
+        [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
         cd 'NuMAD'
-        designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,params,loadsTable,config);
+        designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config);
     end
 end
 

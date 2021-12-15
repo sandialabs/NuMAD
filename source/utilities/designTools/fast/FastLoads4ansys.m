@@ -1,20 +1,11 @@
-function loadsTableSorted = FastLoads4ansys(output,fast_gage,varargin)
-
-
-
+function loadsTableSorted = FastLoads4ansys(output,fast_gage,IEC,varargin)
 
 %% read in the FAST main files to determine span location of FAST gages
 hm = pwd;
 cd ..
-runIEC_ipt;
 
-%% EMA original:
-% fst=readFastMain(['IEC_' params.fstfn '.fst']);
-% ad=readFastAD([fst.ADFile(2:end-8) '_AD.ipt']);
-%% changed to:
-fst=readFastMain([params.fstfn '.fst']);
+fst=readFastMain([IEC.fstfn '.fst']);
 ad=readFastAD(fst.ADFile(2:end-1));
-%% END
 bld=readFastBlade(fst.BldFile{1}(2:end-1));
 
 cd(hm);

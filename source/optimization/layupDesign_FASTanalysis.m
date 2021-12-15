@@ -1,7 +1,6 @@
-function output = layupDesign_FASTanalysis(blade,DLCoptions,runFASTsim,useParallel)
+function output = layupDesign_FASTanalysis(blade,DLCoptions,runFASTsim,useParallel,IEC)
 % run FAST simulations for ultimate loads and deflections
 % NOTE: use layupDesign_FASTfatigue for DLC 1.2 fatigue calculations
-
 
 hm=pwd;
 cd ..
@@ -17,7 +16,7 @@ if(useParallel && ~runFASTsim)
     end
 end
 
-output=runIEC(DLCoptions,runFASTsim,useParallel);
+output=runIEC(DLCoptions,runFASTsim,IEC);
 %% END
 
 % for i=1:length(output.MaxOoPDefl)

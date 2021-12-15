@@ -1,4 +1,4 @@
-function [damage] = layupDesign_FASTfatigue(blade,runFASTfatigue,useParallel)
+function [damage] = layupDesign_FASTfatigue(blade,runFASTfatigue,IEC)
 
 % disp('Creating FAST Blade file using NuMAD and PreComp...')
 % numad('numad.nmd','precomp',[1 3 2])
@@ -11,12 +11,6 @@ cd ..
 if useParallel && ~runFASTfatigue
     % move up an additional directory to copy files
     
-    %% EMA: original:
-%     outFiles = dir('../out/IECDLC1p2NTM*.out');    
-%     for ii = 1:length(outFiles)
-%         [success,~,~] = copyfile(fullfile(outFiles(ii).folder,outFiles(ii).name),'out/');
-%     end
-    %% Changed to:
     workerOut = dir('out/IECDLC1p2NTM*.out');
     if(isempty(workerOut))
         outFiles = dir('../out/IECDLC1p2NTM*.out');    
@@ -24,11 +18,10 @@ if useParallel && ~runFASTfatigue
             [success,~,~] = copyfile(fullfile(outFiles(ii).folder,outFiles(ii).name),'out/');
         end
     end
-    %% END
 end
 tic
 disp('Running FAST/AeroDyn to verify blade OoP deflection (Please verify that proper DLC''s are set up in ''runIEC.m''...')
-runIEC('1.2',runFASTfatigue,useParallel);
+runIEC('1.2',runFASTfatigue,IEC);
 toc
 
 [Dminer,txt]=xlsread('IECDLC_1p2_F.csv');

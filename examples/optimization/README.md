@@ -1,0 +1,7 @@
+Example Optimization
+
+To run the an example optimization, execute the main script, 'optimizationExample.m'.  The input settings at the top of the file can modified as necessary.  By default, the provided example simply evaluates the given objective function once, storing the value in objVal.  The objective is initially set to return the total blade mass, with penalty constraints on maximum tip deflection, material rupture, buckling, fatigue damage and natural flap frequency subject to a given set of loading conditions.  
+
+To run the optimization, either set the optAl variable to 'gradient', for gradient-based optimization with central differencing, 'particleswarm' for particle swarm optimization, or implement another method from the MATLAB optimization toolbox.  The objective function defined in 'objectiveExample.m' will need to be modified for each individual case to reflect the objective quantity desired to be minimized, and the design variables represented in the vector DVar.
+
+The path to the executable for ANSYS must be defined for each individual machine in the 'addNumadPaths.m' script.  It should be similar to what is provided in the example but varies based on version and installation options.  The 'exampleBlade' folder contains a .yaml file defining the initial design of the blade, along with applied loads and rain-cycle-counting data in the form of MATLAB data files, and an IEC input file.  These can be modified or replaced as needed for each case.  For details on generating loads tables and rain-cycle-counting data, see the runIEC example.

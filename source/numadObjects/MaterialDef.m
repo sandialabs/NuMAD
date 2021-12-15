@@ -42,6 +42,8 @@ classdef MaterialDef < handle
         etat            % Transverse friction coefficient for Larc [ ]
         etal            % Longitudinal friction coefficient for Larc [ ]
         m               % Fatigue slope exponent [ ]
+        gamma_mf        % from DNL-GL standard, fatigue strength reduction factor
+        gamma_ms        % from DNV-GL standard, short term strength reduction factor
         reference       % 
     end
     

@@ -1,9 +1,7 @@
-function [output,outputAllFiles1p2,Dminer]=runIECDLC1p1_1p2(params,matData,output,DLCoptions)
+function [output,outputAllFiles1p2,Dminer]=runIECDLC1p1_1p2(params,output,DLCoptions)
 global fastPath
 global adamsPath  
 global turbsimPath
-
-global crunchPath
 
 CaseName='IECDLC1p1NTM';
 
@@ -62,7 +60,7 @@ ctr.s = repmat(ctr.s, 1, length(params.wd));
 
 
 if runturbsim
-    parfor ii = 1:length(ctr.w1) 
+    parfor ii = 1:length(ctr.w1)
         fst=readFastMain(['IEC_' params.fstfn '.fst']);
         tsim=readTurbSim([params.parDir 'init\wind.inp']);
         hm=pwd;
@@ -87,7 +85,7 @@ if runturbsim
 end
 
 
-parfor ii=1:numel(ctr.w)    
+parfor ii=1:numel(ctr.w)
     % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     % set up a format so that files can be opened by parallel runs.
     t = getCurrentTask;
@@ -224,7 +222,7 @@ end
 % perform the design load case 1.2 fatigue life calculation
 Dminer = 999;
 if any(contains(DLCoptions,'1.2')) %|| any(contains(DLCoptions,'all'))
-    [Dminer] = IECDLC1p2_fatigue(CaseName,params,ctr,labels,matData,avgws,runcrunch,saverccdata,fst,cs,EIs,EA_normal,output);
+    [Dminer] = IECDLC1p2_fatigue(CaseName,params,ctr,labels,avgws,runcrunch,saverccdata,fst,cs,EIs,EA_normal,output);
 end
 
 end
@@ -459,17 +457,18 @@ function P_e = probEx(F,peakFit,weibullParams,params)
 end
 
 %%
-function [Dminer] = IECDLC1p2_fatigue(CaseName,params,ctr,labels,matData,avgws,runcrunch,saverccdata,fst,cs,EIs,EA_normal,output)
+function [Dminer] = IECDLC1p2_fatigue(CaseName,params,ctr,labels,avgws,runcrunch,saverccdata,fst,cs,EIs,EA_normal,output)
 % =========================================================================
 % Perform fatigue calculations according to the IEC design load case 1.2
 % =========================================================================
+global crunchPath
 
 % ble.  runcrunch is only operated on the wind speed counter, once all of
 % the seeds have been simulated.
 labelsCalcChanNames = {};
 if runcrunch % Setup and run Crunch for rainflow cycle counting
     mkdir('rcc'); % ensure that the rcc/ directory exists
-    parfor w=1:length(params.ws)    
+    parfor w=1:length(params.ws)
         % read in one example FAST output file
         fastoutname=[CaseName '_yaw' num2str(params.yaw(1)) '_' num2str(params.ws(1)) 'mps_seed1_dir' num2str(ctr.d(1))];  %temps
         fastout=loadFASTOutData(['out\' fastoutname '.out']);
@@ -685,7 +684,7 @@ params.simtime=params.numSeeds*(fst.SimCtrl.TMax-params.delay); % simulated and 
 params.fatigueCriterion = 'Shifted Goodman';%'Goodman';%  % fatigue failure criterion
 params.fatigueStress = 'Equivalent';%'Amplitude Only';%  % stress to use for fatigue failure ('Equivalent','Amplitude Only',...)
 
-Dminer=MFatigue(wt,rccdata,cs,EIs,matData,params);
+Dminer=MFatigue(wt,rccdata,cs,EIs,params);
 
 % % Find and sort extreme values
 % outName={};

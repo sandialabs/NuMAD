@@ -1,4 +1,4 @@
-function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable)
+function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,IEC)
     %% Navigate to the appropriate parallel working directory
     mainDir = pwd;
     task = getCurrentTask;
@@ -29,7 +29,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable)
     disp(' '); disp('Creating ANSYS model...')
     fprintf('Mesh size setting = %0.4f\n',blade.mesh)
     delete 'file.lock';
-    layupDesign_ANSYSmesh(blade)
+    layupDesign_ANSYSmesh(blade);
     
     %% Initialize values for objective evaluation and results.
     c1 = 60000;  %% Coefficient for constraint penalty terms, chosen based on approximate blade mass
@@ -53,7 +53,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable)
     %% Add failure, buckling, fatigue penalties
     if(isfield(config,'failConfig'))
         delete 'file.lock';
-        ansysResult = layupDesign_ANSYSanalysis(blade,loadsTable,config.failConfig);
+        ansysResult = layupDesign_ANSYSanalysis(blade,loadsTable,config.failConfig,IEC);
         disp('postprocessing failure')
         if(isfield(config.failConfig.ansys.analysisFlags,'failure'))
             for i = 1:length(ansysResult.failure)

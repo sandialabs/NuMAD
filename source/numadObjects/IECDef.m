@@ -10,42 +10,13 @@ classdef IECDef < handle
 %
 % Example: 
 %
-%	``params = IECDef(Class,'TurbClass');``
+%	``IEC = IECDef(inputFile);``
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    properties (SetAccess = 'public', GetAccess = 'public')        
-        BldGagNd=[1,2,3,4,5,6,7];   % Vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
-        Class=3;                    % Turbine Class, Options: 1, 2, 3, Default = 3
-        delay=29;                   % Simulation delay, discardedsimulated data at the beginning of each simulation (turbulent and otherwise), Default = 29 (s)
-        designLife = 30;            % Years of life 
-        fastsim = 'fast';           % Fast simulation, Options: 'fast', 'fast simulink', 'adams', Default: 'fast'
-        fatigueCriterion = 'Shifted Goodman';   % Fatigue Criteria, Options: 'Shifted Goodman'
-        fstfn= 'NOT DEFINED';   	% FAST path, Default = "NOT DEFINED"
-        fullLoads = 1;              % Perform full loads analysis, Options: 1 = On, 0 = Off, Default = 1
-        gageSetCase = 'set1'        % Gage set case, Options= 'set1', 'set 2', Default = 'set1'
-        lin=10;                     % Range of steady wind speeds for linearizations, Default = 10
-        momentMaxRotation = 45;     % Angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate) (deg)
-        numadfn='NOT DEFINED';      % NuMAD path, including extension, Default = "NOT DEFINED"
-        NumGrid=10              	% Number of grid points in turbsim 4-D wind field, Default = 10
-        numSeeds=6;                 % Number of seeds - number of 10-minute simulations - for turbulent simulations
-        operatingPoints=[0 0 0];    % Operating Points: [Cutin RatedSpeed CutOut], Defaults = [0 0 0]
-        parDir = '';                % Directory, Default = '';             
-        ratedSpeed=12;              % Rated speed (rpm)
-        sf_fat=0;                   % Total fatigue safety factor, Default = 0
-        sf_uts=0;                   % Total ultimate strength safety factor, Default = 0
-        sf_tow=0;                   % Total tower clearance safety factor, Default = 0
-        SimTime=600;                % Total simulation time, Default = 600 (s)
-        simulinkModel = 'NOT DEFINED';          % Simulink model file, Default = "NOT DEFINED"
-        simulinkModelFolder = 'NOT DEFINED';    % Simulink model directory, Default = "NOT DEFINED"
-        TurbClass='C';              % Turbulence Class, Options: 'A', 'B', 'C', Default = 'C'
-        ws=[3:2:25];                % Range of mean wind speeds for turbulent simulations (m/s)
-        wd=[180];                   % Range of "wind direction" bias for look-up table simulations - programmed as yaw position (units)
-        yaw = [0];                  % Intentional yaw misalignment, degrees (for DLC 1.1)        
-    end
-    
-    properties (SetAccess=private)
+    properties (SetAccess = 'public', GetAccess = 'public')  
         avgws                       % Average wind speed, Default = [] (m/s)
+        BldGagNd=[1,2,3,4,5,6,7];   % Vector of length 7; blade gage nodes (corresponding to aerodyn nodes) for moment (strain) gages in FAST computations 
         bladeGageCoordinateRotation
         bladeGageLabels
         bladeGageLabels_MLx
@@ -56,7 +27,40 @@ classdef IECDef < handle
         bladeGageLabels_FLz        
         combinedStrain = 1;         % perform fatigue calculations on combined bending and normal strain for spar, Default = 1
         seeds                       % random seeds
-        simulate                    % On/Off flag, Options: 1 = call FAST and perform simulations, 0 = process existing data, Default = []                  
+        simulate                    % On/Off flag, Options: 1 = call FAST and perform simulations, 0 = process existing data, Default = []
+        Class=3;                    % Turbine Class, Options: 1, 2, 3, Default = 3
+        delay=29;                   % Simulation delay, discardedsimulated data at the beginning of each simulation (turbulent and otherwise), Default = 29 (s)
+        designLife = 30;            % Years of life 
+        fastsim = 'fast';           % Fast simulation, Options: 'fast', 'fast simulink', 'adams', Default: 'fast'
+        fatigueCriterion = 'Shifted Goodman';   % Fatigue Criteria, Options: 'Shifted Goodman'
+        fatigueStress = 'Equivalent';  % stress to use for fatigue failure
+        fstfn= 'NOT DEFINED';   	% FAST path, Default = "NOT DEFINED"
+        fullLoads = 1;              % Perform full loads analysis, Options: 1 = On, 0 = Off, Default = 1
+        gageSetCase = 'set1'        % Gage set case, Options= 'set1', 'set 2', Default = 'set1'
+        lin=10;                     % Range of steady wind speeds for linearizations, Default = 10
+        matData = [];               % List of material objects, with properties relavent to IEC fatigue analysis
+        momentMaxRotation = 45;     % Angular discretization for coordinate rotation and maxima moment calculation (used for fatigue and ultimate) (deg)
+        nondimFlag = true;          % Flag indicating non-dimensionality in plotCampbell() function
+        numadfn='NOT DEFINED';      % NuMAD path, including extension, Default = "NOT DEFINED"
+        NumGrid=10              	% Number of grid points in turbsim 4-D wind field, Default = 10
+        numSeeds=6;                 % Number of seeds - number of 10-minute simulations - for turbulent simulations
+        operatingPoints=[0 0 0];    % Operating Points: [Cutin RatedSpeed CutOut], Defaults = [0 0 0]
+        parDir = '';                % Directory, Default = '';             
+        ratedSpeed=12;              % Rated speed (rpm)
+        sf_fat=0;                   % Total fatigue safety factor, Default = 0
+        sf_uts=0;                   % Total ultimate strength safety factor, Default = 0
+        sf_tow=0;                   % Total tower clearance safety factor, Default = 0
+        SimTime=600;                % Total simulation time, for a given run Default = 600 (s)
+        simtime=0;                  % Total simulation time for a set of seeds, for rain-cycle counting
+        simulinkModel = 'NOT DEFINED';          % Simulink model file, Default = "NOT DEFINED"
+        simulinkModelFolder = 'NOT DEFINED';    % Simulink model directory, Default = "NOT DEFINED"
+        TurbClass='C';              % Turbulence Class, Options: 'A', 'B', 'C', Default = 'C'
+        ws=[3:2:25];                % Range of mean wind speeds for turbulent simulations (m/s)
+        wd=[180];                   % Range of "wind direction" bias for look-up table simulations - programmed as yaw position (units)
+        yaw = [0];                  % Intentional yaw misalignment, degrees (for DLC 1.1)        
+    end
+    
+    properties (SetAccess=private)                  
     end
     
     properties (Hidden, SetAccess=private)
@@ -66,16 +70,240 @@ classdef IECDef < handle
     end
     
     methods
-        function obj = IECDef(Class,TurbClass)
+        function obj = IECDef(fileName)
             % This method initilizes ``IECDef`` and creates a
-            % ``params`` object.          
+            % ``IEC`` object.          
             % Returns
             % ------------
-            %     param : obj
+            %     IEC : obj
             %         IECDef object    
             %             
-            obj.Class = Class;
-            obj.TurbClass = TurbClass;                        
+            
+            if(nargin > 0)
+                obj.readInput(fileName);
+            end
+        end
+        
+        function readInput(obj,fileName)
+            fid = fopen(fileName);
+            fl = fgetl(fid);
+            currentMat = 0;
+            while(fl ~= -1)
+                if(contains(fl,'%'))
+                    strList = split(fl,'%');
+                    fl = strList{1};
+                end
+                fl = strip(fl);
+                if(~isempty(fl))
+                    strList = split(fl);
+                    varName = strList{1};
+                    strList = split(fl,varName);
+                    varName = lower(varName);
+                    inDat = strip(strList{2});
+                    numList = str2num(inDat);
+                    if(isempty(numList))
+                        varType = 'char';
+                    else
+                        varType = 'num';
+                    end
+                    found = 0;
+                    switch varName
+                        case 'class'
+                            if(strcmp(varType,'num'))
+                                obj.Class = numList;
+                                found = 1;
+                            end
+                        case 'designlife'
+                            if(strcmp(varType,'num'))
+                                obj.designLife = numList;
+                                found = 1;
+                            end
+                        case 'fastfile'
+                            if(strcmp(varType,'char'))
+                                obj.fstfn = inDat;
+                                found = 1;
+                            end
+                        case 'fastsimmethod'
+                            if(strcmp(varType,'char'))
+                                obj.fastsim = inDat;
+                                found = 1;
+                            end
+                        case 'fatiguecriterion'
+                            if(strcmp(varType,'char'))
+                                obj.fatigueCriterion = inDat;
+                                found = 1;
+                            end
+                        case 'fatiguesafetyfactor'
+                            if(strcmp(varType,'num'))
+                                obj.sf_fat = numList;
+                                found = 1;
+                            end
+                        case 'fullloads'
+                            if(strcmp(varType,'num'))
+                                obj.fullLoads = numList;
+                                found = 1;
+                            end
+                        case 'gagenodes'
+                            if(strcmp(varType,'num'))
+                                obj.BldGagNd = numList;
+                                found = 1;
+                            end
+                        case 'gageSetCase'
+                            if(strcmp(varType,'char'))
+                                obj.gageSetCase = inDat;
+                                found = 1;
+                            end
+                        case 'linearizationws'
+                            if(strcmp(varType,'num'))
+                                obj.lin = numList;
+                                found = 1;
+                            end
+                        case 'maxloadangleincrement'
+                            if(strcmp(varType,'num'))
+                                obj.momentMaxRotation = numList;
+                                found = 1;
+                            end
+                        case 'nondimensionalflag'
+                            if(strcmp(varType,'char'))
+                                if(strcmp(inDat,'false'))
+                                    obj.nondimFlag = false;
+                                else
+                                    obj.nondimFlad = true;
+                                end
+                                found = 1;
+                            end
+                        case 'numadfile'
+                            if(strcmp(varType,'char'))
+                                obj.numadfn = inDat;
+                                found = 1;
+                            end
+                        case 'numgridpoints'
+                            if(strcmp(varType,'num'))
+                                obj.NumGrid = numList;
+                                found = 1;
+                            end
+                        case 'numseeds'
+                            if(strcmp(varType,'num'))
+                                obj.numSeeds = numList;
+                                found = 1;
+                            end
+                        case 'operatingpoints'
+                            if(strcmp(varType,'num'))
+                                obj.operatingPoints = numList;
+                                found = 1;
+                            end
+                        case 'parentdirectory'
+                            if(strcmp(varType,'char'))
+                                obj.parDir = inDat;
+                                found = 1;
+                            end
+                        case 'ratedspeed'
+                            if(strcmp(varType,'num'))
+                                obj.ratedSpeed = numList;
+                                found = 1;
+                            end
+                        case 'simtime'
+                            if(strcmp(varType,'num'))
+                                obj.SimTime = numList;
+                                found = 1;
+                            end
+                        case 'simulinkmodel'
+                            if(strcmp(varType,'char'))
+                                obj.simulinkModel = inDat;
+                                found = 1;
+                            end
+                        case 'simulinkmodelfolder'
+                            if(strcmp(varType,'char'))
+                                obj.simulinkModelFolder = inDat;
+                                found = 1;
+                            end
+                        case 'startupdelay'
+                            if(strcmp(varType,'num'))
+                                obj.delay = numList;
+                                found = 1;
+                            end
+                        case 'towersafetyfactor'
+                            if(strcmp(varType,'num'))
+                                obj.sf_tow = numList;
+                                found = 1;
+                            end
+                        case 'turbulenceclass'
+                            if(strcmp(varType,'char'))
+                                obj.TurbClass = inDat;
+                                found = 1;
+                            end
+                        case 'ultimatesafetyfactor'
+                            if(strcmp(varType,'num'))
+                                obj.sf_uts = numList;
+                                found = 1;
+                            end
+                        case 'winddirections'
+                            if(strcmp(varType,'num'))
+                                obj.wd = numList;
+                                found = 1;
+                            end
+                        case 'windspeeds'
+                            if(strcmp(varType,'num'))
+                                obj.ws = numList;
+                                found = 1;
+                            end
+                        case 'yaw'
+                            if(strcmp(varType,'num'))
+                                obj.yaw = numList;
+                                found = 1;
+                            end
+                        case 'fatiguematerial:'
+                            newMat = MaterialDef;
+                            obj.matData = [obj.matData,newMat];
+                            currentMat = currentMat + 1;
+                            found = 1;
+                        case 'name'
+                            if(strcmp(varType,'char'))
+                                obj.matData(currentMat).name = inDat;
+                                found = 1;
+                            end
+                        case 'modulus'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).ex = numList;
+                                found = 1;
+                            end
+                        case 'fatigueslope'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).m = numList;
+                                found = 1;
+                            end
+                        case 'tensilestrength'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).uts = numList;
+                                found = 1;
+                            end
+                        case 'compressivestrength'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).ucs = numList;
+                                found = 1;
+                            end
+                        case 'strengthreductionfact'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).gamma_mf = numList;
+                                found = 1;
+                            end
+                        case 'shorttermreductionfact'
+                            if(strcmp(varType,'num'))
+                                obj.matData(currentMat).gamma_ms = numList;
+                                found = 1;
+                            end
+                    end
+                    if(found == 0)
+                        wrnmsg = ['The line in the IEC input file containing "' varName '" was not recognized.  Either the input name or value type entered are invalid.  The line will be ignored.'];
+                        warning(wrnmsg);
+                    end
+                end
+                fl = fgetl(fid);
+                if(isempty(fl))
+                    fl = ' ';
+                end
+            end
+            fclose(fid);
         end
         
         function checkInputs(obj)
@@ -84,12 +312,12 @@ classdef IECDef < handle
             
             % Check obj.Class
             if ~isequal(obj.Class,1) && ~isequal(obj.Class,2) && ~isequal(obj.Class,3)
-                    error('`params.Class` must be equal to 1, 2, or 3');
+                    error('`IECDef.Class` must be equal to 1, 2, or 3');
             end           
             
             % Check obj.fastsim
             if ~strcmp(obj.fastsim,'fast') && ~strcmp(obj.fastsim,'fast simulink') && ~strcmp(obj.fastsim,'adams')
-                    error('`params.fastsim` must be equal to "fast", "fast simulink", "adams"');
+                    error('`IECDef.fastsim` must be equal to "fast", "fast simulink", "adams"');
             end   
             
         end
@@ -247,7 +475,7 @@ classdef IECDef < handle
         function setRandomSeeds(obj)
             % This method setd random seeds
             if ~exist([obj.parDir 'seeds.mat'],'file')
-                seeds=randi(123456,1,obj.numSeeds);
+                obj.seeds=randi(123456,1,obj.numSeeds);
                 save([obj.parDir 'seeds'],'seeds')
             else
                 load([obj.parDir 'seeds'])

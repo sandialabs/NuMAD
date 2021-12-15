@@ -48,8 +48,14 @@ global precompPath
 parID = gcp('nocreate'); workID = getCurrentWorker;
 if ~isempty(parID) || ~isempty(workID)% running in parallel, 
     parFlag = true;
-        
-elseif ispc
+%% EMA original:
+%     
+% elseif ispc
+    %% Changed to:
+end
+
+if ispc
+    %% End
     settingsFile = which('numad');
     [baseFolder,~,~] = fileparts(settingsFile);
     app.userpath = fullfile(baseFolder, 'settings');
@@ -838,10 +844,15 @@ function openmodel(pn,fn,cbo)
         app.aflist(end+1:end+number_missing) = aflist_missing;
         
         % ask user what to do about missing airfoils
-        response = questdlg( ...
-            'Some airfoils not found in database (see output/command window for list). Would you like to recreate the files?', ...
-            'Missing Airfoils', ...
-            'Yes','No','Yes');
+        %% EMA original:
+%         response = questdlg( ...
+%             'Some airfoils not found in database (see output/command window for list). Would you like to recreate the files?', ...
+%             'Missing Airfoils', ...
+%             'Yes','No','Yes');
+        %% changed to:
+        warning('Some airfoils not found in database')
+        response = 'No';
+        %% END
         if isequal('Yes',response)
             for k=1:number_missing
                 afname = sprintf('%s.txt',afdb_missing(k).name);

@@ -1,4 +1,4 @@
-function out = MFatigue(wt,rccdata,cs,EIs,matData,params)
+function out = MFatigue(wt,rccdata,cs,EIs,params)
 %% MFATIGUE  Calculates fatigue damage using rainflow cycle count data
 %                          Under Construction
 % **********************************************************************
@@ -71,11 +71,12 @@ N_save = [];
 
 % TODO remove material properties from the DLCDef. Import from blade object
 % and/or GUI.
+matData = params.matData;
 for mat=1:length(matData)
-    E=matData(mat).E; % (Pa)
+    E=matData(mat).ex; % (Pa)
     m=matData(mat).m; % fatigue slope exponent
-    uts=max(matData(mat).Sk);  % assumes ultimate strength format S = [UCS UTS] (Pa)
-    ucs=min(matData(mat).Sk);    % ultimate compressive strength (equal to UTS if S = [UTS])
+    uts=matData(mat).uts;  % assumes ultimate strength format S = [UCS UTS] (Pa)
+    ucs=matData(mat).ucs;    % ultimate compressive strength (equal to UTS if S = [UTS])
     %ble: ultimate strains could be added in material properties or
     %calculated as done below
     eps_uts = uts/E;
@@ -217,7 +218,7 @@ end
 
 xlsData={''};
 for i=1:length(matData)  % step across columns for various materials
-    xlsData=[xlsData, {matData(i).Name}];
+    xlsData=[xlsData, {matData(i).name}];
 end
 for ch=1:size(rccdata,1) % step down rows for all the computed gage locations
     tmp={rccdata{ch,1}.label};

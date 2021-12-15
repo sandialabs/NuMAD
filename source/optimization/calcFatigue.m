@@ -1,4 +1,4 @@
-function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,params,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
+function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
              ,binnedElements,materials,sections,elements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment)
      %bladeMaterials read in to obtain fatigue exponents
      
@@ -81,7 +81,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,params,Lth
 
                 %Calculate fatigue damage value, layer, and material for flap and edge cycles
                 if isfinite(MthetaFactor)
-                    switch params.fatigueCriterion
+                    switch IEC.fatigueCriterion
                         case 'Shifted Goodman'  %one case for now
                             layerFDtheta=shiftedGoodman(LthetaWithFactor,XTEN,XCMP,m,SFs,SFf);
                     end
@@ -90,7 +90,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,params,Lth
                 end
                 
                 if isfinite(MthetaPlus90Factor)
-                    switch params.fatigueCriterion
+                    switch IEC.fatigueCriterion
                         case 'Shifted Goodman' %one case for now
                             layerFDthetaPlus90=shiftedGoodman(LthetaPlus90WithFactor,XTEN,XCMP,m,SFs,SFf);
                     end
@@ -161,7 +161,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,params,Lth
 % 
 %                 %Calculate fatigue damage value, layer, and material for flap and edge cycles
 %                 if isfinite(MthetaFactor)
-%                     switch params.fatigueCriterion
+%                     switch IEC.fatigueCriterion
 %                         case 'Shifted Goodman'  %one case for now
 %                             layerFDtheta=shiftedGoodman(LthetaWithFactor,XTEN,XCMP,m,SFs,SFf);
 %                     end
@@ -170,7 +170,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(ansysBladeMaterials,params,Lth
 %                 end
 %                 
 %                 if isfinite(MthetaPlus90Factor)
-%                     switch params.fatigueCriterion
+%                     switch IEC.fatigueCriterion
 %                         case 'Shifted Goodman' %one case for now
 %                             layerFDthetaPlus90=shiftedGoodman(LthetaPlus90WithFactor,XTEN,XCMP,m,SFs,SFf);
 %                     end

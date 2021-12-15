@@ -1418,7 +1418,7 @@ classdef BladeDef < handle
                  squeeze(obj.profiles(:,2,k)),'.-')
         end
             
-        function [beginSta,endSta] = findLayerExtents(layerDist,layerN)
+        function [beginSta,endSta] = findLayerExtents(obj,layerDist,layerN)
             % This method... 
 
             assert(isscalar(layerN),'second argument ''layerN'' must be a scalar');
@@ -1441,7 +1441,7 @@ classdef BladeDef < handle
         end
 
 
-        function [hpRegion, lpRegion, swRegion] = findRegionExtents(keylabels,comp)
+        function [hpRegion, lpRegion, swRegion] = findRegionExtents(obj,keylabels,comp)
             % This method...
 
             le = find(1==strcmpi('le',keylabels));
@@ -1476,7 +1476,7 @@ classdef BladeDef < handle
         end
 
 
-        function tetype = getTEtype(xy)
+        function tetype = getTEtype(obj,xy)
             % This method...
 
             if abs(xy(2,2)-xy(end-1,2)) > 1e-5
@@ -1500,7 +1500,7 @@ classdef BladeDef < handle
             end
         end
 
-        function fprintf_matrix(fid,matrixData,columnsPerLine)
+        function fprintf_matrix(obj,fid,matrixData,columnsPerLine)
             % This method...
 
             kColumn = 1;

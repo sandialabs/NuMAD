@@ -1,4 +1,4 @@
-function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,params,loadsTable,config)
+function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config)
 
     if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
         nSegments=1;
@@ -15,11 +15,11 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
 
     markovSize=16;
     designVar={}; %Initialize
-    Yr=params.designLife;
+    Yr=IEC.designLife;
 
-    %fst=readFastMain(['IEC_' params.fstfn '.fst']);
-    %simtime=params.numSeeds*(fst.SimCtrl.TMax-params.delay); % simulated and rainflow counted time, seconds
-    simtime=params.numSeeds*(params.SimTime-params.delay);
+    %fst=readFastMain(['IEC_' IEC.fstfn '.fst']);
+    %simtime=IEC.numSeeds*(fst.SimCtrl.TMax-IEC.delay); % simulated and rainflow counted time, seconds
+    simtime=IEC.numSeeds*(IEC.SimTime-IEC.delay);
     nSpace=90/loadsTable{2}.theta; %assuming first position is zero degree and the next entry angular inrement throughout            
     nDirections = length(loadsTable);%Assuming all loadTables have the same number of directions
    %Get material, section (i.e. laminate), and strains for elements
@@ -99,7 +99,7 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,param
 
                 binnedElements=intersect(find(plateStrainsTheta(:,2)<z2),find(plateStrainsTheta(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
     
-                [fdData,plotFatigueChSpan] = calcFatigue(ansysBladeMaterials,params,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
+                [fdData,plotFatigueChSpan] = calcFatigue(ansysBladeMaterials,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
                     ,binnedElements,materials,sections,elements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment);
                 plotFatigue=[plotFatigue;plotFatigueChSpan];
                 criticalElement(chSpan)=fdData(1);
