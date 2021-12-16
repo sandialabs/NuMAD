@@ -7,6 +7,9 @@ ad=readFastAD(strrep(fst.ADFile,'"',''));
 
 hm=pwd;
 % % cd([params.parDir 'wind'])
+if(~exist('wind','dir'))
+    mkdir('wind');
+end
 cd('wind')
 
 % populate IECWind information

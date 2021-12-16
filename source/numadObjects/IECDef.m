@@ -475,19 +475,23 @@ classdef IECDef < handle
         function setRandomSeeds(obj)
             % This method setd random seeds
             if ~exist([obj.parDir 'seeds.mat'],'file')
-                obj.seeds=randi(123456,1,obj.numSeeds);
-                save([obj.parDir 'seeds'],'seeds')
+                seeds=randi(123456,1,obj.numSeeds);
+                save([obj.parDir 'seeds.mat'],'seeds')
+                obj.seeds = seeds;
             else
-                load([obj.parDir 'seeds'])
+                load([obj.parDir 'seeds.mat']);
                 % ble: added this check - seeds file can exist but not be correct.
                 if length(seeds) ~= obj.numSeeds
                     clear seeds
                     seeds=randi(123456,1,obj.numSeeds);
-                    save([obj.parDir 'seeds'],'seeds')
+                    save([obj.parDir 'seeds.mat'],'seeds')
+                    obj.seeds = seeds;
+                else
+                    obj.seeds = seeds;
                 end
                 % ble: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             end
-            obj.seeds = seeds; %ble: seeds needs to be saved this way for parallel operation.                                
+            %obj.seeds = seeds; %ble: seeds needs to be saved this way for parallel operation.                                
         end
         
         function saveOuput(obj)
