@@ -1,3 +1,5 @@
+%% Include NuMAD code/tools in MATLAB working directories
+addNumadPaths;
 %% Input settings
 dataFolder = 'exampleBlade';  %% Folder containing the data/files for the blade model
 yamlFile = 'exampleBlade.yaml';  %% Name of .yaml file giving the initial design of the blade

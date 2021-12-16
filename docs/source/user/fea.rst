@@ -552,8 +552,8 @@ two fields:
 .. code-block:: matlabsession
 
     >> myresult
-	element1950: [1x1 struct]
-	element2558: [1x1 struct]
+	     element1950: [1x1 struct]
+	     element2558: [1x1 struct]
 
 Looking at the first struct shows:
 
