@@ -7,20 +7,23 @@ Finite Element Analysis Operations
 
 Mesh Generation
 ---------------
-
 The function called to generates the FE shell model in ANSYS of a NuMAD
-blade is ``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
+blade is 
+ 
+    >> blade.generateFEA
+
+``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from 
-    NuMAD 2.0, before attempting to run this function. See :ref:`NuMAD2p0` for further details.
+    NuMAD 2.0, before attempting to run this function. See :ref:`NuMADv2` for further details.
 
 As an example, the following call would build a mesh for the blade blade
 object
 
 .. code-block:: matlabsession
 
-    >> layupDesign_ANSYSmesh(blade)
+    >> layupDesign_ANSYSmesh(blade,config)
 
 The function also issues commands that calls ANSYS to write a textfile
 called ``NLIST.lis``. For each node on the wetted area of the blade, this
@@ -180,7 +183,7 @@ obtained by
     components (i.e. flap-wise and edge-wise bending) at a span location
     were projected onto 12 directions as defined by :math:`y_{1}` in 
     :numref:`loadDirections`. All of the :math:`P_{i}\ `\ then transformed 
-    to the :math:`x_{i}` system in ``ad2ansys``.
+    to the :math:`x_{i}` system in ``beamForceToAnsysShell``.
 
 .. _loadDirections:
 .. figure:: /_static/images/loadDirections.png
@@ -206,7 +209,7 @@ ANSYS model. Moreover, both create the ``loadsTable`` variable needed by
 section. ``getForceDistributionAtTime.m`` handles can be called for the
 loads at a given time while ``FastLoads4ansys.m``} builds the ``loadsTable`` for
 each analysis direction. The ``loadsTable`` variable
-is\ :math:`\ 1 \times n` MATLAB cell array where :math:`\text{\ n}` is
+is\ :math:`\ 1 \times n` MATLAB cell array where :math:`n` is
 the number of analysis directions. 
 
 .. Note:: 
@@ -247,7 +250,7 @@ where :math:`k` is the number of cross-sections with resultant moment
 data.
 
 The load distributions are then transferred to nodal loads by
-``ad2ansys.m``. ``ad2ansys.m`` generates a text file (usually called forces.src)
+``beamForceToAnsysShell.m``. ``beamForceToAnsysShell.m`` generates a text file (usually called forces.src)
 containing the APDL commands to apply nodal forces for every node on the
 wetted area of the blade. Details of the approach are found in Ref. [1]
 but with modifications to add axial loads. 
@@ -325,14 +328,14 @@ which analysis flags are active, results can be accessed with
 
 .. code-block:: matlabsession
 
-    >> result=layupDesign_ANSYSmesh(blade)
-          result.globalBuckling
-          result.localBuckling
-          result.deflection
-          result.failure
-          result.fatigue
-          result.resultantVSspan
-          result.mass
+    >> result=layupDesign_ANSYSmesh(blade,config)
+    >> result.globalBuckling
+    >> result.localBuckling
+    >> result.deflection
+    >> result.failure
+    >> result.fatigue
+    >> result.resultantVSspan
+    >> result.mass
 
 
 .. _linearFEA:
@@ -462,11 +465,7 @@ one fatigue evaluation is the combined effect of flap loads and edge
 loads). Furthermore, it assumes that the ``loadsTable`` is arranged in
 ascending order for the loads direction angle. This is already accounted
 for if ``loadsTable`` was constructed from ``FastLoads4ansys.m``.
-
-Make sure to set
-
-``params.fatigueCriterion = 'Shifted Goodman'``
-
+Make sure to set ``params.fatigueCriterion = 'Shifted Goodman'`` 
 in the ``runIEC_ipt.m`` file.
 
 Fatigue damage is computed at the root and at the locations of the FAST

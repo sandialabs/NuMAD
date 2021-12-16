@@ -1,0 +1,72 @@
+/COM,ANSYS RELEASE Release 18.1      BUILD 18.1      UP20170403       09:12:41
+
+ *** WARNING ***                         CP =       4.828   TIME= 09:14:00
+ For item = MAT, component = 5 is invalid.  The ESEL command is ignored. 
+
+ *** WARNING ***                         CP =       7.188   TIME= 09:15:01
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       7.641   TIME= 09:15:05
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       7.875   TIME= 09:15:13
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       8.828   TIME= 09:15:25
+ For item = MAT, component = 5 is invalid.  The ESEL command is ignored. 
+
+ *** WARNING ***                         CP =       9.250   TIME= 09:15:34
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.312   TIME= 09:15:37
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.344   TIME= 09:15:37
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.422   TIME= 09:15:39
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.453   TIME= 09:15:39
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.547   TIME= 09:15:41
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =       9.594   TIME= 09:15:41
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =      15.484   TIME= 09:16:34
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =      15.531   TIME= 09:16:35
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           
+
+ *** WARNING ***                         CP =      16.750   TIME= 09:17:01
+ The EPLOT command cannot be executed.  The selected elements cannot be  
+ displayed by PowerGraphics.  To correct this situation, select          
+ different elements or turn off PowerGraphics.                           

@@ -33,41 +33,44 @@ turbine at each time step for every simulation.
 The call to ``runIEC`` takes three parameters, representing the
 requested set of design load cases, a flag indicating whether to run the
 aeroelastic analysis (as opposed to just processing an existing output
-set) and a flag indicating whether to run in parallel, as shown below:
+set) and an IEC input structure in the form of an IECDef object, as shown below:
 
 .. code-block:: matlabsession
 
-    >> output = runIEC(DLC,simflag,parflag)
+    >> output = runIEC(DLC,simflag,IEC)
 
-The inputs ``simflag`` and ``parflag`` should be set to 1 for yes and 0
-for no. The design load case list ``DLC`` should be a cell array of
-strings indicating the load cases desired. The supported load cases are
-denoted by their codes in the IEC standard as described below:
+The ``simflag`` input should be set to 1 for yes and 0
+for no.  The ``IEC`` input can be generated with the IECDef constructor,
+ with a provided input file containing the necessary data.  The design load
+ case list ``DLC`` should be a cell array of strings indicating the load 
+ cases desired. The supported load cases are denoted by their codes in the
+ IEC standard as described below:
 
 **1.1:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with normal atmospheric
 turbulence model, and 50-year-maximum loads are extrapolated based on
 peak values in simulation results. Simulations are run for the range of
 wind speeds and the number turbulence seeds specified in the variables
-``params.ws`` and ``params.numSeeds`` in the ``runIEC_ipt.m`` file (``\examples\exampleOptimizationDir\exampleBlade\runIEC_ipt.m``).
+``windSpeeds`` and ``numSeeds`` in the IEC input file.
 
 **1.2:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with normal atmospheric
 turbulence model, and fatigue damage is predicted based on cycle
 counting of local peak values of loads in the simulation results.
 Simulations are run for the range of wind speeds and the number
-turbulence seeds specified in the variables params.ws and
-params.numSeeds in the ``runIEC_ipt.m`` file. 
+turbulence seeds specified in the variables ``windSpeeds`` and 
+``numSeeds`` in the IEC input file.
 
 .. Note::
-    DLC's 1.1 and 1.2 call for the same simulation conditions, and if both are requested a single set of results is generated for both cases.
+    DLC's 1.1 and 1.2 call for the same simulation conditions, and if 
+    both are requested a single set of results is generated for both cases.
 
 **1.3:** Normal operating conditions with the turbine running and
 connected to electric load. Simulations run with extreme turbulence
 model, and maximum loads taken directly from simulation results.
 Simulations are run for the range of wind speeds and the number
-turbulence seeds specified in the variables params.ws and
-params.numSeeds in the ``runIEC_ipt.m`` file.
+turbulence seeds specified in the variables ``windSpeeds`` and 
+``numSeeds`` in the IEC input file.
 
 **1.4:** Transient modeling of an extreme coherent gust with wind
 direction change with the turbine running and connected to electric
@@ -89,11 +92,11 @@ with the turbine in a parked or idle state. Simulations run with extreme
 turbulence model, maximum loads taken directly from simulation results.
 
 As an example, the following call would run the FAST simulation for
-cases 1.1, 1.3, and 6.1 without using parallel processing:
+cases 1.1, 1.3, and 6.1:
 
 .. code-block:: matlabsession
 
-    >> output = runIEC({'1.1','1.3','6.1'},1,0)
+    >> output = runIEC({'1.1','1.3','6.1'},1,IEC)
 
 The output of the ``runIEC`` function is a data structure reporting a
 compilation of critical values from the results of all the simulations
@@ -112,11 +115,8 @@ spreadsheet file in the main blade model data directory titled
 The runIEC function should be called from the main model data directory
 of the blade to be analyzed. This directory must contain the necessary
 FAST input files and airfoil data defining the model, a FAST output
-directory and a NuMAD working directory. In addition, the model
-directory must have a MATLAB script file with the name ``runIEC_ipt.m``,
-defining a set of general simulation parameters referenced throughout
-the process. A sample script showing the parameters that need to be
-defined can be located at ``NuMAD\examples\runIEC_ipt--EXAMPLE.m``.
+directory and a NuMAD working directory.  For more information, see the
+ runIEC example in the ``examples`` directory.
 
 .. _recentUpdatesRunIEC:
 
@@ -259,7 +259,11 @@ bounds. It does not suffer from extreme gradient/slope values or
 stability concerns.
 
 .. Note:: 
-    There can be slight differences between the 50-year extrapolation results obtained using different methods, and it is difficult to assert that any given approach is certainly more accurate or superior to another. The extrapolation process remains subject to further modifications and improvements moving forward.
+    There can be slight differences between the 50-year extrapolation 
+    results obtained using different methods, and it is difficult to 
+    assert that any given approach is certainly more accurate or superior
+    to another. The extrapolation process remains subject to further 
+    modifications and improvements moving forward.
 
 
 .. _toolsForOpenFast:

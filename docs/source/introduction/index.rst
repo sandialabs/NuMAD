@@ -9,6 +9,7 @@ Introduction
    
    overview.rst
    citation.rst
-   release_notes.rst
    publications.rst
+   release_notes.rst
+   contribute.rst
    license.rst

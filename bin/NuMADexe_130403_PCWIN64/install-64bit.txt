@@ -1,2 +1,0 @@
-NuMAD Installation note:
-See page 16 "Installing the MCR Version" in the NuMAD user's guide, SAND2012-7028, for detailed instructions to install the Matlab compiler runtime and then to open and use NuMAD.

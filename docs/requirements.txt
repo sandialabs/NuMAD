@@ -1,0 +1,9 @@
+# File: docs/requirements.txt
+
+# Required
+pip==21.2.4
+sphinx==4.1.2
+sphinx_rtd_theme==0.5.2
+sphinxcontrib-bibtex==2.3.0
+sphinxcontrib-matlabdomain==0.12.0
+sphinxext-remoteliteralinclude==0.3.0

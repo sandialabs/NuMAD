@@ -23,6 +23,13 @@ Trailing Edge Issues
 -  There is a need to allow for the existence of a nonzero trailing edge
    thickness. The only way to achieve this in the current release is to
    specify that the airfoil in question is a flatback.
+   
+-  Trailing edge overlap
+
+.. _TEoverlap:
+.. figure:: /_static/images/TEoverlap.png
+   :width: 5.85771in
+   :height: 4.10039in
 
 -  Often the element quality is poor at various parts of the trailing
    edge. Possible solutions could be:
@@ -63,4 +70,5 @@ References
    (2012). 
 
 
+.. TODO: use userGuide.bib publications to reference citations
    

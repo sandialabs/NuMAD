@@ -1,0 +1,7 @@
+IEC Loads Analysis
+
+To run the aeroelastic loads analysis for IEC-standard design load cases, execute the main script, IECLoadsAnalysis.m from the MATLAB command line.  With the default options, the IEC standard cases 1.1, 1.3, 1.4, 1.5, 6.1, 6.2 and 6.3 are run using FAST, and the main output structure is stored in IECOutput, and written to a .csv spreadsheet file in the runIEC example directory.  The optional ANSYS analysis is not run by default, but can be run by simply setting the runAnsys flag to 1.  Note that the paths to executables to all external analysis tools, such as ANSYS, FAST, Crunch, TurbSim, and IECWind must be defined in the addNumadPaths script, similarly to the example given.  Change the initial user settings as needed.
+
+If it is desired to analyze the FAST output files for a previous analysis, without re-running FAST, place all the approptriate output files in the 'out' directory and run the script with the simFlag option set to 0.  This can save time, or be useful if small modifications have to be made to a select few output files.
+
+The FAST input files, that is main input, blade files, AeroDyn and tower files can be edited to reflect any blade design.  The IEC input file, named 'IECInput.inp' gives various settings for the run which can be modified.  Airfoil profiles and aerodynamic data can be added to the airfoils and AeroData folders as necessary.
