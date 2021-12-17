@@ -32,23 +32,12 @@ optimization. Some general guidelines are given here to assist with the
 process.
 
 In addition, an example optimization script to demonstrate the application 
-of the following concepts is included in ``examples/optimization/exampleOptimizationDir``
+of the following concepts is included in ``examples/optimization/optimizationExample.m``.  
+For further details, see :ref:`Optimization`.
 
-This folder contains the main optimization script, ``optimizationExample.m``, 
-the objective defined as a MATLAB function, ``objectiveExample.m``,
-along with a folder containing the ``.yaml`` file and loading data for 
-the example blade.  The loading data is pre-generated using ``runIEC`` 
-and the functions descriped in :ref:`AeroelasticSimRunIEC` and :ref:`FEAOps`.  
-An airfoil database directory is included as well, for reference in the 
-NuMAD input file generation process.  To run the example script, place 
-the ``exampleOptimizationDir`` folder with all its contents in a working 
-directory of your choosing, and execute ``optimizationExample.m``.  
-The user is encouraged to read through the source code in main script 
-and the objective function to understand the steps to the process, and 
-the calls to NuMAD functions for various operations.  A good approach 
-to putting together a customized optimization is to begin from these 
-scripts and modify according to the specific needs at hand, while being
-mindful of the concepts presented in Sections :ref:`definingObjective` 
+A good approach to putting together a customized optimization is to begin 
+from these scripts and modify according to the specific needs at hand, 
+while being mindful of the concepts presented in Sections :ref:`definingObjective` 
 through :ref:`choosingOpimizationAlgor`. 
 
 
@@ -280,15 +269,14 @@ available to process a given output file, perform the transformation and
 return the data in global coordinates: 
 ``source\utilities\designTools\fast\loadFASTOutDataGageRot.m``
 
-Finally, when performing structural optimization, the blade model is
-typically defined primarily by a ``.yaml`` file, which is read into an
-instance of the NuMAD blade object for processing and design iteration.
-But in several places throughout the process of ``runIEC``, and the
-application of loads, information such as pre-bend, pre-sweep and
-structural twist is taken from the FAST/OpenFAST files in the model
-directory. To make sure the necessary information in these files is
-consistent with that in the ``.yaml`` file, a convenient function was
-built, named: ``source\utilities\designTools\fast\updateFASTFromBladeDef.m``
+Finally, in some cases the user may want to define the blade model 
+by providing a ``.yaml`` file, and reading it into an instance of the
+ NuMAD blade object for processing or design iteration.  But in several 
+ places throughout the process of ``runIEC``, and the application of loads, 
+ information such as pre-bend, pre-sweep and structural twist is taken from 
+ the FAST/OpenFAST files in the model directory. To make sure the necessary 
+ information in these files is consistent with that in the ``.yaml`` file, 
+ a convenient function was built, named: ``source\utilities\designTools\fast\updateFASTFromBladeDef.m``
 which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the ``.yaml``
 file, and before performing any analysis to ensure the consistency of

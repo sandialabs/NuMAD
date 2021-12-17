@@ -61,16 +61,12 @@ commands
 
 .. code-block:: matlabsession
 
-    >> 	runIEC_ipt
-    >> 	updateFASTFromBLADEDef(params,blade)
+    >>  IEC = IECdef(inputFileName)
+    >> 	updateFASTFromBLADEDef(IEC,blade)
 
-The ``runIEC_ipt.m`` script initializes a data structure named ``params``, which
-stores variables related to the analysis and simulation (``NuMAD\examples\lost+found\runIEC_ipt--EXAMPLE.m``), 
-and is passed along with the blade object into the update
-function.
-
-.. NOTE::
-	``runIEC_ipt`` must be saved in the working directory
+``inputFileName`` refers to the path/name of the input file containing variables 
+related to the aeroelastic analysis and simulation (see :ref:`runIEC` for more 
+details).
 
 After all desired analyses and modifications are complete, a new,
 updated ``.yaml`` file can be generated to represent the optimized, or
