@@ -8,7 +8,7 @@ One-way Coupling to GUI
 Once the ``BladeDef`` object is defined, it is possible to interface
 with the NuMAD GUI. The function that
 writes the input file for the GUI from a blade object is:
-``source\objects\BladeDef_to_NuMADfile.m``
+``source\numadObjects\BladeDef_to_NuMADfile.m``
 
 For example the function can be used as:
 

@@ -264,12 +264,12 @@ direction to account for centrifugal effects and torsional moments for
 the sake of completeness.
 
 In the current version when forces are compiled from the FAST/OpenFAST
-output in the functions: ``source\optimization\sim_tools\FastLoads4Ansys.m`` 
-and ``source\optimization\sim_tools\getForceDistributionAtTime.m``
+output in the functions: ``source\utilities\designTools\fast\FastLoads4Ansys.m`` 
+and ``source\utilities\feLoads\getForceDistributionAtTime.m``
 
 the longitudinal forces and torsional moments are compiled and applied
 to the blade model along with the flap and edge moments. The appropriate
-modifications were also made to the function: ``source\toolbox\beamForceToAnsysShell.m``
+modifications were also made to the function: ``source\utilities\feLoads\beamForceToAnsysShell.m``
 to accommodate the longitudinal forces in the process. On a related
 note, the forces and moments from the output files are given in a local
 coordinate system at each point along the blade, which rotates along
@@ -278,7 +278,7 @@ forces and moments are now transformed to the blade global coordinate
 system before being applied to the model. There is a new function
 available to process a given output file, perform the transformation and
 return the data in global coordinates: 
-``source\optimization\sim_tools\loadFASTOutDataGageRot.m``
+``source\utilities\designTools\fast\loadFASTOutDataGageRot.m``
 
 Finally, when performing structural optimization, the blade model is
 typically defined primarily by a ``.yaml`` file, which is read into an
@@ -288,7 +288,7 @@ application of loads, information such as pre-bend, pre-sweep and
 structural twist is taken from the FAST/OpenFAST files in the model
 directory. To make sure the necessary information in these files is
 consistent with that in the ``.yaml`` file, a convenient function was
-built, named: ``source\optimization\sim_tools\updateFASTFromBladeDef.m``
+built, named: ``source\utilities\designTools\fast\updateFASTFromBladeDef.m``
 which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the ``.yaml``
 file, and before performing any analysis to ensure the consistency of

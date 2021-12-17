@@ -26,7 +26,7 @@ file, and using the data stored within to populate the model definition.
 The ``.yaml`` format contains all the geometric, aerodynamic and material
 information needed to define a blade structure, and is widely used in
 the field, making it a convenient choice for the source data file.
-Several examples of ``.yaml`` files are provided in the ``NuMAD/examples`` directory
+Several examples of ``.yaml`` files are provided in the ``NuMAD/examples/referenceModels`` directory
 of the GitHub repository.
 
 .. Kelley: this would be a good place to introduce the difference between the source directory and the case directory (for a run)

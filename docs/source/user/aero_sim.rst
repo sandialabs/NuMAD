@@ -7,7 +7,7 @@ A critical step in the design and optimization of any blade is
 performing aeroelastic analysis to predict the behavior and response of
 the blade under a range of expected wind and loading conditions. NuMAD's
 capability for performing this analysis is contained in the
-``source\optimization\runIEC`` directory of the standard design codes
+``source\utilities\runIEC`` directory of the standard design codes
 package. In the following sections the basic capability and
 functionality of the ``runIEC`` package will be described, followed by
 recent updates related to its operation from previous versions.
@@ -18,7 +18,7 @@ Use and Functionality of ``runIEC``
 -----------------------------------
 
 The main function called to perform aeroelastic analysis of a NuMAD
-blade is ``source\optimization\runIEC\runIEC.m.``
+blade is ``source\utilities\runIEC\runIEC.m.``
 
 This function calls on the accompanying tools in the directory to
 process and output critical results, either by first running the
@@ -33,7 +33,7 @@ turbine at each time step for every simulation.
 The call to ``runIEC`` takes three parameters, representing the
 requested set of design load cases, a flag indicating whether to run the
 aeroelastic analysis (as opposed to just processing an existing output
-set) and an IEC input structure in the form of an IECDef object, as shown below:
+set) and an IEC input structure in the form of an ``IECDef`` object, as shown below:
 
 .. code-block:: matlabsession
 
@@ -285,7 +285,7 @@ These tools primarily read different types OpenFAST input files, storing
 the data in a MATLAB struct object which can then be edited and modified
 for the purposes of design and optimization. Updated versions of the
 input files can then be re-written from the modified data. The tools can
-be found in the ``source\optimization\runIEC`` directory, along with
+be found in the ``source\utilities\runIEC`` directory, along with
 their FAST v7 counterparts.
 
 As of the release of this document, OpenFAST remains in a state of

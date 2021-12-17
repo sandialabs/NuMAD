@@ -7,12 +7,14 @@ Finite Element Analysis Operations
 
 Mesh Generation
 ---------------
-The function called to generates the FE shell model in ANSYS of a NuMAD
+Ideally, the function called to generates the FE shell model in ANSYS of a NuMAD
 blade is 
  
     >> blade.generateFEA
 
-``source\optimization\structOptimization\layupDesign_ANSYSmesh.m``
+however, currently this function is not working. As a workaround use the following:
+
+``source\optimization\layupDesign_ANSYSmesh.m``
 
 .. Note:: 
     It is currently necessary to have created the NuMAD input file from 
@@ -23,13 +25,9 @@ object
 
 .. code-block:: matlabsession
 
-    >> layupDesign_ANSYSmesh(blade,config)
+    >> layupDesign_ANSYSmesh(blade,'myNuMADfile.nmd')
 
-The function also issues commands that calls ANSYS to write a textfile
-called ``NLIST.lis``. For each node on the wetted area of the blade, this
-file stores the node number and its Cartesian coordinates. This
-information is utilized when loads are applied to the FE model in a
-later step.
+Note that specifying the NuMAD filename is optional. If omitted from the function call, then the code will look for a default NuMAD file named ``numad.nmd``. 
 
 .. _coordinateSystems:
 
@@ -142,8 +140,8 @@ The components were then transformed to the :math:`x_{i}` system.
 
 Since IEC allows for lower factors of safety if numerous analysis
 directions are considered, :math:`n_{\theta}` analysis directions can be
-considered by letting params.momentMaxRotation\ :math:`{= n}_{\theta}`
-in the ``runIEC_ipt.m`` file.
+considered by setting momentMaxRotation to \ :math:`{n}_{\theta}`
+in the ``IECInput.inp`` file.
 
 Thus the loads used to evaluate blade failure are obtained by letting
 :math:`\theta`, as defined in :numref:`loadDirections`, vary from 0 to 360 deg. in
@@ -307,7 +305,7 @@ on it to
 The required inputs are a blade object, the ``loadsTable``, and the ``config``
 variable. The script knows which analysis types it should run based on
 config. See :numref:`configTable` for the structure and usage of the ``config``
-variable.
+variable. The ``IECDef`` class defintion is only needed when the fatigue flage is activated.
 
 
 .. _configTable:
@@ -328,7 +326,7 @@ which analysis flags are active, results can be accessed with
 
 .. code-block:: matlabsession
 
-    >> result=layupDesign_ANSYSmesh(blade,config)
+    >> result=layupDesign_ANSYSmesh(blade)
     >> result.globalBuckling
     >> result.localBuckling
     >> result.deflection
@@ -465,8 +463,8 @@ one fatigue evaluation is the combined effect of flap loads and edge
 loads). Furthermore, it assumes that the ``loadsTable`` is arranged in
 ascending order for the loads direction angle. This is already accounted
 for if ``loadsTable`` was constructed from ``FastLoads4ansys.m``.
-Make sure to set ``params.fatigueCriterion = 'Shifted Goodman'`` 
-in the ``runIEC_ipt.m`` file.
+Make sure to set ``fatigueCriterion`` to  Shifted Goodman 
+in the ``IECInput.inp`` file.
 
 Fatigue damage is computed at the root and at the locations of the FAST
 gages. In this document, these will be referred to as the *spanwise
