@@ -1,4 +1,4 @@
-function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,IEC)
+function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargin)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
     global ansysPath
@@ -774,11 +774,16 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,IEC)
     
 % ================= RUN FATIGUE POST PROCESSOR ================= 
     %After all load directions are solved compute fatige damage if needed
-    if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
-        cd ..
-        [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
-        cd 'NuMAD'
-        designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config);
+    if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)  
+        if ~isempty(varargin) && isequal(class(varargin{1}),'IECDef')
+            cd ..
+            IEC=varargin{1};
+            [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
+            cd 'NuMAD'
+            designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config);
+        else
+            error('IECDef required to run fatigue analysis in layupDesign_ANSYSanalysis')
+        end
     end
 end
 
