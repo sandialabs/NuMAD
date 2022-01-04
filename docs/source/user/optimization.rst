@@ -271,12 +271,12 @@ return the data in global coordinates:
 
 Finally, in some cases the user may want to define the blade model 
 by providing a ``.yaml`` file, and reading it into an instance of the
- NuMAD blade object for processing or design iteration.  But in several 
- places throughout the process of ``runIEC``, and the application of loads, 
- information such as pre-bend, pre-sweep and structural twist is taken from 
- the FAST/OpenFAST files in the model directory. To make sure the necessary 
- information in these files is consistent with that in the ``.yaml`` file, 
- a convenient function was built, named: ``source\utilities\designTools\fast\updateFASTFromBladeDef.m``
+NuMAD blade object for processing or design iteration.  But in several 
+places throughout the process of ``runIEC``, and the application of loads, 
+information such as pre-bend, pre-sweep and structural twist is taken from 
+the FAST/OpenFAST files in the model directory. To make sure the necessary 
+information in these files is consistent with that in the ``.yaml`` file, 
+a convenient function was built, named: ``source\utilities\designTools\fast\updateFASTFromBladeDef.m``
 which updates and rewrites the fast files using the current data in a
 blade file. This can be called immediately after reading the ``.yaml``
 file, and before performing any analysis to ensure the consistency of
