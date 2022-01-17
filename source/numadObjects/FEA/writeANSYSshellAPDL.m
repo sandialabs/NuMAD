@@ -1,4 +1,4 @@
-function varargout = develop__write_shell7(blade,filename,data,matdb,fea)
+function varargout = writeANSYSshellAPDL(blade,filename,data,matdb,fea)
 %WRITE_SHELL7  Generate the ANSYS input file that creates the blade 
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *

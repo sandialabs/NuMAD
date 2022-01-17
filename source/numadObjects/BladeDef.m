@@ -1251,7 +1251,7 @@ classdef BladeDef < handle
             data.station = resampleAirfoilDB(data.station,200,'cosine');
             data.blade = calcGenLinePP(data.blade); % update the piecewise polynomial
             [data.station,data.shearweb,~,~] = sort_stations(data.station,data.shearweb);
-            develop__write_shell7(obj,filename,data,matDataBase,fea);
+            writeANSYSshellAPDL(obj,filename,data,matDataBase,fea);
             
             if fea.ansys.dbgen
                 if isempty(ansysPath)
