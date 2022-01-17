@@ -116,6 +116,9 @@ for kStation = 1:TotalStations
         elseif (station.xn(kcp) > station.dp(kdp+1)) && (kdp <= nDPs)
             KeyPoints(kStation).x(kcp+cp_offset) = abs(station.dp(kdp+1));
             arc = interp1(station.c(2:end-1),station.s(2:end-1),station.dp(kdp+1),'linear');
+            if kStation==4 & kcp==2
+                keyboard
+            end
             KeyPoints(kStation).y(kcp+cp_offset) = interp1(station.s(2:end-1),station.xy(2:end-1,2),arc,InterpMethod);
             KeyPoints(kStation).DP(kdp) = kcp+cp_offset;
             kdp = kdp + 1;  % next DP

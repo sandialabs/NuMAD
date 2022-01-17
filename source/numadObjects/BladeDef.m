@@ -1080,32 +1080,24 @@ classdef BladeDef < handle
         function generateFEA(obj) 
             % This method generates FEA    
             
-            % 1. check that functionality from original code is not needed
-            % 2. FIXED -- shell7 needs to read MatDBsi.txt file, store this
-            % internally if the file isn't used elsewhere (blade.matdb)
-            % 3. FIX -- in shell7 file, need to define PrecurveRef and
-            % PresweepRef (currently set to zero)
-            % 4. FIX -- web data not saved in same format as NuMAD
-            % (data.shearweb structure in NuMAD)
-            %             
-            
             % NOTE:can add flags into the call -- e.g., element type, ...
             global ansysPath
             % define ANSYS model settings (can be options in generateFEA)
-            config.ansys.BoundaryCondition = 'cantilered';
-            config.ansys.ElementSystem = '181';
-            config.ansys.MultipleLayerBehavior = 'distinct';
-            config.ansys.meshing = 'elementsize';
-            config.ansys.smartsize = 5;
-            config.ansys.elementsize = 0.2026;
-            config.ansys.shell7gen = 1;
-            config.ansys.dbgen = 1;            
+            fea.ansys.BoundaryCondition = 'cantilevered';
+            fea.ansys.ElementSystem = '181';
+            fea.ansys.MultipleLayerBehavior = 'multiply'; %'distinct';
+            fea.ansys.meshing = 'elementsize';
+            fea.ansys.smartsize = 5;
+            fea.ansys.elementsize = 0.45;
+            fea.ansys.shell7gen = 1;
+            fea.ansys.dbgen = 1;  
+            fea.ansys.dbname = 'master';  
             fcopts = {'EMAX','SMAX','TWSI','TWSR','HFIB','HMAT','PFIB','PMAT',...
                 'L3FB','L3MT','L4FB','L4MT','USR1','USR2','USR3','USR4',...
                 'USR5','USR6','USR7','USR8','USR9'};
-            config.ansys.FailureCriteria = cell(numel(fcopts),2);
-            config.ansys.FailureCriteria(:,1) = fcopts';
-            config.ansys.FailureCriteria(:,2) = deal({false});
+            fea.ansys.FailureCriteria = cell(numel(fcopts),2);
+            fea.ansys.FailureCriteria(:,1) = fcopts';
+            fea.ansys.FailureCriteria(:,2) = deal({false});
             
                        
             
@@ -1114,10 +1106,154 @@ classdef BladeDef < handle
             shell7_name = 'shell7.src'; ansys_product = 'ANSYS';
             obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
             filename = fullfile(obj.paths.job,shell7_name);
-                        
-            develop__write_shell7(obj,filename);
             
-            if obj.ansys.dbgen
+            airfoils_path = 'airfoils';
+            
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+            [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
+
+%             [data2.station, data2.shearweb, ~, ~, ~, data2.blade, ~, ~] = readNuMADinput('numad.nmd');
+%             [~,matDataBase2]=dataForNuMADobjects(obj,airfoils_path);
+%             
+%             data.station = resampleAirfoilDB(data.station,200,'cosine');
+%             data2.station = resampleAirfoilDB(data2.station,200,'cosine');
+
+            structToCompare1=data.station;
+            
+            %Remove sig figs to match what NuMAD file would have given
+            fieldNames = fieldnames(structToCompare1);
+            for iStation=1:length(data.station)
+                for iField=1:length(fieldNames) 
+                    item=structToCompare1(iStation).(fieldNames{iField});
+                    dataType=class(item);
+  
+                    if ~strcmp(dataType,'char')
+
+                        [imax,jmax]=size(item);
+                        
+                        for I=1:imax
+                            for J=1:jmax
+                                if  strcmp(dataType,'double') %Only loop through each index if double
+                                    item=structToCompare1(iStation).(fieldNames{iField})(I,J);
+                                    item=str2double(sprintf('%.6g',item));
+                                    structToCompare1(iStation).(fieldNames{iField})(I,J)=item;
+                                elseif  strcmp(dataType,'cell') 
+                                    item=structToCompare1(iStation).(fieldNames{iField}){I,J};
+                                    dataType=class(item);
+                                    if ~strcmp(dataType,'char')
+                                       item=str2double(sprintf('%.6g',item));
+                                       structToCompare1(iStation).(fieldNames{iField}){I,J}=item;
+                                    end
+                                end
+                            end
+                        end
+                        
+                        
+                    end
+
+                    
+                end
+            end
+            data.station=structToCompare1;           
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%             fieldNames = fieldnames(structToCompare1);
+%             for iField=1:length(fieldNames) 
+%                 for iStation=1:length(data.station)
+%                 
+%                     item1=structToCompare1(iStation).(fieldNames{iField})
+%                     item2=structToCompare2(iStation).(fieldNames{iField})
+% %                     
+%             
+%             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              % Diff checker
+%             
+%             structToCompare1=data.station;
+%             structToCompare2=data2.station;
+%             
+%             fieldNames = fieldnames(structToCompare1);
+%             for iStation=1:length(data.station)
+%                 for iField=1:length(fieldNames) 
+%                     item1=structToCompare1(iStation).(fieldNames{iField});
+%                     item2=structToCompare2(iStation).(fieldNames{iField});
+%                     
+%                     if ~isequal(item1,item2)
+% %                         keyboard
+%                         dataType1=class(item1);
+%                         dataType2=class(item2);
+%                        if strcmp(dataType1,'struct')
+%                            break
+%                        end
+%                         [imax,jmax]=size(item1);
+%                         if strcmp(dataType1,dataType2)  %IF they are the same type do this..
+%                             if ~strcmp(dataType1,'char') && (imax>1 || jmax >1)
+% 
+%                                 for I=1:imax
+%                                     for J=1:jmax
+%                                         if  strcmp(dataType1,'double') %Only loop through each index if double
+%                                             dataType='%.15f';
+% 
+%                                             item1=structToCompare1(iStation).(fieldNames{iField})(I,J);
+%                                             item2=structToCompare2(iStation).(fieldNames{iField})(I,J);
+%                                         elseif  strcmp(dataType1,'cell') 
+%                                             item1=structToCompare1(iStation).(fieldNames{iField}){I,J};
+%                                             item2=structToCompare2(iStation).(fieldNames{iField}){I,J};
+% 
+%                                             dataType=class(item1)
+%                                             if  strcmp(dataType1,'double') %Only loop through each index if double
+%                                                 dataType='%.15f';
+%                                             elseif strcmp(dataType,'char')
+%                                                 dataType='%s'; 
+%                                             end
+% 
+%                                         end
+%                                         if ~isequal(item1,item2)
+%                                             string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
+%                                             fprintf(string,item1,item2)
+% 
+%                                         end
+%                                     end
+%                                 end
+%                             else
+% 
+%                                 if strcmp(dataType1,'char')
+%                                     dataType='%s'  ;
+%                                 elseif  strcmp(dataType1,'int')
+%                                     dataType='%i';
+%                                 elseif  strcmp(dataType1,'double')
+%                                     dataType='%.15f';
+%                                 end
+% 
+%                                 
+%                                 string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
+%                                 fprintf(string,item1,item2)
+%                             end
+%                         else
+%                             error('error1')
+%                         end
+%                     end
+%                         
+%                 end
+%             end
+% %             
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+            
+%             if 1
+%                 [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
+% %                 [data.station, ~, ~, ~, ~, ~, ~, ~] = readNuMADinput('numad.nmd');
+%             else
+%                 [data.station, data.shearweb, ~, ~, ~, data.blade, ~, ~] = readNuMADinput('numad.nmd');
+%                 [~,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
+%             end
+            
+            data.station = resampleAirfoilDB(data.station,200,'cosine');
+            data.blade = calcGenLinePP(data.blade); % update the piecewise polynomial
+            [data.station,data.shearweb,~,~] = sort_stations(data.station,data.shearweb);
+            develop__write_shell7(obj,filename,data,matDataBase,fea);
+            
+            if fea.ansys.dbgen
                 if isempty(ansysPath)
                     errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted');
                     return;

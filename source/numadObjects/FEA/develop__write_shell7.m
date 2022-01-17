@@ -1,4 +1,4 @@
-function varargout = develop__write_shell7(blade,filename)
+function varargout = develop__write_shell7(blade,filename,data,matdb,fea)
 %WRITE_SHELL7  Generate the ANSYS input file that creates the blade 
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
@@ -32,9 +32,12 @@ function varargout = develop__write_shell7(blade,filename)
 
 %tcl: Copy macros into the working directory
 %jcb:  need to decide when (in what script) to copy macros over
+
+
+
 global numadPath
 if isequal(0,nargout)
-    parent_pn = numadPath;
+    parent_pn = [numadPath '\numadObjects'];
     [success,message,~] = copyfile(fullfile(parent_pn,'FEA','macros','*.mac'),blade.paths.job);
     if ~success
         errordlg(message,'write_shell7: error copying macros');
@@ -54,165 +57,36 @@ end
 %% ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 % KEY GUIDE TO CHANGES -- check later!!!
 % *************************************************************************
-% NOTES: (creating temporary 'data' structure -- ideally would be deleted in final
-% version)
-% 1. numel(app.station)--> numel(obj.istations)
-N = length(blade.ispan);
-webindices = blade.webindices;
-DP_ADDED = false;
-for kw=1:numel(blade.webcpos)
-    if isnan(webindices{kw}(1))   % HP side
-        for k=1:N
-            data.station(k).dp(end+1,1) = blade.webcpos{kw}(1,k);
-            data.station(k).dptype{end+1,1} = 'single';
-            data.station(k).dpmaterial{end+1,1} = '';
-        end
-        webindices{kw}(1) = size(data.station(1).dp,1);
-        DP_ADDED = true;
-    end
-    if isnan(webindices{kw}(2))   % LP side
-        for k=1:N
-            data.station(k).dp(end+1,1) = blade.webcpos{kw}(2,k);
-            data.station(k).dptype{end+1,1} = 'single';
-            data.station(k).dpmaterial{end+1,1} = '';
-        end
-        webindices{kw}(2) = size(data.station(1).dp,1);
-        DP_ADDED = true;
-    end
-end
-if DP_ADDED
-    for k=1:N
-        [data.station(k).dp, sortorder] = sort(data.station(k).dp);
-        if k>1 && ~isequal(prev_sortorder,sortorder)
-%             keyboard%ble
-% ble            error('Error placing shear web.  Must stay within same region of blade (e.g., TE-Panel)');
-        end
-        data.station(k).dptype     = data.station(k).dptype(sortorder);
-        data.station(k).dpmaterial = data.station(k).dpmaterial(sortorder);
-        prev_dp = 0; ksm = 0;
-        sm = data.station(k).sm;
-        if (k ~= N)
-            for j=1:length(sortorder)-1  % for each DP except last
-                this_dp = sortorder(j)  % get the DP index
-                if (this_dp-prev_dp) == 1
-                    % continue as normal
-                    prev_dp = this_dp;
-                    ksm = ksm + 1;
-                else
-                    % DP added here: duplicate previous sm
-                    % (don't change ksm)
-                end
-                % ble <<<<<<<<<<<<<<<<<
-                if ksm == 0
-                    keyboard
-                end
-                % ble >>>>>>>>>>>>>>>>>>
-                assert(ksm~=0,'Unexpected error: shear web before first DP?');
-                data.station(k).sm{j,1} = sm{ksm,1};
-            end
-        end
-        if k<4 % ble
-            prev_sortorder = sortorder;
-        end
-    end
-    for kw=1:numel(blade.webcpos)
-%         this_dp=find(webindices{kw}(1)==sortorder,1);
-%         webindices{kw}(1) = this_dp;
-%         this_dp=find(webindices{kw}(2)==sortorder,1);
-%         webindices{kw}(2) = this_dp;
-        % ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        this_dp=find(webindices{kw}(1)==prev_sortorder,1);
-        webindices{kw}(1) = this_dp;
-        this_dp=find(webindices{kw}(2)==prev_sortorder,1);
-        webindices{kw}(2) = this_dp;
-        % ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    end
-% keyboard%ble
-end
 
 
 % *************************************************************************
 % 3. app.station:
-% app.station(k).AirfoilName = 
-% app.station(k).LocationZ = 
-% app.station(k).DegreesTwist = 
-% app.station(k).Xoffset = 
-% app.station(k).AeroCenter = 
-% app.station(k).Chord = 
-% app.station(k).TE = 
-% app.station(k).coords = 
-data.station = struct('AirfoilName' ,'',...
-    'TEtype'      ,'',...
-    'DegreesTwist',[],...
-    'LocationZ'   ,[],...
-    'Xoffset'     ,[],...
-    'AeroCenter'  ,[],...
-    'Chord'       ,[],...
-    'coords'      ,[],...
-    'dp'          ,[],...
-    'dptype'      ,cell(0,1),...
-    'dpmaterial'  ,cell(0,1),...
-    'sm'          ,cell(0,1));
-af = AirfoilDef();
-time_stamp = datestr(now);
-N = length(blade.ispan);
-M = size(blade.keycpos,1);
-for k=1:N
-    data.station(k).AirfoilName  = sprintf('Interp_%06d',fix(1e3*blade.ispan(k)));
-    data.station(k).LocationZ    = blade.ispan(k);
-    data.station(k).DegreesTwist = blade.idegreestwist(k);
-    data.station(k).Xoffset      = blade.ichordoffset(k) + blade.naturaloffset*blade.xoffset(k);
-    data.station(k).AeroCenter   = blade.iaerocenter(k);
-    data.station(k).Chord        = blade.ichord(k);
-    data.station(k).TEtype       = cell2mat(blade.getprofileTEtype(k));
-    data.station(k).coords       = blade.profiles(:,:,1);
-%     data.station(k).coords       = blade.downsampleProfile(k,300); % reduce to about 160 points
-    
-    for j=1:M
-        data.station(k).dp(j,1)         = blade.keycpos(j,k);
-        data.station(k).dptype{j,1}     = 'single';
-        data.station(k).dpmaterial{j,1} = '';
-    end
-% %     if AIRFOIL_DIR_EXISTS
-% %         af.name = data.station(k).AirfoilName;
-% %         af.reference = sprintf('Airfoil "%s" created on %s for blade project %s',...
-% %             af.name, time_stamp, nmd_filename);
-% %         af.coordinates = data.station(k).coords;
-% %         af_filename = sprintf('%s.txt',af.name);
-% %         af.writeAirfoil(fullfile(airfoils_path,af_filename),'numad');
-% %     end
 
+% N = length(blade.ispan);
+% M = size(blade.keycpos,1);
+% for k=1:N
+%     % BLE: add missing information here:    
+%     data.station(k).xy       = blade.downsampleProfile(k,400); 
+%     [~,LE] = min(data.station(k).xy(:,1));
+%     % save the non-dimensional chord position
+%     cPos = data.station(k).xy(:,1); % chord position
+%     data.station(k).c = [-1*cPos(1:LE); cPos(LE+1:end)];
+%     % store the arc length (from LE? -- check)
+%     n_points=size(data.station(k).xy,1);
+%     sn=zeros(n_points,1);
+%     for i=2:n_points
+%         sn(i) = hypot(data.station(k).xy(i,1)-data.station(k).xy(i-1,1),...
+%             data.station(k).xy(i,2)-data.station(k).xy(i-1,2)) + sn(i-1);
+%     end
+%     data.station(k).s = sn - sn(LE);  % arc length now measured from LE coord pair 
+% end
 
-    % BLE: add missing information here:    
-    data.station(k).xy       = blade.downsampleProfile(k,400); 
-    [~,LE] = min(data.station(k).xy(:,1));
-    % save the non-dimensional chord position
-    cPos = data.station(k).xy(:,1); % chord position
-    data.station(k).c = [-1*cPos(1:LE); cPos(LE+1:end)];
-    % store the arc length (from LE? -- check)
-    n_points=size(data.station(k).xy,1);
-    sn=zeros(n_points,1);
-    for i=2:n_points
-        sn(i) = hypot(data.station(k).xy(i,1)-data.station(k).xy(i-1,1),...
-            data.station(k).xy(i,2)-data.station(k).xy(i-1,2)) + sn(i-1);
-    end
-    data.station(k).s = sn - sn(LE);  % arc length now measured from LE coord pair 
-end
-
-for k=1:N-1
-    for j=1:M-1
-        data.station(k).sm{j,1} = blade.stacks(j,k).name;
-    end
-end
-% *************************************************************************
-% 4. NuMAD GUI definition of "blade" structure (not BladeDef) -- unsure.
-% blade.PresweepRef = struct('method','dpp','pp') -- and others not used here
-% blade.PrecurveRef = struct('method','dpp','pp')
-% % data.PresweepRef = 
-% % data.PrecurveRef = 
-data.PresweepRef.method = 'shear';
-data.PrecurveRef.method = 'shear';
-% *************************************************************************
+% for k=1:N-1
+%     for j=1:M-1
+%         data.station(k).sm{j,1} = blade.stacks(j,k).name;
+%     end
+% end
+% **********************************************************************************************************************************************
 % END KEY GUIDE TO CHANGES
 %% ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -222,6 +96,8 @@ TotalShearwebs = numel(blade.shearweb);
 % Insert the DPs into the airfoil coordinates and remember their indices
 InterpMethod = 'spline';  % interpolation method for DPs
 KeyPoints = struct('x',[],'y',[],'LE',[],'DP',[]);
+
+
 for kStation = 1:TotalStations
     station = data.station(kStation);
     nCoordPairs = size(station.coords,1);
@@ -230,7 +106,6 @@ for kStation = 1:TotalStations
     Nansys = 150;
 % %     if nCoordPairs > Nansys
         % resample airfoil coordinates to reduce size    
-        kStation
         af_out = resampleAirfoil(station.coords, round(Nansys/2-1), 'arc');
 
 % %         figure
@@ -269,6 +144,7 @@ for kStation = 1:TotalStations
     cp_delete = 0;
     
     while (kcp <= nCoordPairs)
+
         if (abs(station.xn(kcp) - station.dp(kdp+1)) <= 1e-4) && (kdp <= nDPs)
             % the current coord pair matches the current DP (within the tolerance)  
             % jcb: should the user be able to set the tolerance?
@@ -375,17 +251,14 @@ for k = 1:numel(SkinAreas)
 end
 compsInModel = unique(compsInModel);
 
-% load the material database and create searchable list
-matdb_path = fullfile(blade.paths.job,'MatDBsi.txt');
-app = struct();
-app.matdb = readMatDB(matdb_path);
-for k=1:numel(app.matdb)
-    app.matlist{k} = app.matdb(k).name;
-    mattype{k} = app.matdb(k).type;  %#ok
+
+for k=1:numel(matdb)
+    app.matlist{k} = matdb(k).name;
+    mattype{k} = matdb(k).type;  %#ok
 end
-app.isotropic =  strcmp('isotropic',mattype);
-app.orthotropic = strcmp('orthotropic',mattype);
-app.composite = strcmp('composite',mattype);
+% app.isotropic =  strcmp('isotropic',mattype);
+% app.orthotropic = strcmp('orthotropic',mattype);
+% app.composite = strcmp('composite',mattype);										
 
 % Determine which isotropic and orthotropic materials are used in the model
 isoorthoInModel = {};
@@ -395,7 +268,7 @@ for kcomp = 1:numel(compsInModel)
         errordlg(sprintf('Material "%s" not found in database.',compsInModel{kcomp}),'Error');
         error('Material "%s" not found in database.',compsInModel{kcomp});
     end
-    mat = app.matdb(n);
+    mat = matdb(n);
     layerNames = cell(numel(mat.layer),1);
     for klay = 1:numel(mat.layer)
         layerNames(klay) = {mat.layer(klay).layerName};
@@ -546,7 +419,7 @@ try
     fprintf(fid,'\n  ! tbdata,17,g1g2,etal,etat,alp0\n');
     for kmp = 1:numel(isoorthoInModel)
         n = strcmp(isoorthoInModel(kmp),app.matlist);
-        mat = app.matdb(n);
+        mat = matdb(n);
         switch mat.type
             case 'isotropic'
                 fprintf(fid,'\n   ! %s'           ,mat.name);
@@ -577,7 +450,7 @@ try
                 if isequal(0,mat.yzcp), mat.yzcp=1e-14; end
                 if isequal(0,mat.xzcp), mat.xzcp=1e-14; end
                 % convert degrees to radians
-                mat.alp0 = mat.alp0 * pi/180;
+                %mat.alp0 = mat.alp0 * pi/180;
                 % read all of the failure criteria values
                 for kfc = 1:numel(fcfields)
                     fcname = fcfields{kfc};
@@ -606,12 +479,12 @@ try
     
     fprintf(fid,'\n! WRITE THE COMPOSITES =================================\n');
     rCounter=1;
-    switch blade.ansys.ElementSystem
+    switch fea.ansys.ElementSystem
         %tcl:  first few lines are same for shell91 and shell99
         case {'91','99'}
             for rCounter = 1:numel(compsInModel)
                 n = strcmp(compsInModel(rCounter),app.matlist);
-                mat = app.matdb(n);
+                mat = matdb(n);
                 for klay = 1:numel(mat.layer)
                     % shell91/99: layer.quantity only multiplies layer
                     % thickness and does not repeat layers
@@ -626,7 +499,7 @@ try
                 fprintf(fid,'\n   r,%d,%d,%d',rCounter,mat.uniqueLayers,LSYM);
                 fprintf(fid,'\n   rmore');
                 
-                if isequal(blade.ansys.ElementSystem,'91')
+                if isequal(fea.ansys.ElementSystem,'91')
                     for klay = 1:numel(mat.layer)
                         ansysMPnumber = find(strcmp(mat.layer(klay).layerName,isoorthoInModel)==1);
                         fprintf(fid,'\n   rmore,%d,%g,%g,%g,%g,%g',...
@@ -634,7 +507,7 @@ try
                             mat.layer(klay).thicknessA,mat.layer(klay).thicknessB,...
                             mat.layer(klay).thicknessB,mat.layer(klay).thicknessA);
                     end
-                elseif isequal(blade.ansys.ElementSystem,'99')
+                elseif isequal(fea.ansys.ElementSystem,'99')
                     if isequal(mat.thicknessType,'Constant')
                         for klay = 1:2:floor(numel(mat.layer)/2)*2
                             ansysMPnumber(1) = find(strcmp(mat.layer(klay).layerName,isoorthoInModel)==1);
@@ -671,8 +544,8 @@ try
         case {'281','181'}
             for secCounter = 1:numel(compsInModel)
                 n = strcmp(compsInModel(secCounter),app.matlist);
-                mat = app.matdb(n);
-                if isequal('multiply',blade.ansys.MultipleLayerBehavior)
+                mat = matdb(n);
+                if isequal('multiply',fea.ansys.MultipleLayerBehavior)
                     for klay = 1:numel(mat.layer)
                         mat.layer(klay).thicknessA = mat.layer(klay).thicknessA * mat.layer(klay).quantity;
                         mat.layer(klay).thicknessB = mat.layer(klay).thicknessB * mat.layer(klay).quantity;
@@ -719,13 +592,13 @@ try
                 fprintf(fid,'\n   secoffset,mid\n');
             end
         otherwise
-            errordlg(sprintf('Element System %s not yet available',blade.ansys.ElementSystem),'write_shell7 error')
-            error('Element System %s not yet available',blade.ansys.ElementSystem);
+            errordlg(sprintf('Element System %s not yet available',fea.ansys.ElementSystem),'write_shell7 error')
+            error('Element System %s not yet available',fea.ansys.ElementSystem);
             
     end
     
-    [~,jobtitle,~] = fileparts(blade.job_name);
-    fprintf(fid,'\n/title,%s',jobtitle);
+    % [~,jobtitle,~] = fileparts(blade.job_name);
+    fprintf(fid,'\n/title,%s',fea.ansys.dbname);
     fprintf(fid,'\nZrCount=%d\n',rCounter);
     
 %jcb:  it appears these "Mass*" variables are not used anywhere
@@ -776,19 +649,19 @@ try
 %         xn = station.xn;
 
         % use the generating line to translate and rotate the coordinates
-        presweep_slope = 0; warning('fix this');%ppval(data.PresweepRef.dpp,station.LocationZ);
-        precurve_slope = 0; warning('fix this');%ppval(data.PrecurveRef.dpp,station.LocationZ);
+        presweep_slope = ppval(data.blade.PresweepRef.dpp,station.LocationZ);
+        precurve_slope = ppval(data.blade.PrecurveRef.dpp,station.LocationZ);
         presweepDeg = 180/pi*atan(presweep_slope*twistFlag);
         precurveDeg = 180/pi*atan(-precurve_slope);
         [presweep_rot, precurve_rot] = deal(0);
-        if isequal(data.PresweepRef.method,'normal')
+        if isequal(data.blade.PresweepRef.method,'normal')
             presweep_rot = atan(presweep_slope*twistFlag);
         end
-        if isequal(data.PrecurveRef.method,'normal')
+        if isequal(data.blade.PrecurveRef.method,'normal')
             precurve_rot = atan(-precurve_slope);
         end
-        transX = 0; warning('fix this');%twistFlag*ppval(data.PresweepRef.pp,station.LocationZ);
-        transY = 0; warning('fix this');%ppval(data.PrecurveRef.pp,station.LocationZ);
+        transX = twistFlag*ppval(data.blade.PresweepRef.pp,station.LocationZ);
+        transY = ppval(data.blade.PrecurveRef.pp,station.LocationZ);
         R = makehgtform('yrotate',presweep_rot,'xrotate',precurve_rot);
         T = makehgtform('translate',transX,transY,station.LocationZ);
         coords = coords * R' * T';
@@ -825,7 +698,6 @@ try
         % Create coordinate system at the tip
         fprintf(fid,'\nlocal,12,CART,%g,%g,%g, %g,%g,%g\n',...
             transX,transY,station.LocationZ, 0,precurve_rot*180/pi,presweep_rot*180/pi);
-        keyboard%ble
     end
     fprintf(fid,'\n   csys,0');
     fprintf(fid,'\nksel,all\n');
@@ -1146,11 +1018,11 @@ try
             % (1000+kStation) is the csys number for this area
             % (ansysRnumber) is the material real constant number
             % (ansysSecNumber) is the material section number
-            switch blade.ansys.ElementSystem
+            switch fea.ansys.ElementSystem
                 case '91'  %jcb: ToDo - SandwichOption?
                     ansysRnumber = find(strcmp(SkinAreas(kStation).Material(kArea),compsInModel)==1);
 %                     n = strcmp(compsInModel(ansysRnumber),app.matlist);
-%                     mat = app.matdb(n);
+%                     mat = matdb(n);
                     if 1   % {$CompositeSandwichOption($SMN($station,$section)) == 0}
                         fprintf(fid,'\n      aatt,1,%d,17,%d',ansysRnumber,(1000+kStation));
                     else   % {$CompositeSandwichOption($SMN($station,$section)) == 1}
@@ -1159,7 +1031,7 @@ try
                 case {'99','191'}
                     ansysRnumber = find(strcmp(SkinAreas(kStation).Material(kArea),compsInModel)==1);
                     n = strcmp(compsInModel(ansysRnumber),app.matlist);
-                    mat = app.matdb(n);
+                    mat = matdb(n);
                     if isequal(mat.thicknessType,'Constant')
                         fprintf(fid,'\n      aatt,1,%d,12,%d',ansysRnumber,(1000+kStation));
                     elseif  isequal(mat.thicknessType,'Tapered')
@@ -1174,8 +1046,8 @@ try
                     ansysSecNumber = find(strcmp(SkinAreas(kStation).Material(kArea),compsInModel)==1);
                     fprintf(fid,'\n      aatt,,,32,%d,%d',(1000+kStation),ansysSecNumber);
                 otherwise
-                    errordlg(sprintf('Element System %s not yet available',blade.ansys.ElementSystem),'write_shell7 error')
-                    error('Element System %s not yet available',blade.ansys.ElementSystem);
+                    errordlg(sprintf('Element System %s not yet available',fea.ansys.ElementSystem),'write_shell7 error')
+                    error('Element System %s not yet available',fea.ansys.ElementSystem);
             end
             
         end
@@ -1215,7 +1087,7 @@ try
       %tcl:    THE MATERIAL NUMBER 1 (first field in aatt) IS MEANINGLES SINCE SHELL99 IS BEING USED
       % (1000+BeginStation) is the csys number for this area
       % (1000+ansysSecNumber) is the material section number
-            switch blade.ansys.ElementSystem
+            switch fea.ansys.ElementSystem
                 case '91'
                     ansysRnumber = find(strcmp(blade.shearweb(kShearweb).Material,compsInModel)==1);
                     %jcb - question: above, the aatt type was 17 or 20
@@ -1223,7 +1095,7 @@ try
                 case {'99','191'}
                     ansysRnumber = find(strcmp(blade.shearweb(kShearweb).Material,compsInModel)==1);
                     n = strcmp(compsInModel(ansysRnumber),app.matlist);
-                    mat = app.matdb(n);
+                    mat = matdb(n);
                     if isequal(mat.thicknessType,'Constant')
                         %jcb - question: above, the aatt type was 12
                         fprintf(fid,'\n      aatt,1,%d,11,%d',ansysRnumber,(1000+BeginStation));
@@ -1240,8 +1112,8 @@ try
                     ansysSecNumber = find(strcmp(blade.shearweb(kShearweb).Material,compsInModel)==1);
                     fprintf(fid,'\n      aatt,,,32,%d,%d\n',(1000+BeginStation),(1000+ansysSecNumber));
                 otherwise
-                    errordlg(sprintf('Element System %s not yet available',blade.ansys.ElementSystem),'write_shell7 error')
-                    error('Element System %s not yet available',blade.ansys.ElementSystem);
+                    errordlg(sprintf('Element System %s not yet available',fea.ansys.ElementSystem),'write_shell7 error')
+                    error('Element System %s not yet available',fea.ansys.ElementSystem);
             end
         
     end
@@ -1263,12 +1135,12 @@ try
     fprintf(fid,'\n   local,11,CART,0,0,0,90,0,-90');
     fprintf(fid,'\n   esys,11');
     
-    switch blade.ansys.meshing
+    switch fea.ansys.meshing
         case 'elementsize'
             fprintf(fid,'\n   mshape,0,2d');
-            fprintf(fid,'\n   aesize,all,%f',blade.ansys.elementsize);
+            fprintf(fid,'\n   aesize,all,%f',fea.ansys.elementsize);
         case 'smartmesh'
-            fprintf(fid,'\n   smrtsize,%f',blade.ansys.smartmesh);
+            fprintf(fid,'\n   smrtsize,%f',fea.ansys.smartmesh);
     end
     fprintf(fid,'\n   amesh,all');
     fprintf(fid,'\n   csys,0\n');
@@ -1308,14 +1180,14 @@ try
     fprintf(fid,'\n   nsel,a,node,,z_master_node_number');
     
     
-    switch blade.ansys.ElementSystem
+    switch fea.ansys.ElementSystem
         case {'91','99','281','181'}
-            fprintf(fid,'\n   cerig,z_master_node_number,all\n');
+            fprintf(fid,'\n   cerig,z_master_node_number,all,RXYZ\n');
         case '191'
             fprintf(fid,'\n   cerig,z_master_node_number,all,uxyz\n');
     end
-    
-    if isequal(blade.ansys.BoundaryCondition,'cantilevered')
+               
+    if isequal(fea.ansys.BoundaryCondition,'cantilevered')
         %jcb: FIXME - nsel could break with swept/bent blades
         fprintf(fid,'\n   nsel,s,loc,z,0');
         fprintf(fid,'\n   d,all,all');
@@ -1374,12 +1246,44 @@ try
     fprintf(fid,'\n/post1\n');   
     
     fprintf(fid,'\nfctyp,dele,all   ! remove all material failure-criteria postprocessing\n');
-    for kfc = 1:length(blade.ansys.FailureCriteria)
-        if blade.ansys.FailureCriteria{kfc,2}
-            fprintf(fid,'fctyp,add,%s\n',blade.ansys.FailureCriteria{kfc,1});
+    for kfc = 1:length(fea.ansys.FailureCriteria)
+        if fea.ansys.FailureCriteria{kfc,2}
+            fprintf(fid,'fctyp,add,%s\n',fea.ansys.FailureCriteria{kfc,1});
         end
     end
+    fprintf(fid,'\nfinish\n')
+    %%% Material Properties %%%
+    fprintf(fid,'mpwrite,Materials,txt,,\n');
+    if ~all(cellfun('isempty',fcvalues))
+        fprintf(fid,'/output,Strengths,txt,,\n');
+        fprintf(fid,'TBLIST, ,ALL\n');
+        fprintf(fid,'/output\n');
+    end
+    %%% Section Properties %%%
+    fprintf(fid,'/output, Sections,txt\n');
+    fprintf(fid,'SLIST,,,,FULL\n');
+%     fprintf(fid,'SLIST,\n');
+    fprintf(fid,'/output\n');
 
+    %%% Element Properties %%%
+    fprintf(fid,'/output, Elements,txt\n');
+    fprintf(fid,'elist,all,,,0,0 \n');
+    fprintf(fid,'/output\n');
+    
+    %%% Make NLIST file %%%
+    fprintf(fid,'!!! BEGIN MAKE_NLIST MACRO TEXT\n');
+    fprintf(fid,'ESEL,S,SEC,,1,999   \n');
+    % fprintf(fid,'ALLSEL   \n');
+    fprintf(fid,'NSLE,S  \n');
+    % fprintf(fid,'nsel,u,node,,z_master_node_number\n');
+    fprintf(fid,'/output,NLIST,lis\n');
+    fprintf(fid,'/page,1e6,,1e6,,\n');
+    fprintf(fid,'NLIST,ALL, , ,XYZ,NODE,NODE,NODE\n');
+    fprintf(fid,'/output,\n');
+    fprintf(fid,'ALLSEL,ALL \n');
+
+    fprintf(fid,'!!! END MAKE_NLIST TEXT\n');
+    
     % save database file
     fprintf(fid,'\nfinish');
     fprintf(fid,'\nsave');
