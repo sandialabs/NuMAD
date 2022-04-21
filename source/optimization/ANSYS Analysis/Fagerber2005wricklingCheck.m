@@ -1,5 +1,5 @@
 %% Wrinkling Analysis Post-Processing Script
-function [limitingElementData]=Fagerber2005wricklingCheck(app,SkinAreas,compsInModel,coreMatName)
+function [limitingElementData]=fagerber2005wricklingCheck(app,SkinAreas,compsInModel,coreMatName)
     %limitingElementData - [ansysSecNumber elno lf phicr]
     TotalStations = numel(app.station);
     TotalShearwebs = numel(app.shearweb);

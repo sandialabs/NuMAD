@@ -1,4 +1,4 @@
-function PerformANSYS_DeflectionAnalysis(blade, config, iLoad, fid, deflectionFilename)
+function performANSYS_DeflectionAnalysis(blade, config, iLoad, fid, deflectionFilename)
     fprintf(fid,'/POST1\n');
     fprintf(fid,'set,last\n');
     fprintf(fid,'RSYS,0\n');  %global coordinates

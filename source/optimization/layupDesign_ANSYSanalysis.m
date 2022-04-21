@@ -129,7 +129,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
         if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
             
             deflectionFilename = 'results_deflection';
-            PerformANSYS_DeflectionAnalysis(blade, config, iLoad, fid, deflectionFilename)
+            performANSYS_DeflectionAnalysis(blade, config, iLoad, fid, deflectionFilename)
             
         end
         % calculate face stresses for wrinkling
@@ -141,14 +141,14 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
         %%% Output resultant force and moments to file
         if isfield(config.ansys.analysisFlags, 'resultantVSspan') && config.ansys.analysisFlags.resultantVSspan~=0
             
-            PerformANSYS_ResultantVSSpanAnalysis(blade, config, iLoad, fid)
+            performANSYS_ResultantVSSpanAnalysis(blade, config, iLoad, fid)
 
         end
         %% ************************************************************************
         % ================= PERFORM FATIGUE ANALYSIS =================
         if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
             
-            PerformANSYS_FatigueAnalysis(blade, config, iLoad, fid)
+            performANSYS_FatigueAnalysis(blade, config, iLoad, fid)
             
         end
 %% ************************************************************************
@@ -156,7 +156,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
 
         if isfield(config.ansys.analysisFlags,'localFields') && ~isempty(config.ansys.analysisFlags.localFields)
             
-            CreateANSYS_LocalFieldsResults(blade, config, iLoad, fid)
+            createANSYS_LocalFieldsResults(blade, config, iLoad, fid)
          
         end
 
@@ -167,7 +167,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
         if isfield(config.ansys.analysisFlags,'failure') && ~isempty(config.ansys.analysisFlags.failure)
             failureFilename = 'results_failure';
             
-            PerformANSYS_FailureAnalysis(blade, config, iLoad, fid, failureFilename)
+            performANSYS_FailureAnalysis(blade, config, iLoad, fid, failureFilename)
             
         end
 
@@ -179,7 +179,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
         if isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling >0
             bucklingFilename = 'results_buckling';
             
-            PerformANSYS_LinearBucklingAnalysis(blade, config, iLoad, fid, bucklingFilename)
+            performANSYS_LinearBucklingAnalysis(blade, config, iLoad, fid, bucklingFilename)
             
         elseif isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling <0
             error('config.ansys.analysisFlags.globalBuckling must be greater than or equal to zero')
@@ -221,7 +221,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
 % ================= READ DEFLECTION RESULTS INTO MATLAB =================       
         if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
 
-            ReadANSYS_DeflectionResults(blade, config, iLoad, deflectionFilename)
+            readANSYS_DeflectionResults(blade, config, iLoad, deflectionFilename)
             
         end
     %% ************************************************************************
@@ -241,7 +241,7 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
         % read buckling results
         if isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling >0
             
-            linearLoadFactors = ReadANSYS_LinearBucklingResults(blade, config, iLoad, fid, bucklingFilename);
+            linearLoadFactors = readANSYS_LinearBucklingResults(blade, config, iLoad, fid, bucklingFilename);
             
         end
 
@@ -296,11 +296,11 @@ function [designvar] = layupDesign_ANSYSanalysis(blade,loadsTable,config,varargi
             if isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection)
                 
                 %UNSUPPORTED AT THIS TIME 
-                PerformANSYS_NonlinearLocalBuckling(blade, config, iLoad, fid, ansysFilename, ii, jj)
+                performANSYS_NonlinearLocalBuckling(blade, config, iLoad, fid, ansysFilename, ii, jj)
                 
             end
             % perform wrinkling check
-            [wrinklingLimitingElementData]=Fagerber2005wricklingCheck(app,SkinAreas,compsInModel,config.ansys.analysisFlags.localBuckling);
+            [wrinklingLimitingElementData]=fagerber2005wricklingCheck(app,SkinAreas,compsInModel,config.ansys.analysisFlags.localBuckling);
             designvar.localBuckling{iLoad}=wrinklingLimitingElementData(3);
             delete *faceAvgStresses.txt
         end

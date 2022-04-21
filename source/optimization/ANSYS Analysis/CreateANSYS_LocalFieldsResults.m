@@ -1,4 +1,4 @@
-function CreateANSYS_LocalFieldsResults(blade, config, iLoad, fid)
+function createANSYS_LocalFieldsResults(blade, config, iLoad, fid)
     %%%%%%%%%%%%%%%%%%%Outputs for fatigue analysis in MATLAB%%%%%%%%%%%%%%%%%
     fprintf(fid,'! BEGIN LOCAL FIELD SCRIPT\n');
     fprintf(fid,'allsel\n');

@@ -1,4 +1,4 @@
-function PerformANSYS_NonlinearLocalBuckling(blade, config, iLoad, fid, ansysFilename, ii, jj)
+function performANSYS_NonlinearLocalBuckling(blade, config, iLoad, fid, ansysFilename, ii, jj)
 %UNSUPPORTED AT THIS TIME 
 %                 filename=strcat(ansysFilename,'-',int2str(ii),'-',int2str(jj)); %The name of the next job name
 %                 %%%%%%%        Generate Wrinkling Files        %%%%%%%%%%%%%

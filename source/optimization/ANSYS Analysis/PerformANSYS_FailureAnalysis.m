@@ -1,4 +1,4 @@
-function PerformANSYS_FailureAnalysis(blade, config, iLoad, fid, failureFilename)
+function performANSYS_FailureAnalysis(blade, config, iLoad, fid, failureFilename)
     fprintf(fid,'! BEGIN FAILURE SCRIPT\n');
     fprintf(fid,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
     fprintf(fid,'!Add for PLESOL and *get,findex,PLNSOL,0,MAX to work');
