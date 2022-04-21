@@ -1077,6 +1077,316 @@ classdef BladeDef < handle
             make_c_array_BladeDef(obj)
         end
         
+        function [nodes,elements,outerShellElSets,shearWebElSets] = getShellMesh(obj)
+            %% This method generates a finite element shell mesh for the blade, based on what is
+            %% stored in blade.geometry, blade.keypoints, and blade.profiles.  Element sets are 
+            %% returned corresponding to blade.stacks and blade.swstacks
+            geomSz = size(obj.geometry);
+            lenGeom = geomSz(1);
+            numXsec = geomSz(3);
+            XSCurvePts = [];
+            %% Determine the key curve points along the OML at each cross section
+            for i = 1:numXsec
+                keyPts = 1;
+                minDist = 1;
+                lePt = 1;
+                for j = 1:lenGeom
+                    prof = obj.profiles(j,:,i);
+                    mag = sqrt(prof*prof');
+                    if(mag < minDist)
+                        minDist = mag;
+                        lePt = j;
+                    end
+                end
+                for j = 1:5
+                    kpCrd = obj.keypoints(j,:,i);
+                    minDist = obj.ichord(i);
+                    pti = 1;
+                    for k = 1:lePt
+                        ptCrd = obj.geometry(k,:,i);
+                        vec = ptCrd - kpCrd;
+                        mag = sqrt(vec*vec');
+                        if(mag < minDist)
+                            minDist = mag;
+                            pti = k;
+                        end
+                    end
+                    keyPts = [keyPts,pti];
+                end
+                keyPts = [keyPts,lePt];
+                for j = 6:10
+                    kpCrd = obj.keypoints(j,:,i);
+                    minDist = obj.ichord(i);
+                    pti = 1;
+                    for k = lePt:lenGeom
+                        ptCrd = obj.geometry(k,:,i);
+                        vec = ptCrd - kpCrd;
+                        mag = sqrt(vec*vec');
+                        if(mag < minDist)
+                            minDist = mag;
+                            pti = k;
+                        end
+                    end
+                    keyPts = [keyPts,pti];
+                end
+                keyPts = [keyPts,lenGeom];
+                allPts = keyPts(1);
+                for j = 1:length(keyPts)-1
+                    secPts = linspace(keyPts(j),keyPts(j+1),4);
+                    secPts = round(secPts);
+                    allPts = [allPts,secPts(2:4)];
+                end
+                XSCurvePts = [XSCurvePts;allPts];
+            end
+            [rws,cls] = size(XSCurvePts);
+            %% Create longitudinal splines down the blade through each of the key X-section points
+            splineX = [];
+            splineY = [];
+            splineZ = [];
+            for i = 1:rws
+                Xrow = obj.geometry(XSCurvePts(i,:),1,i);
+                splineX = [splineX;Xrow'];
+                Yrow = obj.geometry(XSCurvePts(i,:),2,i);
+                splineY = [splineY;Yrow'];
+                Zrow = obj.geometry(XSCurvePts(i,:),3,i);
+                splineZ = [splineZ;Zrow'];
+            end
+            spParam = linspace(0,1,rws)';
+            nSpi = rws + 2*(rws-1);
+            spParami = linspace(0,1,nSpi)';
+            splineXi = [];
+            splineYi = [];
+            splineZi = [];
+            for i = 1:cls
+                splineXi = [splineXi,interp1(spParam,splineX(:,i),spParami,'pchip')];
+                splineYi = [splineYi,interp1(spParam,splineY(:,i),spParami,'pchip')];
+                splineZi = [splineZi,interp1(spParam,splineZ(:,i),spParami,'pchip')];
+            end
+            %% Generate the mesh using the splines as surface guides
+            nodes = [];
+            elements = [];
+            %% Outer shell sections
+            outerShellElSets = [];
+            stPt = 1;
+            for i = 1:rws-1
+                stSp = 1;
+                setCol = [];
+                for j = 1:12
+                    shellKp = [splineXi(stPt,stSp),splineYi(stPt,stSp),splineZi(stPt,stSp);...
+                        splineXi(stPt,stSp+3),splineYi(stPt,stSp+3),splineZi(stPt,stSp+3);...
+                        splineXi(stPt+3,stSp+3),splineYi(stPt+3,stSp+3),splineZi(stPt+3,stSp+3);...
+                        splineXi(stPt+3,stSp),splineYi(stPt+3,stSp),splineZi(stPt+3,stSp);...
+                        splineXi(stPt,stSp+1),splineYi(stPt,stSp+1),splineZi(stPt,stSp+1);...
+                        splineXi(stPt,stSp+2),splineYi(stPt,stSp+2),splineZi(stPt,stSp+2);...
+                        splineXi(stPt+1,stSp+3),splineYi(stPt+1,stSp+3),splineZi(stPt+1,stSp+3);...
+                        splineXi(stPt+2,stSp+3),splineYi(stPt+2,stSp+3),splineZi(stPt+2,stSp+3);...
+                        splineXi(stPt+3,stSp+2),splineYi(stPt+3,stSp+2),splineZi(stPt+3,stSp+2);...
+                        splineXi(stPt+3,stSp+1),splineYi(stPt+3,stSp+1),splineZi(stPt+3,stSp+1);...
+                        splineXi(stPt+2,stSp),splineYi(stPt+2,stSp),splineZi(stPt+2,stSp);...
+                        splineXi(stPt+1,stSp),splineYi(stPt+1,stSp),splineZi(stPt+1,stSp);...
+                        splineXi(stPt+1,stSp+1),splineYi(stPt+1,stSp+1),splineZi(stPt+1,stSp+1);...
+                        splineXi(stPt+1,stSp+2),splineYi(stPt+1,stSp+2),splineZi(stPt+1,stSp+2);...
+                        splineXi(stPt+2,stSp+2),splineYi(stPt+2,stSp+2),splineZi(stPt+2,stSp+2);...
+                        splineXi(stPt+2,stSp+1),splineYi(stPt+2,stSp+1),splineZi(stPt+2,stSp+1)];
+                    vec = shellKp(2,:) - shellKp(1,:);
+                    mag = sqrt(vec*vec');
+                    nEl = ceil(mag/obj.mesh);
+                    vec = shellKp(3,:) - shellKp(2,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(4,:) - shellKp(3,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(1,:) - shellKp(4,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    shell = shellRegion('quad16',shellKp,nEl);
+                    [regNodes,regElements] = shell.createShellMesh('quad','structured');
+                    numNds = size(nodes,1);
+                    numEls = size(elements,1);
+                    for k = 1:size(regElements,1)
+                        for m = 1:size(regElements,2)
+                            if(regElements(k,m) < 1)
+                                regElements(k,m) = -numNds;
+                            end
+                        end
+                    end
+                    regElements = regElements + numNds;
+                    nodes = [nodes;regNodes];
+                    elements = [elements;regElements];
+                    elList = [numEls+1:size(elements,1)];
+                    newSet = elementSet(obj.stacks(j,i).name,obj.stacks(j,i).plygroups,elList);
+                    setCol = [setCol;newSet];
+                    stSp = stSp + 3;
+                end
+                outerShellElSets = [outerShellElSets,setCol];
+                stPt = stPt + 3;
+            end
+            %% Shear web sections
+            stPt = 1;
+            web1Sets = [];
+            web2Sets = [];
+            disp('meshing webs')
+            for i = 1:rws-1
+                if(~isempty(obj.swstacks{1}(i).plygroups))
+                    shellKp = zeros(16,3);
+                    shellKp(1,:) = [splineXi(stPt,13),splineYi(stPt,13),splineZi(stPt,13)];
+                    shellKp(2,:) = [splineXi(stPt,25),splineYi(stPt,25),splineZi(stPt,25)];
+                    shellKp(3,:) = [splineXi(stPt+3,25),splineYi(stPt+3,25),splineZi(stPt+3,25)];
+                    shellKp(4,:) = [splineXi(stPt+3,13),splineYi(stPt+3,13),splineZi(stPt+3,13)];
+                    shellKp(7,:) = [splineXi(stPt+1,25),splineYi(stPt+1,25),splineZi(stPt+1,25)];
+                    shellKp(8,:) = [splineXi(stPt+2,25),splineYi(stPt+2,25),splineZi(stPt+2,25)];
+                    shellKp(11,:) = [splineXi(stPt+2,13),splineYi(stPt+2,13),splineZi(stPt+2,13)];
+                    shellKp(12,:) = [splineXi(stPt+1,13),splineYi(stPt+1,13),splineZi(stPt+1,13)];
+                    shellKp(5,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(2,:);
+                    shellKp(6,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(2,:);
+                    shellKp(9,:) = 0.6666*shellKp(3,:) + 0.3333*shellKp(4,:);
+                    shellKp(10,:) = 0.3333*shellKp(3,:) + 0.6666*shellKp(4,:);
+                    shellKp(13,:) = 0.6666*shellKp(12,:) + 0.3333*shellKp(7,:);
+                    shellKp(14,:) = 0.3333*shellKp(12,:) + 0.6666*shellKp(7,:);
+                    shellKp(15,:) = 0.6666*shellKp(8,:) + 0.3333*shellKp(11,:);
+                    shellKp(16,:) = 0.3333*shellKp(8,:) + 0.6666*shellKp(11,:);
+                    vec = shellKp(2,:) - shellKp(1,:);
+                    mag = sqrt(vec*vec');
+                    nEl = ceil(mag/obj.mesh);
+                    vec = shellKp(3,:) - shellKp(2,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(4,:) - shellKp(3,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(1,:) - shellKp(4,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    shell = shellRegion('quad16',shellKp,nEl);
+                    [regNodes,regElements] = shell.createShellMesh('quad','structured');
+                    numNds = size(nodes,1);
+                    numEls = size(elements,1);
+                    for k = 1:size(regElements,1)
+                        for m = 1:size(regElements,2)
+                            if(regElements(k,m) < 1)
+                                regElements(k,m) = -numNds;
+                            end
+                        end
+                    end
+                    regElements = regElements + numNds;
+                    nodes = [nodes;regNodes];
+                    elements = [elements;regElements];
+                    elList = [numEls+1:size(elements,1)];
+                    newSet = elementSet(obj.swstacks{1}(i).name,obj.swstacks{1}(i).plygroups,elList);
+                    web1Sets = [web1Sets,newSet];
+                else
+                    newSet = elementSet(obj.swstacks{1}(i).name,obj.swstacks{1}(i).plygroups,[]);
+                    web1Sets = [web1Sets,newSet];
+                end
+                if(~isempty(obj.swstacks{2}(i).plygroups))
+                    shellKp = zeros(16,3);
+                    shellKp(1,:) = [splineXi(stPt,10),splineYi(stPt,10),splineZi(stPt,10)];
+                    shellKp(2,:) = [splineXi(stPt,28),splineYi(stPt,28),splineZi(stPt,28)];
+                    shellKp(3,:) = [splineXi(stPt+3,28),splineYi(stPt+3,28),splineZi(stPt+3,28)];
+                    shellKp(4,:) = [splineXi(stPt+3,10),splineYi(stPt+3,10),splineZi(stPt+3,10)];
+                    shellKp(7,:) = [splineXi(stPt+1,28),splineYi(stPt+1,28),splineZi(stPt+1,28)];
+                    shellKp(8,:) = [splineXi(stPt+2,28),splineYi(stPt+2,28),splineZi(stPt+2,28)];
+                    shellKp(11,:) = [splineXi(stPt+2,10),splineYi(stPt+2,10),splineZi(stPt+2,10)];
+                    shellKp(12,:) = [splineXi(stPt+1,10),splineYi(stPt+1,10),splineZi(stPt+1,10)];
+                    shellKp(5,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(2,:);
+                    shellKp(6,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(2,:);
+                    shellKp(9,:) = 0.6666*shellKp(3,:) + 0.3333*shellKp(4,:);
+                    shellKp(10,:) = 0.3333*shellKp(3,:) + 0.6666*shellKp(4,:);
+                    shellKp(13,:) = 0.6666*shellKp(12,:) + 0.3333*shellKp(7,:);
+                    shellKp(14,:) = 0.3333*shellKp(12,:) + 0.6666*shellKp(7,:);
+                    shellKp(15,:) = 0.6666*shellKp(8,:) + 0.3333*shellKp(11,:);
+                    shellKp(16,:) = 0.3333*shellKp(8,:) + 0.6666*shellKp(11,:);
+                    vec = shellKp(2,:) - shellKp(1,:);
+                    mag = sqrt(vec*vec');
+                    nEl = ceil(mag/obj.mesh);
+                    vec = shellKp(3,:) - shellKp(2,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(4,:) - shellKp(3,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    vec = shellKp(1,:) - shellKp(4,:);
+                    mag = sqrt(vec*vec');
+                    nEl = [nEl;ceil(mag/obj.mesh)];
+                    shell = shellRegion('quad16',shellKp,nEl);
+                    [regNodes,regElements] = shell.createShellMesh('quad','structured');
+                    numNds = size(nodes,1);
+                    numEls = size(elements,1);
+                    for k = 1:size(regElements,1)
+                        for m = 1:size(regElements,2)
+                            if(regElements(k,m) < 1)
+                                regElements(k,m) = -numNds;
+                            end
+                        end
+                    end
+                    regElements = regElements + numNds;
+                    nodes = [nodes;regNodes];
+                    elements = [elements;regElements];
+                    elList = [numEls+1:size(elements,1)];
+                    newSet = elementSet(obj.swstacks{2}(i).name,obj.swstacks{2}(i).plygroups,elList);
+                    web2Sets = [web2Sets,newSet];
+                else
+                    newSet = elementSet(obj.swstacks{2}(i).name,obj.swstacks{2}(i).plygroups,[]);
+                    web2Sets = [web2Sets,newSet];
+                end
+                stPt = stPt + 3;
+            end
+            shearWebElSets{1} = web1Sets;
+            shearWebElSets{2} = web2Sets;
+            %% Eliminate duplicate nodes from the global list and update element connectivity
+            minX = min(nodes(:,1),[],'all') - obj.mesh;
+            maxX = max(nodes(:,1),[],'all') + obj.mesh;
+            minY = min(nodes(:,2),[],'all') - obj.mesh;
+            maxY = max(nodes(:,2),[],'all') + obj.mesh;
+            minZ = min(nodes(:,3),[],'all') - obj.mesh;
+            maxZ = max(nodes(:,3),[],'all') + obj.mesh;
+            gS = 2*obj.mesh;
+            nodeGL = spatialGridList3D(minX,maxX,minY,maxY,minZ,maxZ,gS,gS,gS);
+            numNds = length(nodes);
+            for i = 1:numNds
+                nodeGL = nodeGL.addEntry(i,nodes(i,:));
+            end
+            nodeElim = zeros(numNds,1);
+            newLabel = zeros(numNds,1);
+            newNodes = [];
+            lab = 0;
+            for i = 1:numNds
+                if(nodeElim(i) == 0)
+                    lab = lab + 1;
+                    newLabel(i) = lab;
+                    newNodes = [newNodes;nodes(i,:)];
+                    nearNds = nodeGL.findInRadius(nodes(i,:),obj.mesh);
+                    for j = 1:length(nearNds)
+                        if(nearNds(j) ~= i)
+                            k = nearNds(j);
+                            vec = nodes(i,:) - nodes(k,:);
+                            dist = sqrt(vec*vec');
+                            if(dist < obj.mesh*1e-4)
+                                nodeElim(k) = i;
+                            end
+                        end
+                    end
+                end
+            end
+            nodes = newNodes;
+            [numEl,elNds] = size(elements);
+            for i = 1:numEl
+                for j = 1:elNds
+                    if(elements(i,j) ~= 0)
+                        orig = elements(i,j);
+                        k = nodeElim(orig);
+                        if(k ~= 0)
+                            elements(i,j) = newLabel(k);
+                        else
+                            elements(i,j) = newLabel(orig);
+                        end
+                    end
+                end
+            end
+        end
+
+        
         function generateFEA(obj) 
             % This method generates FEA    
             
