@@ -1,4 +1,4 @@
-function designvar = readANSYS_DeflectionResults(blade, config, iLoad, deflectionFilename)
+function designvar = readAnsysDeflections(blade, config, iLoad, deflectionFilename)
     nSpan=length(blade.ispan);
     data=zeros(nSpan,6);  %u1Avg,u2Avg,u3Avg,0,theta2,theta3
     for iSpan=1:nSpan

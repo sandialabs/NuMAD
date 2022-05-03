@@ -1,4 +1,4 @@
-function linearLoadFactors = readANSYS_LinearBucklingResults(blade, config, iLoad, fid, bucklingFilename)
+function linearLoadFactors = readAnsysLinearBuckling(blade, config, iLoad, fid, bucklingFilename)
 
     fid=fopen([bucklingFilename '.out']);
     for jj=1:5

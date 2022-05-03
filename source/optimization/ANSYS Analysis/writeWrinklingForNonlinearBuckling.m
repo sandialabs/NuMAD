@@ -1,5 +1,5 @@
 %% Faceplate Wrinkling Post-Processing Script
-function [wrinklingLimitingElementData]=wrinklingForNonlinearBuckling(blade,coreMatName,settings,np,ansysFilename,i,j)
+function [wrinklingLimitingElementData]=writeWrinklingForNonlinearBuckling(blade,coreMatName,settings,np,ansysFilename,i,j)
         filename=strcat(ansysFilename,'-',int2str(i),'-',int2str(j)); %The name of the next job name
         %%%%%%%        Generate Wrinkling Files        %%%%%%%%%%%%%
         script_name=strcat('commands4-',int2str(i),'.mac');
@@ -28,5 +28,5 @@ function [wrinklingLimitingElementData]=wrinklingForNonlinearBuckling(blade,core
         
 
         
-        [wrinklingLimitingElementData]=Fagerber2005wricklingCheck(app,SkinAreas,compsInModel,coreMatName);
+        [wrinklingLimitingElementData]=writeAnsysFagerberWrinkling(app,SkinAreas,compsInModel,coreMatName);
 end

@@ -1,5 +1,5 @@
 %% Non-linear Buckling Analysis Script
-function nonlinearLoadFactors=nonlinearBuckling(ansysFilename, ansys_path, ansys_product, config, ii, jj, ncpus, iLoad)
+function nonlinearLoadFactors=writeAnsysNonLinearBuckling(ansysFilename, ansys_path, ansys_product, config, ii, jj, ncpus, iLoad)
     warning('output designvar. Currently does not work for nonlinear cases')
 
     script_name=strcat('commands3-',int2str(ii),'.mac');
@@ -57,7 +57,7 @@ function nonlinearLoadFactors=nonlinearBuckling(ansysFilename, ansys_path, ansys
 %     fprintf(fid,'nsubstep=%f\n', nsubstep);
 %     fprintf(fid,'NSUBST,508,20,500\n');
 %     fprintf(fid,'NEQIT,200,\n');
-    loadScaleFactor=1.1; %Make sure to scale the load arbitrarily high enought such that the solution never converges
+    loadScaleFactor=5; %Make sure to scale the load arbitrarily high enought such that the solution never converges
 %     fprintf(fid,'allsel\n');
 %     fprintf(fid,'esel,s,type,,33\n'); %Select all follower elements
     fprintf(fid,'NSEL, ALL\n');

@@ -1,5 +1,5 @@
 %% Panel Stresses Analysis Script
-function [app,SkinAreas,compsInModel]=writeANSYSgetFaceStresses(blade,fid,coreMatName)
+function [app,SkinAreas,compsInModel]=writeAnsysGetFaceStresses(blade,fid,coreMatName)
   
     [isoorthoInModel,compsInModel,SkinAreas,app] = getMatrialLayerInfoWithOutGUI(blade);
     %fid=fopen('getFaceStresses.mac','w+');

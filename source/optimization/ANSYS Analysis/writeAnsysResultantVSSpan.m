@@ -1,4 +1,4 @@
-function performANSYS_ResultantVSSpanAnalysis(blade, config, iLoad, fid)
+function writeAnsysResultantVSSpan(blade, config, iLoad, fid)
     fprintf(fid,'/POST1\n');
     fprintf(fid,'set,LAST\n');
     fprintf(fid,'RSYS,0\n'); %global coordinates

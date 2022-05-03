@@ -1,4 +1,4 @@
-function ad2ansysFollower_RJC(maptype,nlistfile,loads,outfile)
+function beamForceToAnsysShellFollower(maptype,nlistfile,loads,outfile)
 %AD2ANSYS  Maps AeroDyn forces to an ANSYS blade FE model
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
@@ -73,7 +73,19 @@ end
 nlist = read_nlist(nlistfile);
 %     assignin('base','nlist',nlist);  %debugging
 
-
+%Look through nlist, remove root nodes
+% nlist_new = zeros(size(nlist));
+z = 0;
+for l = 1:length(nlist(:,4))
+    if nlist(l,4) == 0
+        continue
+%         nlist_new(l,:) = [];
+    else
+        z = z+1;
+        nlist_new(z,:)= nlist(l,:);
+    end
+end
+nlist = nlist_new;
 % % open file selector if 'forcesfile' not given
 % if ~exist('forcesfile','var') || isempty(forcesfile)
 %     [fn,pn] = uigetfile( ...
@@ -99,6 +111,7 @@ switch maptype
     case 'map3D_fxM0'
         forcemap = map3D_fxM0(nlist,loads);
 end
+
 
 forcesums = check_sums(nlist,loads,forcemap);
 

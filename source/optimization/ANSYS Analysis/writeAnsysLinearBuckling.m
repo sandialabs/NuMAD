@@ -1,4 +1,4 @@
-function performANSYS_LinearBucklingAnalysis(blade, config, iLoad, fid, bucklingFilename)
+function writeAnsysLinearBuckling(blade, config, iLoad, fid, bucklingFilename)
     fprintf(fid,'! BEGIN BUCKLE MACRO\n');
     fprintf(fid,'allsel\n');
     fprintf(fid,'/solu\n');

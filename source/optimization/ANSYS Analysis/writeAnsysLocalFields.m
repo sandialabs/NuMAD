@@ -1,23 +1,10 @@
-function createANSYS_LocalFieldsResults(blade, config, iLoad, fid)
+function writeAnsysLocalFields(blade, config, iLoad, fid)
     %%%%%%%%%%%%%%%%%%%Outputs for fatigue analysis in MATLAB%%%%%%%%%%%%%%%%%
     fprintf(fid,'! BEGIN LOCAL FIELD SCRIPT\n');
     fprintf(fid,'allsel\n');
     fprintf(fid,'/prep7\n');
     fprintf(fid,'esel,all\n');
-    %% RC Addition
-    %High Pressure Spar
-    fprintf(fid,'esel,s,sect,,3,39,12\n');
-    fprintf(fid,'esel,a,sect,,53,389,14\n');
     
-    %Low Pressure Spar
-    fprintf(fid,'esel,a,sect,,9,45,12\n');
-    fprintf(fid,'esel,a,sect,,59,395,14\n');
-    %% RC Addition End
-    fprintf(fid,'esel,u,type,,21  \n');
-    fprintf(fid,'/POST1\n');
-    fprintf(fid,'set,LAST\n');
-    fprintf(fid,'RSYS,SOLU\n'); %Result in the element coordinate system
-
     %%% Element Stress %%%
     fprintf(fid, 'ALLSEL\n');
     fprintf(fid,'ETABLE, zcent,CENT,Z\n'); 
