@@ -1151,7 +1151,8 @@ try
     
     switch app.ansys.ElementSystem
         case {'91','99','281','181'}
-            fprintf(fid,'\n   cerig,z_master_node_number,all,RXYZ\n');
+%             fprintf(fid,'\n   cerig,z_master_node_number,all,RXYZ\n');
+            fprintf(fid,'\n   cerig,z_master_node_number,all,ALL\n');
         case '191'
             fprintf(fid,'\n   cerig,z_master_node_number,all,uxyz\n');
     end

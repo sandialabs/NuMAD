@@ -81,11 +81,11 @@ if(runAnsys == 1)
     
     %%  Run main ANSYS analysis for failure/buckling/fatigue
     
-    mainAnalysisOut = layupDesign_ANSYSanalysis(blade,maximumLoadsTable,mainConfig,IEC)
+    mainAnalysisOut = layupDesignAnsysAnalysis(blade,maximumLoadsTable,mainConfig,IEC)
     
     %%  Run ANSYS analysis for maximum tip deflection
     
-    defAnalysisOut = layupDesign_ANSYSanalysis(blade,maxDeflectionLoadsTable,defConfig,IEC)
+    defAnalysisOut = layupDesignAnsysAnalysis(blade,maxDeflectionLoadsTable,defConfig,IEC)
     
     %%  Run ANSYS analysis for frequency analysis
     freqAnalysisOut = layupDesign_ANSYSfrequency(freqConfig)

@@ -45,7 +45,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add displacement penalty
     if(isfield(config,'defConfig'))
         delete 'file.lock';
-        ansysResult = layupDesign_ANSYSanalysis(blade,defLoadsTable,config.defConfig);
+        ansysResult = layupDesignAnsysAnalysis(blade,defLoadsTable,config.defConfig);
         maxDeflection = max(ansysResult.deflection{1},[],'all');
         objVal = objVal + c1*(maxDeflection/deflectionLimit)^2;
     end
@@ -53,7 +53,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add failure, buckling, fatigue penalties
     if(isfield(config,'failConfig'))
         delete 'file.lock';
-        ansysResult = layupDesign_ANSYSanalysis(blade,loadsTable,config.failConfig,IEC);
+        ansysResult = layupDesignAnsysAnalysis(blade,loadsTable,config.failConfig,IEC);
         disp('postprocessing failure')
         if(isfield(config.failConfig.ansys.analysisFlags,'failure'))
             for i = 1:length(ansysResult.failure)
