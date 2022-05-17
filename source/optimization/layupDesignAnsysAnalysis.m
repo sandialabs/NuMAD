@@ -70,7 +70,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
         forcefilename='forces';
         
-        if config.ansys.analysisFlags.FollowerForces == 1
+        if isfield(config.ansys.analysisFlags, 'FollowerForces') && isfield(config.ansys.analysisFlags, 'StaticNonlinear')
             beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
           beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
@@ -104,7 +104,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         fprintf(fid,'/solu\n');
         
         fprintf(fid,'antype,static\n');
-        if config.ansys.analysisFlags.StaticNonlinear == 1
+        if isfield(config.ansys.analysisFlags, 'StaticNonlinear')
             fprintf(fid,'nlgeom,1\n'); %%%%%%%%%%%%%%%%%%%%%%%% TEMP
             fprintf(fid,'OUTRES,all,ALL\n');%%%%%%%%%%%%%%%%%%%%%%%% TEMP
 %         else
@@ -225,7 +225,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
 % ================= READ DEFLECTION RESULTS INTO MATLAB =================       
         if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
 
-            readAnsysDeflections(blade, config, iLoad, deflectionFilename)
+            designvar = readAnsysDeflections(blade, config, iLoad, deflectionFilename);
             
         end
     %% ************************************************************************
