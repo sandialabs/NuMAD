@@ -521,7 +521,7 @@ writetable(tblMaxOoPDefl50yearValues, 'IECDLC_1p1_50yearLoads.xlsx','Sheet','Max
 
 
 return
-calculate the output maximums and minimums in a non-extrapolated manner
+%calculate the output maximums and minimums in a non-extrapolated manner
 fst=readFastMain(['IEC_' params.fstfn '.fst']);
 bld=readFastBlade(strrep(fst.BldFile{1},'"',''));
 ad=readFastAD(strrep(fst.ADFile,'"',''));

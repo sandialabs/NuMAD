@@ -27,7 +27,7 @@ load exampleBladeObject.mat
 BladeDef_to_NuMADfile(blade,IEC.numadfn,'MatDBsi.txt');
 
 %%  Execute runIEC function to perform aeroelastic analysis
- 
+
 IECOutput = runIEC(DLCoptions,simFlag,IEC);
 
 if(runAnsys == 1)
