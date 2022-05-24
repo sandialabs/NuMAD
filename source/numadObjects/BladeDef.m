@@ -1226,7 +1226,6 @@ classdef BladeDef < handle
             stPt = 1;
             web1Sets = [];
             web2Sets = [];
-            disp('meshing webs')
             for i = 1:rws-1
                 if(~isempty(obj.swstacks{1}(i).plygroups))
                     shellKp = zeros(16,3);
@@ -1358,11 +1357,12 @@ classdef BladeDef < handle
                     newNodes = [newNodes;nodes(i,:)];
                     nearNds = nodeGL.findInRadius(nodes(i,:),obj.mesh);
                     for j = 1:length(nearNds)
-                        if(nearNds(j) ~= i)
+                        k = nearNds(j);
+                        if(k > i && nodeElim(k) == 0)
                             k = nearNds(j);
                             vec = nodes(i,:) - nodes(k,:);
                             dist = sqrt(vec*vec');
-                            if(dist < obj.mesh*1e-4)
+                            if(dist < obj.mesh*1e-10)
                                 nodeElim(k) = i;
                             end
                         end
