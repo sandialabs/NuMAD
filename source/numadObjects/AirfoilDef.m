@@ -63,21 +63,86 @@ classdef AirfoilDef < handle
                     if ~isempty(regexp(filecontents,'<coords>','once'))
                         % files is numad's xml-style
                         [coords, ref] = readAirfoilXML(filecontents);
-                        obj.reference = ref;
-                        obj.coordinates = coords;
                     else
                         [coords, ref] = readAirfoilColumns(filecontents);
-                        obj.reference = ref;
-                        obj.coordinates = coords;
                     end
+
+                    obj.reference = ref;
+                    obj.coordinates = coords;
                 catch ME
                     fprintf('Error interpreting airfoil file %s\n',filename);
                     rethrow(ME);
                 end
             end
-%             obj.resample(400);
+             obj.manageTE;
+
         end
         
+
+        function obj=manageTE(obj)
+            
+            %Method finds which airfoil is flatback. If points are placed
+            %in flatback region, they are removed for good resampling
+            %results. Currently this removal only works
+            %for one point located on TE region. Method also gets the TE tpye for round sections. 
+            
+            nPoints=length(obj.coordinates);
+            unitNormals=zeros(nPoints-1,2);
+            for iPoint=1:nPoints-1
+               x1=obj.coordinates(iPoint,1);
+               y1=obj.coordinates(iPoint,2);
+               x2=obj.coordinates(iPoint+1,1);
+               y2=obj.coordinates(iPoint+1,2);
+               currentPoint = [x1, y1]; nextPoint = [x2, y2]; 
+               xCoords=[x1;x2]; yCoords=[y1;y2];
+               r=nextPoint-currentPoint; %Postion vector from currentPoint to nextPoint
+               if abs(r(1)) + abs(r(2)) ~= 0 %Skip if points are coincedint
+                   unitNorm=null(r)';
+                   crossProduct=cross([r 0],[unitNorm 0]);
+                   if crossProduct(3)<0
+                       unitNorm=-unitNorm;
+                   end
+                   unitNormals(iPoint,:)=unitNorm;
+               else
+                   unitNormals(iPoint,:)=[NaN NaN];
+               end
+            end
+            for iPoint=1:nPoints
+                text(obj.coordinates(iPoint,1),obj.coordinates(iPoint,2),num2str(iPoint),'Color','b')
+            end
+            %Find the angle changes between adjacent unit vectors
+            angleChange=zeros(length(unitNormals),1);
+            for iVector =1:length(unitNormals)-1
+                currentVector=unitNormals(iVector,:);
+                nextVector=unitNormals(iVector+1,:);
+                angleChange(iVector)=acosd(currentVector*nextVector');
+            end
+            
+            %angle change between last point and first point
+            currentVector=unitNormals(iVector+1,:);
+            nextVector=unitNormals(1,:);
+            angleChange(iVector+1)=acosd(currentVector*nextVector');
+            
+            discontinuities = find(angleChange>45);
+                    
+            if numel(discontinuities) == 2
+                
+                %Flatback piece in airfoil. delete for resampling
+                if discontinuities(1) == 1 && discontinuities(2)==numel(angleChange)
+                    indexToDelete=1;
+                else
+                    indexToDelete=numel(angleChange);
+                end
+                obj.coordinates(indexToDelete,:)=[];
+            end
+            
+            if std(angleChange) < 1 
+                obj.TEtype='round';
+            end
+
+        end
+        
+            
         function resample(obj,n_samples,spacing)
             % AirfoilDef.resample
             % af.resample(n_samples,spacing)
@@ -85,13 +150,16 @@ classdef AirfoilDef < handle
             %
             % af.resample(200,'half-cosine');
             if ~exist('n_samples','var') || isempty(n_samples)
-                n_samples = 400;
+                n_samples = 150;
             end
             if ~exist('spacing','var') || isempty(spacing)
-                spacing = 'auto';
+                spacing = 'cosine';
             end
             for k=1:numel(obj)
+
+                
                 af_out = resampleAirfoil(obj(k).coordinates,n_samples,spacing);
+
                 xcoord = af_out(:,1);
                 ycoord = af_out(:,2);
                 % obj(k).percentthick = (max(ycoord) - min(ycoord))*100;
@@ -99,7 +167,14 @@ classdef AirfoilDef < handle
                 [m,i] = max(obj(k).thickness);
                 obj(k).percentthick = m*100;
                 obj(k).maxthick = obj(k).c(i);
-                obj(k).TEtype = getTEtype(af_out);
+                if ~contains(obj(k).TEtype,'round')
+                    if abs(obj(k).thickness(end)) < 1e-4
+                        obj(k).TEtype = 'sharp';
+                    else
+                        obj(k).TEtype = 'flatback';
+                    end
+                end
+                %obj(k).TEtype = getTEtype(af_out);
             end
         end
         
@@ -465,29 +540,7 @@ if size(af_in,2)~=2
 end
 % End error checking routines
 xy=af_in;
-% ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-% add a (1,0) point for the TE if it does not exist; important for flatback
-% airfoil calculations
-if xy(1,1)==1 && xy(1,2)~=0
-    xy = [1 0; xy];
-elseif xy(1,1)~=1
-    error('airfoil coordinates should include x=1 values for the TE.')
-end
-% ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-xyTE=xy(1,:); % need to store trailing edge point for flatbacks
-% determine trailing edge type
-% flatback: x-coord of 1,2,last point are equal, y-coord not equal
-if (xy(2,1)==xy(1,1)) && (xy(2,2)~=xy(1,2)) ...
-        && (xy(end,1)==xy(1,1)) && (xy(end,2)~=xy(1,2))
-    te_type = 'flatback';
-    xy(1,:) = [];  % do not include first point in spline
-else
-    te_type = 'normal';
-    % make sure the airfoil is closed (so spline extends to TE)
-    if (xy(end,1)~=xy(1,1))
-        xy(end+1,:) = xy(1,:);
-    end
-end
+
 
 %Calculate arc length of xy points clockwise from trailing edge
 n_points=size(xy,1);
@@ -506,7 +559,8 @@ delta=arc_length/(oversample-1);
 %  The manypoints range from 0 to total arc_length, adding a bit on each 
 %  side so that flatbacks extend past x=1 after rotation corrections.
 manypoints = -delta:delta:arc_length+delta;
-spline_type='spline';
+%manypoints = 0:delta:arc_length+delta;
+spline_type='pchip';
 switch spline_type
     case {'linear','pchip','spline'}
         xxyy = interp1(t,xy,manypoints,spline_type);
@@ -521,10 +575,13 @@ end
 % definition can produce situations that break the interpolation step.
 % Instead, we define the LE as the point that is the furthest distance from
 % the TE.
-xxyy = xxyy - repmat(xyTE,size(xxyy,1),1);
+
+xyTE = [mean([xxyy(1,1),xxyy(end,1)]), mean([xxyy(1,2),xxyy(end,2)])];
+xxyy = xxyy - repmat([xyTE(1),xyTE(2)],size(xxyy,1),1);
 rays = hypot( xxyy(:,1), xxyy(:,2) ); % distance of each point from the TE
 [max_ray, max_point] = max(rays);
 ray_angle = atan2( xxyy(max_point,2), -xxyy(max_point,1) );
+
 xxyy = rotate2d(xxyy,ray_angle);
 xxyy = xxyy/max_ray + repmat([1,0],size(xxyy,1),1);
 
@@ -562,8 +619,8 @@ x_rev = flipud(x_fwd);  % x_rev values are nominally 1 to 0
 
 %Calculate interpolated airfoil points. For sharp trailing edge airfoils,
 %the trailing edge point is not repeated
-LP_new=[x_fwd  interp1(LP(:,1),LP(:,2),x_fwd)];
-HP_new=[x_rev  interp1(HP(:,1),HP(:,2),x_rev)];
+LP_new=[x_fwd  interp1(LP(:,1),LP(:,2),x_fwd,'linear','extrap')];
+HP_new=[x_rev  interp1(HP(:,1),HP(:,2),x_rev,'linear','extrap')];
 % Make sure that LE point is at (0,0)
 HP_new(end,:)=[0 0];
 xyTE = [1 0];
@@ -584,6 +641,8 @@ if 0  % debugging plots
     subplot(2,1,2)
     plot(xy(:,1),xy(:,2),'r-x',xxyy(:,1),xxyy(:,2),'b',af_out(:,1),af_out(:,2),'k-o')
     axis equal
+    af_out(1:5,:)
+    af_out(end-5:end,:)
     legend('af\_in points',['af\_in points oversampled by factor of ' num2str(oversample)],'af\_out','Location','SouthEast')
 end
 
@@ -609,23 +668,3 @@ function [c, camber, thickness] = computeCamberAndThickness(x,y)
     thickness = abs(ylp - yhp);
 end
 
-function tetype = getTEtype(xy)
-    if abs(xy(1,2)-xy(2,2)) > eps(1)
-        % y-diff of first two points is non-zero for flatback
-        tetype = 'flat';
-    else
-        % y-diff of first two points is zero otherwise (point
-        % is duplicated)
-        hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
-        lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
-        if (hp_angle + lp_angle) > 0.8*pi
-            % if angle is approaching 180deg, then treat as
-            % 'round'
-            % jcb: it may be better to base this decision on
-            % continuity of slope or curvature
-            tetype = 'round';
-        else
-            tetype = 'sharp';
-        end
-    end
-end

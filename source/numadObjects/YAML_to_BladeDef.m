@@ -80,7 +80,11 @@ for  i = 1:length(tc)
     afc(i) = AirfoilDef(fullfile([out_folder '/af_coords/' data.components.blade.outer_shape_bem.airfoil_position.labels{i} '.txt']));
     obj.addStation(afc(i),tc_xL(i).*L);
 end
-afc.resample; % max 175 points for Ansys FEA
+afc.resample; 
+% for ii=1:8
+%     afc(ii).plot
+%     axis([0.99 1.003 -0.02 0.02])
+% end
 % afc.plot
 % 
 % 
