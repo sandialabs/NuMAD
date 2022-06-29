@@ -107,9 +107,9 @@ classdef AirfoilDef < handle
                    unitNormals(iPoint,:)=[NaN NaN];
                end
             end
-            for iPoint=1:nPoints
-                text(obj.coordinates(iPoint,1),obj.coordinates(iPoint,2),num2str(iPoint),'Color','b')
-            end
+%             for iPoint=1:nPoints
+%                 text(obj.coordinates(iPoint,1),obj.coordinates(iPoint,2),num2str(iPoint),'Color','b')
+%             end
             %Find the angle changes between adjacent unit vectors
             angleChange=zeros(length(unitNormals),1);
             for iVector =1:length(unitNormals)-1

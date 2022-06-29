@@ -43,6 +43,9 @@ classdef BladeDef < handle
         idegreestwist       % (read-only) interpolated twist
         ichord              % (read-only) interpolated chord
         ipercentthick       % (read-only) interpolated thickness
+        ithickness
+        ic
+        icamber
         ichordoffset        % (read-only) interpolated offset
         iaerocenter         % (read-only) interpolated aerocenter
         isweep              % (read-only) interpolated sweep
@@ -191,7 +194,59 @@ classdef BladeDef < handle
             obj.updateKeypoints;
             obj.updateBOM;
         end
-            
+        
+        function openTE(obj)
+            [~,~,nStations]=size(obj.geometry);
+            minimumTEedgelength=0.003; 
+
+            for iStation=1:nStations
+                firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
+                secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation); 
+                edgeLength=norm(secondPont-firstPoint);
+                fprintf('station %i, edgeLength: %f\n',iStation,edgeLength*1000)
+               
+                [maxthick,mtindex] = max(obj.ithickness(:,iStation));
+                tratio = obj.ipercentthick(iStation) / (maxthick * 100);
+                airFoilThickness = obj.ithickness(:,iStation) * tratio;
+                onset = obj.ic(mtindex,iStation);
+                if edgeLength < minimumTEedgelength 
+                    tet=(minimumTEedgelength-edgeLength)/obj.ichord(iStation);
+                    tes = 5/3 * tet;       % slope of TE adjustment; 5/3*tet is "natural"
+
+                    % continuous first & second derivatives at 'onset'
+                    % maintain second & third derivative at mc==1 (TE)
+                    % adjust slope at mc==1 (TE) by tes
+                    A = [1,  1,  1,   1;
+                         3,  4,  5,   6;
+                         6, 12, 20,  30;
+                         6, 24, 60, 120];
+                    d = [tet; tes; 0; 0];
+                    p = A\d;
+
+                    %onset = obj(k).maxthick;  % start of TE modification, measured from LE
+                    mc = max((obj.ic(:,iStation) - onset)/(1-onset),0);  % coordinate for TE mod
+                    temod = [mc.^3, mc.^4, mc.^5, mc.^6] * p;
+                    airFoilThickness = airFoilThickness + temod;
+
+                    obj.ithickness(:,iStation)=airFoilThickness/tratio;
+                    profile=getAirfoilProfile(obj.ithickness(:,iStation),obj.ipercentthick(iStation),obj.icamber(:,iStation),obj.ic(:,iStation));
+
+                    obj.profiles(:,:,iStation)=profile;
+                    [~,mtindex] = max(obj.ithickness(:,iStation));
+                    obj.xoffset(1,iStation) = obj.ic(mtindex,iStation);
+
+                    obj.geometry(:,:,iStation)=getOMLgeometry(obj.profiles(:,:,iStation),obj.naturaloffset,obj.xoffset(1,iStation),obj.ichordoffset(iStation),obj.ichord(iStation),obj.rotorspin,obj.idegreestwist(iStation),obj.isweep(iStation),obj.iprebend(iStation),obj.ispan(iStation));
+
+                    %firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
+                    %secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation);
+                    %edgeLength2=norm(secondPont-firstPoint);
+                    %fprintf('station %i, edgeLength: %f, New edgeLength=%f, percent diff: %f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
+               end
+               
+            end
+            obj.updateKeypoints
+        end      
+        
         function updateGeometry(obj)
             % This method updates the interpolated blade parameters
             
@@ -238,6 +293,9 @@ classdef BladeDef < handle
             ic = transpose(interp1(spanlocation,c',obj.ispan,'pchip'));
             icamber = transpose(interp1(spanlocation,camber',obj.ispan,'pchip'));
             ithickness = transpose(interp1(spanlocation,thickness',obj.ispan,'pchip'));
+            obj.ithickness=ithickness; %Export for TE opening
+            obj.ic=ic;
+            obj.icamber=icamber;
             obj.cpos = [ -ic(end,:); -flipud(ic);   ic(2:end,:);  ic(end,:)];  % chordwise position of interpolated station points
 %             figure(101); surf(repmat(spanlocation,nPoints,1),c,camber,'MeshStyle','column');
 %             figure(102); surf(repmat(spanlocation,nPoints,1),c,thickness,'MeshStyle','column');
@@ -283,57 +341,13 @@ classdef BladeDef < handle
             obj.xoffset = zeros(1,N);
             obj.LEindex = nPoints + 1;  % index of leading edge
             for k=1:N
-                %jcb: note that I'm using max thickness about camber
-                %instead of overall thickness of airfoil. We may need to
-                %change this definition.
-                [maxthick,mtindex] = max(ithickness(:,k));
-                tratio = obj.ipercentthick(k) / (maxthick * 100);
-                thick = ithickness(:,k) * tratio;
-                hp = icamber(:,k) - 0.5*thick;
-                lp = icamber(:,k) + 0.5*thick;
-                c = ic(:,k);
-                x = [ c(end); flipud(c) ;  c(2:end);  c(end)];
-                y = [ 0     ; flipud(hp); lp(2:end);  0     ];
-                obj.profiles(:,1,k) = x;
-                obj.profiles(:,2,k) = y;                
-                obj.xoffset(1,k) = c(mtindex);
-                if obj.naturaloffset
-                    x = x - c(mtindex); 
-                end
-                x = x - obj.ichordoffset(k);   % apply chordwise offset
-                x = x * obj.ichord(k) * -1*obj.rotorspin;  % scale by chord
-                y = y * obj.ichord(k);                     % scale by chord
-                twist = -1*obj.rotorspin * obj.idegreestwist(k);
-                % prepare for hgtransform rotate & translate
-                coords(:,1) = cosd(twist) * x - sind(twist) * y;
-                coords(:,2) = sind(twist) * x + cosd(twist) * y;
-                coords(:,3) = zeros(size(x));
-                coords(:,4) = ones(size(x));
+
+                profile=getAirfoilProfile(ithickness(:,k),obj.ipercentthick(k),icamber(:,k),ic(:,k));
+                obj.profiles(:,:,k)=profile;
+                [~,mtindex] = max(ithickness(:,k));
+                obj.xoffset(1,k) = ic(mtindex,k);
                 
-                % use the generating line to translate and rotate the coordinates
-                [sweep_rot, prebend_rot] = deal(0);
-% jcb: This code, copied from NuMAD 2.0, causes each section to rotate out
-% of plane so that its normal follows the generating line direction. Need
-% to replace 'twistFlag' with '-1*obj.rotorspin' and calculate the slopes
-% based on the available data. For now, default to parallel sections.
-%                 if isequal(blade.PresweepRef.method,'normal')
-%                     sweep_slope = ppval(blade.PresweepRef.dpp,sta.LocationZ);
-%                     sweep_rot = atan(sweep_slope*twistFlag);
-%                 end
-%                 if isequal(blade.PrecurveRef.method,'normal')
-%                     prebend_slope = ppval(blade.PrecurveRef.dpp,sta.LocationZ);
-%                     prebend_rot = atan(-prebend_slope);
-%                 end
-                transX = -1*obj.rotorspin*obj.isweep(k);
-                transY = obj.iprebend(k);
-                transZ = obj.ispan(k);
-                R = makehgtform('yrotate',sweep_rot,'xrotate',prebend_rot);
-                T = makehgtform('translate',transX,transY,transZ);
-                coords = coords * R' * T';
-                % save the transformed coordinates
-                obj.geometry(:,1,k) = coords(:,1);
-                obj.geometry(:,2,k) = coords(:,2);
-                obj.geometry(:,3,k) = coords(:,3);
+                obj.geometry(:,:,k)=getOMLgeometry(obj.profiles(:,:,k),obj.naturaloffset,obj.xoffset(1,k),obj.ichordoffset(k),obj.ichord(k),obj.rotorspin,obj.idegreestwist(k),obj.isweep(k),obj.iprebend(k),obj.ispan(k));
             end
             
             % Calculate the arc length of each curve
