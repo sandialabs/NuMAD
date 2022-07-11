@@ -81,48 +81,8 @@ classdef AirfoilDef < handle
 
         function obj=manageTE(obj)
             
-            %Method finds which airfoil is flatback. If points are placed
-            %in flatback region, they are removed for good resampling
-            %results. Currently this removal only works
-            %for one point located on TE region. Method also gets the TE tpye for round sections. 
-            
-            nPoints=length(obj.coordinates);
-            unitNormals=zeros(nPoints-1,2);
-            for iPoint=1:nPoints-1
-               x1=obj.coordinates(iPoint,1);
-               y1=obj.coordinates(iPoint,2);
-               x2=obj.coordinates(iPoint+1,1);
-               y2=obj.coordinates(iPoint+1,2);
-               currentPoint = [x1, y1]; nextPoint = [x2, y2]; 
-               xCoords=[x1;x2]; yCoords=[y1;y2];
-               r=nextPoint-currentPoint; %Postion vector from currentPoint to nextPoint
-               if abs(r(1)) + abs(r(2)) ~= 0 %Skip if points are coincedint
-                   unitNorm=null(r)';
-                   crossProduct=cross([r 0],[unitNorm 0]);
-                   if crossProduct(3)<0
-                       unitNorm=-unitNorm;
-                   end
-                   unitNormals(iPoint,:)=unitNorm;
-               else
-                   unitNormals(iPoint,:)=[NaN NaN];
-               end
-            end
-%             for iPoint=1:nPoints
-%                 text(obj.coordinates(iPoint,1),obj.coordinates(iPoint,2),num2str(iPoint),'Color','b')
-%             end
-            %Find the angle changes between adjacent unit vectors
-            angleChange=zeros(length(unitNormals),1);
-            for iVector =1:length(unitNormals)-1
-                currentVector=unitNormals(iVector,:);
-                nextVector=unitNormals(iVector+1,:);
-                angleChange(iVector)=acosd(currentVector*nextVector');
-            end
-            
-            %angle change between last point and first point
-            currentVector=unitNormals(iVector+1,:);
-            nextVector=unitNormals(1,:);
-            angleChange(iVector+1)=acosd(currentVector*nextVector');
-            
+            unitNormals=getAirfoilNormals(obj.coordinates);
+            angleChange=getAirfoilNormalsAngleChange(unitNormals);
             discontinuities = find(angleChange>45);
                     
             if numel(discontinuities) == 2

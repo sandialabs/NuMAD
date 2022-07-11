@@ -195,7 +195,7 @@ classdef BladeDef < handle
             obj.updateBOM;
         end
         
-        function openTE(obj)
+        function expandBladeGeometryTEs(obj)
             [~,~,nStations]=size(obj.geometry);
             minimumTEedgelength=0.003; 
 
@@ -203,7 +203,7 @@ classdef BladeDef < handle
                 firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
                 secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation); 
                 edgeLength=norm(secondPont-firstPoint);
-                fprintf('station %i, edgeLength: %f\n',iStation,edgeLength*1000)
+                %fprintf('station %i, edgeLength: %f\n',iStation,edgeLength*1000)
                
                 [maxthick,mtindex] = max(obj.ithickness(:,iStation));
                 tratio = obj.ipercentthick(iStation) / (maxthick * 100);
@@ -237,10 +237,10 @@ classdef BladeDef < handle
 
                     obj.geometry(:,:,iStation)=getOMLgeometry(obj.profiles(:,:,iStation),obj.naturaloffset,obj.xoffset(1,iStation),obj.ichordoffset(iStation),obj.ichord(iStation),obj.rotorspin,obj.idegreestwist(iStation),obj.isweep(iStation),obj.iprebend(iStation),obj.ispan(iStation));
 
-                    %firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
-                    %secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation);
-                    %edgeLength2=norm(secondPont-firstPoint);
-                    %fprintf('station %i, edgeLength: %f, New edgeLength=%f, percent diff: %f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
+%                     firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
+%                     secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation);
+%                     edgeLength2=norm(secondPont-firstPoint);
+%                     fprintf('station %i, edgeLength: %f, New edgeLength=%f, percent diff: %f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
                end
                
             end
@@ -416,6 +416,7 @@ classdef BladeDef < handle
                 n2 = mm_to_m*obj.teband;  % no foam width
                 
                 tempTE = obj.getprofileTEtype(k);
+                
                 obj.TEtype{k} = tempTE{1};
                 if obj.swtwisted
                     % get angle of each xy pair w.r.t. pitch axis (0,0)
@@ -1939,25 +1940,38 @@ classdef BladeDef < handle
         function tetype = getTEtype(obj,xy)
             % This method...
 
-            if abs(xy(2,2)-xy(end-1,2)) > 1e-5
-                % y-diff of second and end-1 points is non-zero for flatback
-                tetype = 'flat';
-                disp('FLATBACK AIRFOIL')
+            unitNormals=getAirfoilNormals(xy);
+            angleChange=getAirfoilNormalsAngleChange(unitNormals);
+            discontinuities = find(angleChange>30);
+            
+            if std(angleChange) < 2 
+                tetype='round';
+            elseif numel(discontinuities) > 1
+                tetype='flat';
             else
-                % y-diff of first two points is zero otherwise (point
-                % is duplicated)
-                hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
-                lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
-                if (hp_angle + lp_angle) > 0.8*pi
-                    % if angle is approaching 180deg, then treat as
-                    % 'round'
-                    % jcb: it may be better to base this decision on
-                    % continuity of slope or curvature
-                    tetype = 'round';
-                else
-                    tetype = 'sharp';
-                end
+                tetype='sharp';
             end
+            
+    
+%             if abs(xy(2,2)-xy(end-1,2)) > 1e-5
+%                 % y-diff of second and end-1 points is non-zero for flatback
+%                 tetype = 'flat';
+%                 disp('FLATBACK AIRFOIL')
+%             else
+%                 % y-diff of first two points is zero otherwise (point
+%                 % is duplicated)
+%                 hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
+%                 lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
+%                 if (hp_angle + lp_angle) > 0.8*pi
+%                     % if angle is approaching 180deg, then treat as
+%                     % 'round'
+%                     % jcb: it may be better to base this decision on
+%                     % continuity of slope or curvature
+%                     tetype = 'round';
+%                 else
+%                     tetype = 'sharp';
+%                 end
+%             end
         end
 
         function fprintf_matrix(obj,fid,matrixData,columnsPerLine)
