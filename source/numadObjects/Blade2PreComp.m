@@ -221,7 +221,7 @@ end
 % Set up Shear Web Layup information
 % determine the composite id for each shear web
 SW=blade.shearweb;
-if ~isempty(SW)
+if ~isempty(SW(1).Material)
     for j=1:length(SW)
         for k=1:length(precomp.stack)
             if strcmp(SW(j).Material,precomp.stack(k).name)
@@ -331,7 +331,7 @@ for ii=1:N_sections
     % Do Shear web conversion stuff
     tmp=[];
     tmp2=[];
-    if ~isempty(SW) % if there is a shearweb
+    if ~isempty(SW(1).Material) % if there is a shearweb
         % Sort out Shear Web placement and material information
         for j=1:length(SW) % count number of shear webs at this station and find index to information
             if SW(j).BeginStation==ii
@@ -387,7 +387,7 @@ for ii=1:N_sections
 end
 
 % Now calculate more information for terminal webs
-if ~isempty(SW)
+if ~isempty(SW(1).Material)
     for ii=2:N_sections
         keycpos = blade.keycpos(:,ii);
         % figure out how many are present in the structure already
