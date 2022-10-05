@@ -1402,7 +1402,7 @@ classdef BladeDef < handle
         end
 
         
-        function generateFEA(obj) 
+        function generateANSYSshellModel(obj) 
             % This method generates FEA    
             
             % NOTE:can add flags into the call -- e.g., element type, ...
@@ -1432,151 +1432,8 @@ classdef BladeDef < handle
             obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
             filename = fullfile(obj.paths.job,shell7_name);
             
-            airfoils_path = 'airfoils';
-            
-            
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-            [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
+            writeANSYSshellModel(obj,filename,fea);
 
-%             [data2.station, data2.shearweb, ~, ~, ~, data2.blade, ~, ~] = readNuMADinput('numad.nmd');
-%             [~,matDataBase2]=dataForNuMADobjects(obj,airfoils_path);
-%             
-%             data.station = resampleAirfoilDB(data.station,200,'cosine');
-%             data2.station = resampleAirfoilDB(data2.station,200,'cosine');
-
-            structToCompare1=data.station;
-            
-            %Remove sig figs to match what NuMAD file would have given
-            fieldNames = fieldnames(structToCompare1);
-            for iStation=1:length(data.station)
-                for iField=1:length(fieldNames) 
-                    item=structToCompare1(iStation).(fieldNames{iField});
-                    dataType=class(item);
-  
-                    if ~strcmp(dataType,'char')
-
-                        [imax,jmax]=size(item);
-                        
-                        for I=1:imax
-                            for J=1:jmax
-                                if  strcmp(dataType,'double') %Only loop through each index if double
-                                    item=structToCompare1(iStation).(fieldNames{iField})(I,J);
-                                    item=str2double(sprintf('%.6g',item));
-                                    structToCompare1(iStation).(fieldNames{iField})(I,J)=item;
-                                elseif  strcmp(dataType,'cell') 
-                                    item=structToCompare1(iStation).(fieldNames{iField}){I,J};
-                                    dataType=class(item);
-                                    if ~strcmp(dataType,'char')
-                                       item=str2double(sprintf('%.6g',item));
-                                       structToCompare1(iStation).(fieldNames{iField}){I,J}=item;
-                                    end
-                                end
-                            end
-                        end
-                        
-                        
-                    end
-
-                    
-                end
-            end
-            data.station=structToCompare1;           
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             fieldNames = fieldnames(structToCompare1);
-%             for iField=1:length(fieldNames) 
-%                 for iStation=1:length(data.station)
-%                 
-%                     item1=structToCompare1(iStation).(fieldNames{iField})
-%                     item2=structToCompare2(iStation).(fieldNames{iField})
-% %                     
-%             
-%             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%              % Diff checker
-%             
-%             structToCompare1=data.station;
-%             structToCompare2=data2.station;
-%             
-%             fieldNames = fieldnames(structToCompare1);
-%             for iStation=1:length(data.station)
-%                 for iField=1:length(fieldNames) 
-%                     item1=structToCompare1(iStation).(fieldNames{iField});
-%                     item2=structToCompare2(iStation).(fieldNames{iField});
-%                     
-%                     if ~isequal(item1,item2)
-% %                         keyboard
-%                         dataType1=class(item1);
-%                         dataType2=class(item2);
-%                        if strcmp(dataType1,'struct')
-%                            break
-%                        end
-%                         [imax,jmax]=size(item1);
-%                         if strcmp(dataType1,dataType2)  %IF they are the same type do this..
-%                             if ~strcmp(dataType1,'char') && (imax>1 || jmax >1)
-% 
-%                                 for I=1:imax
-%                                     for J=1:jmax
-%                                         if  strcmp(dataType1,'double') %Only loop through each index if double
-%                                             dataType='%.15f';
-% 
-%                                             item1=structToCompare1(iStation).(fieldNames{iField})(I,J);
-%                                             item2=structToCompare2(iStation).(fieldNames{iField})(I,J);
-%                                         elseif  strcmp(dataType1,'cell') 
-%                                             item1=structToCompare1(iStation).(fieldNames{iField}){I,J};
-%                                             item2=structToCompare2(iStation).(fieldNames{iField}){I,J};
-% 
-%                                             dataType=class(item1)
-%                                             if  strcmp(dataType1,'double') %Only loop through each index if double
-%                                                 dataType='%.15f';
-%                                             elseif strcmp(dataType,'char')
-%                                                 dataType='%s'; 
-%                                             end
-% 
-%                                         end
-%                                         if ~isequal(item1,item2)
-%                                             string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
-%                                             fprintf(string,item1,item2)
-% 
-%                                         end
-%                                     end
-%                                 end
-%                             else
-% 
-%                                 if strcmp(dataType1,'char')
-%                                     dataType='%s'  ;
-%                                 elseif  strcmp(dataType1,'int')
-%                                     dataType='%i';
-%                                 elseif  strcmp(dataType1,'double')
-%                                     dataType='%.15f';
-%                                 end
-% 
-%                                 
-%                                 string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
-%                                 fprintf(string,item1,item2)
-%                             end
-%                         else
-%                             error('error1')
-%                         end
-%                     end
-%                         
-%                 end
-%             end
-% %             
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
-            
-%             if 1
-%                 [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
-% %                 [data.station, ~, ~, ~, ~, ~, ~, ~] = readNuMADinput('numad.nmd');
-%             else
-%                 [data.station, data.shearweb, ~, ~, ~, data.blade, ~, ~] = readNuMADinput('numad.nmd');
-%                 [~,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
-%             end
-            
-            data.station = resampleAirfoilDB(data.station,200,'cosine');
-            data.blade = calcGenLinePP(data.blade); % update the piecewise polynomial
-            [data.station,data.shearweb,~,~] = sort_stations(data.station,data.shearweb);
-            writeANSYSshellAPDL(obj,filename,data,matDataBase,fea);
             
             if fea.ansys.dbgen
                 if isempty(ansysPath)

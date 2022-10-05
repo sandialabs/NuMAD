@@ -49,31 +49,32 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         error('no analyses are configured in config. Edit config.')
     end
     
-    if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)|| isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
-        [isoorthoInModel,compsInModel,SkinAreas,app] = getMatrialLayerInfoWithOutGUI(blade);
-
-        bladeMatNames=cell(numel(blade.materials),1);
-        for iMat=1:numel(blade.materials)
-            bladeMatNames{iMat}=blade.materials(iMat).name;
-        end
-
-        matPointer=zeros(numel(isoorthoInModel),1);
-        for iMat=1:numel(isoorthoInModel)
-           ansysMPnumber = find(strcmp(isoorthoInModel(iMat),bladeMatNames)==1);
-           matPointer(iMat)=ansysMPnumber;
-        end
-        
-        ansysBladeMaterials=blade.materials(matPointer);
-    end
+%     if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)|| isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
+%         [isoorthoInModel,compsInModel,SkinAreas,app] = getMatrialLayerInfoWithOutGUI(blade);
+% 
+%         bladeMatNames=cell(numel(blade.materials),1);
+%         for iMat=1:numel(blade.materials)
+%             bladeMatNames{iMat}=blade.materials(iMat).name;
+%         end
+% 
+%         matPointer=zeros(numel(isoorthoInModel),1);
+%         for iMat=1:numel(isoorthoInModel)
+%            ansysMPnumber = find(strcmp(isoorthoInModel(iMat),bladeMatNames)==1);
+%            matPointer(iMat)=ansysMPnumber;
+%         end
+%         
+%         ansysBladeMaterials=blade.materials(matPointer);
+          ansysBladeMaterials=blade.materials;
+%     end
     for iLoad=1:length(loadsTable)
         %% ************************************************************************
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
         forcefilename='forces';
         
-        if config.ansys.analysisFlags.FollowerForces == 1
+        if isfield(config.ansys.analysisFlags,'FollowerForces') && ~isempty(config.ansys.analysisFlags.FollowerForces) &&config.ansys.analysisFlags.FollowerForces~=0
             beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
-          beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
+            beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         end
 
         disp('Forces mapped to ANSYS model')
@@ -89,6 +90,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         fid=fopen(script_name,'w+');
 
         fprintf(fid,'/NERR,,99999999\n');
+        fprintf(fid,'/CWD, ''%s''\n',pwd);
         fprintf(fid,'resume,master,db\n');
 %         fprintf(fid,'/FILNAME,''%s'',1\n',ansysFilename);   %From master, change the jobname
         fprintf(fid,'/FILNAME,''%s'',1\n',strcat(ansysFilename,'-Load', int2str(iLoad)));   %From master, change the jobname
@@ -104,7 +106,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         fprintf(fid,'/solu\n');
         
         fprintf(fid,'antype,static\n');
-        if config.ansys.analysisFlags.StaticNonlinear == 1
+        if isfield(config.ansys.analysisFlags,'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
             fprintf(fid,'nlgeom,1\n'); %%%%%%%%%%%%%%%%%%%%%%%% TEMP
             fprintf(fid,'OUTRES,all,ALL\n');%%%%%%%%%%%%%%%%%%%%%%%% TEMP
 %         else
