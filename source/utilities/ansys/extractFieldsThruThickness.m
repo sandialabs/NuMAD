@@ -1,5 +1,4 @@
-function [result]=extractFieldsThruThickness(fileName,sections,elements,ansysBladeMaterials,elementNumbers,coordSys)
-  
+function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,elementNumbers,coordSys)
 
     if ischar(fileName)
         %Used for reading element stresses
@@ -17,10 +16,11 @@ function [result]=extractFieldsThruThickness(fileName,sections,elements,ansysBla
     for i=1:numElem
         elNo=elementNumbers(i);
         elementStringName=['element' int2str(elNo)];
-        sec_num=elements(elNo,6);
-        layerData=sections.layers{sections.secID==sec_num}; %Important, flip the columns since code starts at the top layer.
+        %sec_num=elements(elNo,6);
+        %layerData=sections.layers{sections.secID==sec_num}; %Important, flip the columns since code starts at the top layer.
 
-        nLayers=size(layerData,1);
+        %nLayers=size(layerData,1);
+        nLayers=numel(currentStack);
         k=find(plateStrainsTheta(:,1)==elNo);
         
         if isempty(k)
@@ -31,8 +31,11 @@ function [result]=extractFieldsThruThickness(fileName,sections,elements,ansysBla
         eps=[plateStrainsTheta(k,3); plateStrainsTheta(k,4); plateStrainsTheta(k,5)];
         kappa=[plateStrainsTheta(k,6); plateStrainsTheta(k,7); plateStrainsTheta(k,8)];
         
-        offset=sections.shellOffset{sections.secID==sec_num};
-        h=sections.totalThick(sections.secID==sec_num); %Total thickness
+        [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo);
+        
+        %offset=sections.shellOffset{sections.secID==sec_num};
+        %h=sections.totalThick(sections.secID==sec_num); %Total thickness
+        h=getTotalStackThickness(currentStack);
         
         result.(elementStringName).x3=zeros(nptsPerLayer*nLayers,1);
         result.(elementStringName).eps11=zeros(nptsPerLayer*nLayers,1);
@@ -57,32 +60,33 @@ function [result]=extractFieldsThruThickness(fileName,sections,elements,ansysBla
         end
         
         for j=nLayers:-1:1 %Loop through layers
-            t=layerData(j,2);
+            %t=layerData(j,2);
+            t=currentStack(j).nPlies*currentStack(j).thickness/1000; %Convert m
             dx3=t/(nptsPerLayer-1);
             
             %Get material values
-            matNumber = layerData(j,3);
+            matNumber = currentStack.materialid(j);
 
             
-            ansysBladeMaterials(matNumber).name
-            angle=layerData(j,4); %Layup angle
+
+            angle=currentStack.angle(j); %Layup angle
 
             S0=zeros(6);
             %Orthotropic assumption
-            S0(1,1)=1/ansysBladeMaterials(matNumber).ex;
-            S0(1,2)=-ansysBladeMaterials(matNumber).prxy/ansysBladeMaterials(matNumber).ex;
-            S0(1,3)=-ansysBladeMaterials(matNumber).prxz/ansysBladeMaterials(matNumber).ex;
+            S0(1,1)=1/bladeMaterials(matNumber).ex;
+            S0(1,2)=-bladeMaterials(matNumber).prxy/bladeMaterials(matNumber).ex;
+            S0(1,3)=-bladeMaterials(matNumber).prxz/bladeMaterials(matNumber).ex;
 
             S0(2,1)=S0(1,2);
-            S0(2,2)=1/ansysBladeMaterials(matNumber).ey;
-            S0(2,3)=-ansysBladeMaterials(matNumber).pryz/ansysBladeMaterials(matNumber).ey;
+            S0(2,2)=1/bladeMaterials(matNumber).ey;
+            S0(2,3)=-bladeMaterials(matNumber).pryz/bladeMaterials(matNumber).ey;
 
             S0(3,1)=S0(1,3);
             S0(3,2)=S0(2,3);
 
-            S0(4,4)=1/ansysBladeMaterials(matNumber).gyz;
-            S0(5,5)=1/ansysBladeMaterials(matNumber).gxz;
-            S0(6,6)=1/ansysBladeMaterials(matNumber).gxy;
+            S0(4,4)=1/bladeMaterials(matNumber).gyz;
+            S0(5,5)=1/bladeMaterials(matNumber).gxz;
+            S0(6,6)=1/bladeMaterials(matNumber).gxy;
 
             Se0=inPlaneMatrix(S0);
 									  
@@ -158,7 +162,48 @@ function [result]=extractFieldsThruThickness(fileName,sections,elements,ansysBla
     end
      
 
+function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo)
 
+    %Search for element in aeroshell first
+    [nSegments,nSpanRegions]=size(meshStruct.outerShellElSets);
+    for iSegment=1:nSegments
+        for iSpan=1:nSpanRegions
+               found=any(meshStruct.outerShellElSets(iSegment,iSpan).elementList == elNo);
+               if found==true
+                   break;
+               end
+        end
+       if found==true
+           break;
+       end
+    end
+
+    if found==true
+        currentStack=blade.stacks(iSegment,iSpan);
+        offset='BOT';
+    else %Then search web
+        for iWeb=1:nWebs
+            [~,nSpanRegions]=size(meshStruct.shearWebElSets{iWeb});
+            for iSpan=1:nSpanRegions
+                   found=any(meshStruct.outerShellElSets(iSegment,iSpan).elementList == elNo);
+                   if found==true
+                       break;
+                   end
+            end
+           if found==true
+               break;
+           end
+        end
+
+       if found==true
+           currentStack=blade.swstacks{iWeb}(iSpan);
+           offset='MID';
+       else
+           error('element %i not found',elNo)
+       end
+
+    end
+end
 
 							
 end  

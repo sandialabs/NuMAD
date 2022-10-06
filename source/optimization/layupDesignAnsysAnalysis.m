@@ -1,4 +1,4 @@
-function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin)
+function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,config,varargin)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
     global ansysPath
@@ -154,7 +154,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         % ================= PERFORM FATIGUE ANALYSIS =================
         if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
             
-            writeAnsysFatigue(blade, config, iLoad, fid)
+            writeAnsysFatigue(fid)
             
         end
 %% ************************************************************************
@@ -173,7 +173,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         if isfield(config.ansys.analysisFlags,'failure') && ~isempty(config.ansys.analysisFlags.failure)
             failureFilename = 'results_failure';
             
-            writeAnsysRupture(blade, config, iLoad, fid, failureFilename)
+            writeAnsysRupture(config, iLoad, fid, failureFilename)
             
         end
 
@@ -330,7 +330,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
             IEC=varargin{1};
             [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
             cd 'NuMAD'
-            designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config);
+            designvar.fatigue=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
         else
             error('IECDef required to run fatigue analysis in layupDesignAnsysAnalysis')
         end

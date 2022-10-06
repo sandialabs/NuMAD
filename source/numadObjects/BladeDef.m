@@ -1402,7 +1402,7 @@ classdef BladeDef < handle
         end
 
         
-        function generateANSYSshellModel(obj) 
+        function meshStruct=generateANSYSshellModel(obj) 
             % This method generates FEA    
             
             % NOTE:can add flags into the call -- e.g., element type, ...
@@ -1432,8 +1432,12 @@ classdef BladeDef < handle
             obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
             filename = fullfile(obj.paths.job,shell7_name);
             
-            writeANSYSshellModel(obj,filename,fea);
-
+            [nodes,elements,outerShellElSets,shearWebElSets]=writeANSYSshellModel(obj,filename,fea);
+            
+            meshStruct.nodes=nodes;
+            meshStruct.elements=elements;
+            meshStruct.outerShellElSets=outerShellElSets;
+            meshStruct.shearWebElSets=shearWebElSets;
             
             if fea.ansys.dbgen
                 if isempty(ansysPath)

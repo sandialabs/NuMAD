@@ -1,4 +1,4 @@
-function varargout = writeANSYSshellAPDLinHouseMesh(blade,filename,fea)
+function [nodes,elements,outerShellElSets,shearWebElSets] = writeANSYSshellModel(blade,filename,fea)
 %WRITE_SHELL7  Generate the ANSYS input file that creates the blade 
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
