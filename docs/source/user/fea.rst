@@ -7,27 +7,11 @@ Finite Element Analysis Operations
 
 Mesh Generation
 ---------------
-Ideally, the function called to generates the FE shell model in ANSYS of a NuMAD
-blade is 
+To generate a shell model in ANSYS simply type:
  
-    >> blade.generateFEA
+    >> meshStruct=blade.generateANSYSshellModel
 
-however, currently this function is not working. As a workaround use the following:
-
-``source\optimization\layupDesign_ANSYSmesh.m``
-
-.. Note:: 
-    It is currently necessary to have created the NuMAD input file from 
-    NuMAD 2.0, before attempting to run this function. See :ref:`NuMADv2` for further details.
-
-As an example, the following call would build a mesh for the blade blade
-object
-
-.. code-block:: matlabsession
-
-    >> layupDesign_ANSYSmesh(blade,'myNuMADfile.nmd')
-
-Note that specifying the NuMAD filename is optional. If omitted from the function call, then the code will look for a default NuMAD file named ``numad.nmd``. 
+The function returns a struct that contains the following feilds: ``nodes``, ``elements``, ``outerShellElSets``, and ``shearWebElSets``. This struct later needs to be input into ``mainAnsysAnalysis``.
 
 .. _coordinateSystems:
 
@@ -203,7 +187,7 @@ all three cross-sectional resultant moments along the span as well as
 the resultant axial forces. However, the resultant transverse shear
 forces acting on the blade in the FAST model are not transferred the
 ANSYS model. Moreover, both create the ``loadsTable`` variable needed by
-``layupDesign_ANSYSanalysis``, the main FEA script described is subsequent
+``mainAnsysAnalysis``, the main FEA script described is subsequent
 section. ``getForceDistributionAtTime.m`` handles can be called for the
 loads at a given time while ``FastLoads4ansys.m``} builds the ``loadsTable`` for
 each analysis direction. The ``loadsTable`` variable
@@ -272,7 +256,7 @@ case is as follows
    :language: matlab
 
 where maptype is either ``'map2D_fxM0'`` or ``'map3D_fxM0'``. Note that these
-steps are not usually required with using ``layupDesign_ANSYSanalysis``, the
+steps are not usually required with using ``mainAnsysAnalysis``, the
 main analysis script. These instructions are for building the ``loadsTable`` variable
 and applying nodal forces to an FE model in a stand-alone manner.
 
@@ -281,7 +265,7 @@ and applying nodal forces to an FE model in a stand-alone manner.
 Analysis Script
 ---------------
 
-``layupDesign_ANSYSanalysis.m`` is the main analysis script. A user may call
+``mainAnsysAnalysis.m`` is the main analysis script. A user may call
 on it to
 
 -  obtain load factors from global instabilities due to linear or
@@ -533,7 +517,7 @@ If ``config.ansys.analysisFlags.localFeilds`` is activated, then the plate
 strains and curvatures for every element will be written to
 plateStrains-all-1.txt.
 
-After layupDesign_ANSYSanalysis completes execution, access the local
+After mainAnsysAnalysis completes execution, access the local
 fields with
 
 .. literalinclude:: localFieldsExample.m
