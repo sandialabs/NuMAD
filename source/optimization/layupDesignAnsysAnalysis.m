@@ -49,23 +49,6 @@ function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,conf
         error('no analyses are configured in config. Edit config.')
     end
     
-%     if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)|| isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
-%         [isoorthoInModel,compsInModel,SkinAreas,app] = getMatrialLayerInfoWithOutGUI(blade);
-% 
-%         bladeMatNames=cell(numel(blade.materials),1);
-%         for iMat=1:numel(blade.materials)
-%             bladeMatNames{iMat}=blade.materials(iMat).name;
-%         end
-% 
-%         matPointer=zeros(numel(isoorthoInModel),1);
-%         for iMat=1:numel(isoorthoInModel)
-%            ansysMPnumber = find(strcmp(isoorthoInModel(iMat),bladeMatNames)==1);
-%            matPointer(iMat)=ansysMPnumber;
-%         end
-%         
-%         ansysBladeMaterials=blade.materials(matPointer);
-          ansysBladeMaterials=blade.materials;
-%     end
     for iLoad=1:length(loadsTable)
         %% ************************************************************************
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
@@ -154,7 +137,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,conf
         % ================= PERFORM FATIGUE ANALYSIS =================
         if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
             
-            writeAnsysFatigue(fid)
+            writeAnsysFatigue(fid,iLoad)
             
         end
 %% ************************************************************************
@@ -227,7 +210,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,conf
 % ================= READ DEFLECTION RESULTS INTO MATLAB =================       
         if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
 
-            readAnsysDeflections(blade, config, iLoad, deflectionFilename)
+            designvar.deflection=readAnsysDeflections(blade, config, iLoad, deflectionFilename);
             
         end
     %% ************************************************************************
@@ -330,7 +313,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,conf
             IEC=varargin{1};
             [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
             cd 'NuMAD'
-            designvar.fatigue=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
+            designvar.fatigue=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
         else
             error('IECDef required to run fatigue analysis in layupDesignAnsysAnalysis')
         end

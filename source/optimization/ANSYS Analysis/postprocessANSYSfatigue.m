@@ -1,4 +1,4 @@
-function designVar=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
+function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
 
     if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
         nSegments=1;
@@ -23,9 +23,7 @@ function designVar=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,load
     nSpace=90/loadsTable{2}.theta; %assuming first position is zero degree and the next entry angular inrement throughout            
     nDirections = length(loadsTable);%Assuming all loadTables have the same number of directions
    %Get material, section (i.e. laminate), and strains for elements
-%     materials = readANSYSMatl('NuMAD/Materials.txt','NuMAD/Strengths.txt');
-%     sections = readANSYSSections('NuMAD/Sections.txt');
-%     elements = readANSYSElem(['NuMAD/Elements.txt']);
+
     
     for kTheta=1:nDirections/2  % Loop through half of the number of load direction 
                                  %since blade movements along single direction constitues 
