@@ -54,7 +54,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
         forcefilename='forces';
         
-        if isfield(config.ansys.analysisFlags,'FollowerForces') && ~isempty(config.ansys.analysisFlags.FollowerForces) &&config.ansys.analysisFlags.FollowerForces~=0
+        if isfield(config.ansys.analysisFlags,'FollowerForces') && ~isempty(config.ansys.analysisFlags.FollowerForces) &&config.ansys.analysisFlags.FollowerForces~=0 && isfield(config.ansys.analysisFlags, 'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
             beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
             beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
@@ -89,6 +89,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         fprintf(fid,'/solu\n');
         
         fprintf(fid,'antype,static\n');
+        
         if isfield(config.ansys.analysisFlags,'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
             fprintf(fid,'nlgeom,1\n'); %%%%%%%%%%%%%%%%%%%%%%%% TEMP
             fprintf(fid,'OUTRES,all,ALL\n');%%%%%%%%%%%%%%%%%%%%%%%% TEMP
