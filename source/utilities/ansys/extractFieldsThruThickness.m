@@ -1,4 +1,4 @@
-function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,elementNumbers,coordSys)
+function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,bladeStacks,bladeSWstacks,elementNumbers,coordSys)
 
     if ischar(fileName)
         %Used for reading element stresses
@@ -18,9 +18,9 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
         elementStringName=['element' int2str(elNo)];
         %sec_num=elements(elNo,6);
         %layerData=sections.layers{sections.secID==sec_num}; %Important, flip the columns since code starts at the top layer.
-
+        [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStacks,bladeSWstacks);
         %nLayers=size(layerData,1);
-        nLayers=numel(currentStack);
+        nLayers=numel(currentStack.plygroups);
         k=find(plateStrainsTheta(:,1)==elNo);
         
         if isempty(k)
@@ -31,7 +31,8 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
         eps=[plateStrainsTheta(k,3); plateStrainsTheta(k,4); plateStrainsTheta(k,5)];
         kappa=[plateStrainsTheta(k,6); plateStrainsTheta(k,7); plateStrainsTheta(k,8)];
         
-        [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo);
+																	   
+        
         
         %offset=sections.shellOffset{sections.secID==sec_num};
         %h=sections.totalThick(sections.secID==sec_num); %Total thickness
@@ -61,15 +62,15 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
         
         for j=nLayers:-1:1 %Loop through layers
             %t=layerData(j,2);
-            t=currentStack(j).nPlies*currentStack(j).thickness/1000; %Convert m
+            t=currentStack.plygroups(j).nPlies*currentStack.plygroups(j).thickness/1000; %Convert m
             dx3=t/(nptsPerLayer-1);
             
             %Get material values
-            matNumber = currentStack.materialid(j);
+            matNumber = currentStack.plygroups(j).materialid;
 
             
 
-            angle=currentStack.angle(j); %Layup angle
+            angle=currentStack.plygroups(j).angle; %Layup angle
 
             S0=zeros(6);
             %Orthotropic assumption
@@ -162,7 +163,7 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
     end
      
 
-function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo)
+function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStacks,bladeSWstacks)
 
     %Search for element in aeroshell first
     [nSegments,nSpanRegions]=size(meshStruct.outerShellElSets);
@@ -179,7 +180,7 @@ function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo)
     end
 
     if found==true
-        currentStack=blade.stacks(iSegment,iSpan);
+        currentStack=bladeStacks(iSegment,iSpan);
         offset='BOT';
     else %Then search web
         for iWeb=1:nWebs
@@ -196,7 +197,7 @@ function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo)
         end
 
        if found==true
-           currentStack=blade.swstacks{iWeb}(iSpan);
+           currentStack=bladeSWstacks{iWeb}(iSpan);
            offset='MID';
        else
            error('element %i not found',elNo)

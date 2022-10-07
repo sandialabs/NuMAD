@@ -1,4 +1,4 @@
-function writeAnsysFatigue(fid)
+function writeAnsysFatigue(fid,iLoad)
     %%%%%%%%%%%%%%%%%%%Outputs for fatigue analysis in MATLAB%%%%%%%%%%%%%%%%%
     fprintf(fid,'! BEGIN FATIGUE SCRIPT\n');
     fprintf(fid,'allsel\n');

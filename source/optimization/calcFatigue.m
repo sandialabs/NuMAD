@@ -1,6 +1,6 @@
 function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
              ,binnedElements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment)
-     %bladeMaterials read in to obtain fatigue exponents
+     %blade.materials read in to obtain fatigue exponents
 
         %Initialize damage variables, get section data, and get element strains
     
@@ -45,8 +45,8 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
         elNo=plateStrainsTheta(binnedElements(i),1); %or eplateStrainsThetaPlus90, equivalently
       
         coordSys='local';
-        localFieldsTheta=extractFieldsThruThickness(plateStrainsTheta,meshStruct,blade.materials,elNo,coordSys);
-        localFieldsThetaPlus90=extractFieldsThruThickness(plateStrainsThetaPlus90,meshStruct,blade.materials,elNo,coordSys);
+        localFieldsTheta=extractFieldsThruThickness(plateStrainsTheta,meshStruct,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
+        localFieldsThetaPlus90=extractFieldsThruThickness(plateStrainsThetaPlus90,meshStruct,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
 
         
         npts=numel(localFieldsTheta.(['element' num2str(elNo)]).x3);
@@ -54,7 +54,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
         layer=sort([1:npts/nptsPerLayer 1:npts/nptsPerLayer]);
         for ix3=1:npts
             matNumber=localFieldsTheta.(['element' num2str(elNo)]).matNumber(ix3);
-            if ~isempty(bladeMaterials(matNumber).m)
+            if ~isempty(blade.materials(matNumber).m)
                 %Determine mean and amplitude stress
                 MthetaFactor=localFieldsTheta.(['element' num2str(elNo)]).sig11(ix3)/Mtheta;
                 MthetaPlus90Factor=localFieldsThetaPlus90.(['element' num2str(elNo)]).sig11(ix3)/MthetaPlus90;
@@ -68,9 +68,9 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
                 LthetaPlus90WithFactor(1,:)=LthetaPlus90WithFactor(1,:)*MthetaPlus90Factor; %Means
                 LthetaPlus90WithFactor(:,1)=abs(LthetaPlus90WithFactor(:,1)*MthetaPlus90Factor); %Amplitudes
                 
-                m=bladeMaterials(matNumber).m;
-                XTEN=bladeMaterials(matNumber).uts(1)*SFs; %Unfactor the factored resistance
-                XCMP=bladeMaterials(matNumber).ucs(1)*SFs; %Unfactor the factored resistance
+                m=blade.materials(matNumber).m;
+                XTEN=blade.materials(matNumber).uts(1)*SFs; %Unfactor the factored resistance
+                XCMP=blade.materials(matNumber).ucs(1)*SFs; %Unfactor the factored resistance
 
                 % Determine the maximum number of cycles for failure based
                 % on available fatigue failure criterion or from data
@@ -133,7 +133,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
 %             %Get material values
 %             matNumber = sections.layers{sections.secID==sec_num}(j,3);
 %             
-%             if ~isempty(bladeMaterials(matNumber).m)
+%             if ~isempty(blade.materials(matNumber).m)
 %                 %Determine mean and amplitude stress
 %                 MthetaFactor=stressesTheta(binnedElements(i),j+2)/Mtheta;
 %                 MthetaPlus90Factor=stressesThetaPlus90(binnedElements(i),j+2)/MthetaPlus90;
@@ -147,7 +147,7 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
 %                 LthetaPlus90WithFactor(1,:)=LthetaPlus90WithFactor(1,:)*MthetaPlus90Factor; %Means
 %                 LthetaPlus90WithFactor(:,1)=abs(LthetaPlus90WithFactor(:,1)*MthetaPlus90Factor); %Amplitudes
 %                 
-%                 m=bladeMaterials(matNumber).m;
+%                 m=blade.materials(matNumber).m;
 %                 XTEN=materials(matNumber).XTEN*SFs; %Unfactor the factored resistance
 %                 XCMP=materials(matNumber).XCMP*SFs; %Unfactor the factored resistance
 %                 

@@ -1,4 +1,4 @@
-function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
+function designVar=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
 
     if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
         nSegments=1;
@@ -22,8 +22,6 @@ function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loads
     simtime=IEC.numSeeds*(IEC.SimTime-IEC.delay);
     nSpace=90/loadsTable{2}.theta; %assuming first position is zero degree and the next entry angular inrement throughout            
     nDirections = length(loadsTable);%Assuming all loadTables have the same number of directions
-   %Get material, section (i.e. laminate), and strains for elements
-
     
     for kTheta=1:nDirections/2  % Loop through half of the number of load direction 
                                  %since blade movements along single direction constitues 
@@ -86,8 +84,8 @@ function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loads
                     end
                 end  
             
-                plateStrainsTheta=plateStrainsTheta(elementList,:);
-                plateStrainsThetaPlus90=plateStrainsThetaPlus90(elementList,:);
+                plateStrainsThetaSet=plateStrainsTheta(elementList,:);
+                plateStrainsThetaPlus90Set=plateStrainsThetaPlus90(elementList,:);
             end
             
             for chSpan=1:nGage
@@ -111,10 +109,10 @@ function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loads
                 z1=rGage(chSpan)-zwidth/2;
                 z2=rGage(chSpan)+zwidth/2;
 
-                binnedElements=intersect(find(plateStrainsTheta(:,2)<z2),find(plateStrainsTheta(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
+                binnedElements=intersect(find(plateStrainsThetaSet(:,2)<z2),find(plateStrainsThetaSet(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
     
                 [fdData,plotFatigueChSpan] = calcFatigue(blade,meshStruct,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
-                    ,binnedElements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment);
+                    ,binnedElements,plateStrainsThetaSet,plateStrainsThetaPlus90Set,iSegment);
                 plotFatigue=[plotFatigue;plotFatigueChSpan];
                 criticalElement(chSpan)=fdData(1);
                 fatigueDamage(chSpan)=fdData(2);
