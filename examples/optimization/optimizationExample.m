@@ -26,6 +26,7 @@ allConfig.defConfig.ansys.analysisFlags.resultantVSspan = 0;
 allConfig.defConfig.ansys.analysisFlags.mass = 1;
 allConfig.defConfig.ansys.analysisFlags.deflection = 1;
 
+
 %% Fields related to material rupture, buckling and fatigue analysis
 allConfig.failConfig.ansys.meshFile = 'master.db';
 allConfig.failConfig.ansys.analysisFileName = 'bladeAnalysis';

@@ -1,4 +1,4 @@
-function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,config,varargin)
+function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,varargin)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
     global ansysPath
@@ -315,7 +315,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,meshStruct,loadsTable,conf
             cd 'NuMAD'
             designvar.fatigue=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
         else
-            error('IECDef required to run fatigue analysis in layupDesignAnsysAnalysis')
+            error('IECDef required to run fatigue analysis in mainAnsysAnalysis')
         end
     end
 end

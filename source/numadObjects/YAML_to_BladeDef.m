@@ -667,7 +667,6 @@ obj.updateGeometry;
 obj.updateKeypoints;
 obj.updateBOM;
 save(blade_name);
-%BladeDef_to_NuMADfile(obj,numad_name,matdb_name,numad_af_folder);
 
 
 end

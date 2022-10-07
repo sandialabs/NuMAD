@@ -167,7 +167,7 @@ presweep = interp1(bld.prop.BlFract.*bladeLength,bld.prop.PreswpRef,rBladeForce)
     loads_table{tt}.input.Mzb = M{3}*1000;
     %% END
     
-    % save the forces for use in layupDesign_ANSYSbuckling buckling analysis
+    % save the forces for use in mainAnsysAnalysis buckling analysis
     loads_table{tt}.rBlade = rBladeForce';
     loads_table{tt}.Fxb = Fxb_FAST(tt,:)*1000; %Convert from kN to N
     loads_table{tt}.Fyb = Fyb_FAST(tt,:)*1000; %Convert from kN to N

@@ -1,4 +1,4 @@
-function designVar=layupDesign_ANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
+function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
 
     if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
         nSegments=1;
