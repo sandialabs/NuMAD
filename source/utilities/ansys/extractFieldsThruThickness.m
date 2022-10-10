@@ -183,10 +183,11 @@ function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStac
         currentStack=bladeStacks(iSegment,iSpan);
         offset='BOT';
     else %Then search web
+        nWebs=numel(bladeSWstacks);
         for iWeb=1:nWebs
             [~,nSpanRegions]=size(meshStruct.shearWebElSets{iWeb});
             for iSpan=1:nSpanRegions
-                   found=any(meshStruct.outerShellElSets(iSegment,iSpan).elementList == elNo);
+                   found=any(meshStruct.shearWebElSets{iWeb}(iSpan).elementList == elNo);
                    if found==true
                        break;
                    end
