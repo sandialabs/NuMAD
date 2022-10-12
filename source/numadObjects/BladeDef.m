@@ -1092,7 +1092,7 @@ classdef BladeDef < handle
             make_c_array_BladeDef(obj)
         end
         
-        function [nodes,elements,outerShellElSets,shearWebElSets] = getShellMesh(obj)
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = shellMeshGeneral(obj,forSolid,includeAdhesive)
             %% This method generates a finite element shell mesh for the blade, based on what is
             %% stored in blade.geometry, blade.keypoints, and blade.profiles.  Element sets are 
             %% returned corresponding to blade.stacks and blade.swstacks
@@ -1177,6 +1177,31 @@ classdef BladeDef < handle
                 splineYi = [splineYi,interp1(spParam,splineY(:,i),spParami,'pchip')];
                 splineZi = [splineZi,interp1(spParam,splineZ(:,i),spParami,'pchip')];
             end
+            %% Determine the first spanwise section that needs adhesive
+            if(includeAdhesive == 1)
+                stPt = 1;
+                frstXS = 0;
+                while(frstXS == 0 && stPt < size(splineXi,1))
+                    v1x = splineXi(stPt,7) - splineXi(stPt,5);
+                    v1y = splineYi(stPt,7) - splineYi(stPt,5);
+                    v1z = splineZi(stPt,7) - splineZi(stPt,5);
+                    v2x = splineXi(stPt,31) - splineXi(stPt,33);
+                    v2y = splineYi(stPt,31) - splineYi(stPt,33);
+                    v2z = splineZi(stPt,31) - splineZi(stPt,33);
+                    mag1 = sqrt(v1x*v1x + v1y*v1y + v1z*v1z);
+                    mag2 = sqrt(v2x*v2x + v2y*v2y + v2z*v2z);
+                    dp = (1/(mag1*mag2))*(v1x*v2x + v1y*v2y + v1z*v2z);
+                    if(dp > 0.7071)
+                        frstXS = stPt;
+                    end
+                    stPt = stPt + 3;
+                end
+                if(frstXS == 0)
+                    frstXS = size(splineXi,1);
+                end
+            else
+                frstXS = size(splineXi,1);
+            end
             %% Generate the mesh using the splines as surface guides
             nodes = [];
             elements = [];
@@ -1184,9 +1209,18 @@ classdef BladeDef < handle
             outerShellElSets = [];
             stPt = 1;
             for i = 1:rws-1
-                stSp = 1;
-                setCol = [];
-                for j = 1:12
+                if(stPt < frstXS)
+                    setCol = [];
+                    stSec = 1;
+                    endSec = 12;
+                    stSp = 1;
+                else
+                    setCol = elementSet(obj.stacks(1,i).name,obj.stacks(1,i).plygroups,[]);
+                    stSec = 2;
+                    endSec = 11;
+                    stSp = 4;
+                end
+                for j = stSec:endSec
                     shellKp = [splineXi(stPt,stSp),splineYi(stPt,stSp),splineZi(stPt,stSp);...
                         splineXi(stPt,stSp+3),splineYi(stPt,stSp+3),splineZi(stPt,stSp+3);...
                         splineXi(stPt+3,stSp+3),splineYi(stPt+3,stSp+3),splineZi(stPt+3,stSp+3);...
@@ -1234,8 +1268,52 @@ classdef BladeDef < handle
                     setCol = [setCol;newSet];
                     stSp = stSp + 3;
                 end
+                if(stPt >= frstXS)
+                    newSet = elementSet(obj.stacks(12,i).name,obj.stacks(12,i).plygroups,[]);
+                    setCol = [setCol;newSet];
+                end
                 outerShellElSets = [outerShellElSets,setCol];
                 stPt = stPt + 3;
+            end
+            %% Shift the appropriate splines if the mesh is for a solid model seed
+            if(forSolid == 1)
+                caseIndex = [10,28,4; ...
+                    13,25,4; ...
+                    25,13,9; ...
+                    28,10,9];
+%                     5,33,2; ...
+%                     6,32,2; ...
+%                     7,31,2; ...
+%                     33,5,11; ...
+%                     32,6,11; ...
+%                     31,7,11];
+                for i = 1:size(caseIndex,1)
+                    spl = caseIndex(i,1);
+                    tgtSp = caseIndex(i,2);
+                    sec = caseIndex(i,3);
+                    stPt = 1;
+                    for j = 1:rws-1
+                        totalThick = 0;
+                        for k = 1:3
+                            tpp = 0.001*obj.stacks(sec,j).plygroups(k).thickness;
+                            npls = obj.stacks(sec,j).plygroups(k).nPlies;
+                            totalThick = totalThick + tpp*npls;
+                        end
+                        for k = 1:3
+                            vx = splineXi(stPt,tgtSp) - splineXi(stPt,spl);
+                            vy = splineYi(stPt,tgtSp) - splineYi(stPt,spl);
+                            vz = splineZi(stPt,tgtSp) - splineZi(stPt,spl);
+                            magInv = 1/sqrt(vx*vx + vy*vy + vz*vz);
+                            ux = magInv*vx;
+                            uy = magInv*vy;
+                            uz = magInv*vz;
+                            splineXi(stPt,spl) = splineXi(stPt,spl) + totalThick*ux;
+                            splineYi(stPt,spl) = splineYi(stPt,spl) + totalThick*uy;
+                            splineZi(stPt,spl) = splineZi(stPt,spl) + totalThick*uz;
+                            stPt = stPt + 1;
+                        end
+                    end
+                end
             end
             %% Shear web sections
             stPt = 1;
@@ -1295,14 +1373,14 @@ classdef BladeDef < handle
                 end
                 if(~isempty(obj.swstacks{2}(i).plygroups))
                     shellKp = zeros(16,3);
-                    shellKp(1,:) = [splineXi(stPt,10),splineYi(stPt,10),splineZi(stPt,10)];
-                    shellKp(2,:) = [splineXi(stPt,28),splineYi(stPt,28),splineZi(stPt,28)];
-                    shellKp(3,:) = [splineXi(stPt+3,28),splineYi(stPt+3,28),splineZi(stPt+3,28)];
-                    shellKp(4,:) = [splineXi(stPt+3,10),splineYi(stPt+3,10),splineZi(stPt+3,10)];
-                    shellKp(7,:) = [splineXi(stPt+1,28),splineYi(stPt+1,28),splineZi(stPt+1,28)];
-                    shellKp(8,:) = [splineXi(stPt+2,28),splineYi(stPt+2,28),splineZi(stPt+2,28)];
-                    shellKp(11,:) = [splineXi(stPt+2,10),splineYi(stPt+2,10),splineZi(stPt+2,10)];
-                    shellKp(12,:) = [splineXi(stPt+1,10),splineYi(stPt+1,10),splineZi(stPt+1,10)];
+                    shellKp(1,:) = [splineXi(stPt,28),splineYi(stPt,28),splineZi(stPt,28)];
+                    shellKp(2,:) = [splineXi(stPt,10),splineYi(stPt,10),splineZi(stPt,10)];
+                    shellKp(3,:) = [splineXi(stPt+3,10),splineYi(stPt+3,10),splineZi(stPt+3,10)];
+                    shellKp(4,:) = [splineXi(stPt+3,28),splineYi(stPt+3,28),splineZi(stPt+3,28)];
+                    shellKp(7,:) = [splineXi(stPt+1,10),splineYi(stPt+1,10),splineZi(stPt+1,10)];
+                    shellKp(8,:) = [splineXi(stPt+2,10),splineYi(stPt+2,10),splineZi(stPt+2,10)];
+                    shellKp(11,:) = [splineXi(stPt+2,28),splineYi(stPt+2,28),splineZi(stPt+2,28)];
+                    shellKp(12,:) = [splineXi(stPt+1,28),splineYi(stPt+1,28),splineZi(stPt+1,28)];
                     shellKp(5,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(2,:);
                     shellKp(6,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(2,:);
                     shellKp(9,:) = 0.6666*shellKp(3,:) + 0.3333*shellKp(4,:);
@@ -1346,6 +1424,8 @@ classdef BladeDef < handle
                 end
                 stPt = stPt + 3;
             end
+%             plotShellMesh(nodes,elements);
+%             keyboard
             shearWebElSets{1} = web1Sets;
             shearWebElSets{2} = web2Sets;
             %% Eliminate duplicate nodes from the global list and update element connectivity
@@ -1399,6 +1479,295 @@ classdef BladeDef < handle
                     end
                 end
             end
+            
+            %% Generate mesh for trailing edge adhesive if requested
+            if(includeAdhesive == 1)
+                stPt = frstXS;
+                v1x = splineXi(stPt,7) - splineXi(stPt,5);
+                v1y = splineYi(stPt,7) - splineYi(stPt,5);
+                v1z = splineZi(stPt,7) - splineZi(stPt,5);
+                mag1 = sqrt(v1x*v1x + v1y*v1y + v1z*v1z);
+                v2x = splineXi(stPt,31) - splineXi(stPt,33);
+                v2y = splineYi(stPt,31) - splineYi(stPt,33);
+                v2z = splineZi(stPt,31) - splineZi(stPt,33);
+                mag2 = sqrt(v2x*v2x + v2y*v2y + v2z*v2z);
+                v3x = splineXi(stPt,7) - splineXi(stPt,31);
+                v3y = splineYi(stPt,7) - splineYi(stPt,31);
+                v3z = splineZi(stPt,7) - splineZi(stPt,31);
+                mag3 = sqrt(v3x*v3x + v3y*v3y + v3z*v3z);
+                v4x = splineXi(stPt,5) - splineXi(stPt,33);
+                v4y = splineYi(stPt,5) - splineYi(stPt,33);
+                v4z = splineZi(stPt,5) - splineZi(stPt,33);
+                mag4 = sqrt(v4x*v4x + v4y*v4y + v4z*v4z);
+                nE1 = ceil(mag1/obj.mesh);
+                nE2 = ceil(mag3/obj.mesh);
+                nE3 = ceil(mag2/obj.mesh);
+                nE4 = ceil(mag4/obj.mesh);
+                nEl = [nE1;nE2;nE3;nE4];
+                gdLayer = 0;
+                sweepElements = [];
+                while(stPt < size(splineXi,1))
+%                     shellKp = zeros(16,3);
+%                     shellKp(1,:) = [splineXi(stPt,4),splineYi(stPt,4),splineZi(stPt,4)];
+%                     shellKp(2,:) = [splineXi(stPt,7),splineYi(stPt,7),splineZi(stPt,7)];
+%                     shellKp(3,:) = [splineXi(stPt,31),splineYi(stPt,31),splineZi(stPt,31)];
+%                     shellKp(4,:) = [splineXi(stPt,34),splineYi(stPt,34),splineZi(stPt,34)];
+%                     shellKp(5,:) = [splineXi(stPt,5),splineYi(stPt,5),splineZi(stPt,5)];
+%                     shellKp(6,:) = [splineXi(stPt,6),splineYi(stPt,6),splineZi(stPt,6)];
+%                     shellKp(7,:) = 0.6666*shellKp(2,:) + 0.3333*shellKp(3,:);
+%                     shellKp(8,:) = 0.3333*shellKp(2,:) + 0.6666*shellKp(3,:);
+%                     shellKp(9,:) = [splineXi(stPt,32),splineYi(stPt,32),splineZi(stPt,32)];
+%                     shellKp(10,:) = [splineXi(stPt,33),splineYi(stPt,33),splineZi(stPt,33)];
+%                     shellKp(11,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(4,:);
+%                     shellKp(12,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(4,:);
+%                     shellKp(13,:) = 0.6666*shellKp(5,:) + 0.3333*shellKp(10,:);
+%                     shellKp(14,:) = 0.6666*shellKp(6,:) + 0.3333*shellKp(9,:);
+%                     shellKp(15,:) = 0.3333*shellKp(6,:) + 0.6666*shellKp(9,:);
+%                     shellKp(16,:) = 0.3333*shellKp(5,:) + 0.6666*shellKp(10,:);
+%                     shell = shellRegion('quad16',shellKp,nEl);
+%                     [bNodes,bFaces] = shell.createShellMesh('quad','free');
+                    shellKp = zeros(9,3);
+                    shellKp(1,:) = [splineXi(stPt,5),splineYi(stPt,5),splineZi(stPt,5)];
+                    shellKp(2,:) = [splineXi(stPt,7),splineYi(stPt,7),splineZi(stPt,7)];
+                    shellKp(3,:) = [splineXi(stPt,31),splineYi(stPt,31),splineZi(stPt,31)];
+                    shellKp(4,:) = [splineXi(stPt,33),splineYi(stPt,33),splineZi(stPt,33)];
+                    shellKp(5,:) = [splineXi(stPt,6),splineYi(stPt,6),splineZi(stPt,6)];
+                    shellKp(6,:) = 0.5*shellKp(2,:) + 0.5*shellKp(3,:);
+                    shellKp(7,:) = [splineXi(stPt,32),splineYi(stPt,32),splineZi(stPt,32)];
+                    shellKp(8,:) = 0.5*shellKp(1,:) + 0.5*shellKp(4,:);
+                    shellKp(9,:) = 0.5*shellKp(5,:) + 0.5*shellKp(7,:);
+                    shell = shellRegion('quad9',shellKp,nEl);
+                    [bNodes,bFaces] = shell.createShellMesh('quad','free');
+%                     plotShellMesh(bNodes,bFaces);
+%                     keyboard
+                    if(stPt == frstXS)
+                        adhesMesh = NuMesh3D(bNodes,bFaces);
+                    else
+                        gdLayer = gdLayer + 1;
+                        guideNds{gdLayer} = bNodes;
+                        layerSwEl = ceil((splineZi(stPt,4) - splineZi(stPt-3,4))/obj.mesh);
+                        sweepElements = [sweepElements,layerSwEl];
+                    end
+                    stPt = stPt + 3;
+                end
+%                 sweepElements = ceil((splineZi(end,4) - splineZi(frstXS,4))/obj.mesh);
+                [adhesNds,adhesEls] = adhesMesh.createSweptMesh('to_dest_nodes',[],[],sweepElements,[],guideNds);
+            else
+                adhesNds = [];
+                adhesEls = [];
+            end
+        end       
+            
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = getShellMesh(obj,includeAdhesive)
+            [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(0,includeAdhesive);
+        end
+        
+        function editStacksForSolidMesh(obj)
+            [numSec,numStat] = size(obj.stacks);
+            for i = 1:numSec
+                for j = 1:numStat
+                    pg = obj.stacks(i,j).plygroups;
+                    if(length(pg) == 4)
+                        newPg = pg(2:4);
+                    elseif(length(pg) == 3)
+                        newPg = [pg(2),pg(2),pg(3)];
+                        t2 = pg(2).thickness;
+                        t3 = pg(3).thickness;
+                        newPg(2).thickness = 0.3333333*(t2+t3);
+                        newPg(1).thickness = 0.6666666*t2;
+                        newPg(3).thickness = 0.6666666*t3;
+                    elseif(length(pg) == 2)
+                        newPg = [pg(1),pg(1),pg(2)];
+                        t1 = pg(1).thickness;
+                        t2 = pg(2).thickness;
+                        newPg(2).thickness = 0.3333333*(t1+t2);
+                        newPg(1).thickness = 0.6666666*t1;
+                        newPg(3).thickness = 0.6666666*t2;
+                    else
+                        newPg = [pg(1),pg(1),pg(1)];
+                        t1 = pg(1).thickness;
+                        newPg(2).thickness = 0.3333333*t1;
+                        newPg(1).thickness = 0.3333333*t1;
+                        newPg(3).thickness = 0.3333333*t1;
+                    end
+                    obj.stacks(i,j).plygroups = newPg;
+                end
+            end
+            for i = 1:2
+                stackLst = obj.swstacks{i};
+                for j = 1:length(stackLst)
+                    pg = stackLst(j).plygroups;
+                    if(length(pg) == 3 || isempty(pg))
+                        newPg = pg;
+                    elseif(length(pg) == 2)
+                        newPg = [pg(1),pg(1),pg(2)];
+                        t1 = pg(1).thickness;
+                        t2 = pg(2).thickness;
+                        newPg(2).thickness = 0.3333333*(t1+t2);
+                        newPg(1).thickness = 0.6666666*t1;
+                        newPg(3).thickness = 0.6666666*t2;
+                    else
+                        newPg = [pg(1),pg(1),pg(1)];
+                        t1 = pg(1).thickness;
+                        newPg(2).thickness = 0.3333333*t1;
+                        newPg(1).thickness = 0.3333333*t1;
+                        newPg(3).thickness = 0.3333333*t1;
+                    end
+                    obj.swstacks{i}(j).plygroups = newPg;
+                end
+            end
+        end
+        
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesiveElSet] = getSolidMesh(obj,layerNumEls)
+            %% Edit stacks to be usable for 3D solid mesh
+            obj.editStacksForSolidMesh();
+            %% Create shell mesh as seed
+            [shNodes,shElements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(1,1);
+            %% Initialize 3D solid mesh from the shell mesh
+            bladeMesh = NuMesh3D(shNodes,shElements);
+            %% Calculate unit normal vectors for all nodes
+            numNds = size(shNodes,1);
+            nodeNorms = zeros(numNds,3);
+            for i = 1:size(shElements,1)
+                n1 = shElements(i,1);
+                n2 = shElements(i,2);
+                n3 = shElements(i,3);
+                n4 = shElements(i,4);
+                if(n4 == 0)
+                    v1 = shNodes(n3,:) - shNodes(n1,:);
+                    v2 = shNodes(n2,:) - shNodes(n1,:);
+                else
+                    v1 = shNodes(n4,:) - shNodes(n2,:);
+                    v2 = shNodes(n3,:) - shNodes(n1,:);
+                end
+                v3x = v1(2)*v2(3) - v1(3)*v2(2);
+                v3y = v1(3)*v2(1) - v1(1)*v2(3);
+                v3z = v1(1)*v2(2) - v1(2)*v2(1);
+                v3 = [v3x,v3y,v3z];
+                mag = sqrt(v3*v3');
+                uNorm = (1/mag)*v3;
+                for j = 1:4
+                    nj = shElements(i,j);
+                    if(nj ~= 0)
+                        nodeNorms(nj,:) = nodeNorms(nj,:) + uNorm;
+                    end
+                end
+            end
+            for i = 1:numNds
+                mag = sqrt(nodeNorms(i,:)*nodeNorms(i,:)');
+                nodeNorms(i,:) = (1/mag)*nodeNorms(i,:);
+            end
+            %% Extrude shell mesh into solid mesh
+            if(isempty(layerNumEls))
+                layerNumEls = [1,1,1];
+            end
+            for i = 1:length(layerNumEls)
+                nodeDist = zeros(numNds,1);
+                nodeHitCt = zeros(numNds,1);
+                [numSec,numStat] = size(outerShellElSets);
+                for j = 1:numSec
+                    for k = 1:numStat
+                        eSet = outerShellElSets(j,k);
+                        projDist = 0;
+                        for m = 1:i
+                            tpp = 0.001*eSet.plygroups(m).thickness;
+                            npls = eSet.plygroups(m).nPlies;
+                            projDist = projDist + tpp*npls;
+                        end
+                        eLst = eSet.elementList;
+                        for m = 1:length(eLst)
+                            el = eLst(m);
+                            for p = 1:4
+                                nd = shElements(el,p);
+                                if(nd ~= 0)
+                                    if(j == 4 || j == 9)
+                                        nodeDist(nd) = projDist;
+                                        nodeHitCt(nd) = -1;
+                                    elseif(nodeHitCt(nd) ~= -1)
+                                        nodeDist(nd) = nodeDist(nd) + projDist;
+                                        nodeHitCt(nd) = nodeHitCt(nd) + 1;
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                for j = 1:2
+                    setLst = shearWebElSets{j};
+                    for k = 1:length(setLst)
+                        eSet = setLst(k);
+                        if(~isempty(eSet.elementList))
+                            projDist = 0;
+                            for m = 1:i
+                                tpp = 0.001*eSet.plygroups(m).thickness;
+                                npls = eSet.plygroups(m).nPlies;
+                                projDist = projDist + tpp*npls;
+                            end
+                            eLst = eSet.elementList;
+                            for m = 1:length(eLst)
+                                el = eLst(m);
+                                for p = 1:4
+                                    nd = shElements(el,p);
+                                    if(nd ~= 0)
+                                        nodeDist(nd) = nodeDist(nd) + projDist;
+                                        nodeHitCt(nd) = nodeHitCt(nd) + 1;
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                newLayer = shNodes;
+                for j = 1:numNds
+                    if(nodeHitCt(j) ~= -1)
+                        nodeDist(j) = (1/nodeHitCt(j))*nodeDist(j);
+                    end
+                    newLayer(j,:) = newLayer(j,:) + nodeDist(j)*nodeNorms(j,:);
+                end
+                guideNds{i} = newLayer;
+            end
+            [nodes,elements] = bladeMesh.createSweptMesh('to_dest_nodes',[],[],layerNumEls,[],guideNds);
+            numShEls = size(shElements,1);
+            for i = 1:numSec
+                for j = 1:numStat
+                    eSet = outerShellElSets(i,j);
+                    elst = eSet.elementList;
+                    if(~isempty(elst))
+                        for k = 1:2
+                            elst = [elst;(elst+k*numShEls)];
+                        end
+                    end
+                    outerShellElSets(i,j).elementList = elst;
+                end
+            end
+            for i = 1:2
+                setLst = shearWebElSets{i};
+                for j = 1:length(setLst)
+                    eSet = setLst(j);
+                    elst = eSet.elementList;
+                    if(~isempty(elst))
+                        for k = 1:2
+                            elst = [elst;(elst+k*numShEls)];
+                        end
+                    end
+                    shearWebElSets{i}(j).elementList = elst;
+                end
+            end
+            numSolidNds = size(nodes,1);
+            for i = 1:size(adhesEls,1)
+                for j = 1:8
+                    k = adhesEls(i,j);
+                    if(k ~= 0)
+                        adhesEls(i,j) = k + numSolidNds;
+                    end
+                end
+            end
+            nodes = [nodes;adhesNds];
+            elements = [elements;adhesEls];
+            lastEl = size(elements,1);
+            stAdEl = lastEl - size(adhesEls,1) + 1;
+            eList = [stAdEl:lastEl];
+            adhesiveElSet = elementSet('adhesive',[],eList);
         end
 
         

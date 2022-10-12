@@ -138,8 +138,8 @@ classdef shellRegion
                 end
             else
                 [boundaryNodes,edges] = obj.initialBoundary();
-                plot2DMesh(boundaryNodes,[]);
-                keyboard
+%                 plot2DMesh(boundaryNodes,[]);
+%                 keyboard
                 mesh = NuMesh2D(boundaryNodes,edges(:,1:2));
                 [etaNodes,elements,mesh] = mesh.createPlanarMesh(elType,1);
                 nodes = [];
