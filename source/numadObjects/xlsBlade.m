@@ -122,11 +122,13 @@ function blade = xlsBlade(filename)
     xls.cmpt.cpnlay   = 8;
     xls.cmpt.imethod  = 9;
     [num, txt, raw] = xlsread(filename,'Components');
-    blade.sparcapwidth  = num(xls.cmpt.paramrow1 + 0,xls.cmpt.paramcol);
+    blade.sparcapwidth  = readnumlist(raw{xls.cmpt.paramrow1 + 0,xls.cmpt.paramcol});
+%     blade.sparcapwidth  = num(xls.cmpt.paramrow1 + 0,xls.cmpt.paramcol);
     blade.leband        = num(xls.cmpt.paramrow1 + 1,xls.cmpt.paramcol);
     blade.teband        = num(xls.cmpt.paramrow1 + 2,xls.cmpt.paramcol);
     % ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    blade.sparcapoffset = num(xls.cmpt.paramrow1 + 3,xls.cmpt.paramcol);
+%     blade.sparcapoffset = num(xls.cmpt.paramrow1 + 3,xls.cmpt.paramcol);
+    blade.sparcapoffset = readnumlist(raw{xls.cmpt.paramrow1 + 3,xls.cmpt.paramcol});
     if isnan(blade.sparcapoffset), blade.sparcapoffset = 0; end
     % ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     N = size(num,1) - xls.cmpt.datarow1;
