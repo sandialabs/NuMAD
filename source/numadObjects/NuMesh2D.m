@@ -19,7 +19,7 @@ classdef NuMesh2D
     methods
         function obj = NuMesh2D(boundaryNodes,boundaryEdges)
             obj.nodes = boundaryNodes;
-            numNds = length(boundaryNodes);
+            numNds = size(boundaryNodes,1);
             if(isempty(boundaryEdges))
                 obj.edges = zeros(numNds,6);
                 obj.edges(:,1) = [1:numNds]';
@@ -178,7 +178,7 @@ classdef NuMesh2D
                 obj.edges = [obj.edges;newEdge];
                 numAdded = numAdded + 1;
                 midPt = 0.5*(obj.nodes(n1,:) + obj.nodes(n3,:));
-                obj.edgeGL = obj.edgeGL.addEntry(length(obj.edges),midPt);
+                obj.edgeGL = obj.edgeGL.addEntry(size(obj.edges,1),midPt);
                 vec = obj.nodes(n1,:) - obj.nodes(n3,:);
                 mag = sqrt(vec*vec');
                 if(mag > obj.maxEdgeLen)
@@ -201,7 +201,7 @@ classdef NuMesh2D
                 obj.edges = [obj.edges;newEdge];
                 numAdded = numAdded + 1;
                 midPt = 0.5*(obj.nodes(n2,:) + obj.nodes(n3,:));
-                obj.edgeGL = obj.edgeGL.addEntry(length(obj.edges),midPt);
+                obj.edgeGL = obj.edgeGL.addEntry(size(obj.edges,1),midPt);
                 vec = obj.nodes(n2,:) - obj.nodes(n3,:);
                 mag = sqrt(vec*vec');
                 if(mag > obj.maxEdgeLen)
@@ -221,8 +221,8 @@ classdef NuMesh2D
             if(violation == 0)
                 newNd = ndPt;
                 obj.nodes = [obj.nodes;newNd];
-                obj.nodeGL = obj.nodeGL.addEntry(length(obj.nodes),newNd);
-                n3 = length(obj.nodes);
+                obj.nodeGL = obj.nodeGL.addEntry(size(obj.nodes,1),newNd);
+                n3 = size(obj.nodes,1);
                 newEl = [n1,n2,n3];
                 obj.triElements = [obj.triElements;newEl];
                 midPt = 0.333333*(obj.nodes(n1,:) + obj.nodes(n2,:) + obj.nodes(n3,:));
@@ -240,7 +240,7 @@ classdef NuMesh2D
             end
             boundaryNodes = obj.nodes;
             if(equalizeSpacing)
-                maxIt = ceil(0.5*length(obj.nodes));
+                maxIt = ceil(0.5*size(obj.nodes,1));
                 obj = obj.uniformBoundarySpacing(maxIt);
             end
 %             plot2DMesh(obj.nodes,[]);
@@ -263,8 +263,8 @@ classdef NuMesh2D
             else
                 elements = obj.triElements;
             end
-            plot2DMesh(nodes,elements);
-            keyboard;
+%             plot2DMesh(nodes,elements);
+%             keyboard;
         end
         
         function [nodes,elements,obj] = createSweptMesh(obj,sweepMethod,direction,sweepDistance,sweepElements,followNormal,destNodes)
@@ -304,7 +304,7 @@ classdef NuMesh2D
         
         function obj = createUnstructTriMesh(obj)
             obj = obj.prepareForMesh();
-            numEdges = length(obj.edges);
+            numEdges = size(obj.edges,1);
             for i = 1:numEdges
                 n1i = obj.edges(i,1);
                 n2i = obj.edges(i,2);
@@ -350,7 +350,7 @@ classdef NuMesh2D
                                         newEdge = [n2,n3,eNum,0,0,0];
                                         obj.edges = [obj.edges;newEdge];
                                         midPt = 0.5*(obj.nodes(n2,:) + obj.nodes(n3,:));
-                                        obj.edgeGL = obj.edgeGL.addEntry(length(obj.edges),midPt);
+                                        obj.edgeGL = obj.edgeGL.addEntry(size(obj.edges,1),midPt);
                                         vec = obj.nodes(n2,:) - obj.nodes(n3,:);
                                         mag = sqrt(vec*vec');
                                         if(mag > obj.maxEdgeLen)
@@ -363,13 +363,13 @@ classdef NuMesh2D
                     end
                 end
             end
-            edgesAdded = length(obj.edges);
+            edgesAdded = size(obj.edges,1);
             maxIt = edgesAdded;
             it = 0;
             while(edgesAdded > 0 && it < maxIt)
                 edgesAdded = 0;
                 obj = obj.sortIncompleteEdges();
-                numEdges = length(obj.edges);
+                numEdges = size(obj.edges,1);
 %                 plot2DMesh(obj.nodes,obj.triElements);
 %                 keyboard
                 for i = 1:numEdges
@@ -483,7 +483,7 @@ classdef NuMesh2D
         end
         
         function obj = distributeNodes(obj,boundaryNodes)
-            numNds = length(obj.nodes);
+            numNds = size(obj.nodes,1);
             dim = 2*numNds;
             Dmat = zeros(dim,1);
             numBound = size(boundaryNodes,1);
@@ -602,7 +602,7 @@ classdef NuMesh2D
         end
         
         function [edgeDir] = getBoundaryData(obj)
-            numEdges = length(obj.edges);
+            numEdges = size(obj.edges,1);
             avgSpacing = 0;
             edgeDir = [];
             for i = 1:numEdges
@@ -931,7 +931,7 @@ classdef NuMesh2D
         
         function obj = mergeTriEls(obj,elType)
             elMerged = zeros(size(obj.triElements,1),1);
-            nodeElim = zeros(length(obj.nodes),1);
+            nodeElim = zeros(size(obj.nodes,1),1);
             el2El = zeros(size(obj.triElements,1),3);
             for i = 1:size(obj.edges,1)
                 if(obj.edges(i,3) > 0 && obj.edges(i,4) > 0)
@@ -992,9 +992,9 @@ classdef NuMesh2D
             end
 
             newNds = [];
-            newLabel = zeros(length(obj.nodes),1);
+            newLabel = zeros(size(obj.nodes,1),1);
             lab = 0;
-            for i = 1:length(obj.nodes)
+            for i = 1:size(obj.nodes,1)
                 if(nodeElim(i) == 0)
                     lab = lab + 1;
                     newLabel(i) = lab;
@@ -1042,8 +1042,8 @@ classdef NuMesh2D
         end
         
         function obj = prepareForMesh(obj)
-            numNds = length(obj.nodes);
-            numEdges = length(obj.edges);
+            numNds = size(obj.nodes,1);
+            numEdges = size(obj.edges,1);
             obj.triElements = [];
             obj.quadElements = [];
             minSpacing = 10*max(abs(obj.nodes),[],'all');
@@ -1146,7 +1146,7 @@ classdef NuMesh2D
             completeLabels = [];
             incompleteEdges = [];
             incompleteLabels = [];
-            for i = 1:length(obj.edges)
+            for i = 1:size(obj.edges,1)
                 if(obj.edges(i,4) == 0)
                     incompleteEdges = [incompleteEdges;obj.edges(i,:)];
                     incompleteLabels = [incompleteLabels;i];
@@ -1229,8 +1229,8 @@ classdef NuMesh2D
         end
         
         function obj = uniformBoundarySpacing(obj,maxIt)
-            numNds = length(obj.nodes);
-            numEdges = length(obj.edges);
+            numNds = size(obj.nodes,1);
+            numEdges = size(obj.edges,1);
             eqnFact = 10;
 
             cols = 2*numNds;

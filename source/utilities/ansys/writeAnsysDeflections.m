@@ -1,4 +1,12 @@
 function writeAnsysDeflections(blade, config, iLoad, fid, deflectionFilename)
+    %Outer AeroShell
+    [nStationLayups, nStations] = size(blade.stacks);
+    maxSectionNumber=str2num([int2str(nStations) int2str(nStationLayups)]); %Used to start web section ids
+    %The following two lines help make unique IDs for web sections
+    %based on the highes section already defined for aeroshell
+    orderOfMagnitude=floor( log10(maxSectionNumber));
+    webSectionIDstart=ceil(maxSectionNumber/10^orderOfMagnitude)*10^orderOfMagnitude;
+    
     fprintf(fid,'/POST1\n');
     fprintf(fid,'set,last\n');
     fprintf(fid,'RSYS,0\n');  %global coordinates
@@ -6,7 +14,8 @@ function writeAnsysDeflections(blade, config, iLoad, fid, deflectionFilename)
     fprintf(fid,'seltol,0.05\n');
     for i=1:numel(blade.ispan)
         fprintf(fid,'*CFOPEN, %s,out\n',[deflectionFilename '-' int2str(i)]);
-        fprintf(fid,'ESEL,S,SEC,,1,999   \n');    %Selects aero shell only
+        fprintf(fid,'ESEL,S,SEC,,1,%i   \n',webSectionIDstart);    %Selects aero shell only
+        %fprintf(fid,'ESEL,S,SEC,,1,999   \n');    %Selects aero shell only
         fprintf(fid,'nsle,S,   \n');    %Selects aero shell only
         fprintf(fid,'nsel,r,loc,z,%f  \n',blade.ispan(i));
         %fprintf(fid,'nsll,s,,\n');

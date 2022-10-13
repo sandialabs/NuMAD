@@ -129,7 +129,7 @@ for tt = 1:length(thetaMomentRotation)
     loads_table{tt}.input.Mxb = Mb_FAST(1,:)*1000; %Convert from kNm to Nm
     loads_table{tt}.input.Myb = Mb_FAST(2,:)*1000; %Convert from kNm to Nm
     
-    % save the forces for use in layupDesign_ANSYSbuckling buckling analysis
+    % save the forces for use in mainAnsysAnalysis buckling analysis
     loads_table{tt}.rBlade = rBladeForce';
     loads_table{tt}.Fxb = Fxb_FAST(tt,:)*1000; %Convert from kN to N
     loads_table{tt}.Fyb = Fyb_FAST(tt,:)*1000; %Convert from kN to N

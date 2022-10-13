@@ -1,4 +1,4 @@
-function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config)
+function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
 
     if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
         nSegments=1;
@@ -22,10 +22,6 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,l
     simtime=IEC.numSeeds*(IEC.SimTime-IEC.delay);
     nSpace=90/loadsTable{2}.theta; %assuming first position is zero degree and the next entry angular inrement throughout            
     nDirections = length(loadsTable);%Assuming all loadTables have the same number of directions
-   %Get material, section (i.e. laminate), and strains for elements
-    materials = readANSYSMatl('NuMAD/Materials.txt','NuMAD/Strengths.txt');
-    sections = readANSYSSections('NuMAD/Sections.txt');
-    elements = readANSYSElem(['NuMAD/Elements.txt']);
     
     for kTheta=1:nDirections/2  % Loop through half of the number of load direction 
                                  %since blade movements along single direction constitues 
@@ -46,35 +42,51 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,l
         MrThetaPlus90 = loadsTableThetaPlus90.input.Mrb;
 
         plotFatigue=[];
+        
+        fileNameTheta=['plateStrains-all-' int2str(kTheta) '.txt'];
+        fileNameThetaPlus90=['plateStrains-all-' int2str(kTheta+nSpace) '.txt'];
+        
+        disp(fileNameTheta)
+        disp(fileNameThetaPlus90)
+        
+        %Used for reading element stresses
+        pat='ELEM\s*ZCENT\s*EPS11\s*EPS22\s*EPS12\s*KAPA11\s*KAPA22\s*KAPA12\s*GAMMA13\s*GAMMA23';
+        NCOLS=10;
+
+        plateStrainsTheta = readANSYSElementTable(fileNameTheta,pat,NCOLS);
+        plateStrainsThetaPlus90 = readANSYSElementTable(fileNameThetaPlus90,pat,NCOLS); 
         for i=1:nSegments
+            
+            iSegment = find(strcmpi(segmentNamesReference,config.ansys.analysisFlags.fatigue(i))==1);
+              
             if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
                 title='All segments'; %Used for printing title for table.
-                fileNameTheta=['plateStrains-all-' int2str(kTheta) '.txt'];
-                fileNameThetaPlus90=['plateStrains-all-' int2str(kTheta+nSpace) '.txt'];
-                iSegment=1;
-            elseif ~ strcmpi(config.ansys.analysisFlags.fatigue(i),'webs')
-                title=config.ansys.analysisFlags.fatigue(i); %Used for printing title for table.
-                iSegment = find(strcmpi(segmentNamesReference,config.ansys.analysisFlags.fatigue(i))==1);
-                fileNameTheta=['plateStrains-' int2str(iSegment) '-' int2str(kTheta) '.txt'];
-                fileNameThetaPlus90=['plateStrains-' int2str(iSegment) '-' int2str(kTheta+nSpace) '.txt'];
+                
             else
-                title='Webs'; %Used for printing title for table.
-                iSegment=nsegmentNamesReference+1;
-                fileNameTheta=['plateStrains-' int2str(iSegment) '-' int2str(kTheta) '.txt'];
-                fileNameThetaPlus90=['plateStrains-' int2str(iSegment) '-' int2str(kTheta+nSpace) '.txt']; 
-            end     
+                if ~ strcmpi(config.ansys.analysisFlags.fatigue(i),'webs')
+                    title=config.ansys.analysisFlags.fatigue(i); %Used for printing title for table.
+                    [~,nSpanRegions]=size(meshStruct.outerShellElSets);
+                    elementList=[];
+                    for iSpan=1:nSpanRegions
+                        elementList=[elementList meshStruct.outerShellElSets(iSegment,iSpan).elementList];
+                    end
 
-            
-            disp(fileNameTheta)
-            disp(fileNameThetaPlus90)
-            
-            %Used for reading element stresses
-            pat='ELEM\s*ZCENT\s*EPS11\s*EPS22\s*EPS12\s*KAPA11\s*KAPA22\s*KAPA12\s*GAMMA13\s*GAMMA23';
-            NCOLS=10;
+                else
+                    title='Webs'; %Used for printing title for table.
+                    [~,nWebs]=size(meshStruct.shearWebElSets);
+                    elementList=[];
 
-            plateStrainsTheta = readANSYSElementTable(fileNameTheta,pat,NCOLS);
-            plateStrainsThetaPlus90 = readANSYSElementTable(fileNameThetaPlus90,pat,NCOLS);      
+                    for iWeb=1:nWebs
+                        [~,nSpanRegions]=size(meshStruct.shearWebElSets{iWeb});
+                        for iSpan=1:nSpanRegions
+                            elementList=[elementList meshStruct.shearWebElSets{iWeb}(iSpan).elementList];
+                        end
+                    end
+                end  
             
+                plateStrainsThetaSet=plateStrainsTheta(elementList,:);
+                plateStrainsThetaPlus90Set=plateStrainsThetaPlus90(elementList,:);
+            end
             
             for chSpan=1:nGage
 
@@ -97,16 +109,16 @@ function designVar=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,l
                 z1=rGage(chSpan)-zwidth/2;
                 z2=rGage(chSpan)+zwidth/2;
 
-                binnedElements=intersect(find(plateStrainsTheta(:,2)<z2),find(plateStrainsTheta(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
+                binnedElements=intersect(find(plateStrainsThetaSet(:,2)<z2),find(plateStrainsThetaSet(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
     
-                [fdData,plotFatigueChSpan] = calcFatigue(ansysBladeMaterials,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
-                    ,binnedElements,materials,sections,elements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment);
+                [fdData,plotFatigueChSpan] = calcFatigue(blade,meshStruct,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
+                    ,binnedElements,plateStrainsThetaSet,plateStrainsThetaPlus90Set,iSegment);
                 plotFatigue=[plotFatigue;plotFatigueChSpan];
                 criticalElement(chSpan)=fdData(1);
                 fatigueDamage(chSpan)=fdData(2);
                 criticalLayerNo(chSpan)=fdData(5);
                 criticalMatNo(chSpan)=fdData(8);
-                criticalMat{chSpan}= ansysBladeMaterials(fdData(8)).name;
+                criticalMat{chSpan}= blade.materials(fdData(8)).name;
 
             end
         

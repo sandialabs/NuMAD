@@ -43,6 +43,9 @@ classdef BladeDef < handle
         idegreestwist       % (read-only) interpolated twist
         ichord              % (read-only) interpolated chord
         ipercentthick       % (read-only) interpolated thickness
+        ithickness
+        ic
+        icamber
         ichordoffset        % (read-only) interpolated offset
         iaerocenter         % (read-only) interpolated aerocenter
         isweep              % (read-only) interpolated sweep
@@ -191,7 +194,59 @@ classdef BladeDef < handle
             obj.updateKeypoints;
             obj.updateBOM;
         end
-            
+        
+        function expandBladeGeometryTEs(obj)
+            [~,~,nStations]=size(obj.geometry);
+            minimumTEedgelength=0.003; 
+
+            for iStation=1:nStations
+                firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
+                secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation); 
+                edgeLength=norm(secondPont-firstPoint);
+                %fprintf('station %i, edgeLength: %f\n',iStation,edgeLength*1000)
+               
+                [maxthick,mtindex] = max(obj.ithickness(:,iStation));
+                tratio = obj.ipercentthick(iStation) / (maxthick * 100);
+                airFoilThickness = obj.ithickness(:,iStation) * tratio;
+                onset = obj.ic(mtindex,iStation);
+                if edgeLength < minimumTEedgelength 
+                    tet=(minimumTEedgelength-edgeLength)/obj.ichord(iStation);
+                    tes = 5/3 * tet;       % slope of TE adjustment; 5/3*tet is "natural"
+
+                    % continuous first & second derivatives at 'onset'
+                    % maintain second & third derivative at mc==1 (TE)
+                    % adjust slope at mc==1 (TE) by tes
+                    A = [1,  1,  1,   1;
+                         3,  4,  5,   6;
+                         6, 12, 20,  30;
+                         6, 24, 60, 120];
+                    d = [tet; tes; 0; 0];
+                    p = A\d;
+
+                    %onset = obj(k).maxthick;  % start of TE modification, measured from LE
+                    mc = max((obj.ic(:,iStation) - onset)/(1-onset),0);  % coordinate for TE mod
+                    temod = [mc.^3, mc.^4, mc.^5, mc.^6] * p;
+                    airFoilThickness = airFoilThickness + temod;
+
+                    obj.ithickness(:,iStation)=airFoilThickness/tratio;
+                    profile=getAirfoilProfile(obj.ithickness(:,iStation),obj.ipercentthick(iStation),obj.icamber(:,iStation),obj.ic(:,iStation));
+
+                    obj.profiles(:,:,iStation)=profile;
+                    [~,mtindex] = max(obj.ithickness(:,iStation));
+                    obj.xoffset(1,iStation) = obj.ic(mtindex,iStation);
+
+                    obj.geometry(:,:,iStation)=getOMLgeometry(obj.profiles(:,:,iStation),obj.naturaloffset,obj.xoffset(1,iStation),obj.ichordoffset(iStation),obj.ichord(iStation),obj.rotorspin,obj.idegreestwist(iStation),obj.isweep(iStation),obj.iprebend(iStation),obj.ispan(iStation));
+
+%                     firstPoint=obj.ichord(iStation)*obj.profiles(end-1,:,iStation);
+%                     secondPont=obj.ichord(iStation)*obj.profiles(2,:,iStation);
+%                     edgeLength2=norm(secondPont-firstPoint);
+%                     fprintf('station %i, edgeLength: %f, New edgeLength=%f, percent diff: %f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
+               end
+               
+            end
+            obj.updateKeypoints
+        end      
+        
         function updateGeometry(obj)
             % This method updates the interpolated blade parameters
             
@@ -238,6 +293,9 @@ classdef BladeDef < handle
             ic = transpose(interp1(spanlocation,c',obj.ispan,'pchip'));
             icamber = transpose(interp1(spanlocation,camber',obj.ispan,'pchip'));
             ithickness = transpose(interp1(spanlocation,thickness',obj.ispan,'pchip'));
+            obj.ithickness=ithickness; %Export for TE opening
+            obj.ic=ic;
+            obj.icamber=icamber;
             obj.cpos = [ -ic(end,:); -flipud(ic);   ic(2:end,:);  ic(end,:)];  % chordwise position of interpolated station points
 %             figure(101); surf(repmat(spanlocation,nPoints,1),c,camber,'MeshStyle','column');
 %             figure(102); surf(repmat(spanlocation,nPoints,1),c,thickness,'MeshStyle','column');
@@ -283,57 +341,13 @@ classdef BladeDef < handle
             obj.xoffset = zeros(1,N);
             obj.LEindex = nPoints + 1;  % index of leading edge
             for k=1:N
-                %jcb: note that I'm using max thickness about camber
-                %instead of overall thickness of airfoil. We may need to
-                %change this definition.
-                [maxthick,mtindex] = max(ithickness(:,k));
-                tratio = obj.ipercentthick(k) / (maxthick * 100);
-                thick = ithickness(:,k) * tratio;
-                hp = icamber(:,k) - 0.5*thick;
-                lp = icamber(:,k) + 0.5*thick;
-                c = ic(:,k);
-                x = [ c(end); flipud(c) ;  c(2:end);  c(end)];
-                y = [ 0     ; flipud(hp); lp(2:end);  0     ];
-                obj.profiles(:,1,k) = x;
-                obj.profiles(:,2,k) = y;                
-                obj.xoffset(1,k) = c(mtindex);
-                if obj.naturaloffset
-                    x = x - c(mtindex); 
-                end
-                x = x - obj.ichordoffset(k);   % apply chordwise offset
-                x = x * obj.ichord(k) * -1*obj.rotorspin;  % scale by chord
-                y = y * obj.ichord(k);                     % scale by chord
-                twist = -1*obj.rotorspin * obj.idegreestwist(k);
-                % prepare for hgtransform rotate & translate
-                coords(:,1) = cosd(twist) * x - sind(twist) * y;
-                coords(:,2) = sind(twist) * x + cosd(twist) * y;
-                coords(:,3) = zeros(size(x));
-                coords(:,4) = ones(size(x));
+
+                profile=getAirfoilProfile(ithickness(:,k),obj.ipercentthick(k),icamber(:,k),ic(:,k));
+                obj.profiles(:,:,k)=profile;
+                [~,mtindex] = max(ithickness(:,k));
+                obj.xoffset(1,k) = ic(mtindex,k);
                 
-                % use the generating line to translate and rotate the coordinates
-                [sweep_rot, prebend_rot] = deal(0);
-% jcb: This code, copied from NuMAD 2.0, causes each section to rotate out
-% of plane so that its normal follows the generating line direction. Need
-% to replace 'twistFlag' with '-1*obj.rotorspin' and calculate the slopes
-% based on the available data. For now, default to parallel sections.
-%                 if isequal(blade.PresweepRef.method,'normal')
-%                     sweep_slope = ppval(blade.PresweepRef.dpp,sta.LocationZ);
-%                     sweep_rot = atan(sweep_slope*twistFlag);
-%                 end
-%                 if isequal(blade.PrecurveRef.method,'normal')
-%                     prebend_slope = ppval(blade.PrecurveRef.dpp,sta.LocationZ);
-%                     prebend_rot = atan(-prebend_slope);
-%                 end
-                transX = -1*obj.rotorspin*obj.isweep(k);
-                transY = obj.iprebend(k);
-                transZ = obj.ispan(k);
-                R = makehgtform('yrotate',sweep_rot,'xrotate',prebend_rot);
-                T = makehgtform('translate',transX,transY,transZ);
-                coords = coords * R' * T';
-                % save the transformed coordinates
-                obj.geometry(:,1,k) = coords(:,1);
-                obj.geometry(:,2,k) = coords(:,2);
-                obj.geometry(:,3,k) = coords(:,3);
+                obj.geometry(:,:,k)=getOMLgeometry(obj.profiles(:,:,k),obj.naturaloffset,obj.xoffset(1,k),obj.ichordoffset(k),obj.ichord(k),obj.rotorspin,obj.idegreestwist(k),obj.isweep(k),obj.iprebend(k),obj.ispan(k));
             end
             
             % Calculate the arc length of each curve
@@ -402,6 +416,7 @@ classdef BladeDef < handle
                 n2 = mm_to_m*obj.teband;  % no foam width
                 
                 tempTE = obj.getprofileTEtype(k);
+                
                 obj.TEtype{k} = tempTE{1};
                 if obj.swtwisted
                     % get angle of each xy pair w.r.t. pitch axis (0,0)
@@ -1077,7 +1092,7 @@ classdef BladeDef < handle
             make_c_array_BladeDef(obj)
         end
         
-        function [nodes,elements,outerShellElSets,shearWebElSets] = getShellMesh(obj)
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = shellMeshGeneral(obj,forSolid,includeAdhesive)
             %% This method generates a finite element shell mesh for the blade, based on what is
             %% stored in blade.geometry, blade.keypoints, and blade.profiles.  Element sets are 
             %% returned corresponding to blade.stacks and blade.swstacks
@@ -1162,6 +1177,31 @@ classdef BladeDef < handle
                 splineYi = [splineYi,interp1(spParam,splineY(:,i),spParami,'pchip')];
                 splineZi = [splineZi,interp1(spParam,splineZ(:,i),spParami,'pchip')];
             end
+            %% Determine the first spanwise section that needs adhesive
+            if(includeAdhesive == 1)
+                stPt = 1;
+                frstXS = 0;
+                while(frstXS == 0 && stPt < size(splineXi,1))
+                    v1x = splineXi(stPt,7) - splineXi(stPt,5);
+                    v1y = splineYi(stPt,7) - splineYi(stPt,5);
+                    v1z = splineZi(stPt,7) - splineZi(stPt,5);
+                    v2x = splineXi(stPt,31) - splineXi(stPt,33);
+                    v2y = splineYi(stPt,31) - splineYi(stPt,33);
+                    v2z = splineZi(stPt,31) - splineZi(stPt,33);
+                    mag1 = sqrt(v1x*v1x + v1y*v1y + v1z*v1z);
+                    mag2 = sqrt(v2x*v2x + v2y*v2y + v2z*v2z);
+                    dp = (1/(mag1*mag2))*(v1x*v2x + v1y*v2y + v1z*v2z);
+                    if(dp > 0.7071)
+                        frstXS = stPt;
+                    end
+                    stPt = stPt + 3;
+                end
+                if(frstXS == 0)
+                    frstXS = size(splineXi,1);
+                end
+            else
+                frstXS = size(splineXi,1);
+            end
             %% Generate the mesh using the splines as surface guides
             nodes = [];
             elements = [];
@@ -1169,9 +1209,18 @@ classdef BladeDef < handle
             outerShellElSets = [];
             stPt = 1;
             for i = 1:rws-1
-                stSp = 1;
-                setCol = [];
-                for j = 1:12
+                if(stPt < frstXS)
+                    setCol = [];
+                    stSec = 1;
+                    endSec = 12;
+                    stSp = 1;
+                else
+                    setCol = elementSet(obj.stacks(1,i).name,obj.stacks(1,i).plygroups,[]);
+                    stSec = 2;
+                    endSec = 11;
+                    stSp = 4;
+                end
+                for j = stSec:endSec
                     shellKp = [splineXi(stPt,stSp),splineYi(stPt,stSp),splineZi(stPt,stSp);...
                         splineXi(stPt,stSp+3),splineYi(stPt,stSp+3),splineZi(stPt,stSp+3);...
                         splineXi(stPt+3,stSp+3),splineYi(stPt+3,stSp+3),splineZi(stPt+3,stSp+3);...
@@ -1219,14 +1268,57 @@ classdef BladeDef < handle
                     setCol = [setCol;newSet];
                     stSp = stSp + 3;
                 end
+                if(stPt >= frstXS)
+                    newSet = elementSet(obj.stacks(12,i).name,obj.stacks(12,i).plygroups,[]);
+                    setCol = [setCol;newSet];
+                end
                 outerShellElSets = [outerShellElSets,setCol];
                 stPt = stPt + 3;
+            end
+            %% Shift the appropriate splines if the mesh is for a solid model seed
+            if(forSolid == 1)
+                caseIndex = [10,28,4; ...
+                    13,25,4; ...
+                    25,13,9; ...
+                    28,10,9];
+%                     5,33,2; ...
+%                     6,32,2; ...
+%                     7,31,2; ...
+%                     33,5,11; ...
+%                     32,6,11; ...
+%                     31,7,11];
+                for i = 1:size(caseIndex,1)
+                    spl = caseIndex(i,1);
+                    tgtSp = caseIndex(i,2);
+                    sec = caseIndex(i,3);
+                    stPt = 1;
+                    for j = 1:rws-1
+                        totalThick = 0;
+                        for k = 1:3
+                            tpp = 0.001*obj.stacks(sec,j).plygroups(k).thickness;
+                            npls = obj.stacks(sec,j).plygroups(k).nPlies;
+                            totalThick = totalThick + tpp*npls;
+                        end
+                        for k = 1:3
+                            vx = splineXi(stPt,tgtSp) - splineXi(stPt,spl);
+                            vy = splineYi(stPt,tgtSp) - splineYi(stPt,spl);
+                            vz = splineZi(stPt,tgtSp) - splineZi(stPt,spl);
+                            magInv = 1/sqrt(vx*vx + vy*vy + vz*vz);
+                            ux = magInv*vx;
+                            uy = magInv*vy;
+                            uz = magInv*vz;
+                            splineXi(stPt,spl) = splineXi(stPt,spl) + totalThick*ux;
+                            splineYi(stPt,spl) = splineYi(stPt,spl) + totalThick*uy;
+                            splineZi(stPt,spl) = splineZi(stPt,spl) + totalThick*uz;
+                            stPt = stPt + 1;
+                        end
+                    end
+                end
             end
             %% Shear web sections
             stPt = 1;
             web1Sets = [];
             web2Sets = [];
-            disp('meshing webs')
             for i = 1:rws-1
                 if(~isempty(obj.swstacks{1}(i).plygroups))
                     shellKp = zeros(16,3);
@@ -1281,14 +1373,14 @@ classdef BladeDef < handle
                 end
                 if(~isempty(obj.swstacks{2}(i).plygroups))
                     shellKp = zeros(16,3);
-                    shellKp(1,:) = [splineXi(stPt,10),splineYi(stPt,10),splineZi(stPt,10)];
-                    shellKp(2,:) = [splineXi(stPt,28),splineYi(stPt,28),splineZi(stPt,28)];
-                    shellKp(3,:) = [splineXi(stPt+3,28),splineYi(stPt+3,28),splineZi(stPt+3,28)];
-                    shellKp(4,:) = [splineXi(stPt+3,10),splineYi(stPt+3,10),splineZi(stPt+3,10)];
-                    shellKp(7,:) = [splineXi(stPt+1,28),splineYi(stPt+1,28),splineZi(stPt+1,28)];
-                    shellKp(8,:) = [splineXi(stPt+2,28),splineYi(stPt+2,28),splineZi(stPt+2,28)];
-                    shellKp(11,:) = [splineXi(stPt+2,10),splineYi(stPt+2,10),splineZi(stPt+2,10)];
-                    shellKp(12,:) = [splineXi(stPt+1,10),splineYi(stPt+1,10),splineZi(stPt+1,10)];
+                    shellKp(1,:) = [splineXi(stPt,28),splineYi(stPt,28),splineZi(stPt,28)];
+                    shellKp(2,:) = [splineXi(stPt,10),splineYi(stPt,10),splineZi(stPt,10)];
+                    shellKp(3,:) = [splineXi(stPt+3,10),splineYi(stPt+3,10),splineZi(stPt+3,10)];
+                    shellKp(4,:) = [splineXi(stPt+3,28),splineYi(stPt+3,28),splineZi(stPt+3,28)];
+                    shellKp(7,:) = [splineXi(stPt+1,10),splineYi(stPt+1,10),splineZi(stPt+1,10)];
+                    shellKp(8,:) = [splineXi(stPt+2,10),splineYi(stPt+2,10),splineZi(stPt+2,10)];
+                    shellKp(11,:) = [splineXi(stPt+2,28),splineYi(stPt+2,28),splineZi(stPt+2,28)];
+                    shellKp(12,:) = [splineXi(stPt+1,28),splineYi(stPt+1,28),splineZi(stPt+1,28)];
                     shellKp(5,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(2,:);
                     shellKp(6,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(2,:);
                     shellKp(9,:) = 0.6666*shellKp(3,:) + 0.3333*shellKp(4,:);
@@ -1332,6 +1424,8 @@ classdef BladeDef < handle
                 end
                 stPt = stPt + 3;
             end
+%             plotShellMesh(nodes,elements);
+%             keyboard
             shearWebElSets{1} = web1Sets;
             shearWebElSets{2} = web2Sets;
             %% Eliminate duplicate nodes from the global list and update element connectivity
@@ -1358,11 +1452,12 @@ classdef BladeDef < handle
                     newNodes = [newNodes;nodes(i,:)];
                     nearNds = nodeGL.findInRadius(nodes(i,:),obj.mesh);
                     for j = 1:length(nearNds)
-                        if(nearNds(j) ~= i)
+                        k = nearNds(j);
+                        if(k > i && nodeElim(k) == 0)
                             k = nearNds(j);
                             vec = nodes(i,:) - nodes(k,:);
                             dist = sqrt(vec*vec');
-                            if(dist < obj.mesh*1e-4)
+                            if(dist < obj.mesh*1e-10)
                                 nodeElim(k) = i;
                             end
                         end
@@ -1384,10 +1479,299 @@ classdef BladeDef < handle
                     end
                 end
             end
+            
+            %% Generate mesh for trailing edge adhesive if requested
+            if(includeAdhesive == 1)
+                stPt = frstXS;
+                v1x = splineXi(stPt,7) - splineXi(stPt,5);
+                v1y = splineYi(stPt,7) - splineYi(stPt,5);
+                v1z = splineZi(stPt,7) - splineZi(stPt,5);
+                mag1 = sqrt(v1x*v1x + v1y*v1y + v1z*v1z);
+                v2x = splineXi(stPt,31) - splineXi(stPt,33);
+                v2y = splineYi(stPt,31) - splineYi(stPt,33);
+                v2z = splineZi(stPt,31) - splineZi(stPt,33);
+                mag2 = sqrt(v2x*v2x + v2y*v2y + v2z*v2z);
+                v3x = splineXi(stPt,7) - splineXi(stPt,31);
+                v3y = splineYi(stPt,7) - splineYi(stPt,31);
+                v3z = splineZi(stPt,7) - splineZi(stPt,31);
+                mag3 = sqrt(v3x*v3x + v3y*v3y + v3z*v3z);
+                v4x = splineXi(stPt,5) - splineXi(stPt,33);
+                v4y = splineYi(stPt,5) - splineYi(stPt,33);
+                v4z = splineZi(stPt,5) - splineZi(stPt,33);
+                mag4 = sqrt(v4x*v4x + v4y*v4y + v4z*v4z);
+                nE1 = ceil(mag1/obj.mesh);
+                nE2 = ceil(mag3/obj.mesh);
+                nE3 = ceil(mag2/obj.mesh);
+                nE4 = ceil(mag4/obj.mesh);
+                nEl = [nE1;nE2;nE3;nE4];
+                gdLayer = 0;
+                sweepElements = [];
+                while(stPt < size(splineXi,1))
+%                     shellKp = zeros(16,3);
+%                     shellKp(1,:) = [splineXi(stPt,4),splineYi(stPt,4),splineZi(stPt,4)];
+%                     shellKp(2,:) = [splineXi(stPt,7),splineYi(stPt,7),splineZi(stPt,7)];
+%                     shellKp(3,:) = [splineXi(stPt,31),splineYi(stPt,31),splineZi(stPt,31)];
+%                     shellKp(4,:) = [splineXi(stPt,34),splineYi(stPt,34),splineZi(stPt,34)];
+%                     shellKp(5,:) = [splineXi(stPt,5),splineYi(stPt,5),splineZi(stPt,5)];
+%                     shellKp(6,:) = [splineXi(stPt,6),splineYi(stPt,6),splineZi(stPt,6)];
+%                     shellKp(7,:) = 0.6666*shellKp(2,:) + 0.3333*shellKp(3,:);
+%                     shellKp(8,:) = 0.3333*shellKp(2,:) + 0.6666*shellKp(3,:);
+%                     shellKp(9,:) = [splineXi(stPt,32),splineYi(stPt,32),splineZi(stPt,32)];
+%                     shellKp(10,:) = [splineXi(stPt,33),splineYi(stPt,33),splineZi(stPt,33)];
+%                     shellKp(11,:) = 0.3333*shellKp(1,:) + 0.6666*shellKp(4,:);
+%                     shellKp(12,:) = 0.6666*shellKp(1,:) + 0.3333*shellKp(4,:);
+%                     shellKp(13,:) = 0.6666*shellKp(5,:) + 0.3333*shellKp(10,:);
+%                     shellKp(14,:) = 0.6666*shellKp(6,:) + 0.3333*shellKp(9,:);
+%                     shellKp(15,:) = 0.3333*shellKp(6,:) + 0.6666*shellKp(9,:);
+%                     shellKp(16,:) = 0.3333*shellKp(5,:) + 0.6666*shellKp(10,:);
+%                     shell = shellRegion('quad16',shellKp,nEl);
+%                     [bNodes,bFaces] = shell.createShellMesh('quad','free');
+                    shellKp = zeros(9,3);
+                    shellKp(1,:) = [splineXi(stPt,5),splineYi(stPt,5),splineZi(stPt,5)];
+                    shellKp(2,:) = [splineXi(stPt,7),splineYi(stPt,7),splineZi(stPt,7)];
+                    shellKp(3,:) = [splineXi(stPt,31),splineYi(stPt,31),splineZi(stPt,31)];
+                    shellKp(4,:) = [splineXi(stPt,33),splineYi(stPt,33),splineZi(stPt,33)];
+                    shellKp(5,:) = [splineXi(stPt,6),splineYi(stPt,6),splineZi(stPt,6)];
+                    shellKp(6,:) = 0.5*shellKp(2,:) + 0.5*shellKp(3,:);
+                    shellKp(7,:) = [splineXi(stPt,32),splineYi(stPt,32),splineZi(stPt,32)];
+                    shellKp(8,:) = 0.5*shellKp(1,:) + 0.5*shellKp(4,:);
+                    shellKp(9,:) = 0.5*shellKp(5,:) + 0.5*shellKp(7,:);
+                    shell = shellRegion('quad9',shellKp,nEl);
+                    [bNodes,bFaces] = shell.createShellMesh('quad','free');
+%                     plotShellMesh(bNodes,bFaces);
+%                     keyboard
+                    if(stPt == frstXS)
+                        adhesMesh = NuMesh3D(bNodes,bFaces);
+                    else
+                        gdLayer = gdLayer + 1;
+                        guideNds{gdLayer} = bNodes;
+                        layerSwEl = ceil((splineZi(stPt,4) - splineZi(stPt-3,4))/obj.mesh);
+                        sweepElements = [sweepElements,layerSwEl];
+                    end
+                    stPt = stPt + 3;
+                end
+%                 sweepElements = ceil((splineZi(end,4) - splineZi(frstXS,4))/obj.mesh);
+                [adhesNds,adhesEls] = adhesMesh.createSweptMesh('to_dest_nodes',[],[],sweepElements,[],guideNds);
+            else
+                adhesNds = [];
+                adhesEls = [];
+            end
+        end       
+            
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = getShellMesh(obj,includeAdhesive)
+            [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(0,includeAdhesive);
+        end
+        
+        function editStacksForSolidMesh(obj)
+            [numSec,numStat] = size(obj.stacks);
+            for i = 1:numSec
+                for j = 1:numStat
+                    pg = obj.stacks(i,j).plygroups;
+                    if(length(pg) == 4)
+                        newPg = pg(2:4);
+                    elseif(length(pg) == 3)
+                        newPg = [pg(2),pg(2),pg(3)];
+                        t2 = pg(2).thickness;
+                        t3 = pg(3).thickness;
+                        newPg(2).thickness = 0.3333333*(t2+t3);
+                        newPg(1).thickness = 0.6666666*t2;
+                        newPg(3).thickness = 0.6666666*t3;
+                    elseif(length(pg) == 2)
+                        newPg = [pg(1),pg(1),pg(2)];
+                        t1 = pg(1).thickness;
+                        t2 = pg(2).thickness;
+                        newPg(2).thickness = 0.3333333*(t1+t2);
+                        newPg(1).thickness = 0.6666666*t1;
+                        newPg(3).thickness = 0.6666666*t2;
+                    else
+                        newPg = [pg(1),pg(1),pg(1)];
+                        t1 = pg(1).thickness;
+                        newPg(2).thickness = 0.3333333*t1;
+                        newPg(1).thickness = 0.3333333*t1;
+                        newPg(3).thickness = 0.3333333*t1;
+                    end
+                    obj.stacks(i,j).plygroups = newPg;
+                end
+            end
+            for i = 1:2
+                stackLst = obj.swstacks{i};
+                for j = 1:length(stackLst)
+                    pg = stackLst(j).plygroups;
+                    if(length(pg) == 3 || isempty(pg))
+                        newPg = pg;
+                    elseif(length(pg) == 2)
+                        newPg = [pg(1),pg(1),pg(2)];
+                        t1 = pg(1).thickness;
+                        t2 = pg(2).thickness;
+                        newPg(2).thickness = 0.3333333*(t1+t2);
+                        newPg(1).thickness = 0.6666666*t1;
+                        newPg(3).thickness = 0.6666666*t2;
+                    else
+                        newPg = [pg(1),pg(1),pg(1)];
+                        t1 = pg(1).thickness;
+                        newPg(2).thickness = 0.3333333*t1;
+                        newPg(1).thickness = 0.3333333*t1;
+                        newPg(3).thickness = 0.3333333*t1;
+                    end
+                    obj.swstacks{i}(j).plygroups = newPg;
+                end
+            end
+        end
+        
+        function [nodes,elements,outerShellElSets,shearWebElSets,adhesiveElSet] = getSolidMesh(obj,layerNumEls)
+            %% Edit stacks to be usable for 3D solid mesh
+            obj.editStacksForSolidMesh();
+            %% Create shell mesh as seed
+            [shNodes,shElements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(1,1);
+            %% Initialize 3D solid mesh from the shell mesh
+            bladeMesh = NuMesh3D(shNodes,shElements);
+            %% Calculate unit normal vectors for all nodes
+            numNds = size(shNodes,1);
+            nodeNorms = zeros(numNds,3);
+            for i = 1:size(shElements,1)
+                n1 = shElements(i,1);
+                n2 = shElements(i,2);
+                n3 = shElements(i,3);
+                n4 = shElements(i,4);
+                if(n4 == 0)
+                    v1 = shNodes(n3,:) - shNodes(n1,:);
+                    v2 = shNodes(n2,:) - shNodes(n1,:);
+                else
+                    v1 = shNodes(n4,:) - shNodes(n2,:);
+                    v2 = shNodes(n3,:) - shNodes(n1,:);
+                end
+                v3x = v1(2)*v2(3) - v1(3)*v2(2);
+                v3y = v1(3)*v2(1) - v1(1)*v2(3);
+                v3z = v1(1)*v2(2) - v1(2)*v2(1);
+                v3 = [v3x,v3y,v3z];
+                mag = sqrt(v3*v3');
+                uNorm = (1/mag)*v3;
+                for j = 1:4
+                    nj = shElements(i,j);
+                    if(nj ~= 0)
+                        nodeNorms(nj,:) = nodeNorms(nj,:) + uNorm;
+                    end
+                end
+            end
+            for i = 1:numNds
+                mag = sqrt(nodeNorms(i,:)*nodeNorms(i,:)');
+                nodeNorms(i,:) = (1/mag)*nodeNorms(i,:);
+            end
+            %% Extrude shell mesh into solid mesh
+            if(isempty(layerNumEls))
+                layerNumEls = [1,1,1];
+            end
+            for i = 1:length(layerNumEls)
+                nodeDist = zeros(numNds,1);
+                nodeHitCt = zeros(numNds,1);
+                [numSec,numStat] = size(outerShellElSets);
+                for j = 1:numSec
+                    for k = 1:numStat
+                        eSet = outerShellElSets(j,k);
+                        projDist = 0;
+                        for m = 1:i
+                            tpp = 0.001*eSet.plygroups(m).thickness;
+                            npls = eSet.plygroups(m).nPlies;
+                            projDist = projDist + tpp*npls;
+                        end
+                        eLst = eSet.elementList;
+                        for m = 1:length(eLst)
+                            el = eLst(m);
+                            for p = 1:4
+                                nd = shElements(el,p);
+                                if(nd ~= 0)
+                                    if(j == 4 || j == 9)
+                                        nodeDist(nd) = projDist;
+                                        nodeHitCt(nd) = -1;
+                                    elseif(nodeHitCt(nd) ~= -1)
+                                        nodeDist(nd) = nodeDist(nd) + projDist;
+                                        nodeHitCt(nd) = nodeHitCt(nd) + 1;
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                for j = 1:2
+                    setLst = shearWebElSets{j};
+                    for k = 1:length(setLst)
+                        eSet = setLst(k);
+                        if(~isempty(eSet.elementList))
+                            projDist = 0;
+                            for m = 1:i
+                                tpp = 0.001*eSet.plygroups(m).thickness;
+                                npls = eSet.plygroups(m).nPlies;
+                                projDist = projDist + tpp*npls;
+                            end
+                            eLst = eSet.elementList;
+                            for m = 1:length(eLst)
+                                el = eLst(m);
+                                for p = 1:4
+                                    nd = shElements(el,p);
+                                    if(nd ~= 0)
+                                        nodeDist(nd) = nodeDist(nd) + projDist;
+                                        nodeHitCt(nd) = nodeHitCt(nd) + 1;
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+                newLayer = shNodes;
+                for j = 1:numNds
+                    if(nodeHitCt(j) ~= -1)
+                        nodeDist(j) = (1/nodeHitCt(j))*nodeDist(j);
+                    end
+                    newLayer(j,:) = newLayer(j,:) + nodeDist(j)*nodeNorms(j,:);
+                end
+                guideNds{i} = newLayer;
+            end
+            [nodes,elements] = bladeMesh.createSweptMesh('to_dest_nodes',[],[],layerNumEls,[],guideNds);
+            numShEls = size(shElements,1);
+            for i = 1:numSec
+                for j = 1:numStat
+                    eSet = outerShellElSets(i,j);
+                    elst = eSet.elementList;
+                    if(~isempty(elst))
+                        for k = 1:2
+                            elst = [elst;(elst+k*numShEls)];
+                        end
+                    end
+                    outerShellElSets(i,j).elementList = elst;
+                end
+            end
+            for i = 1:2
+                setLst = shearWebElSets{i};
+                for j = 1:length(setLst)
+                    eSet = setLst(j);
+                    elst = eSet.elementList;
+                    if(~isempty(elst))
+                        for k = 1:2
+                            elst = [elst;(elst+k*numShEls)];
+                        end
+                    end
+                    shearWebElSets{i}(j).elementList = elst;
+                end
+            end
+            numSolidNds = size(nodes,1);
+            for i = 1:size(adhesEls,1)
+                for j = 1:8
+                    k = adhesEls(i,j);
+                    if(k ~= 0)
+                        adhesEls(i,j) = k + numSolidNds;
+                    end
+                end
+            end
+            nodes = [nodes;adhesNds];
+            elements = [elements;adhesEls];
+            lastEl = size(elements,1);
+            stAdEl = lastEl - size(adhesEls,1) + 1;
+            eList = [stAdEl:lastEl];
+            adhesiveElSet = elementSet('adhesive',[],eList);
         end
 
         
-        function generateFEA(obj) 
+        function meshStruct=generateANSYSshellModel(obj) 
             % This method generates FEA    
             
             % NOTE:can add flags into the call -- e.g., element type, ...
@@ -1417,151 +1801,12 @@ classdef BladeDef < handle
             obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
             filename = fullfile(obj.paths.job,shell7_name);
             
-            airfoils_path = 'airfoils';
+            [nodes,elements,outerShellElSets,shearWebElSets]=writeANSYSshellModel(obj,filename,fea);
             
-            
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-            [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
-
-%             [data2.station, data2.shearweb, ~, ~, ~, data2.blade, ~, ~] = readNuMADinput('numad.nmd');
-%             [~,matDataBase2]=dataForNuMADobjects(obj,airfoils_path);
-%             
-%             data.station = resampleAirfoilDB(data.station,200,'cosine');
-%             data2.station = resampleAirfoilDB(data2.station,200,'cosine');
-
-            structToCompare1=data.station;
-            
-            %Remove sig figs to match what NuMAD file would have given
-            fieldNames = fieldnames(structToCompare1);
-            for iStation=1:length(data.station)
-                for iField=1:length(fieldNames) 
-                    item=structToCompare1(iStation).(fieldNames{iField});
-                    dataType=class(item);
-  
-                    if ~strcmp(dataType,'char')
-
-                        [imax,jmax]=size(item);
-                        
-                        for I=1:imax
-                            for J=1:jmax
-                                if  strcmp(dataType,'double') %Only loop through each index if double
-                                    item=structToCompare1(iStation).(fieldNames{iField})(I,J);
-                                    item=str2double(sprintf('%.6g',item));
-                                    structToCompare1(iStation).(fieldNames{iField})(I,J)=item;
-                                elseif  strcmp(dataType,'cell') 
-                                    item=structToCompare1(iStation).(fieldNames{iField}){I,J};
-                                    dataType=class(item);
-                                    if ~strcmp(dataType,'char')
-                                       item=str2double(sprintf('%.6g',item));
-                                       structToCompare1(iStation).(fieldNames{iField}){I,J}=item;
-                                    end
-                                end
-                            end
-                        end
-                        
-                        
-                    end
-
-                    
-                end
-            end
-            data.station=structToCompare1;           
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%             fieldNames = fieldnames(structToCompare1);
-%             for iField=1:length(fieldNames) 
-%                 for iStation=1:length(data.station)
-%                 
-%                     item1=structToCompare1(iStation).(fieldNames{iField})
-%                     item2=structToCompare2(iStation).(fieldNames{iField})
-% %                     
-%             
-%             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%              % Diff checker
-%             
-%             structToCompare1=data.station;
-%             structToCompare2=data2.station;
-%             
-%             fieldNames = fieldnames(structToCompare1);
-%             for iStation=1:length(data.station)
-%                 for iField=1:length(fieldNames) 
-%                     item1=structToCompare1(iStation).(fieldNames{iField});
-%                     item2=structToCompare2(iStation).(fieldNames{iField});
-%                     
-%                     if ~isequal(item1,item2)
-% %                         keyboard
-%                         dataType1=class(item1);
-%                         dataType2=class(item2);
-%                        if strcmp(dataType1,'struct')
-%                            break
-%                        end
-%                         [imax,jmax]=size(item1);
-%                         if strcmp(dataType1,dataType2)  %IF they are the same type do this..
-%                             if ~strcmp(dataType1,'char') && (imax>1 || jmax >1)
-% 
-%                                 for I=1:imax
-%                                     for J=1:jmax
-%                                         if  strcmp(dataType1,'double') %Only loop through each index if double
-%                                             dataType='%.15f';
-% 
-%                                             item1=structToCompare1(iStation).(fieldNames{iField})(I,J);
-%                                             item2=structToCompare2(iStation).(fieldNames{iField})(I,J);
-%                                         elseif  strcmp(dataType1,'cell') 
-%                                             item1=structToCompare1(iStation).(fieldNames{iField}){I,J};
-%                                             item2=structToCompare2(iStation).(fieldNames{iField}){I,J};
-% 
-%                                             dataType=class(item1)
-%                                             if  strcmp(dataType1,'double') %Only loop through each index if double
-%                                                 dataType='%.15f';
-%                                             elseif strcmp(dataType,'char')
-%                                                 dataType='%s'; 
-%                                             end
-% 
-%                                         end
-%                                         if ~isequal(item1,item2)
-%                                             string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
-%                                             fprintf(string,item1,item2)
-% 
-%                                         end
-%                                     end
-%                                 end
-%                             else
-% 
-%                                 if strcmp(dataType1,'char')
-%                                     dataType='%s'  ;
-%                                 elseif  strcmp(dataType1,'int')
-%                                     dataType='%i';
-%                                 elseif  strcmp(dataType1,'double')
-%                                     dataType='%.15f';
-%                                 end
-% 
-%                                 
-%                                 string=[fieldNames{iField} ': Broken struct val: ' dataType '  Working struct val: ' dataType '\n'];
-%                                 fprintf(string,item1,item2)
-%                             end
-%                         else
-%                             error('error1')
-%                         end
-%                     end
-%                         
-%                 end
-%             end
-% %             
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
-            
-%             if 1
-%                 [data,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
-% %                 [data.station, ~, ~, ~, ~, ~, ~, ~] = readNuMADinput('numad.nmd');
-%             else
-%                 [data.station, data.shearweb, ~, ~, ~, data.blade, ~, ~] = readNuMADinput('numad.nmd');
-%                 [~,matDataBase]=dataForNuMADobjects(obj,airfoils_path);
-%             end
-            
-            data.station = resampleAirfoilDB(data.station,200,'cosine');
-            data.blade = calcGenLinePP(data.blade); % update the piecewise polynomial
-            [data.station,data.shearweb,~,~] = sort_stations(data.station,data.shearweb);
-            writeANSYSshellAPDL(obj,filename,data,matDataBase,fea);
+            meshStruct.nodes=nodes;
+            meshStruct.elements=elements;
+            meshStruct.outerShellElSets=outerShellElSets;
+            meshStruct.shearWebElSets=shearWebElSets;
             
             if fea.ansys.dbgen
                 if isempty(ansysPath)
@@ -1925,25 +2170,38 @@ classdef BladeDef < handle
         function tetype = getTEtype(obj,xy)
             % This method...
 
-            if abs(xy(2,2)-xy(end-1,2)) > 1e-5
-                % y-diff of second and end-1 points is non-zero for flatback
-                tetype = 'flat';
-                disp('FLATBACK AIRFOIL')
+            unitNormals=getAirfoilNormals(xy);
+            angleChange=getAirfoilNormalsAngleChange(unitNormals);
+            discontinuities = find(angleChange>30);
+            
+            if std(angleChange) < 2 
+                tetype='round';
+            elseif numel(discontinuities) > 1
+                tetype='flat';
             else
-                % y-diff of first two points is zero otherwise (point
-                % is duplicated)
-                hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
-                lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
-                if (hp_angle + lp_angle) > 0.8*pi
-                    % if angle is approaching 180deg, then treat as
-                    % 'round'
-                    % jcb: it may be better to base this decision on
-                    % continuity of slope or curvature
-                    tetype = 'round';
-                else
-                    tetype = 'sharp';
-                end
+                tetype='sharp';
             end
+            
+    
+%             if abs(xy(2,2)-xy(end-1,2)) > 1e-5
+%                 % y-diff of second and end-1 points is non-zero for flatback
+%                 tetype = 'flat';
+%                 disp('FLATBACK AIRFOIL')
+%             else
+%                 % y-diff of first two points is zero otherwise (point
+%                 % is duplicated)
+%                 hp_angle = atan2(xy(2,2)-xy(3,2),xy(2,1)-xy(3,1));
+%                 lp_angle = atan2(xy(end-2,2)-xy(end-1,2),xy(end-1,1)-xy(end-2,1));
+%                 if (hp_angle + lp_angle) > 0.8*pi
+%                     % if angle is approaching 180deg, then treat as
+%                     % 'round'
+%                     % jcb: it may be better to base this decision on
+%                     % continuity of slope or curvature
+%                     tetype = 'round';
+%                 else
+%                     tetype = 'sharp';
+%                 end
+%             end
         end
 
         function fprintf_matrix(obj,fid,matrixData,columnsPerLine)

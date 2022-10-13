@@ -24,13 +24,11 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     blade.updateBlade
 
     %%  Generate FEA model for blade
-    BladeDef_to_NuMADfile(blade,'numad.nmd','MatDBsi.txt');
 
     disp(' '); disp('Creating ANSYS model...')
     fprintf('Mesh size setting = %0.4f\n',blade.mesh)
     delete 'file.lock';
-    layupDesign_ANSYSmesh(blade);
-    
+    meshStruct=blade.generateANSYSshellModel;
     %% Initialize values for objective evaluation and results.
     c1 = 60000;  %% Coefficient for constraint penalty terms, chosen based on approximate blade mass
     maxDeflection = 0;
@@ -45,7 +43,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add displacement penalty
     if(isfield(config,'defConfig'))
         delete 'file.lock';
-        ansysResult = layupDesignAnsysAnalysis(blade,defLoadsTable,config.defConfig);
+        ansysResult = mainAnsysAnalysis(blade,meshStruct,defLoadsTable,config.defConfig);
         maxDeflection = max(ansysResult.deflection{1},[],'all');
         objVal = objVal + c1*(maxDeflection/deflectionLimit)^2;
     end
@@ -53,7 +51,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add failure, buckling, fatigue penalties
     if(isfield(config,'failConfig'))
         delete 'file.lock';
-        ansysResult = layupDesignAnsysAnalysis(blade,loadsTable,config.failConfig,IEC);
+        ansysResult = mainAnsysAnalysis(blade,meshStruct,loadsTable,config.failConfig,IEC);
         disp('postprocessing failure')
         if(isfield(config.failConfig.ansys.analysisFlags,'failure'))
             for i = 1:length(ansysResult.failure)
@@ -90,7 +88,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     if(isfield(config,'freqConfig'))
         delete 'file.lock';
         rotorFreq = config.freqConfig.ansys.rpm/60;
-        Freq = layupDesign_ANSYSfrequency(config.freqConfig);
+        Freq = getANSYSfrequency(config.freqConfig);
         objVal = objVal + c1*(rotorFreq/(Freq(1)))^2;
     else
         Freq = [1,1];

@@ -21,4 +21,4 @@ numad(NuMADfile)
 
 %% generate an ANSYS mesh
 blade.mesh = 0.1; % mesh size for ANSYS 
-layupDesign_ANSYSmesh(blade,NuMADfile);
+meshStruct=blade.generateANSYSshellModel;

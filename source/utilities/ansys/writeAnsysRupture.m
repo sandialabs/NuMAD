@@ -1,4 +1,4 @@
-function writeAnsysRupture(blade, config, iLoad, fid, failureFilename)
+function writeAnsysRupture(config, iLoad, fid, failureFilename)
     fprintf(fid,'! BEGIN FAILURE SCRIPT\n');
     fprintf(fid,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n');
     fprintf(fid,'!Add for PLESOL and *get,findex,PLNSOL,0,MAX to work');
@@ -16,15 +16,6 @@ function writeAnsysRupture(blade, config, iLoad, fid, failureFilename)
     fprintf(fid,'/POST1\n');
     fprintf(fid,'set,last\n');
     fprintf(fid,'allsel\n');
-    %High Pressure Spar
-    fprintf(fid,'esel,s,sect,,3,39,12\n');
-    fprintf(fid,'esel,a,sect,,53,389,14\n');
-    
-    %Low Pressure Spar
-    fprintf(fid,'esel,a,sect,,9,45,12\n');
-    fprintf(fid,'esel,a,sect,,59,395,14\n');
-    
-%     fprintf(fid,'esel,all\n');
 
     fprintf(fid,'RSYS,LSYS \n'); %Result in the layer coordinate system
     fprintf(fid,'layer,fcmax\n');
@@ -84,7 +75,7 @@ function writeAnsysRupture(blade, config, iLoad, fid, failureFilename)
         fprintf(fid,'findex=Mfindex\n');
         fprintf(fid,'*ENDIF\n');
     end
-    failureFilename = 'results_failure';
+
     fprintf(fid,['/output,' failureFilename ',out\n']);
     fprintf(fid,'*status,findex\n');
     fprintf(fid,'/output\n');

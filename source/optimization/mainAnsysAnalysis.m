@@ -1,4 +1,4 @@
-function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin)
+function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,varargin)
     anFlagNames = fieldnames(config.ansys.analysisFlags);
     
     global ansysPath
@@ -49,31 +49,15 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         error('no analyses are configured in config. Edit config.')
     end
     
-    if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)|| isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
-        [isoorthoInModel,compsInModel,SkinAreas,app] = getMatrialLayerInfoWithOutGUI(blade);
-
-        bladeMatNames=cell(numel(blade.materials),1);
-        for iMat=1:numel(blade.materials)
-            bladeMatNames{iMat}=blade.materials(iMat).name;
-        end
-
-        matPointer=zeros(numel(isoorthoInModel),1);
-        for iMat=1:numel(isoorthoInModel)
-           ansysMPnumber = find(strcmp(isoorthoInModel(iMat),bladeMatNames)==1);
-           matPointer(iMat)=ansysMPnumber;
-        end
-        
-        ansysBladeMaterials=blade.materials(matPointer);
-    end
     for iLoad=1:length(loadsTable)
         %% ************************************************************************
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
         forcefilename='forces';
         
-        if isfield(config.ansys.analysisFlags, 'FollowerForces') && isfield(config.ansys.analysisFlags, 'StaticNonlinear')
+        if isfield(config.ansys.analysisFlags,'FollowerForces') && ~isempty(config.ansys.analysisFlags.FollowerForces) &&config.ansys.analysisFlags.FollowerForces~=0 && isfield(config.ansys.analysisFlags, 'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
             beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
-          beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
+            beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         end
 
         disp('Forces mapped to ANSYS model')
@@ -89,6 +73,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         fid=fopen(script_name,'w+');
 
         fprintf(fid,'/NERR,,99999999\n');
+        fprintf(fid,'/CWD, ''%s''\n',pwd);
         fprintf(fid,'resume,master,db\n');
 %         fprintf(fid,'/FILNAME,''%s'',1\n',ansysFilename);   %From master, change the jobname
         fprintf(fid,'/FILNAME,''%s'',1\n',strcat(ansysFilename,'-Load', int2str(iLoad)));   %From master, change the jobname
@@ -104,7 +89,8 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         fprintf(fid,'/solu\n');
         
         fprintf(fid,'antype,static\n');
-        if isfield(config.ansys.analysisFlags, 'StaticNonlinear')
+        
+        if isfield(config.ansys.analysisFlags,'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
             fprintf(fid,'nlgeom,1\n'); %%%%%%%%%%%%%%%%%%%%%%%% TEMP
             fprintf(fid,'OUTRES,all,ALL\n');%%%%%%%%%%%%%%%%%%%%%%%% TEMP
 %         else
@@ -152,7 +138,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         % ================= PERFORM FATIGUE ANALYSIS =================
         if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
             
-            writeAnsysFatigue(blade, config, iLoad, fid)
+            writeAnsysFatigue(fid,iLoad)
             
         end
 %% ************************************************************************
@@ -171,7 +157,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
         if isfield(config.ansys.analysisFlags,'failure') && ~isempty(config.ansys.analysisFlags.failure)
             failureFilename = 'results_failure';
             
-            writeAnsysRupture(blade, config, iLoad, fid, failureFilename)
+            writeAnsysRupture(config, iLoad, fid, failureFilename)
             
         end
 
@@ -225,7 +211,7 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
 % ================= READ DEFLECTION RESULTS INTO MATLAB =================       
         if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
 
-            designvar = readAnsysDeflections(blade, config, iLoad, deflectionFilename);
+            designvar.deflection=readAnsysDeflections(blade, config, iLoad, deflectionFilename);
             
         end
     %% ************************************************************************
@@ -328,9 +314,9 @@ function [designvar] = layupDesignAnsysAnalysis(blade,loadsTable,config,varargin
             IEC=varargin{1};
             [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
             cd 'NuMAD'
-            designvar.fatigue=layupDesign_ANSYSfatigue(ansysBladeMaterials,wt,rccdata,IEC,loadsTable,config);
+            designvar.fatigue=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
         else
-            error('IECDef required to run fatigue analysis in layupDesignAnsysAnalysis')
+            error('IECDef required to run fatigue analysis in mainAnsysAnalysis')
         end
     end
 end

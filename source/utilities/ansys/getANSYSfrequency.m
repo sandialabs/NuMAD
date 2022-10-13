@@ -1,4 +1,4 @@
-function [freq] = layupDesign_ANSYSfrequency(config)
+function [freq] = getANSYSfrequency(config)
     global ansysPath;
     ansys_product = 'ANSYS';
     script_name = 'freqAnalysis.mac';

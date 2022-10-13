@@ -77,17 +77,17 @@ if(runAnsys == 1)
     
     %% Create the ANSYS model from the blade object
     blade.mesh = 0.1;
-    layupDesign_ANSYSmesh(blade);
+    meshStruct=blade.generateANSYSshellModel;
     
     %%  Run main ANSYS analysis for failure/buckling/fatigue
     
-    mainAnalysisOut = layupDesignAnsysAnalysis(blade,maximumLoadsTable,mainConfig,IEC)
+    mainAnalysisOut = mainAnsysAnalysis(blade,meshStruct,maximumLoadsTable,mainConfig,IEC)
     
     %%  Run ANSYS analysis for maximum tip deflection
     
-    defAnalysisOut = layupDesignAnsysAnalysis(blade,maxDeflectionLoadsTable,defConfig,IEC)
+    defAnalysisOut = mainAnsysAnalysis(blade,meshStruct,maxDeflectionLoadsTable,defConfig,IEC)
     
     %%  Run ANSYS analysis for frequency analysis
-    freqAnalysisOut = layupDesign_ANSYSfrequency(freqConfig)
+    freqAnalysisOut = getANSYSfrequency(freqConfig)
 end
 

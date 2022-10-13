@@ -1,4 +1,4 @@
-function designvar = readAnsysDeflections(blade, config, iLoad, deflectionFilename)
+function deflections = readAnsysDeflections(blade, config, iLoad, deflectionFilename)
     nSpan=length(blade.ispan);
     data=zeros(nSpan,6);  %u1Avg,u2Avg,u3Avg,0,theta2,theta3
     for iSpan=1:nSpan
@@ -69,9 +69,9 @@ function designvar = readAnsysDeflections(blade, config, iLoad, deflectionFilena
         data(iSpan, 4) =  180/pi* acos((a+b)/(c*d));
         %title(['ispan:' int2str(iSpan) ' theta:' num2str(data(iSpan, 6))])
     end
-    designvar.deflection{iLoad} = [];      
+    deflections{iLoad} = [];      
     for jj=1:6
-        designvar.deflection{iLoad}=[designvar.deflection{iLoad} data(:,jj)];
+        deflections{iLoad}=[deflections{iLoad} data(:,jj)];
     end 
 end
     
