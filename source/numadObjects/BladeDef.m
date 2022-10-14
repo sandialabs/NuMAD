@@ -1724,16 +1724,18 @@ classdef BladeDef < handle
             end
             [nodes,elements] = bladeMesh.createSweptMesh('to_dest_nodes',[],[],layerNumEls,[],guideNds);
             numShEls = size(shElements,1);
+            totLayers = sum(layerNumEls,'all');
             for i = 1:numSec
                 for j = 1:numStat
                     eSet = outerShellElSets(i,j);
                     elst = eSet.elementList;
+                    newELst = elst;
                     if(~isempty(elst))
-                        for k = 1:2
-                            elst = [elst;(elst+k*numShEls)];
+                        for k = 1:totLayers-1
+                            newELst = [newELst;(elst+k*numShEls)];
                         end
                     end
-                    outerShellElSets(i,j).elementList = elst;
+                    outerShellElSets(i,j).elementList = newELst;
                 end
             end
             for i = 1:2
@@ -1741,12 +1743,13 @@ classdef BladeDef < handle
                 for j = 1:length(setLst)
                     eSet = setLst(j);
                     elst = eSet.elementList;
+                    newELst = elst;
                     if(~isempty(elst))
-                        for k = 1:2
-                            elst = [elst;(elst+k*numShEls)];
+                        for k = 1:totLayers-1
+                            newELst = [newELst;(elst+k*numShEls)];
                         end
                     end
-                    shearWebElSets{i}(j).elementList = elst;
+                    shearWebElSets{i}(j).elementList = newELst;
                 end
             end
             numSolidNds = size(nodes,1);
@@ -1765,7 +1768,6 @@ classdef BladeDef < handle
             eList = [stAdEl:lastEl];
             adhesiveElSet = elementSet('adhesive',[],eList);
         end
-
         
         function meshData=generateShellModel(obj,feaCode,includeAdhesive,varargin) 
             % This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
