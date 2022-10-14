@@ -27,9 +27,9 @@ function nonlinearLoadFactors=writeAnsysNonLinearBuckling(ansysFilename, ansys_p
 %     fprintf(fid,'*VSCFUN,zMinUY,min,zNodeDisp\n');
 %     U0 = 1/400; %Dimple factor
 %     lg = 1;     %Largest horizontal dimension of buckle
-%     fprintf(fid,'zImperfectionSF=%f*%f*%f/max(abs(zMaxUY),abs(zMinUY))\n',config.ansys.analysisFlags.imperfection(jj), U0, lg);
+%     fprintf(fid,'zImperfectionSF=%f*%f*%f/max(abs(zMaxUY),abs(zMinUY))\n',config.analysisFlags.imperfection(jj), U0, lg);
 
-    fprintf(fid,'zImperfectionSF=%f\n',config.ansys.analysisFlags.imperfection(jj));
+    fprintf(fid,'zImperfectionSF=%f\n',config.analysisFlags.imperfection(jj));
     
     
 %     U0 = 1/400; %Dimple factor

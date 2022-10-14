@@ -26,7 +26,7 @@ classdef BladeDef < handle
         ispan               % Spanwise locations of interpolated output
         leband              % Location of keypoint a
         materials           % Material properties, refer to ``MaterialDef``
-        mesh = 0.10;        % Approximate element edge size for FE model [m]
+        mesh = 0.45;        % Approximate element edge size for FE model [m]
         naturaloffset = 1;  % Integar : 1= offset by max thickness location, 0= do not offset to max thickness
         percentthick        % Percent thickness of airfoil [%]
         prebend             % Blade prebend, reference axis location along x2 [m]
@@ -98,10 +98,6 @@ classdef BladeDef < handle
 %         precomp_path          % (hidden) PreComp .exe file path location
 %         bmodes_path           % (hidden) BModes .exe file path location
 
-        % generate ANSYS settings
-        ansys = struct('BoundaryCondition','','ElementSystem','','MultipleLayerBehavior','',...
-            'meshing','','smartsize',[],'elementsize',[],'shell7gen',[],...
-            'dbgen',[],'FailureCriteria',[])
     end
     
     methods
@@ -1771,73 +1767,65 @@ classdef BladeDef < handle
         end
 
         
-        function meshStruct=generateANSYSshellModel(obj) 
-            % This method generates FEA    
+        function meshData=generateShellModel(obj,feaCode,includeAdhesive) 
+            % This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
             
-            % NOTE:can add flags into the call -- e.g., element type, ...
-            global ansysPath
-            % define ANSYS model settings (can be options in generateFEA)
-            fea.ansys.BoundaryCondition = 'cantilevered';
-            fea.ansys.ElementSystem = '181';
-            fea.ansys.MultipleLayerBehavior = 'multiply'; %'distinct';
-            fea.ansys.meshing = 'elementsize';
-            fea.ansys.smartsize = 5;
-            fea.ansys.elementsize = 0.45;
-            fea.ansys.shell7gen = 1;
-            fea.ansys.dbgen = 1;  
-            fea.ansys.dbname = 'master';  
-            fcopts = {'EMAX','SMAX','TWSI','TWSR','HFIB','HMAT','PFIB','PMAT',...
-                'L3FB','L3MT','L4FB','L4MT','USR1','USR2','USR3','USR4',...
-                'USR5','USR6','USR7','USR8','USR9'};
-            fea.ansys.FailureCriteria = cell(numel(fcopts),2);
-            fea.ansys.FailureCriteria(:,1) = fcopts';
-            fea.ansys.FailureCriteria(:,2) = deal({false});
-            
-                       
-            
-            
-            % Generate a mesh using shell elements -- can add options here
-            shell7_name = 'shell7.src'; ansys_product = 'ANSYS';
-            obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
-            filename = fullfile(obj.paths.job,shell7_name);
-            
-            [nodes,elements,outerShellElSets,shearWebElSets]=writeANSYSshellModel(obj,filename,fea);
-            
-            meshStruct.nodes=nodes;
-            meshStruct.elements=elements;
-            meshStruct.outerShellElSets=outerShellElSets;
-            meshStruct.shearWebElSets=shearWebElSets;
-            
-            if fea.ansys.dbgen
-                if isempty(ansysPath)
-                    errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted');
-                    return;
-                end                
-                try
-                    %tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
-                    ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',...
-                        ansysPath,ansys_product,shell7_name);
-                    [status,result] = dos(ansys_call);  % the windows system call to run the above ansys command
-                    
-                    if isequal(status,0)
-                        % dos command completed successfully; log written to output.txt
-                        if 1%obj.batchrun
-                            disp('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.');
-                        else
-                            helpdlg('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed');
+            if strcmp(lower(feaCode),'ansys')
+                global ansysPath
+                % define ANSYS model settings (can be options in generateFEA)
+                config.BoundaryCondition = 'cantilevered';
+                config.elementType = '181';
+                config.MultipleLayerBehavior = 'multiply'; %'distinct';
+                
+                config.dbgen = 1;  
+                config.dbname = 'master';  
+
+
+                % Generate a mesh using shell elements 
+                APDLname = 'buildAnsysShell.src'; ansys_product = 'ANSYS';
+                obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
+                filename = fullfile(obj.paths.job,APDLname);
+                
+                forSolid=0;
+                [meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls]=obj.shellMeshGeneral(forSolid,includeAdhesive);
+                
+                writeANSYSshellModel(obj,filename,meshData,config,includeAdhesive);
+
+
+
+                if config.dbgen
+                    if isempty(ansysPath)
+                        errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted');
+                        return;
+                    end                
+                    try
+                        %tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
+                        ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',...
+                            ansysPath,ansys_product,APDLname);
+                        [status,result] = dos(ansys_call);  % the windows system call to run the above ansys command
+
+                        if isequal(status,0)
+                            % dos command completed successfully; log written to output.txt
+                            if 1%obj.batchrun
+                                disp('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.');
+                            else
+                                helpdlg('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed');
+                            end
                         end
-                    end
-                    if isequal(status,7)
-                        % an error has occured which is stored in output.txt
-                        if 1%app.batchrun
-                            disp('Could not complete ANSYS call. See "output.txt" for details.');
-                        else
-                            warndlg('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call');
+                        if isequal(status,7)
+                            % an error has occured which is stored in output.txt
+                            if 1%app.batchrun
+                                disp('Could not complete ANSYS call. See "output.txt" for details.');
+                            else
+                                warndlg('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call');
+                            end
                         end
+                    catch ME
+                        rethrow(ME);
                     end
-                catch ME
-                    rethrow(ME);
                 end
+            else
+                error('FEA code "%s" not supported.',feaCode);
             end
         end
         

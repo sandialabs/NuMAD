@@ -50,42 +50,43 @@ if(runAnsys == 1)
     %% Construct the configuration variables for ANSYS analysis
     
     %% Fields related to the maximum tip deflection analysis
-    defConfig.ansys.meshFile = 'master.db';
-    defConfig.ansys.analysisFileName = 'bladeAnalysis';
-    defConfig.ansys.np = 1;
-    defConfig.ansys.analysisFlags.resultantVSspan = 0;
-    defConfig.ansys.analysisFlags.mass = 1;
-    defConfig.ansys.analysisFlags.deflection = 1;
+    defConfig.meshFile = 'master.db';
+    defConfig.analysisFileName = 'bladeAnalysis';
+    defConfig.np = 1;
+    defConfig.analysisFlags.resultantVSspan = 0;
+    defConfig.analysisFlags.mass = 1;
+    defConfig.analysisFlags.deflection = 1;
 
     %% Fields related to material rupture and buckling
-    mainConfig.ansys.meshFile = 'master.db';
-    mainConfig.ansys.analysisFileName = 'bladeAnalysis';
-    mainConfig.ansys.np = 1;
-    mainConfig.ansys.rpm = 10;
-    mainConfig.ansys.analysisFlags.resultantVSspan = 0;
-    mainConfig.ansys.analysisFlags.mass = 1;
-    mainConfig.ansys.analysisFlags.globalBuckling = 10;
-    mainConfig.ansys.nBucklingModes = 10;
-    mainConfig.ansys.analysisFlags.failure='TWSI';
+    mainConfig.meshFile = 'master.db';
+    mainConfig.analysisFileName = 'bladeAnalysis';
+    mainConfig.np = 1;
+    mainConfig.rpm = 10;
+    mainConfig.analysisFlags.resultantVSspan = 0;
+    mainConfig.analysisFlags.mass = 1;
+    mainConfig.analysisFlags.globalBuckling = 10;
+    mainConfig.nBucklingModes = 10;
+    mainConfig.analysisFlags.failure='TWSI';
     
     %% Fields related to natural frequency analysis
-    freqConfig.ansys.meshFile = 'master.db';
-    freqConfig.ansys.analysisFileName = 'bladeAnalysis';
-    freqConfig.ansys.np = 1;
-    freqConfig.ansys.rpm = 10;
-    freqConfig.ansys.nFrequencyModes = 10;
+    freqConfig.meshFile = 'master.db';
+    freqConfig.analysisFileName = 'bladeAnalysis';
+    freqConfig.np = 1;
+    freqConfig.rpm = 10;
+    freqConfig.nFrequencyModes = 10;
     
     %% Create the ANSYS model from the blade object
     blade.mesh = 0.1;
-    meshStruct=blade.generateANSYSshellModel;
+	includeAdhesive=0;
+	meshData=blade.generateShellModel('ansys',includeAdhesive);
     
     %%  Run main ANSYS analysis for failure/buckling/fatigue
     
-    mainAnalysisOut = mainAnsysAnalysis(blade,meshStruct,maximumLoadsTable,mainConfig,IEC)
+    mainAnalysisOut = mainAnsysAnalysis(blade,meshData,maximumLoadsTable,mainConfig,IEC)
     
     %%  Run ANSYS analysis for maximum tip deflection
     
-    defAnalysisOut = mainAnsysAnalysis(blade,meshStruct,maxDeflectionLoadsTable,defConfig,IEC)
+    defAnalysisOut = mainAnsysAnalysis(blade,meshData,maxDeflectionLoadsTable,defConfig,IEC)
     
     %%  Run ANSYS analysis for frequency analysis
     freqAnalysisOut = getANSYSfrequency(freqConfig)

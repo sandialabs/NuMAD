@@ -1,4 +1,4 @@
-function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
+function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshData,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
              ,binnedElements,plateStrainsTheta,plateStrainsThetaPlus90,iSegment)
      %blade.materials read in to obtain fatigue exponents
 
@@ -45,8 +45,8 @@ function [fatigueDamage,plotFatigue]= calcFatigue(blade,meshStruct,IEC,Ltheta,Lt
         elNo=plateStrainsTheta(binnedElements(i),1); %or eplateStrainsThetaPlus90, equivalently
       
         coordSys='local';
-        localFieldsTheta=extractFieldsThruThickness(plateStrainsTheta,meshStruct,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
-        localFieldsThetaPlus90=extractFieldsThruThickness(plateStrainsThetaPlus90,meshStruct,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
+        localFieldsTheta=extractFieldsThruThickness(plateStrainsTheta,meshData,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
+        localFieldsThetaPlus90=extractFieldsThruThickness(plateStrainsThetaPlus90,meshData,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys);
 
         
         npts=numel(localFieldsTheta.(['element' num2str(elNo)]).x3);

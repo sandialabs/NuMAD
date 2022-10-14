@@ -15,7 +15,7 @@ function linearLoadFactors = readAnsysLinearBuckling(blade, config, iLoad, fid, 
     fclose(fid);
     disp(' ')
     data=cell2mat(data);
-    linearLoadFactors=data(1:config.ansys.analysisFlags.globalBuckling,2); %Extract the load factors (LF) from the linear buckling analysis
+    linearLoadFactors=data(1:config.analysisFlags.globalBuckling,2); %Extract the load factors (LF) from the linear buckling analysis
     delete([bucklingFilename '.out'])
     
 end

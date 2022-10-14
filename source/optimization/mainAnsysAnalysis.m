@@ -1,32 +1,32 @@
-function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,varargin)
-    anFlagNames = fieldnames(config.ansys.analysisFlags);
+function [designvar] = mainAnsysAnalysis(blade,meshData,loadsTable,analysisConfig,varargin)
+    anFlagNames = fieldnames(analysisConfig.analysisFlags);
     
     global ansysPath
     ansys_product = 'ANSYS';
 
-    if isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection) &&config.ansys.analysisFlags.globalBuckling ==0
+    if isfield(analysisConfig.analysisFlags,'imperfection') && ~isempty(analysisConfig.analysisFlags.imperfection) &&analysisConfig.analysisFlags.globalBuckling ==0
         error('Specify number of buckling modes when performing nonlinear buckling')
     end
 
     % Original mesh file to analize
-    if isfield(config.ansys,'meshFile') && ~isempty(config.ansys.meshFile)
+    if isfield(analysisConfig,'meshFile') && ~isempty(analysisConfig.meshFile)
         %Do nothing
     else
-        config.ansys.meshFile='master';
+        analysisConfig.meshFile='master';
     end
     
     % File name base name for ansys analysis files
-    if isfield(config.ansys,'analysisFileName') && ~isempty(config.ansys.analysisFileName)
-        ansysFilename = [config.ansys.analysisFileName];
+    if isfield(analysisConfig,'analysisFileName') && ~isempty(analysisConfig.analysisFileName)
+        ansysFilename = [analysisConfig.analysisFileName];
     else
         ansysFilename=['FEmodel'];
     end
     % Number of CPUs to use
-    if isfield(config.ansys,'np') && ~isempty(config.ansys.np)
-        if config.ansys.np <1
-            error('config.ansys.np must be greater than zero')
+    if isfield(analysisConfig,'np') && ~isempty(analysisConfig.np)
+        if analysisConfig.np <1
+            error('analysisConfig.np must be greater than zero')
         else
-            ncpus=config.ansys.np;
+            ncpus=analysisConfig.np;
         end
     else
         ncpus=1; %Default value
@@ -35,18 +35,18 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
     for i=1:length(anFlagNames)
         
         if strcmpi('globalBuckling',anFlagNames{i}) || strcmpi('resultantVSspan',anFlagNames{i}) || strcmpi('deflection',anFlagNames{i}) || strcmpi('mass',anFlagNames{i});
-            if config.ansys.analysisFlags.(anFlagNames{i})~=0 ;
+            if analysisConfig.analysisFlags.(anFlagNames{i})~=0 ;
                 designvar.(anFlagNames{i}) = cell(1,length(loadsTable));
             end
         else strcmpi('localBuckling',anFlagNames{i}) || strcmpi('failure',anFlagNames{i}) || strcmpi('fatigue',anFlagNames{i}) ||strcmpi('imperfection',anFlagNames{i}) || strcmpi('mass',anFlagNames{i});
-            if ~isempty(config.ansys.analysisFlags.(anFlagNames{i}));
+            if ~isempty(analysisConfig.analysisFlags.(anFlagNames{i}));
                 designvar.(anFlagNames{i}) = cell(1,length(loadsTable));
             end
         end
     end
     
     if ~exist('designvar')
-        error('no analyses are configured in config. Edit config.')
+        error('no analyses are configured in configuration st.')
     end
     
     for iLoad=1:length(loadsTable)
@@ -54,7 +54,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         % ================= APPLY BUCKLING LOADS TO FEA MESH =================
         forcefilename='forces';
         
-        if isfield(config.ansys.analysisFlags,'FollowerForces') && ~isempty(config.ansys.analysisFlags.FollowerForces) &&config.ansys.analysisFlags.FollowerForces~=0 && isfield(config.ansys.analysisFlags, 'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
+        if isfield(analysisConfig.analysisFlags,'FollowerForces') && ~isempty(analysisConfig.analysisFlags.FollowerForces) &&analysisConfig.analysisFlags.FollowerForces~=0 && isfield(analysisConfig.analysisFlags, 'StaticNonlinear') && ~isempty(analysisConfig.analysisFlags.StaticNonlinear) &&analysisConfig.analysisFlags.StaticNonlinear~=0
             beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
             beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
@@ -90,7 +90,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         
         fprintf(fid,'antype,static\n');
         
-        if isfield(config.ansys.analysisFlags,'StaticNonlinear') && ~isempty(config.ansys.analysisFlags.StaticNonlinear) &&config.ansys.analysisFlags.StaticNonlinear~=0
+        if isfield(analysisConfig.analysisFlags,'StaticNonlinear') && ~isempty(analysisConfig.analysisFlags.StaticNonlinear) &&analysisConfig.analysisFlags.StaticNonlinear~=0
             fprintf(fid,'nlgeom,1\n'); %%%%%%%%%%%%%%%%%%%%%%%% TEMP
             fprintf(fid,'OUTRES,all,ALL\n');%%%%%%%%%%%%%%%%%%%%%%%% TEMP
 %         else
@@ -104,7 +104,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         fprintf(fid,'finish\n');
         
         %Only compute mass on the first load case
-        if iLoad==1 && isfield(lower(config.ansys.analysisFlags),'mass') && ~isempty(config.ansys.analysisFlags.mass)&& config.ansys.analysisFlags.mass~=0
+        if iLoad==1 && isfield(lower(analysisConfig.analysisFlags),'mass') && ~isempty(analysisConfig.analysisFlags.mass)&& analysisConfig.analysisFlags.mass~=0
             %Get Mass Here
             fprintf(fid,'*GET, Z_mass, ELEM, 0, MTOT, X\n');
             fprintf(fid,'/output, mass,txt\n');
@@ -116,27 +116,27 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
  %% ************************************************************************
 %================= PERFORM Deflection ANALYSIS =================
 
-        if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
+        if isfield(analysisConfig.analysisFlags,'deflection') && analysisConfig.analysisFlags.deflection~=0
             
             deflectionFilename = 'results_deflection';
-            writeAnsysDeflections(blade, config, iLoad, fid, deflectionFilename)
+            writeAnsysDeflections(blade, analysisConfig, iLoad, fid, deflectionFilename)
             
         end
         % calculate face stresses for wrinkling
-        if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)&& ~(isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection))
+        if isfield(analysisConfig.analysisFlags,'localBuckling') && ~isempty(analysisConfig.analysisFlags.localBuckling)&& ~(isfield(analysisConfig.analysisFlags,'imperfection') && ~isempty(analysisConfig.analysisFlags.imperfection))
              %Check for wrinkling here in a linear analysis
-            [app,SkinAreas,compsInModel]=writeAnsysGetFaceStresses(blade,fid,config.ansys.analysisFlags.localBuckling);
+            [app,SkinAreas,compsInModel]=writeAnsysGetFaceStresses(blade,fid,analysisConfig.analysisFlags.localBuckling);
         end
 
         %%% Output resultant force and moments to file
-        if isfield(config.ansys.analysisFlags, 'resultantVSspan') && config.ansys.analysisFlags.resultantVSspan~=0
+        if isfield(analysisConfig.analysisFlags, 'resultantVSspan') && analysisConfig.analysisFlags.resultantVSspan~=0
             
-            writeAnsysResultantVSSpan(blade, config, iLoad, fid)
+            writeAnsysResultantVSSpan(blade, analysisConfig, iLoad, fid)
 
         end
         %% ************************************************************************
         % ================= PERFORM FATIGUE ANALYSIS =================
-        if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)
+        if isfield(analysisConfig.analysisFlags,'fatigue') && ~isempty(analysisConfig.analysisFlags.fatigue)
             
             writeAnsysFatigue(fid,iLoad)
             
@@ -144,9 +144,9 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
 %% ************************************************************************
 % ================= CREAT LOCAL FIELD RESULTS FOR MATLAB =================
 
-        if isfield(config.ansys.analysisFlags,'localFields') && ~isempty(config.ansys.analysisFlags.localFields)
+        if isfield(analysisConfig.analysisFlags,'localFields') && ~isempty(analysisConfig.analysisFlags.localFields)
             
-            writeAnsysLocalFields(blade, config, iLoad, fid)
+            writeAnsysLocalFields(blade, analysisConfig, iLoad, fid)
          
         end
 
@@ -154,10 +154,10 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         % ================= PERFORM FAILURE ANALYSIS =================
 
         % Initialize GUI commands from batch operation to identify maxima
-        if isfield(config.ansys.analysisFlags,'failure') && ~isempty(config.ansys.analysisFlags.failure)
+        if isfield(analysisConfig.analysisFlags,'failure') && ~isempty(analysisConfig.analysisFlags.failure)
             failureFilename = 'results_failure';
             
-            writeAnsysRupture(config, iLoad, fid, failureFilename)
+            writeAnsysRupture(analysisConfig, iLoad, fid, failureFilename)
             
         end
 
@@ -166,13 +166,13 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         % ================= PERFORM BUCKLING ANALYSIS =================
 
         %Linear Buckling Analysis
-        if isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling >0
+        if isfield(analysisConfig.analysisFlags,'globalBuckling') && analysisConfig.analysisFlags.globalBuckling >0
             bucklingFilename = 'results_buckling';
             
-            writeAnsysLinearBuckling(blade, config, iLoad, fid, bucklingFilename)
+            writeAnsysLinearBuckling(blade, analysisConfig, iLoad, fid, bucklingFilename)
             
-        elseif isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling <0
-            error('config.ansys.analysisFlags.globalBuckling must be greater than or equal to zero')
+        elseif isfield(analysisConfig.analysisFlags,'globalBuckling') && analysisConfig.analysisFlags.globalBuckling <0
+            error('analysisConfig.analysisFlags.globalBuckling must be greater than or equal to zero')
         end
         % ANSYSoutputByBladeRegion(blade,fid)
 
@@ -202,21 +202,21 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
   
 %% ************************************************************************
 % ================= READ MASS RESULTS INTO MATLAB =================
-        if iLoad==1 && isfield(lower(config.ansys.analysisFlags),'mass') && ~isempty(config.ansys.analysisFlags.mass)&& config.ansys.analysisFlags.mass~=0
+        if iLoad==1 && isfield(lower(analysisConfig.analysisFlags),'mass') && ~isempty(analysisConfig.analysisFlags.mass)&& analysisConfig.analysisFlags.mass~=0
             designvar.mass=read_1_ANSYSoutput('mass.txt');
             delete mass.txt
         end
 
     %% ************************************************************************
 % ================= READ DEFLECTION RESULTS INTO MATLAB =================       
-        if isfield(config.ansys.analysisFlags,'deflection') && config.ansys.analysisFlags.deflection~=0
+        if isfield(analysisConfig.analysisFlags,'deflection') && analysisConfig.analysisFlags.deflection~=0
 
-            designvar.deflection=readAnsysDeflections(blade, config, iLoad, deflectionFilename);
+            designvar.deflection=readAnsysDeflections(blade, analysisConfig, iLoad, deflectionFilename);
             
         end
     %% ************************************************************************
 % ================= READ STRESS RESULTANTS INTO MATLAB =================   
-        if isfield(config.ansys.analysisFlags, 'resultantVSspan') && config.ansys.analysisFlags.resultantVSspan~=0
+        if isfield(analysisConfig.analysisFlags, 'resultantVSspan') && analysisConfig.analysisFlags.resultantVSspan~=0
             fileName='resultantVSspan.txt';
             designvar.resultantVSspan{iLoad}=txt2mat(fileName);
             delete(fileName);
@@ -229,9 +229,9 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         %% ************************************************************************
         % ================= READ LINEAR BUCKLING RESULTS =================
         % read buckling results
-        if isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling >0
+        if isfield(analysisConfig.analysisFlags,'globalBuckling') && analysisConfig.analysisFlags.globalBuckling >0
             
-            linearLoadFactors = readAnsysLinearBuckling(blade, config, iLoad, fid, bucklingFilename);
+            linearLoadFactors = readAnsysLinearBuckling(blade, analysisConfig, iLoad, fid, bucklingFilename);
             
         end
 
@@ -239,9 +239,9 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
         % ================= PERFORM NON-LINEAR BUCKLING/WRINKLING ANALYSIS =================
         % Perform nonlinear buckling here if required (and writeANSYSgetFaceStresses 
         % at the end of the nonlinear analysis for wrikling check 
-        if isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection)
+        if isfield(analysisConfig.analysisFlags,'imperfection') && ~isempty(analysisConfig.analysisFlags.imperfection)
             warning('output designvar. Currently does not work for nonlinear cases')
-            imperfection=config.ansys.analysisFlags.imperfection./1000; %convert mm to m. 
+            imperfection=analysisConfig.analysisFlags.imperfection./1000; %convert mm to m. 
 
             nonlinearLoadFactors=zeros(length(linearLoadFactors),length(imperfection)); 
             critDesignvar=zeros(length(imperfection),1);
@@ -252,8 +252,8 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
             for jj=1:length(imperfection)
                 for ii=1:length(linearLoadFactors) 
                    % For each load factor, create a new jobname and database and run a nonlinear static analysis 
-                   nonlinearLoadFactors(ii,jj)=writeAnsysNonLinearBuckling(ansysFilename,ansysPath,ansys_product,config,ii,jj, ncpus, iLoad);
-                   [wrinklingLimitingElementData(ii,:,jj)]=wrinklingForNonlinearBuckling(blade,config.ansys.analysisFlags.localBuckling,settings,ncpus,ansysFilename,ii,jj);
+                   nonlinearLoadFactors(ii,jj)=writeAnsysNonLinearBuckling(ansysFilename,ansysPath,ansys_product,analysisConfig,ii,jj, ncpus, iLoad);
+                   [wrinklingLimitingElementData(ii,:,jj)]=wrinklingForNonlinearBuckling(blade,analysisConfig.analysisFlags.localBuckling,settings,ncpus,ansysFilename,ii,jj);
                 end
                 [minnLLF,minnLLFMode]=min(nonlinearLoadFactors(:,jj))
                 [minWLF,minWLFMode]=min(wrinklingLimitingElementData(:,3,jj))
@@ -274,23 +274,23 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
 
             %wrinklingLimitingElementData - [ansysSecNumber elno lf phicr]
             designvar.globalBuckling{iLoad}= min(min(critDesignvar));
-        elseif isfield(config.ansys.analysisFlags,'globalBuckling') && config.ansys.analysisFlags.globalBuckling >0
+        elseif isfield(analysisConfig.analysisFlags,'globalBuckling') && analysisConfig.analysisFlags.globalBuckling >0
             designvar.globalBuckling{iLoad}=linearLoadFactors(1);
         end
 
         %% ************************************************************************
         % ================= POST-PROCESS PANEL WRINKLING FACTORS =================
-        if isfield(config.ansys.analysisFlags,'localBuckling') && ~isempty(config.ansys.analysisFlags.localBuckling)
+        if isfield(analysisConfig.analysisFlags,'localBuckling') && ~isempty(analysisConfig.analysisFlags.localBuckling)
 
                     
-            if isfield(config.ansys.analysisFlags,'imperfection') && ~isempty(config.ansys.analysisFlags.imperfection)
+            if isfield(analysisConfig.analysisFlags,'imperfection') && ~isempty(analysisConfig.analysisFlags.imperfection)
                 
                 %UNSUPPORTED AT THIS TIME 
-                writeAnsysNonLinearLocalBuckling(blade, config, iLoad, fid, ansysFilename, ii, jj)
+                writeAnsysNonLinearLocalBuckling(blade, analysisConfig, iLoad, fid, ansysFilename, ii, jj)
                 
             end
             % perform wrinkling check
-            [wrinklingLimitingElementData]=writeAnsysFagerberWrinkling(app,SkinAreas,compsInModel,config.ansys.analysisFlags.localBuckling);
+            [wrinklingLimitingElementData]=writeAnsysFagerberWrinkling(app,SkinAreas,compsInModel,analysisConfig.analysisFlags.localBuckling);
             designvar.localBuckling{iLoad}=wrinklingLimitingElementData(3);
             delete *faceAvgStresses.txt
         end
@@ -298,7 +298,7 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
     %% ************************************************************************
 % ================= READ FAILURE RESULTS INTO MATLAB =================   
 
-        if isfield(config.ansys.analysisFlags,'failure') && ~isempty(config.ansys.analysisFlags.failure)
+        if isfield(analysisConfig.analysisFlags,'failure') && ~isempty(analysisConfig.analysisFlags.failure)
             fileName=[failureFilename '.out'];
             designvar.failure{iLoad}=read_1_ANSYSoutput(fileName);
             delete(fileName)
@@ -308,13 +308,13 @@ function [designvar] = mainAnsysAnalysis(blade,meshStruct,loadsTable,config,vara
     
 % ================= RUN FATIGUE POST PROCESSOR ================= 
     %After all load directions are solved compute fatige damage if needed
-    if isfield(config.ansys.analysisFlags,'fatigue') && ~isempty(config.ansys.analysisFlags.fatigue)  
+    if isfield(analysisConfig.analysisFlags,'fatigue') && ~isempty(analysisConfig.analysisFlags.fatigue)  
         if ~isempty(varargin) && isequal(class(varargin{1}),'IECDef')
             cd ..
             IEC=varargin{1};
             [wt,rccdata]=getWindSpeedDistribution(IEC.avgws);
             cd 'NuMAD'
-            designvar.fatigue=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config);
+            designvar.fatigue=postprocessANSYSfatigue(blade,meshData,wt,rccdata,IEC,loadsTable,analysisConfig);
         else
             error('IECDef required to run fatigue analysis in mainAnsysAnalysis')
         end

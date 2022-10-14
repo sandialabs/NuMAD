@@ -20,17 +20,17 @@ function writeAnsysRupture(config, iLoad, fid, failureFilename)
     fprintf(fid,'RSYS,LSYS \n'); %Result in the layer coordinate system
     fprintf(fid,'layer,fcmax\n');
 
-    if ~contains(upper(config.ansys.analysisFlags.failure),{'PUCK' 'LARC03' 'LARC04'})
+    if ~contains(upper(config.analysisFlags.failure),{'PUCK' 'LARC03' 'LARC04'})
         %Do this for the failure criteria that do not distinguish between fiber
         %and matrix failure
-        fc=upper(config.ansys.analysisFlags.failure);
+        fc=upper(config.analysisFlags.failure);
         fprintf(fid,'FCTYP,add,%s\n',fc);
         fprintf(fid,'PLESOL, FAIL,%s, 0,1.0\n',fc);
         fprintf(fid,'*get,findex,PLNSOL,0,MAX\n');
     else
     	%Do this for the failure criteria that do distinguish between fiber
     	%and matrix failure
-    	switch upper(config.ansys.analysisFlags.failure)
+    	switch upper(config.analysisFlags.failure)
             case 'PUCK'
             	%Fiber Failure
                 fc='PFIB';

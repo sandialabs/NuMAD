@@ -5,7 +5,7 @@ function writeAnsysLinearBuckling(blade, config, iLoad, fid, bucklingFilename)
     fprintf(fid,'irlf,-1\n');
     fprintf(fid,'pstres,on\n');
     fprintf(fid,'antype,buckle\n');
-    fprintf(fid,strcat('bucopt,lanb,',int2str(config.ansys.analysisFlags.globalBuckling),',,,RANGE\n'));
+    fprintf(fid,strcat('bucopt,lanb,',int2str(config.analysisFlags.globalBuckling),',,,RANGE\n'));
     %fprintf(fid,strcat('MXPAND,',int2str(nmodes),',0,0,1\n'), nmodes); % Required for element stress/strain, etc..
     fprintf(fid,'solve\n');
     fprintf(fid,'finish\n');

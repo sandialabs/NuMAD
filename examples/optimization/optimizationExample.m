@@ -19,33 +19,33 @@ swarmSize = 4; %% Swarm size, if particle swarm optimization algorithm is used.
 %% Set all the fields for the analysis configuration as described in Section 5 of documentation
 
 %% Fields related to the maximum tip deflection analysis
-allConfig.defConfig.ansys.meshFile = 'master.db';
-allConfig.defConfig.ansys.analysisFileName = 'bladeAnalysis';
-allConfig.defConfig.ansys.np = 1;
-allConfig.defConfig.ansys.analysisFlags.resultantVSspan = 0;
-allConfig.defConfig.ansys.analysisFlags.mass = 1;
-allConfig.defConfig.ansys.analysisFlags.deflection = 1;
+allConfig.defConfig.meshFile = 'master.db';
+allConfig.defConfig.analysisFileName = 'bladeAnalysis';
+allConfig.defConfig.np = 1;
+allConfig.defConfig.analysisFlags.resultantVSspan = 0;
+allConfig.defConfig.analysisFlags.mass = 1;
+allConfig.defConfig.analysisFlags.deflection = 1;
 
 
 %% Fields related to material rupture, buckling and fatigue analysis
-allConfig.failConfig.ansys.meshFile = 'master.db';
-allConfig.failConfig.ansys.analysisFileName = 'bladeAnalysis';
-allConfig.failConfig.ansys.np = 1;
-allConfig.failConfig.ansys.rpm = 7.9; 
-allConfig.failConfig.ansys.analysisFlags.resultantVSspan = 0;
-allConfig.failConfig.ansys.analysisFlags.mass = 1;
-allConfig.failConfig.ansys.analysisFlags.globalBuckling = 10;
-allConfig.failConfig.ansys.nBucklingModes = 10;
-allConfig.failConfig.ansys.analysisFlags.failure='TWSI';
-allConfig.failConfig.ansys.analysisFlags.fatigue = ["HP_TE_FLAT","HP_TE_REINF","HP_TE_PANEL","HP_SPAR","HP_LE_PANEL","HP_LE","LP_LE","LP_LE_PANEL","LP_SPAR","LP_TE_PANEL","LP_TE_REINF","LP_TE_FLAT"];
+allConfig.failConfig.meshFile = 'master.db';
+allConfig.failConfig.analysisFileName = 'bladeAnalysis';
+allConfig.failConfig.np = 1;
+allConfig.failConfig.rpm = 7.9; 
+allConfig.failConfig.analysisFlags.resultantVSspan = 0;
+allConfig.failConfig.analysisFlags.mass = 1;
+allConfig.failConfig.analysisFlags.globalBuckling = 10;
+allConfig.failConfig.nBucklingModes = 10;
+allConfig.failConfig.analysisFlags.failure='TWSI';
+allConfig.failConfig.analysisFlags.fatigue = ["HP_TE_FLAT","HP_TE_REINF","HP_TE_PANEL","HP_SPAR","HP_LE_PANEL","HP_LE","LP_LE","LP_LE_PANEL","LP_SPAR","LP_TE_PANEL","LP_TE_REINF","LP_TE_FLAT"];
 
 
 %% Fields related to natural frequency analysis
-allConfig.freqConfig.ansys.meshFile = 'master.db';
-allConfig.freqConfig.ansys.analysisFileName = 'bladeAnalysis';
-allConfig.freqConfig.ansys.np = 1;
-allConfig.freqConfig.ansys.rpm = 7.9;
-allConfig.freqConfig.ansys.nFrequencyModes = 10;
+allConfig.freqConfig.meshFile = 'master.db';
+allConfig.freqConfig.analysisFileName = 'bladeAnalysis';
+allConfig.freqConfig.np = 1;
+allConfig.freqConfig.rpm = 7.9;
+allConfig.freqConfig.nFrequencyModes = 10;
 
 %% End input 
 

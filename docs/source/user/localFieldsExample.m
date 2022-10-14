@@ -1,1 +1,1 @@
-myresult=extractFieldsThruThickness('plateStrains-all-1.txt',meshStruct,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys)
+myresult=extractFieldsThruThickness('plateStrains-all-1.txt',meshData,blade.materials,blade.stacks,blade.swstacks,elNo,coordSys)

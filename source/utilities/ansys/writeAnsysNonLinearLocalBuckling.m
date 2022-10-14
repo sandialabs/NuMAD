@@ -12,7 +12,7 @@ function writeAnsysNonLinearLocalBuckling(blade, config, iLoad, fid, ansysFilena
 %                 fprintf(fid,'/POST1\n');
 %                 fprintf(fid,'SET,LAST\n'); 
 % 
-%                 [app,SkinAreas,compsInModel]=writeANSYSgetFaceStresses(blade,fid,config.ansys.analysisFlags.localBuckling);
+%                 [app,SkinAreas,compsInModel]=writeANSYSgetFaceStresses(blade,fid,config.analysisFlags.localBuckling);
 % 
 %                 fprintf(fid,'/EXIT,NOSAVE\n');
 %                 fclose(fid);

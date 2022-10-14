@@ -4,21 +4,21 @@ function [freq] = getANSYSfrequency(config)
     script_name = 'freqAnalysis.mac';
     script_out = 'output.txt';
     
-    if(isfield(config.ansys,'np'))
-        np = config.ansys.np;
+    if(isfield(config,'np'))
+        np = config.np;
     else
         np = 1;
     end
     
     % File name base name for ansys analysis files
-    if isfield(config.ansys,'analysisFileName') && ~isempty(config.ansys.analysisFileName)
-        ansysFilename = [config.ansys.analysisFileName];
+    if isfield(config,'analysisFileName') && ~isempty(config.analysisFileName)
+        ansysFilename = [config.analysisFileName];
     else
         ansysFilename=['FEmodel'];
     end
     
-    if(isfield(config.ansys,'nFrequencyModes'))
-        nModes = config.ansys.nFrequencyModes;
+    if(isfield(config,'nFrequencyModes'))
+        nModes = config.nFrequencyModes;
     else
         nModes = 10;
     end
@@ -29,10 +29,10 @@ function [freq] = getANSYSfrequency(config)
     fprintf(fid,'resume,master,db\n');
     fprintf(fid,'/FILNAME,''%s'',1\n',ansysFilename);
     
-    if(isfield(config.ansys,'rpm'))
+    if(isfield(config,'rpm'))
         fprintf(fid,'\n');
         fprintf(fid,'\n/SOLU');
-        fprintf(fid,'\nz_rpm=%f',config.ansys.rpm);
+        fprintf(fid,'\nz_rpm=%f',config.rpm);
         fprintf(fid,'\nANTYPE,0');
         fprintf(fid,'\nCGLOC,0,0,-3');
         fprintf(fid,'\nOMEGA,0,z_rpm/60*2*3.14,0');
@@ -41,7 +41,7 @@ function [freq] = getANSYSfrequency(config)
     end
     fprintf(fid,'\n/SOLU');
     fprintf(fid,'\nANTYPE,2');
-    if(isfield(config.ansys,'rpm'))
+    if(isfield(config,'rpm'))
         fprintf(fid,'\nPSTRES,ON');
     end
     fprintf(fid,'\nMODOPT,LANB,%i ',nModes); 

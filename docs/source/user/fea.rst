@@ -7,9 +7,10 @@ Finite Element Analysis Operations
 
 Mesh Generation
 ---------------
-To generate a shell model in ANSYS simply type:
+To generate a shell model without adhesives in ANSYS simply type:
  
-    >> meshStruct=blade.generateANSYSshellModel
+    >> includeAdhesive=0;
+    >> meshData=blade.generateShellModel('ansys',includeAdhesive)
 
 The function returns a struct that contains the following feilds: ``nodes``, ``elements``, ``outerShellElSets``, and ``shearWebElSets``. This struct later needs to be input into ``mainAnsysAnalysis``.
 
@@ -339,7 +340,7 @@ examined.
 Deflection
 ~~~~~~~~~~
 
-Setting ``config.ansys.deflection = 1`` will cause ``result.deflection`` to
+Setting ``config.deflection = 1`` will cause ``result.deflection`` to
 hold the average deflection of each cross-section at every ``blade.ispan``
 location. For example, access results from the second ``loadsTable`` case as
 
@@ -360,7 +361,7 @@ Failure
 ~~~~~~~
 
 If material failure is being considered in an analysis, set
-``config.ansys.failure`` equal to any one of the entries in :numref:`failureCriteriaOptions`. An
+``config.failure`` equal to any one of the entries in :numref:`failureCriteriaOptions`. An
 empty string will skip any material failure analyses.
 
 
@@ -384,10 +385,10 @@ every layer.
 Global Buckling
 ~~~~~~~~~~~~~~~
 
-A nonzero number for ``config.ansys.analysisFlags.globalBuckling`` will call
+A nonzero number for ``config.analysisFlags.globalBuckling`` will call
 ANSYS to run a buckling analysis. The buckling analysis can either be
 linear or nonlinear. The nonlinear case will be activated by creating
-``config.ansys.analysisFlags.imperfection`` and setting it to a nonempty
+``config.analysisFlags.imperfection`` and setting it to a nonempty
 number array. ANSYS will then be directed to perform an eigenvalue
 buckling analysis. The load which results in nonconvergence will be
 reported as the nonlinear buckling load factor.
@@ -400,7 +401,7 @@ Therefore, an eigenvalue buckling analysis precedes the nonlinear static
 analyses. Currently, for nonlinear buckling, it is assumed here that
 buckling will be in the aeroshell (not the web). Thus, each mode shape
 is scaled such that the maximum displacement in the :math:`x_{2}`
-direction (flapwise) is equal to config.ansys.analysisFlags.imperfection
+direction (flapwise) is equal to config.analysisFlags.imperfection
 in value. Robustness could be increased if the script can select whether
 to find the maximum displacement in the :math:`x_{2}` (buckling in
 aeroshell) or :math:`x_{1}` direction (buckling in the webs).
@@ -422,9 +423,9 @@ described as sandwhich panels, local instabilities can be checked in
 NuMAD with a strip theory model from Ref. [2]. In particular, this check
 examines if the outermost facesheet wrinkles under compression.
 
-To activate this check, set ``config.ansys.analysisFlags.localBuckling``
+To activate this check, set ``config.analysisFlags.localBuckling``
 equal to the name of the core material in your BladeDef as a string
-(e.g. ``config.ansys.analysisFlags.localBuckling = 'Balsa'``). Otherwise an
+(e.g. ``config.analysisFlags.localBuckling = 'Balsa'``). Otherwise an
 empty string will skip the analysis. Currently, all ply angles are
 limited to zero (i.e. no off-axis layups).
 
@@ -434,7 +435,7 @@ limited to zero (i.e. no off-axis layups).
 Fatigue
 ~~~~~~~
 
-If ``config.ansys.fatigue`` is a nonempty string, then ANSYS will be
+If ``config.fatigue`` is a nonempty string, then ANSYS will be
 directed to write model data and field output to text files for fatigue
 post-processing in MATLAB. Namely, ``Elements.txt``, ``Materials.txt``,
 ``Strengths.txt``, ``Sections.txt``, and plate strain measures. The results from running
@@ -461,8 +462,8 @@ gages.
 The end-user has the ability to either obtain a single fatigue damage
 fraction at each spanwise fatigue location or several fatigue damage
 fractions each corresponding to a region in :numref:`bladeKeyPoints`. The former is
-accomplished by setting ``config.ansys.analysisFlags.fatigue = ["ALL"]``.
-The latter is accomplished by setting ``config.ansys.analysisFlags.fatigue``
+accomplished by setting ``config.analysisFlags.fatigue = ["ALL"]``.
+The latter is accomplished by setting ``config.analysisFlags.fatigue``
 to a MATLAB string array where any and all Region Names in :numref:`regionNames` are allowed.
 
 
@@ -478,7 +479,7 @@ spar caps and the reinforcement locations one would set
 
 .. code-block:: matlabsession
 
-    >> config.ansys.analysisFlags.fatigue = ["HP_TE_FLAT","HP_TE_REINF","HP_SPAR","HP_LE","LP_LE","LP_SPAR","LP_TE_REINF","LP_TE_FLAT"]
+    >> config.analysisFlags.fatigue = ["HP_TE_FLAT","HP_TE_REINF","HP_SPAR","HP_LE","LP_LE","LP_SPAR","LP_TE_REINF","LP_TE_FLAT"]
 
 If ``"ALL"`` is included along with other regions, the other regions are
 ignored and the analysis carries forth as it would for ``"ALL"``.
@@ -488,10 +489,10 @@ will hold a struct with the following field names: ``fatigueDamage``,
 ``criticalElement``, ``criticalLayerNo``, and ``criticalMatNo``. Each of these field
 names allow access to a :math:`n_{\text{region}} \times 10` matrix where
 :math:`n_{\text{region}}` is the length of
-``config.ansys.analysisFlags.fatigue``. The results are organized such that
+``config.analysisFlags.fatigue``. The results are organized such that
 the :math:`i_{\text{th}}` row number corresponds to fatigue damage
 results of the :math:`i_{\text{th}}` Region Name from
-``config.ansys.analysisFlags.fatigue``. The columns correspond to the
+``config.analysisFlags.fatigue``. The columns correspond to the
 fatigue damage spanwise locations where column 1 is the results at the
 root. Subsequent columns correspond to successively farther gage
 locations.
@@ -513,7 +514,7 @@ The results from the first fatigue evaluation can visualized as shown in
 Local Fields
 ~~~~~~~~~~~~
 
-If ``config.ansys.analysisFlags.localFeilds`` is activated, then the plate
+If ``config.analysisFlags.localFeilds`` is activated, then the plate
 strains and curvatures for every element will be written to
 plateStrains-all-1.txt.
 
@@ -591,7 +592,7 @@ Resultant Forces and Moments
 
 The resultant forces and moments due to stresses on cross-sections along
 the span can be obtained by activating
-``config.ansys.analysisFlags.resultantVSspan``. ``result. resultantVSspan{i}``
+``config.analysisFlags.resultantVSspan``. ``result. resultantVSspan{i}``
 will yield a :math:`n \times 7` matrix, where :math:`n` is approximately
 equal to the blade length divided by blade.mesh. The first column is the
 distance along :math:`x_{3}` that locates the cross-section. The next

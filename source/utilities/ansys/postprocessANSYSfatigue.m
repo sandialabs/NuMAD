@@ -1,13 +1,13 @@
-function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loadsTable,config)
+function designVar=postprocessANSYSfatigue(blade,meshData,wt,rccdata,IEC,loadsTable,config)
 
-    if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
+    if any(contains(lower(config.analysisFlags.fatigue),'all'))
         nSegments=1;
     else
-        nSegments=numel(config.ansys.analysisFlags.fatigue);
+        nSegments=numel(config.analysisFlags.fatigue);
     end
 
     % Order of the segment names in segmentNamesReference
-    % is very important. config.ansys.analysisFlags.fatigue can
+    % is very important. config.analysisFlags.fatigue can
     % be any order 
     segmentNamesReference=["HP_TE_FLAT","HP_TE_ReINF","HP_TE_PANEL", "HP_SPAR","HP_LE_PANEL","HP_LE","LP_LE",...
                     "LP_LE_PANEL","LP_SPAR","LP_TE_PANEL","LP_TE_REINF","LP_TE_FLAT"];
@@ -57,29 +57,29 @@ function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loads
         plateStrainsThetaPlus90 = readANSYSElementTable(fileNameThetaPlus90,pat,NCOLS); 
         for i=1:nSegments
             
-            iSegment = find(strcmpi(segmentNamesReference,config.ansys.analysisFlags.fatigue(i))==1);
+            iSegment = find(strcmpi(segmentNamesReference,config.analysisFlags.fatigue(i))==1);
               
-            if any(contains(lower(config.ansys.analysisFlags.fatigue),'all'))
+            if any(contains(lower(config.analysisFlags.fatigue),'all'))
                 title='All segments'; %Used for printing title for table.
                 
             else
-                if ~ strcmpi(config.ansys.analysisFlags.fatigue(i),'webs')
-                    title=config.ansys.analysisFlags.fatigue(i); %Used for printing title for table.
-                    [~,nSpanRegions]=size(meshStruct.outerShellElSets);
+                if ~ strcmpi(config.analysisFlags.fatigue(i),'webs')
+                    title=config.analysisFlags.fatigue(i); %Used for printing title for table.
+                    [~,nSpanRegions]=size(meshData.outerShellElSets);
                     elementList=[];
                     for iSpan=1:nSpanRegions
-                        elementList=[elementList meshStruct.outerShellElSets(iSegment,iSpan).elementList];
+                        elementList=[elementList meshData.outerShellElSets(iSegment,iSpan).elementList];
                     end
 
                 else
                     title='Webs'; %Used for printing title for table.
-                    [~,nWebs]=size(meshStruct.shearWebElSets);
+                    [~,nWebs]=size(meshData.shearWebElSets);
                     elementList=[];
 
                     for iWeb=1:nWebs
-                        [~,nSpanRegions]=size(meshStruct.shearWebElSets{iWeb});
+                        [~,nSpanRegions]=size(meshData.shearWebElSets{iWeb});
                         for iSpan=1:nSpanRegions
-                            elementList=[elementList meshStruct.shearWebElSets{iWeb}(iSpan).elementList];
+                            elementList=[elementList meshData.shearWebElSets{iWeb}(iSpan).elementList];
                         end
                     end
                 end  
@@ -111,7 +111,7 @@ function designVar=postprocessANSYSfatigue(blade,meshStruct,wt,rccdata,IEC,loads
 
                 binnedElements=intersect(find(plateStrainsThetaSet(:,2)<z2),find(plateStrainsThetaSet(:,2)>z1)); %Loop through elements in within zwidth centered at rGauge
     
-                [fdData,plotFatigueChSpan] = calcFatigue(blade,meshStruct,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
+                [fdData,plotFatigueChSpan] = calcFatigue(blade,meshData,IEC,Ltheta,LthetaPlus90,Mtheta,MthetaPlus90...
                     ,binnedElements,plateStrainsThetaSet,plateStrainsThetaPlus90Set,iSegment);
                 plotFatigue=[plotFatigue;plotFatigueChSpan];
                 criticalElement(chSpan)=fdData(1);

@@ -1,34 +1,25 @@
-function [nodes,elements,outerShellElSets,shearWebElSets] = writeANSYSshellModel(blade,filename,fea)
+function writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)
 %WRITE_SHELL7  Generate the ANSYS input file that creates the blade 
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
 % * Developed by Sandia National Laboratories Wind Energy Technologies *
 % *             See license.txt for disclaimer information             *
 % **********************************************************************
-%   write_shell7(app,blade,filename)
-%     app = app data structure in NuMAD
-%     blade = blade data structure in NuMAD
-%     filename = ANSYS input file to be written (typically 'shell7.src')
-%
 
-
-global numadPath
-if isequal(0,nargout)
-    parent_pn = [numadPath '\numadObjects'];
-    [success,message,~] = copyfile(fullfile(parent_pn,'FEA','macros','*.mac'),blade.paths.job);
-    if ~success
-        errordlg(message,'write_shell7: error copying macros');
-        return;
-    end
-end
+fcopts = {'EMAX','SMAX','TWSI','TWSR','HFIB','HMAT','PFIB','PMAT',...
+    'L3FB','L3MT','L4FB','L4MT','USR1','USR2','USR3','USR4',...
+    'USR5','USR6','USR7','USR8','USR9'};
+config.FailureCriteria = cell(numel(fcopts),2);
+config.FailureCriteria(:,1) = fcopts';
+config.FailureCriteria(:,2) = deal({false});
 
 
 TotalStations = numel(blade.ispan);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% write the shell7.src file %
+% write the macro file that builds the mesh%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%fid = fopen('shell7.src','wt');
+
 fid = fopen(filename,'wt');
 try
     fprintf(fid,'hide_warndlg_keyopt=1\n');
@@ -183,7 +174,7 @@ try
     
     fprintf(fid,'\n! WRITE THE COMPOSITE LAYUPS =================================\n');
     rCounter=1;
-    switch fea.ansys.ElementSystem
+    switch config.elementType
         %tcl:  first few lines are same for shell91 and shell99
         case {'281','181'}
             
@@ -236,13 +227,13 @@ try
             end
         
         otherwise
-            errordlg(sprintf('Element System %s not yet available',fea.ansys.ElementSystem),'write_shell7 error')
-            error('Element System %s not yet available',fea.ansys.ElementSystem);
+            errordlg(sprintf('Element System %s not yet available',config.elementType),'write_shell7 error')
+            error('Element System %s not yet available',config.elementType);
             
     end
     
     % [~,jobtitle,~] = fileparts(blade.job_name);
-    fprintf(fid,'\n/title,%s',fea.ansys.dbname);
+    fprintf(fid,'\n/title,%s',config.dbname);
     fprintf(fid,'\nZrCount=%d\n',rCounter);
 
     %tcl: DEFINE KEYPOINTS FOR SECTIONS AND CONNECT KEYPOINTS WITH LINES
@@ -326,34 +317,29 @@ try
 %     fprintf(fid,'\ncsys,0');
     fprintf(fid,'\nallsel\n');
     
-
-    
-    blade.mesh=0.45;
-    [nodes,elements,outerShellElSets,shearWebElSets]=blade.getShellMesh();
-
-    [nnodes,~]=size(nodes);
-    [nelements,~]=size(elements);
+    [nnodes,~]=size(meshData.nodes);
+    [nelements,~]=size(meshData.elements);
     fprintf(fid,'\n! DEFINE NODES =======================================\n');
     for iNode=1:nnodes
-        fprintf(fid,'n, %i, %f, %f, %f\n', iNode,nodes(iNode,1),nodes(iNode,2),nodes(iNode,3));
+        fprintf(fid,'n, %i, %f, %f, %f\n', iNode,meshData.nodes(iNode,1),meshData.nodes(iNode,2),meshData.nodes(iNode,3));
     end
 
     
     %Set the elemetn Type
-    switch fea.ansys.ElementSystem
+    switch config.elementType
         case '281'
             fprintf(fid,'type, 11\n');
         case '181'  
             fprintf(fid,'type, 12\n');
         otherwise
-            errordlg(sprintf('Element System %s not yet available',fea.ansys.ElementSystem),'write_shell7 error')
-            error('Element System %s not yet available',fea.ansys.ElementSystem);
+            errordlg(sprintf('Element System %s not yet available',config.elementType),'write_shell7 error')
+            error('Element System %s not yet available',config.elementType);
     end
     dup=[];
     fprintf(fid,'\n! DEFINE ELEMENTS =======================================\n');
     for iElement=1:nelements
-        if numel(unique(elements(iElement,:)))==4
-        fprintf(fid,'e, %i, %i, %i, %i  !Element %i \n', elements(iElement,1),elements(iElement,2),elements(iElement,3),elements(iElement,4),iElement);
+        if numel(unique(meshData.elements(iElement,:)))==4
+        fprintf(fid,'e, %i, %i, %i, %i  !Element %i \n', meshData.elements(iElement,1),meshData.elements(iElement,2),meshData.elements(iElement,3),meshData.elements(iElement,4),iElement);
         else
             dup=[dup; iElement];
         end
@@ -365,7 +351,7 @@ try
         for iPerimeter=1:nStationLayups
             secID=str2num([int2str(iStation) int2str(iPerimeter)]);
             csID=1000+iStation;
-            elementList=outerShellElSets(iPerimeter,iStation).elementList;
+            elementList=meshData.outerShellElSets(iPerimeter,iStation).elementList;
             for iEl=1:numel(elementList)
                 fprintf(fid,'   emodif,%i,secnum,%i\n',elementList(iEl),secID);
                 fprintf(fid,'   emodif,%i,esys,%i\n',elementList(iEl),csID);
@@ -384,7 +370,7 @@ try
                 secID=webSectionIDstart+iStation+(iWeb-1)*10^orderOfMagnitude;
                 csID=1000+iStation;
                 
-                elementList=shearWebElSets{iWeb}(iStation).elementList;
+                elementList=meshData.shearWebElSets{iWeb}(iStation).elementList;
                 for iEl=1:numel(elementList)
                     fprintf(fid,'   emodif,%i,secnum,%i\n',elementList(iEl),secID);
                     %fprintf(fid,'   emodif,%i,esys,%i\n',elementList(iEl),csID);
@@ -434,14 +420,14 @@ try
     fprintf(fid,'\n   nsel,a,node,,z_master_node_number');
     
     
-    switch fea.ansys.ElementSystem
+    switch config.elementType
         case {'91','99','281','181'}
             fprintf(fid,'\n   cerig,z_master_node_number,all,RXYZ\n');
         case '191'
             fprintf(fid,'\n   cerig,z_master_node_number,all,uxyz\n');
     end
                
-    if isequal(fea.ansys.BoundaryCondition,'cantilevered')
+    if isequal(config.BoundaryCondition,'cantilevered')
         %jcb: FIXME - nsel could break with swept/bent blades
         fprintf(fid,'\n   nsel,s,loc,z,0');
         fprintf(fid,'\n   d,all,all');
@@ -466,9 +452,9 @@ try
     fprintf(fid,'\n/post1\n');   
     
     fprintf(fid,'\nfctyp,dele,all   ! remove all material failure-criteria postprocessing\n');
-    for kfc = 1:length(fea.ansys.FailureCriteria)
-        if fea.ansys.FailureCriteria{kfc,2}
-            fprintf(fid,'fctyp,add,%s\n',fea.ansys.FailureCriteria{kfc,1});
+    for kfc = 1:length(config.FailureCriteria)
+        if config.FailureCriteria{kfc,2}
+            fprintf(fid,'fctyp,add,%s\n',config.FailureCriteria{kfc,1});
         end
     end
     fprintf(fid,'\nfinish\n')
@@ -508,12 +494,6 @@ try
     fprintf(fid,'\nfinish');
     fprintf(fid,'\nsave');
 
-%    # unit tip load suite
-%    if {$BPEstatus == 1} {
-%       append shell7Contents "    
-%    ...
-%    ...
-
 
 catch ME
     % The try..catch..end ensures the file gets closed
@@ -522,7 +502,7 @@ catch ME
     rethrow(ME);
 end
 fclose(fid);
-msg = sprintf('shell7.src written to %s',blade.paths.job);
+msg = sprintf('The following file has been written %s\n',filename);
 if 1%ble: can make this smart: originally --> app.batchrun
     disp(msg)
 else

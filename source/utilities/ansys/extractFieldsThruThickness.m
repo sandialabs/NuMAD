@@ -1,4 +1,4 @@
-function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,bladeStacks,bladeSWstacks,elementNumbers,coordSys)
+function [result]=extractFieldsThruThickness(fileName,meshData,bladeMaterials,bladeStacks,bladeSWstacks,elementNumbers,coordSys)
 
     if ischar(fileName)
         %Used for reading element stresses
@@ -18,7 +18,7 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
         elementStringName=['element' int2str(elNo)];
         %sec_num=elements(elNo,6);
         %layerData=sections.layers{sections.secID==sec_num}; %Important, flip the columns since code starts at the top layer.
-        [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStacks,bladeSWstacks);
+        [currentStack,offset]=givenAnElementFindStack(meshData,elNo,bladeStacks,bladeSWstacks);
         %nLayers=size(layerData,1);
         nLayers=numel(currentStack.plygroups);
         k=find(plateStrainsTheta(:,1)==elNo);
@@ -163,13 +163,13 @@ function [result]=extractFieldsThruThickness(fileName,meshStruct,bladeMaterials,
     end
      
 
-function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStacks,bladeSWstacks)
+function [currentStack,offset]=givenAnElementFindStack(meshData,elNo,bladeStacks,bladeSWstacks)
 
     %Search for element in aeroshell first
-    [nSegments,nSpanRegions]=size(meshStruct.outerShellElSets);
+    [nSegments,nSpanRegions]=size(meshData.outerShellElSets);
     for iSegment=1:nSegments
         for iSpan=1:nSpanRegions
-               found=any(meshStruct.outerShellElSets(iSegment,iSpan).elementList == elNo);
+               found=any(meshData.outerShellElSets(iSegment,iSpan).elementList == elNo);
                if found==true
                    break;
                end
@@ -185,9 +185,9 @@ function [currentStack,offset]=givenAnElementFindStack(meshStruct,elNo,bladeStac
     else %Then search web
         nWebs=numel(bladeSWstacks);
         for iWeb=1:nWebs
-            [~,nSpanRegions]=size(meshStruct.shearWebElSets{iWeb});
+            [~,nSpanRegions]=size(meshData.shearWebElSets{iWeb});
             for iSpan=1:nSpanRegions
-                   found=any(meshStruct.shearWebElSets{iWeb}(iSpan).elementList == elNo);
+                   found=any(meshData.shearWebElSets{iWeb}(iSpan).elementList == elNo);
                    if found==true
                        break;
                    end

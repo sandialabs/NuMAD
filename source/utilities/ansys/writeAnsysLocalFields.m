@@ -2,7 +2,8 @@ function writeAnsysLocalFields(blade, config, iLoad, fid)
     %%%%%%%%%%%%%%%%%%%Outputs for fatigue analysis in MATLAB%%%%%%%%%%%%%%%%%
     fprintf(fid,'! BEGIN LOCAL FIELD SCRIPT\n');
     fprintf(fid,'allsel\n');
-    fprintf(fid,'/prep7\n');
+    fprintf(fid,'/post1\n');
+    fprintf(fid,'set,last\n');
     fprintf(fid,'esel,all\n');
     
     %%% Element Stress %%%
