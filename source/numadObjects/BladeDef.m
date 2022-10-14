@@ -1767,7 +1767,7 @@ classdef BladeDef < handle
         end
 
         
-        function meshData=generateShellModel(obj,feaCode,includeAdhesive) 
+        function meshData=generateShellModel(obj,feaCode,includeAdhesive,varargin) 
             % This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
             
             if strcmp(lower(feaCode),'ansys')
@@ -1786,9 +1786,12 @@ classdef BladeDef < handle
                 obj.paths.job = pwd;% ble: is this needed? FIX THIS -- should update with parallel simulations??
                 filename = fullfile(obj.paths.job,APDLname);
                 
-                forSolid=0;
-                [meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls]=obj.shellMeshGeneral(forSolid,includeAdhesive);
-                
+                if isempty(varargin)
+                    forSolid=0;
+                    [meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls]=obj.shellMeshGeneral(forSolid,includeAdhesive);
+                else
+                    meshData=varargin{1};
+                end
                 writeANSYSshellModel(obj,filename,meshData,config,includeAdhesive);
 
 
