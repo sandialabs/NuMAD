@@ -1088,7 +1088,7 @@ classdef BladeDef < handle
             make_c_array_BladeDef(obj)
         end
         
-        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = shellMeshGeneral(obj,forSolid,includeAdhesive)
+        function [nodes,elements,outerShellElSets,outerShellNodes,shearWebElSets,adhesNds,adhesEls] = shellMeshGeneral(obj,forSolid,includeAdhesive)
             %% This method generates a finite element shell mesh for the blade, based on what is
             %% stored in blade.geometry, blade.keypoints, and blade.profiles.  Element sets are 
             %% returned corresponding to blade.stacks and blade.swstacks
@@ -1271,6 +1271,7 @@ classdef BladeDef < handle
                 outerShellElSets = [outerShellElSets,setCol];
                 stPt = stPt + 3;
             end
+            lastOSNd = size(nodes,1);
             %% Shift the appropriate splines if the mesh is for a solid model seed
             if(forSolid == 1)
                 caseIndex = [10,28,4; ...
@@ -1476,6 +1477,15 @@ classdef BladeDef < handle
                 end
             end
             
+            %% Assemble the list of outer shell nodes
+            
+            outerShellNodes = [];
+            for i = 1:lastOSNd
+                if(nodeElim(i) == 0)
+                    outerShellNodes = [outerShellNodes;newLabel(i)];
+                end
+            end
+            
             %% Generate mesh for trailing edge adhesive if requested
             if(includeAdhesive == 1)
                 stPt = frstXS;
@@ -1554,8 +1564,8 @@ classdef BladeDef < handle
             end
         end       
             
-        function [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = getShellMesh(obj,includeAdhesive)
-            [nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(0,includeAdhesive);
+        function [nodes,elements,outerShellElSets,outerShellNodes,shearWebElSets,adhesNds,adhesEls] = getShellMesh(obj,includeAdhesive)
+            [nodes,elements,outerShellElSets,outerShellNodes,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(0,includeAdhesive);
         end
         
         function editStacksForSolidMesh(obj)
@@ -1614,11 +1624,11 @@ classdef BladeDef < handle
             end
         end
         
-        function [nodes,elements,outerShellElSets,shearWebElSets,adhesiveElSet] = getSolidMesh(obj,layerNumEls)
+        function [nodes,elements,outerShellElSets,outerShellNodes,shearWebElSets,adhesiveElSet] = getSolidMesh(obj,layerNumEls)
             %% Edit stacks to be usable for 3D solid mesh
             obj.editStacksForSolidMesh();
             %% Create shell mesh as seed
-            [shNodes,shElements,outerShellElSets,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(1,1);
+            [shNodes,shElements,outerShellElSets,outerShellNodes,shearWebElSets,adhesNds,adhesEls] = obj.shellMeshGeneral(1,1);
             %% Initialize 3D solid mesh from the shell mesh
             bladeMesh = NuMesh3D(shNodes,shElements);
             %% Calculate unit normal vectors for all nodes
