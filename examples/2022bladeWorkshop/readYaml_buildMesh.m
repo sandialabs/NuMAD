@@ -18,7 +18,7 @@ blade.mesh = 0.2;
 %% Generate the shell mesh
 
 adhes = 1;
-[nodes,elements,OSSets,SWSets,adNds,adEls] = blade.getShellMesh(adhes);
+[nodes,elements,OSSets,OSNodes,SWSets,adNds,adEls] = blade.getShellMesh(adhes);
 
 %% Print first 10 nodes coordinates
 
