@@ -476,20 +476,6 @@ try
     fprintf(fid,'elist,all,,,0,0 \n');
     fprintf(fid,'/output\n');
     
-    %%% Make NLIST file %%%
-    fprintf(fid,'!!! BEGIN MAKE_NLIST MACRO TEXT\n');
-    fprintf(fid,'ESEL,S,SEC,,1,%i   \n',webSectionIDstart-1);
-    % fprintf(fid,'ALLSEL   \n');
-    fprintf(fid,'NSLE,S  \n');
-    % fprintf(fid,'nsel,u,node,,z_master_node_number\n');
-    fprintf(fid,'/output,NLIST,lis\n');
-    fprintf(fid,'/page,1e6,,1e6,,\n');
-    fprintf(fid,'NLIST,ALL, , ,XYZ,NODE,NODE,NODE\n');
-    fprintf(fid,'/output,\n');
-    fprintf(fid,'ALLSEL,ALL \n');
-
-    fprintf(fid,'!!! END MAKE_NLIST TEXT\n');
-    
     % save database file
     fprintf(fid,'\nfinish');
     fprintf(fid,'\nsave');

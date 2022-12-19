@@ -51,13 +51,13 @@ function [designvar] = mainAnsysAnalysis(blade,meshData,loadsTable,analysisConfi
     
     for iLoad=1:length(loadsTable)
         %% ************************************************************************
-        % ================= APPLY BUCKLING LOADS TO FEA MESH =================
+        % ================= APPLY LOADS TO FEA MESH =================
         forcefilename='forces';
-        
+        nodeData=[meshData.outerShellNodes meshData.nodes(meshData.outerShellNodes, :)];
         if isfield(analysisConfig.analysisFlags,'FollowerForces') && ~isempty(analysisConfig.analysisFlags.FollowerForces) &&analysisConfig.analysisFlags.FollowerForces~=0 && isfield(analysisConfig.analysisFlags, 'StaticNonlinear') && ~isempty(analysisConfig.analysisFlags.StaticNonlinear) &&analysisConfig.analysisFlags.StaticNonlinear~=0
-            beamForceToAnsysShellFollower('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
+            beamForceToAnsysShellFollower('map3D_fxM0',nodeData,loadsTable{iLoad},strcat(forcefilename,'.src'));
         else
-            beamForceToAnsysShell('map3D_fxM0','NLIST.lis',loadsTable{iLoad},strcat(forcefilename,'.src'));
+            beamForceToAnsysShell('map3D_fxM0',nodeData,loadsTable{iLoad},strcat(forcefilename,'.src'));
         end
 
         disp('Forces mapped to ANSYS model')

@@ -1800,7 +1800,7 @@ classdef BladeDef < handle
                 
                 if isempty(varargin)
                     forSolid=0;
-                    [meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls]=obj.shellMeshGeneral(forSolid,includeAdhesive);
+                    [meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.outerShellNodes,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls]=obj.shellMeshGeneral(forSolid,includeAdhesive);
                 else
                     meshData=varargin{1};
                 end
