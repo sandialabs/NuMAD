@@ -24,13 +24,13 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     blade.updateBlade
 
     %%  Generate FEA model for blade
-    BladeDef_to_NuMADfile(blade,'numad.nmd','MatDBsi.txt');
 
     disp(' '); disp('Creating ANSYS model...')
     fprintf('Mesh size setting = %0.4f\n',blade.mesh)
     delete 'file.lock';
-    layupDesign_ANSYSmesh(blade);
-    
+
+    includeAdhesive=0;
+    meshData=blade.generateShellModel('ansys',includeAdhesive);
     %% Initialize values for objective evaluation and results.
     c1 = 60000;  %% Coefficient for constraint penalty terms, chosen based on approximate blade mass
     maxDeflection = 0;
@@ -45,7 +45,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add displacement penalty
     if(isfield(config,'defConfig'))
         delete 'file.lock';
-        ansysResult = layupDesign_ANSYSanalysis(blade,defLoadsTable,config.defConfig);
+        ansysResult = mainAnsysAnalysis(blade,meshData,defLoadsTable,config.defConfig);
         maxDeflection = max(ansysResult.deflection{1},[],'all');
         objVal = objVal + c1*(maxDeflection/deflectionLimit)^2;
     end
@@ -53,9 +53,9 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %% Add failure, buckling, fatigue penalties
     if(isfield(config,'failConfig'))
         delete 'file.lock';
-        ansysResult = layupDesign_ANSYSanalysis(blade,loadsTable,config.failConfig,IEC);
+        ansysResult = mainAnsysAnalysis(blade,meshData,loadsTable,config.failConfig,IEC);
         disp('postprocessing failure')
-        if(isfield(config.failConfig.ansys.analysisFlags,'failure'))
+        if(isfield(config.failConfig.analysisFlags,'failure'))
             for i = 1:length(ansysResult.failure)
                 if(ansysResult.failure{i} > maxFailIndex)
                     maxFailIndex = ansysResult.failure{i};
@@ -64,7 +64,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
             objVal = objVal + c1*maxFailIndex^2;
         end
         disp('post.. buckling')
-        if(isfield(config.failConfig.ansys.analysisFlags,'globalBuckling'))
+        if(isfield(config.failConfig.analysisFlags,'globalBuckling'))
             for i=1:length(ansysResult.globalBuckling)
                 if(ansysResult.globalBuckling{i} < minLdFact)
                     minLdFact = ansysResult.globalBuckling{i};
@@ -73,7 +73,7 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
             objVal = objVal + c1*(1/minLdFact)^2;
         end
         disp('...fatigue')
-        if(isfield(config.failConfig.ansys.analysisFlags,'fatigue'))
+        if(isfield(config.failConfig.analysisFlags,'fatigue'))
             maxFatDam = 0;
             i1Max = length(ansysResult.fatigue);
             for i1 = 1:i1Max
@@ -89,8 +89,8 @@ function [objVal] = objectiveExample(DVar,blade,config,defLoadsTable,loadsTable,
     %%  Add frequency penalty
     if(isfield(config,'freqConfig'))
         delete 'file.lock';
-        rotorFreq = config.freqConfig.ansys.rpm/60;
-        Freq = layupDesign_ANSYSfrequency(config.freqConfig);
+        rotorFreq = config.freqConfig.rpm/60;
+        Freq = getANSYSfrequency(config.freqConfig);
         objVal = objVal + c1*(rotorFreq/(Freq(1)))^2;
     else
         Freq = [1,1];

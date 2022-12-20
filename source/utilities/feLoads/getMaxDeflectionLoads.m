@@ -13,6 +13,7 @@ function loadsTable = getMaxDeflectionLoads(blade,IEC,IECOutput)
     end
     loadsPointer.time = sAr(maxCase).time;
     loadsPointer.file = sAr(maxCase).File;
+    loadsPointer.chan = sAr(maxCase).Chan;
     loadsTable = getForceDistributionAtTime(loadsPointer,IEC,r);
 end
 

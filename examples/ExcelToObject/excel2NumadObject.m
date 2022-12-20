@@ -2,8 +2,8 @@
 % Verify the NuMAD paths are added prior to running this example.
 % This can be done by executing the ``addNumadPaths`` script, shown below.
 
-run('../../addNumadPaths')
 
+addNumadPaths
 %% Load blade object from excel sheet
 designFile = 'Excel2ObjectExample.xlsx';
 blade = xlsBlade(designFile);
@@ -16,9 +16,10 @@ blade.updateBlade
 
 %% generate a NuMAD file
 NuMADfile = 'Excel2ObjectExample.nmd';
-BladeDef_to_NuMADfile(blade,NuMADfile,'MatDBsi.txt');
+BladeDef_to_NuMADfile(blade,NuMADfile,'MatDBsi.txt', strcat(pwd, '\airfoils'));
 numad(NuMADfile)
 
 %% generate an ANSYS mesh
 blade.mesh = 0.1; % mesh size for ANSYS 
-layupDesign_ANSYSmesh(blade,NuMADfile);
+includeAdhesive=0;
+meshData=blade.generateShellModel('ansys',includeAdhesive);

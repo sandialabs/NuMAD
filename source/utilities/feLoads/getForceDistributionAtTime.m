@@ -5,7 +5,7 @@ function loads_table = getForceDistributionAtTime(pointer,IEC,varargin)
 
 %% read in the FAST main files to determine span location of FAST gages
 hm = pwd;
-cd ..
+% cd ..
 
 fst=readFastMain([IEC.fstfn '.fst']);
 ad=readFastAD(fst.ADFile(2:end-1));
@@ -21,9 +21,9 @@ bladeLength = (fst.TurbConf.TipRad-fst.TurbConf.HubRad);
 gageRot = interp1(bld.prop.BlFract.*bladeLength,bld.prop.StrcTwst,rGage(2:10));
 out=loadFASTOutDataGageRot(pointer.file,gageRot);
 %% END
-[M] = momentsAtTime(out,pointer.time);
+[M] = momentsAtTime(out,pointer.time, pointer.chan);
 %% EMA added:
-[F] = forcesAtTime(out,pointer.time);
+[F] = forcesAtTime(out,pointer.time, pointer.chan);
 %% END
 
 cd(hm);
@@ -167,7 +167,7 @@ presweep = interp1(bld.prop.BlFract.*bladeLength,bld.prop.PreswpRef,rBladeForce)
     loads_table{tt}.input.Mzb = M{3}*1000;
     %% END
     
-    % save the forces for use in layupDesign_ANSYSbuckling buckling analysis
+    % save the forces for use in mainAnsysAnalysis buckling analysis
     loads_table{tt}.rBlade = rBladeForce';
     loads_table{tt}.Fxb = Fxb_FAST(tt,:)*1000; %Convert from kN to N
     loads_table{tt}.Fyb = Fyb_FAST(tt,:)*1000; %Convert from kN to N
@@ -196,7 +196,7 @@ presweep = interp1(bld.prop.BlFract.*bladeLength,bld.prop.PreswpRef,rBladeForce)
 
 end
 
-function[M] = momentsAtTime(out,time)
+function[M] = momentsAtTime(out,time, chan)
     nGages = 10; %Assuming data is at 10 stations
     
     row=find(out.data(:,1)==time);
@@ -206,7 +206,19 @@ function[M] = momentsAtTime(out,time)
     M = {[zeros(1,nGages)];[zeros(1,nGages)];[zeros(1,nGages)]};
     %%END
     %Initialize
-    bladeNo = 'b1';
+    %% RJC add
+    if contains(chan,';') == 1
+        bladeNo = 'b1';
+    elseif strcmp(chan(end),'1') == 1
+        bladeNo = 'b1';
+    elseif strcmp(chan(end),'2') == 1
+        bladeNo = 'b2';
+    elseif strcmp(chan(end),'3') == 1
+        bladeNo = 'b3';
+    else
+        bladeNo = 'b1';
+    end
+    %% end
     load='M';
     gageBaseName = ['Root' load];
     for i =1:nGages  %Assuming data is at 10 stations
@@ -233,13 +245,25 @@ end
 
 %% EMA added:
 
-function[F] = forcesAtTime(out,time)
+function[F] = forcesAtTime(out,time, chan)
     nGages = 10; %Assuming data is at 10 stations
     
     row=find(out.data(:,1)==time); 
     F = {[zeros(1,nGages)];[zeros(1,nGages)];[zeros(1,nGages)]};
     %Initialize
-    bladeNo = 'b1';
+    %% RJC add
+    if contains(chan,';') == 1
+        bladeNo = 'b1';
+    elseif strcmp(chan(end),'1') == 1
+        bladeNo = 'b1';
+    elseif strcmp(chan(end),'2') == 1
+        bladeNo = 'b2';
+    elseif strcmp(chan(end),'3') == 1
+        bladeNo = 'b3';
+    else
+        bladeNo = 'b1';
+    end
+    %% end
     load='F';
     gageBaseName = ['Root' load];
     for i =1:nGages  %Assuming data is at 10 stations

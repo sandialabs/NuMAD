@@ -1,12 +1,12 @@
 function data = readANSYSnforce(filename)
-% readANSYSElem  Read an ANSYS list of Elements.
+% readANSYSnforce  Read an ANSYS list of Elements.
 % **********************************************************************
 % *                   Part of the SNL NuMAD Toolbox                    *
 % * Developed by Sandia National Laboratories Wind Energy Technologies *
 % *             See license.txt for disclaimer information             *
 % **********************************************************************
 % Read an ANSYS list of Elements.
-% Usage: data = readANSYSElem(FILENAME)
+% Usage: data = readANSYSnforce(FILENAME)
 %  where FILENAME is file name string, default 'Elements.txt'
 %        DATA is 3-column matrix [ELEM, MAT, SEC]
 %

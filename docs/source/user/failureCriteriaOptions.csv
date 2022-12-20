@@ -1,4 +1,4 @@
-﻿Failure Criterion Type,``config.ansys.failureCriterion``
+﻿Failure Criterion Type,``config.failureCriterion``
 Maximum Strain,``'EMAX'``
 Maximum Stress,``'SMAX'``
 Puck Failure,``'PUCK'``

@@ -810,6 +810,7 @@ function openmodel(pn,fn,cbo)
     app.smdp.hg_sm = {};
     app.smdp.hg_sw = {};
     input_file = fullfile(pn,fn);
+    %load('dataForNuMADobjects')
 	[app.station app.shearweb app.active app.ansys app.BladeRotation blade app.plot3d app.flutterInput] = readNuMADinput(input_file);
     app.station = resampleAirfoilDB(app.station,app.n_panels,'cosine');
     [app.afdb app.aflist] = readAirfoilDB(fullfile(pn,'airfoils'));  % use local database
@@ -966,7 +967,7 @@ function loadmodel(cbo,~)
 %         blade.DegreesTwist(k) = app.station(k).DegreesTwist;
 %     end
     % sort the stations by LocationZ
-    [app,sortorder] = sort_stations(app);
+    [app,sortorder] = sort_GUIstations(app);
 %     blade.LocationZ    = blade.LocationZ(sortorder);
 %     blade.Chord        = blade.Chord(sortorder);
 %     blade.Xoffset      = blade.Xoffset(sortorder);
@@ -1050,7 +1051,7 @@ function loadmodel(cbo,~)
          'uimenu_view','uimenu_plot3d','uimenu_advanced'});
 end
 
-function [app,sortorder] = sort_stations(app)
+function [app,sortorder] = sort_GUIstations(app)
     nStations = numel(app.station);
     LocationZ = zeros(1,nStations);
     for k = 1:nStations
@@ -1721,7 +1722,7 @@ function cb_zloc(cbo, ~)
     
     app = guidata(cbo);   % retrieve application data
 %    blade = NuMAD_appdata('get','blade');
-    [app,sortorder] = sort_stations(app);
+    [app,sortorder] = sort_GUIstations(app);
 %     blade.LocationZ    = blade.LocationZ(sortorder);
 %     blade.Chord        = blade.Chord(sortorder);
 %     blade.Xoffset      = blade.Xoffset(sortorder);
@@ -1954,7 +1955,7 @@ function cb_stationdone(cbo,~)
         {'AirfoilName','TEtype','DegreesTwist','DegreesTwist_units',...
         'Chord','Chord_units','Xoffset','AeroCenter',...
         'LocationZ','LocationZ_units'});
-    [app,sortorder] = sort_stations(app);
+    [app,sortorder] = sort_GUIstations(app);
     active = findobj(gcbf,'Tag','active station');  % get handle of active station
     k = findCellIndex(app.hg,active);  % get index of active station
     set(app.hg{k},'Color',[0 0.8 0]); % change color from red to green
