@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material Object &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Staion Object" href="pynumad.objects.Station.html" />
+    <link rel="prev" title="Component Object" href="pynumad.objects.Component.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pynumad.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pynumad.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pynumad.objects.html">pynumad.objects module</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pynumad.objects.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.utils.html">pynumad.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.io.html">pynumad.io module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="pynumad.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pynumad.objects.html">pynumad.objects module</a></li>
+      <li class="breadcrumb-item active">Material Object</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/pynumad.objects.Material.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pynumad.objects.Material">
+<span id="material-object"></span><h1>Material Object<a class="headerlink" href="#module-pynumad.objects.Material" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynumad.objects.Material.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><a class="headerlink" href="#pynumad.objects.Material.Material" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MaterialDef:  A class for blade materials.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.name" title="Permalink to this definition"></a></dt>
+<dd><p>User selected name of the material</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.type" title="Permalink to this definition"></a></dt>
+<dd><p>Two options: isotropic or orthotropic</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.layerthickness">
+<span class="sig-name descname"><span class="pre">layerthickness</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.layerthickness" title="Permalink to this definition"></a></dt>
+<dd><p>Layer thickness [mm]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.ex">
+<span class="sig-name descname"><span class="pre">ex</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.ex" title="Permalink to this definition"></a></dt>
+<dd><p>Longitudinal elastic modulus [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.ey">
+<span class="sig-name descname"><span class="pre">ey</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.ey" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse elastic modulus [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.ez">
+<span class="sig-name descname"><span class="pre">ez</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.ez" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Through-the-thickness elastic modulus in the</p>
+</div></blockquote>
+<p>principal material coordinates [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.gxy">
+<span class="sig-name descname"><span class="pre">gxy</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.gxy" title="Permalink to this definition"></a></dt>
+<dd><p>In-plane shear modulus [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.gyz">
+<span class="sig-name descname"><span class="pre">gyz</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.gyz" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse shear modulus [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.gxz">
+<span class="sig-name descname"><span class="pre">gxz</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.gxz" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse shear modulus [Pa]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.prxy">
+<span class="sig-name descname"><span class="pre">prxy</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.prxy" title="Permalink to this definition"></a></dt>
+<dd><p>In-plane Poisson ratio [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.pryz">
+<span class="sig-name descname"><span class="pre">pryz</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.pryz" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse Poisson ratio [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.prxz">
+<span class="sig-name descname"><span class="pre">prxz</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.prxz" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse Poisson ratio [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.density">
+<span class="sig-name descname"><span class="pre">density</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.density" title="Permalink to this definition"></a></dt>
+<dd><p>Cured mass density [kg/m2]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.drydensity">
+<span class="sig-name descname"><span class="pre">drydensity</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.drydensity" title="Permalink to this definition"></a></dt>
+<dd><p>Density of fabric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.uts">
+<span class="sig-name descname"><span class="pre">uts</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.uts" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>1 x 3 array of ultimate tensile strength design values.</p>
+</div></blockquote>
+<p>Sequence: SL , ST, Sz, 1 x 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.ucs">
+<span class="sig-name descname"><span class="pre">ucs</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.ucs" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>1 x 3 array of ultimate compressive strength design values.</p>
+</div></blockquote>
+<p>Sequence: SL , ST, Sz, 1 x 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.uss">
+<span class="sig-name descname"><span class="pre">uss</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.uss" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>1 x 3 array of ultimate shear strength design values.</p>
+</div></blockquote>
+<p>Sequence: SLT , STz, SLz, 1 x 1 for isotropic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.xzit">
+<span class="sig-name descname"><span class="pre">xzit</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.xzit" title="Permalink to this definition"></a></dt>
+<dd><p>Lz tensile inclination parameter for Puck failure index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.xzic">
+<span class="sig-name descname"><span class="pre">xzic</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.xzic" title="Permalink to this definition"></a></dt>
+<dd><p>Lz compressive inclination parameter for Puck failure index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.yzit">
+<span class="sig-name descname"><span class="pre">yzit</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.yzit" title="Permalink to this definition"></a></dt>
+<dd><p>Tz tensile inclination parameter for Puck failure index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.yzic">
+<span class="sig-name descname"><span class="pre">yzic</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.yzic" title="Permalink to this definition"></a></dt>
+<dd><p>Tz compressive inclination parameter for Puck failure index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.g1g2">
+<span class="sig-name descname"><span class="pre">g1g2</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.g1g2" title="Permalink to this definition"></a></dt>
+<dd><p>Fracture toughness ratio between GI (mode I) and GII (mode II) [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.alp0">
+<span class="sig-name descname"><span class="pre">alp0</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.alp0" title="Permalink to this definition"></a></dt>
+<dd><p>Fracture angle under pure transverse compression [degrees]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.etat">
+<span class="sig-name descname"><span class="pre">etat</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.etat" title="Permalink to this definition"></a></dt>
+<dd><p>Transverse friction coefficient for Larc [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.etal">
+<span class="sig-name descname"><span class="pre">etal</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.etal" title="Permalink to this definition"></a></dt>
+<dd><p>Longitudinal friction coefficient for Larc [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.m">
+<span class="sig-name descname"><span class="pre">m</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.m" title="Permalink to this definition"></a></dt>
+<dd><p>Fatigue slope exponent [ ]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.gamma_mf">
+<span class="sig-name descname"><span class="pre">gamma_mf</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.gamma_mf" title="Permalink to this definition"></a></dt>
+<dd><p>from DNL-GL standard, fatigue strength reduction factor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.gamma_ms">
+<span class="sig-name descname"><span class="pre">gamma_ms</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.gamma_ms" title="Permalink to this definition"></a></dt>
+<dd><p>from DNV-GL standard, short term strength reduction factor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Material.Material.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><a class="headerlink" href="#pynumad.objects.Material.Material.reference" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str = None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pynumad.objects.Component.html" class="btn btn-neutral float-left" title="Component Object" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pynumad.objects.Station.html" class="btn btn-neutral float-right" title="Staion Object" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

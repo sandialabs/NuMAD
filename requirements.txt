@@ -1,0 +1,9 @@
+# Required
+numpy
+scipy
+pandas
+matplotlib
+pyyaml
+
+# Testing
+pytest

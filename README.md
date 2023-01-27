@@ -11,7 +11,7 @@ When used in conjunction with these other tools, NuMAD provides computation of b
 For any questions or support [create a new issue](https://github.com/sandialabs/NuMAD/issues/new) on GitHub.
 
 
-![](docs/source/_static/images/NuMADoverview.png)
+![](docs/_static/images/NuMADoverview.png)
    
 ## Examples
 

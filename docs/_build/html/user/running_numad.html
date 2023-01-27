@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running NuMAD &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Aeroelastic Simulation and the runIEC Function" href="aero_sim.html" />
+    <link rel="prev" title="Examples" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running NuMAD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blade-generation">Blade Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blade-variable-assignment">Blade Variable Assignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generating-representative-blade-structural-models">Generating Representative Blade Structural Models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User’s Guide</a></li>
+      <li class="breadcrumb-item active">Running NuMAD</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/running_numad.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="running-numad">
+<span id="runningnumad"></span><h1>Running NuMAD<a class="headerlink" href="#running-numad" title="Permalink to this heading"></a></h1>
+<p>The following sections go through the basics of putting together and
+analyzing a blade design in NuMAD, from creating a blade object, to
+modifying its parameters and attributes, and generating structural models
+for analysis. Tips for implementation are given to ensure the smoothest
+execution.</p>
+<section id="blade-generation">
+<span id="bladegen"></span><h2>Blade Generation<a class="headerlink" href="#blade-generation" title="Permalink to this heading"></a></h2>
+<p>There are several ways to construct a blade model in NuMAD
+3.0. In many ways the most intuitive approach is by using the graphical
+user interface carried over from NuMAD 2.0 (for detailed instructions,
+please refer to the NuMAD 2.0 user manual [3]). Although the current
+version is designed not to be reliant on this GUI, it is still supported
+and can be a useful tool if designing a blade model from scratch.</p>
+<p>A more automated way to generate a blade model is by reading a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>
+file, and using the data stored within to populate the model definition.
+The <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> format contains all the geometric, aerodynamic and material
+information needed to define a blade structure, and is widely used in
+the field, making it a convenient choice for the source data file.
+Several examples of <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files are provided in the <code class="docutils literal notranslate"><span class="pre">NuMAD/examples/referenceModels</span></code> directory
+of the GitHub repository.</p>
+<p>To read a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file’s data into NuMAD from a MATLAB script or command
+window, first save the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file in the working directory for the blade
+model. Typically, each blade design should have its own working
+directory, which contains aerodynamic/airfoil data, FAST input files
+(<code class="docutils literal notranslate"><span class="pre">*.fst</span></code> extension) and subfolders for NuMAD operations and FAST
+simulation output files (<code class="docutils literal notranslate"><span class="pre">*.out</span></code> extension). Once the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file is saved
+alongside these items, it can be read by creating a new blade object of
+type <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> and calling the reader function, as shown:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">BladeDef</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">readYAML</span><span class="p">(</span><span class="o">&lt;</span><span class="n">yamlfilename</span><span class="o">&gt;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>After entering these commands, the blade model data will be stored in
+the object called <code class="docutils literal notranslate"><span class="pre">blade</span></code>, which can be printed out and modified as
+desired as further explained in <a class="reference internal" href="#bladevarassign"><span class="std std-ref">Blade Variable Assignment</span></a>. Many types of analysis and
+operations can be performed once a blade model is stored as a blade
+object in this way.</p>
+<p>If it is desired to run aeroelastic simulation with
+<code class="docutils literal notranslate"><span class="pre">runIEC</span></code>, or to generate loads from FAST-generated output files as
+described in <a class="reference internal" href="fea.html#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>, it is advisable to update the FAST input files
+in the blade’s main working directory to ensure that certain quantities
+within are consistent with the data stored in the <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file, such as
+prebend, presweep, and structural twist. This can be done using the
+commands</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="w"> </span><span class="n">IEC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">IECdef</span><span class="p">(</span><span class="n">inputFileName</span><span class="p">)</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="w"> </span><span class="n">updateFASTFromBLADEDef</span><span class="p">(</span><span class="n">IEC</span><span class="p">,</span><span class="n">blade</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">inputFileName</span></code> refers to the path/name of the input file containing variables
+related to the aeroelastic analysis and simulation (see <a class="reference internal" href="examples.html#runiec"><span class="std std-ref">Run Aeroelastic Simulations to Analyze IEC-Standard Design Load Cases</span></a> for more
+details).</p>
+<p>After all desired analyses and modifications are complete, a new,
+updated <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file can be generated to represent the optimized, or
+re-designed blade. To do this issue the command:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">writeYAML</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="o">&lt;</span><span class="n">newyamlfilename</span><span class="o">&gt;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The new file name should be of the form <code class="docutils literal notranslate"><span class="pre">&lt;originalfile&gt;_mod.yaml</span></code>, adding
+an <code class="docutils literal notranslate"><span class="pre">_mod</span></code> extension to the name of the original <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file from which
+the blade model was generated. The new file will be written into the
+blade model’s working directory alongside the original.</p>
+<p>Generating blades from <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> files is useful for streamlining analysis
+and optimization processes, since all operations can be called from a
+MATLAB script, without depending on the graphical user interface or any
+manual input during execution.</p>
+</section>
+<section id="blade-variable-assignment">
+<span id="bladevarassign"></span><h2>Blade Variable Assignment<a class="headerlink" href="#blade-variable-assignment" title="Permalink to this heading"></a></h2>
+<p>Any blade design process involves setting and modifying characteristics
+of the blade’s geometric, structural, and material properties in some
+way. The NuMAD blade object contains a collection of variables that
+represent these properties, and can be set and modified by value
+assignment within a MATLAB script or in the command line. A
+comprehensive list of all public variables in the <code class="docutils literal notranslate"><span class="pre">BladeDef</span></code> class used in
+NuMAD is given in the <a class="reference internal" href="classDefs.html#classdefs"><span class="std std-ref">Object Classes, Properties, and Methods</span></a>.</p>
+<p>Here we give some highlighted examples of key variables within the blade
+object and their basic access. The overall shape of the blade is defined
+largely by the stations (access: <code class="docutils literal notranslate"><span class="pre">blade.stations</span></code>). Each station
+contains several variables whose values can be edited. For instance, if
+a blade model was generated by reading a <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file as described in
+<a class="reference internal" href="#bladegen"><span class="std std-ref">Blade Generation</span></a>, and it was desired to set the spanwise position of the
+second station at 3.5 meters, the command</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">spanlocation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.5</span><span class="w"></span>
+</pre></div>
+</div>
+<p>could be used. Many variables are arrays with multiple values, and can
+be set according using standard MATLAB syntax. The coordinates of the
+points defining the outer airfoil shape at a given station, for example,
+are stored in the airfoil object at each individual station as an <span class="math notranslate nohighlight">\(N X 2\)</span>
+array, and can be set as follows:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">stations</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">airfoil</span><span class="p">.</span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">;</span><span class="w"> </span><span class="n">X2</span><span class="p">,</span><span class="w"> </span><span class="n">Y2</span><span class="p">;</span><span class="w"> </span><span class="k">...</span><span class="c">; XN, YN]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>There are several properties that each define some aspect of the blade’s
+shape with a value at any given spanwise location, including chord
+length, angle of twist, aerodynamic center, sweep and prebend. These can
+be set at any number of spanwise points, with the variable <em>span</em>
+specifying their locations. If a user wanted to, say, set the prebend of
+the blade to some constant <span class="math notranslate nohighlight">\(k\)</span> times cube of the spanwise location,
+specified at 10 equally spaced points, they could set</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">&lt;</span><span class="n">bladeLength</span><span class="o">&gt;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">prebend</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">k</span><span class="o">*</span><span class="n">blade</span><span class="p">.</span><span class="n">span</span><span class="o">.^</span><span class="mi">3</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The bulk of the structural properties of the blade’s components are
+stored in <code class="docutils literal notranslate"><span class="pre">blade.components</span></code> variable. A single component contains a name,
+a material ID number, labels representing the points it spans between
+according to <code class="xref std std-numref docutils literal notranslate"><span class="pre">bladeKeyPoints</span></code>, and a control point array, called <code class="docutils literal notranslate"><span class="pre">cp</span></code>. The
+control point array specifies the thickness of the given component at
+every spanwise location, expressed in number of layers (the actual
+thickness of a layer is defined by the material object it corresponds
+to, shown shortly). Suppose component 3 in the blade was the suction
+side spar cap, and it was desired to vary the thickness linearly from 10
+layers at the root to 2 layers at the tip, say 50 meters span. The user
+could set</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">components</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">cp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The width of the spar caps and the leading edge and trailing edge bands
+are single nominal values for the entire length of the blade, stored in
+the variables <code class="docutils literal notranslate"><span class="pre">blade.sparcapwidth</span></code>, <code class="docutils literal notranslate"><span class="pre">blade.leband</span></code> and <code class="docutils literal notranslate"><span class="pre">blade.teband</span></code>
+respectively.</p>
+<p>The data defining the properties of all the materials used throughout
+the blade are stored in the variable <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code>. Each entry in
+<code class="docutils literal notranslate"><span class="pre">blade.materials</span></code> is a <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code> object, which stores a name, elastic
+properties, density, and strength properties among others (see <a class="reference internal" href="classDefs.html#materialclass"><span class="std std-ref">Material Class</span></a> in the <a class="reference internal" href="classDefs.html#classdefs"><span class="std std-ref">Object Classes, Properties, and Methods</span></a>).
+It also stores the thickness that a single layer of that material in a
+composite is assumed to be, which can be important to know or edit when
+defining the thickness distribution of the blade’s components as just described.</p>
+<p>After editing the design properties of a blade model as illustrated in
+these few examples, a user should run the command</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">blade</span><span class="p">.</span><span class="n">UpdateBlade</span><span class="p">()</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This function updates numerous internal private variables based on the
+edited values in the public variables. Among other things, it
+interpolates the properties that vary along the span of the blade to the
+spanwise points specified in the variable <code class="docutils literal notranslate"><span class="pre">blade.ispan</span></code>. These include
+all the properties defined in <code class="docutils literal notranslate"><span class="pre">blade.stations</span></code>, as well as the general
+spanwise properties such as prebend, twist, etc. <code class="docutils literal notranslate"><span class="pre">UpdateBlade</span></code> also
+updates the bill of materials for the blade, stored in <code class="docutils literal notranslate"><span class="pre">blade.bom</span></code> and
+various details of the geometry, stored in <code class="docutils literal notranslate"><span class="pre">blade.geometry</span></code>.</p>
+<p>When the variables defining the blade design are set to satisfaction,
+the blade object can be used to perform various operations for analysis
+and optimization, such as generating representative structural models as
+described in the next section.</p>
+</section>
+<section id="generating-representative-blade-structural-models">
+<span id="genbladestructural"></span><h2>Generating Representative Blade Structural Models<a class="headerlink" href="#generating-representative-blade-structural-models" title="Permalink to this heading"></a></h2>
+<p>A NuMAD blade object can be used to construct structural models for
+various types of analysis. Several tools exist that analyze
+characteristics such as section stiffness, mass, and natural frequencies
+of wind blades by representing them with low-fidelity beam models. These
+include PreComp, BModes, and BPE. The most straightforward way of
+invoking these capabilities is through the graphical user interface (for
+details please see ref. [3]).</p>
+<p>In addition to these, however, NuMAD 3.0 has many built-in functions for
+performing high-fidelity analysis of a blade as a shell-element model in
+ANSYS, which are easily invokable from a MATLAB script or command line.
+These include analysis for maximum tip deflection, ultimate rupture
+failure, global and local buckling, fatigue and natural frequencies and
+are discussed in detail in <a class="reference internal" href="fea.html#feaops"><span class="std std-ref">Finite Element Analysis Operations</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="aero_sim.html" class="btn btn-neutral float-right" title="Aeroelastic Simulation and the runIEC Function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finite Element Analysis Operations &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimization and Analysis Tools" href="optimization.html" />
+    <link rel="prev" title="Aeroelastic Simulation and the runIEC Function" href="aero_sim.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Finite Element Analysis Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-generation">Mesh Generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-systems">Coordinate Systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis-directions">Analysis Directions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loads-application">Loads Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis-script">Analysis Script</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#linear-static-analysis">Linear-Static Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deflection">Deflection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#failure">Failure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-buckling">Global Buckling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#local-buckling">Local Buckling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fatigue">Fatigue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#local-fields">Local Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resultant-forces-and-moments">Resultant Forces and Moments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User’s Guide</a></li>
+      <li class="breadcrumb-item active">Finite Element Analysis Operations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/fea.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="finite-element-analysis-operations">
+<span id="feaops"></span><h1>Finite Element Analysis Operations<a class="headerlink" href="#finite-element-analysis-operations" title="Permalink to this heading"></a></h1>
+<section id="mesh-generation">
+<span id="meshgen"></span><h2>Mesh Generation<a class="headerlink" href="#mesh-generation" title="Permalink to this heading"></a></h2>
+<p>To generate a shell model without adhesives in ANSYS simply type:</p>
+<blockquote>
+<div><p>&gt;&gt; includeAdhesive=0;
+&gt;&gt; meshData=blade.generateShellModel(‘ansys’,includeAdhesive)</p>
+</div></blockquote>
+<p>The function returns a struct that contains the following feilds: <code class="docutils literal notranslate"><span class="pre">nodes</span></code>, <code class="docutils literal notranslate"><span class="pre">elements</span></code>, <code class="docutils literal notranslate"><span class="pre">outerShellElSets</span></code>, and <code class="docutils literal notranslate"><span class="pre">shearWebElSets</span></code>. This struct later needs to be input into <code class="docutils literal notranslate"><span class="pre">mainAnsysAnalysis</span></code>.</p>
+</section>
+<section id="coordinate-systems">
+<span id="coordinatesystems"></span><h2>Coordinate Systems<a class="headerlink" href="#coordinate-systems" title="Permalink to this heading"></a></h2>
+<p>Loading for the FEA model will typically be derived from FAST or
+OpenFAST cross-sectional stress resultant forces and moments at various
+spanwise positions. These forces and moments are in coordinate systems
+that are aligned with the local principal axes (structural) of the
+cross-section in the deformed configuration. Thus, those coordinate
+systems change with respect to span. <code class="xref std std-numref docutils literal notranslate"><span class="pre">numadFASTcsys</span></code> contrasts the FAST
+results coordinate basis vectors,
+<span class="math notranslate nohighlight">\(v_{i}^{(j)}\ (j = 1,2,3,\ldots,k)\)</span>, with those of the NuMAD loads
+system, <span class="math notranslate nohighlight">\(w_{i}\)</span>, and the ANSYS coordinate system, <span class="math notranslate nohighlight">\(x_{i}\)</span>,
+which are invariant. <span class="math notranslate nohighlight">\(v_{i}^{(j)}\)</span> is the also known as the blade
+coordinate system in FAST/OpenFAST. Here and through the rest of this
+document, index notation is used with Latin indices assuming 1, 2, and 3
+and Greek indices assuming 1, and 2 (except where explicitly indicated).
+Repeated indices are summed over their range (except where explicitly
+indicated).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <span class="math notranslate nohighlight">\(x_{i}\)</span> coordinate system is like the <span class="math notranslate nohighlight">\(w_{i}\)</span> system
+but the first axis, <span class="math notranslate nohighlight">\(w_{1}\)</span> points toward the leading edge
+instead of the flap direction.</p>
+</div>
+<figure class="align-default" id="id1">
+<span id="numadfastcsys"></span><a class="reference internal image-reference" href="../_images/numadFASTcsys.png"><img alt="../_images/numadFASTcsys.png" src="../_images/numadFASTcsys.png" style="width: 5.85771in; height: 4.10039in;" /></a>
+<figcaption>
+<p><span class="caption-text">Comparison of the FAST results coordinate system with that of the NuMAD and ANSYS coordinate systems.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>A small angle is assumed to exist between
+<span class="math notranslate nohighlight">\(v_{3}^{(j)}\ (j = 1,2,3,\ldots,k)\)</span> and <span class="math notranslate nohighlight">\(w_{3}\)</span> and is
+unaccounted for in NuMAD. Thus, it is assumed that
+<span class="math notranslate nohighlight">\(v_{3}^{(j)} = w_{3} = x_{3}\)</span>. Thus the <span class="math notranslate nohighlight">\(v_{i}^{(j)}\)</span> and
+the <span class="math notranslate nohighlight">\(w_{i}\)</span> are related by</p>
+<div class="math notranslate nohighlight">
+\[w_{i} = {C_{iq}v}_{q}^{(j)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_{iq}\)</span> are the direction cosines which can be
+stored in a matrix as shown below</p>
+<div class="math notranslate nohighlight" id="equation-dcm">
+<span class="eqno">(1)<a class="headerlink" href="#equation-dcm" title="Permalink to this equation"></a></span>\[\begin{split}C = \begin{bmatrix}
+          \text{cos}(\mu) &amp; \text{sin}(\mu) &amp; 0 \\
+          -\text{sin}(\mu) &amp; \text{cos}(\mu) &amp; 0 \\
+          0 &amp; 0 &amp; 1
+          \end{bmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> is the so-called structural twist and is illustrated
+in <code class="xref std std-numref docutils literal notranslate"><span class="pre">FASTvsNuMADcsys</span></code>.</p>
+<figure class="align-default" id="id2">
+<span id="fastvsnumadcsys"></span><a class="reference internal image-reference" href="../_images/FASTvsNuMADcsys.png"><img alt="../_images/FASTvsNuMADcsys.png" src="../_images/FASTvsNuMADcsys.png" style="width: 3.15956in; height: 1.77725in;" /></a>
+<figcaption>
+<p><span class="caption-text">Time history moment data from the <span class="math notranslate nohighlight">\(v_{\alpha}\)</span> coordinate system to the <span class="math notranslate nohighlight">\(w_{\alpha}\)</span> intermediate coordinate system.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>These angles are obtained by <a class="reference external" href="https://www.nrel.gov/wind/nwtc/precomp.html">PreComp</a>. This coordinate transformation is
+implementation in <code class="docutils literal notranslate"><span class="pre">loadFASTOutDataGageRot</span></code>.</p>
+<p>Before transforming the loads data to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system, various
+data processing operations occur in intermediate coordinate systems as
+described in the next section.</p>
+</section>
+<section id="analysis-directions">
+<span id="analdir"></span><h2>Analysis Directions<a class="headerlink" href="#analysis-directions" title="Permalink to this heading"></a></h2>
+<p>Increasing the fidelity from a beam model in FAST/OpenFAST to a shell
+model also increases the computational cost. Thus, it would be
+cumbersome to conduct a time history structural analyses with a shell
+model for each DLC; it would be impracticable on each iteration of an
+optimization loop. Therefore, it is necessary to construct a reduced set
+of load cases that is representative of the most critical loads in the
+time history analysis.</p>
+<p>Two load cases were deemed necessary to properly analyze the most
+critical loads; those needed to evaluate the maximum tip deflection and
+those needed for evaluating blade failure. Here, blade failure consists
+of ultimate failure, buckling, and fatigue failures. Both cases utilize
+the FAST/OpenFAST resultant axial forces <span class="math notranslate nohighlight">\(F_{3}^{w}\)</span>, both bending
+moment components <span class="math notranslate nohighlight">\(M_{\alpha}^{w}\)</span>, and the twisting moment,
+<span class="math notranslate nohighlight">\(M_{3}^{w}\)</span>. The superscript indicates the reference frame. These
+will be referred to collectively with <span class="math notranslate nohighlight">\(P_{i}\ (i = 1,2,\ldots,4)\)</span>,
+a generalized load vector, where <span class="math notranslate nohighlight">\(P_{i} = \begin{bmatrix}
+F_{3}^{w} &amp; M_{1}^{w} &amp; M_{2}^{w} &amp; M_{3}^{w} \\
+\end{bmatrix}^{T}\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that <span class="math notranslate nohighlight">\(P_{i}\)</span> varies with span-wise location and that resultant shear forces were assumed to be negligible for establishing load equivalency for both load cases.</p>
+</div>
+<p>For the tip deflection case, the time at which the maximum tip deflection from the
+beam model, <span class="math notranslate nohighlight">\(t^{*}\ \)</span>, was determined. Then the <span class="math notranslate nohighlight">\(P_{i}\)</span>, at
+a given cross section was defined by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P_{i} = \begin{bmatrix}
+F_{3}^{w}(t^{*}) &amp; M_{1}^{w}(t^{*}) &amp; M_{2}^{w}(t^{*}) &amp; M_{3}^{w}(t^{*}) \\
+\end{bmatrix}^{T}\end{split}\]</div>
+<p>The components were then transformed to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system.</p>
+<p>Since IEC allows for lower factors of safety if numerous analysis
+directions are considered, <span class="math notranslate nohighlight">\(n_{\theta}\)</span> analysis directions can be
+considered by setting momentMaxRotation to <span class="math notranslate nohighlight">\({n}_{\theta}\)</span>
+in the <code class="docutils literal notranslate"><span class="pre">IECInput.inp</span></code> file.</p>
+<p>Thus the loads used to evaluate blade failure are obtained by letting
+<span class="math notranslate nohighlight">\(\theta\)</span>, as defined in <code class="xref std std-numref docutils literal notranslate"><span class="pre">loadDirections</span></code>, vary from 0 to 360 deg. in
+increments of <span class="math notranslate nohighlight">\(n_{\theta}/360\)</span>; yielding <span class="math notranslate nohighlight">\(n_{\theta}\)</span> FE
+load cases. The results for the load directions
+0<span class="math notranslate nohighlight">\(\leq \theta\)</span>&lt;180 deg. were obtained by</p>
+<p><span class="math notranslate nohighlight">\(P_{i} = \begin{bmatrix}
+\text{max}(F_{3}^{w}(t)) \\
+\text{max}(M_{1}^{y}(t))\cos(\theta) \\
+\text{max}(M_{1}^{y}(t))\sin(\theta) \\
+\text{max}(M_{3}^{w}(t)) \\
+\end{bmatrix}\)</span> 0<span class="math notranslate nohighlight">\(\leq \theta\)</span>&lt;180</p>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[M_{1}^{y} = M_{1}^{w}\left( t,w_{3} \right)\cos(\theta) + M_{2}^{w}(t,w_{3})\sin(\theta)\]</div>
+<p>Load directions from 180<span class="math notranslate nohighlight">\(\leq \theta\)</span>&lt;360 deg. are, however,
+obtained by</p>
+<p><span class="math notranslate nohighlight">\(P_{i} = \begin{bmatrix}
+\text{max}(F_{3}^{w}(t)) \\
+\text{min}(M_{1}^{y}(t))\cos(\theta) \\
+\text{min}(M_{1}^{y}(t))\sin(\theta) \\
+\text{max}(M_{3}^{w}(t)) \\
+\end{bmatrix}\)</span> 0<span class="math notranslate nohighlight">\(\leq \theta\)</span>&lt;180</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the above equation, the minimum of <span class="math notranslate nohighlight">\(M_{1}^{y}\)</span> is found
+instead of the maximum but <span class="math notranslate nohighlight">\(\theta\)</span> still ranges from 0 to 180 deg.
+Unlike the resultants used for the deflection analysis which all occurred
+at a specific time in the OpenFAST simulations, each of the axial force,
+torsion, and bending moment resultants along the span could possibly come
+from different times. Thus, it is an artificial distribution suitable for
+design use. Also unlike the deflection case, the two bending-moment
+components (i.e. flap-wise and edge-wise bending) at a span location
+were projected onto 12 directions as defined by <span class="math notranslate nohighlight">\(y_{1}\)</span> in
+<code class="xref std std-numref docutils literal notranslate"><span class="pre">loadDirections</span></code>. All of the <span class="math notranslate nohighlight">\(P_{i}\ \)</span>then transformed
+to the <span class="math notranslate nohighlight">\(x_{i}\)</span> system in <code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell</span></code>.</p>
+</div>
+<figure class="align-default" id="id3">
+<span id="loaddirections"></span><a class="reference internal image-reference" href="../_images/loadDirections.png"><img alt="../_images/loadDirections.png" src="../_images/loadDirections.png" style="width: 3.06468in; height: 1.72388in;" /></a>
+<figcaption>
+<p><span class="caption-text">The definition of the <span class="math notranslate nohighlight">\(y_1\)</span> axis and the angle <span class="math notranslate nohighlight">\(\mathbf{\theta}\)</span>.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="loads-application">
+<span id="applyloads"></span><h2>Loads Application<a class="headerlink" href="#loads-application" title="Permalink to this heading"></a></h2>
+<p>Blade loads can either come from the cross-sectional stress resultant
+time-histories from FAST or user defined. Two load types are supported
+for loads coming from a FAST; loads at a particular time and extremum
+loads used to evaluate the limit states of the blade. Both account for
+all three cross-sectional resultant moments along the span as well as
+the resultant axial forces. However, the resultant transverse shear
+forces acting on the blade in the FAST model are not transferred the
+ANSYS model. Moreover, both create the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable needed by
+<code class="docutils literal notranslate"><span class="pre">mainAnsysAnalysis</span></code>, the main FEA script described is subsequent
+section. <code class="docutils literal notranslate"><span class="pre">getForceDistributionAtTime.m</span></code> handles can be called for the
+loads at a given time while <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code>} builds the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> for
+each analysis direction. The <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable
+is<span class="math notranslate nohighlight">\(\ 1 \times n\)</span> MATLAB cell array where <span class="math notranslate nohighlight">\(n\)</span> is
+the number of analysis directions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">getForceDistributionAtTime.m</span></code> will give a <span class="math notranslate nohighlight">\(1 \times 1\)</span> cell array since the loading is the <em>actual</em> loading at a particular time.).</p>
+</div>
+<p>A user may apply loads other than the loads at particular time or the extremum loads with a user
+defined <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>. This can be done by creating the structure of the
+<code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable manually.</p>
+<p>Example use for <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code> is as follows:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%Get extremum loads</span><span class="w"></span>
+<span class="n">fast_gage</span><span class="p">=</span><span class="n">get_fast_gage</span><span class="p">(</span><span class="n">params</span><span class="p">.</span><span class="n">momentMaxRotation</span><span class="p">);</span><span class="w"></span>
+<span class="n">output</span><span class="p">=</span><span class="n">layupDesign_FASTanalysis</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="s">&#39;1.3&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Loads to be applied to blade</span><span class="w"></span>
+<span class="n">halfdz</span><span class="p">=</span><span class="mf">2.5</span><span class="p">;</span><span class="w"> </span><span class="c">%for best results halfdz should be a multiple of L and should be &lt;= L/2</span><span class="w"></span>
+
+<span class="n">bladeLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">blade</span><span class="p">.</span><span class="n">ispan</span><span class="p">(</span><span class="k">end</span><span class="p">);</span><span class="w"></span>
+<span class="n">r</span><span class="p">=</span><span class="mf">2.5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="n">bladeLength</span><span class="p">;</span><span class="w"> </span><span class="c">%Location where output forces and moments will be calculated</span><span class="w"></span>
+
+<span class="n">loadsTable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">FastLoads4ansys</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="n">fast_gage</span><span class="p">,</span><span class="n">r</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For bending moments on a blade, <code class="docutils literal notranslate"><span class="pre">getForceDistributionAtTime.m</span></code> and
+<code class="docutils literal notranslate"><span class="pre">getForceDistributionAtTime.m</span></code> convert the moment distributions to
+transverse force distributions. <code class="xref std std-numref docutils literal notranslate"><span class="pre">momentsToForces</span></code> shows the known spanwise
+bending moments, <span class="math notranslate nohighlight">\(M_{i}\)</span> acting at a distance <span class="math notranslate nohighlight">\(z_{i}\)</span> from
+the blade root and the forces to be solved, <span class="math notranslate nohighlight">\(F_{i}\)</span> acting at
+<span class="math notranslate nohighlight">\({\overline{z}}_{i}\)</span>, where
+<span class="math notranslate nohighlight">\({\overline{z}}_{i} = 1/2(z_{i} + z_{i + 1})\)</span>.</p>
+<figure class="align-default" id="id4">
+<span id="momentstoforces"></span><a class="reference internal image-reference" href="../_images/momentsToForces.png"><img alt="../_images/momentsToForces.png" src="../_images/momentsToForces.png" style="width: 6.5in; height: 3.65625in;" /></a>
+<figcaption>
+<p><span class="caption-text">Freebody diagram used to determine transverse loads from a given distribution of moments along the blade span.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>From static equilibrium, the forces to be applied are found by solving
+the following linear system of equations for
+<span class="math notranslate nohighlight">\(F_{i}\ (i = 1,2,3,\ldots,k)\)</span></p>
+<div class="math notranslate nohighlight">
+\[M_{i} = \sum_{j = i}^{k}{F_{j}({\overline{z}}_{j} - z_{i})}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k\)</span> is the number of cross-sections with resultant moment
+data.</p>
+<p>The load distributions are then transferred to nodal loads by
+<code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell.m</span></code>. <code class="docutils literal notranslate"><span class="pre">beamForceToAnsysShell.m</span></code> generates a text file (usually called forces.src)
+containing the APDL commands to apply nodal forces for every node on the
+wetted area of the blade. Details of the approach are found in Ref. [1]
+but with modifications to add axial loads.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The script assumes that the input forces are in the FAST coordinate system,
+<span class="math notranslate nohighlight">\(w_{i}\)</span>, so a conversion is performed in the script to the
+ANSYS coordinate system, <span class="math notranslate nohighlight">\(x_{i}\)</span>.</p>
+</div>
+<p>A vector, <span class="math notranslate nohighlight">\(G_{i}\)</span>, such as a force or a
+moment, in the <span class="math notranslate nohighlight">\(w_{i}\)</span> coordinate system is transformed to the
+<span class="math notranslate nohighlight">\(x_{i}\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[g_{i} = C_{ij}G_{j}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_{ij}\)</span> is defined in Eq. <a class="reference internal" href="#equation-dcm">(1)</a> but with setting
+<span class="math notranslate nohighlight">\(\mu = - 90\ \)</span>deg. Example usage for the first <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> load
+case is as follows</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="p">=</span><span class="n">layupDesign_FASTanalysis</span><span class="p">(</span><span class="n">blade</span><span class="p">,</span><span class="n">DLCoptions</span><span class="p">,</span><span class="n">runFASTAnal</span><span class="p">,</span><span class="n">useParallel</span><span class="p">)</span><span class="w"> </span>
+<span class="n">loadsTable</span><span class="w"> </span><span class="p">=</span><span class="n">FastLoads4ansys</span><span class="p">(</span><span class="n">output</span><span class="p">,</span><span class="n">fast_gage</span><span class="p">,</span><span class="n">r</span><span class="p">)</span><span class="w"></span>
+<span class="n">beamForceToAnsysShell</span><span class="p">(</span><span class="n">maptype</span><span class="p">,</span><span class="n">nlistfile</span><span class="p">,</span><span class="w"> </span><span class="n">loadsTable</span><span class="p">{</span><span class="mi">1</span><span class="p">},</span><span class="n">outfile</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where maptype is either <code class="docutils literal notranslate"><span class="pre">'map2D_fxM0'</span></code> or <code class="docutils literal notranslate"><span class="pre">'map3D_fxM0'</span></code>. Note that these
+steps are not usually required with using <code class="docutils literal notranslate"><span class="pre">mainAnsysAnalysis</span></code>, the
+main analysis script. These instructions are for building the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> variable
+and applying nodal forces to an FE model in a stand-alone manner.</p>
+</section>
+<section id="analysis-script">
+<span id="analysisscript"></span><h2>Analysis Script<a class="headerlink" href="#analysis-script" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">mainAnsysAnalysis.m</span></code> is the main analysis script. A user may call
+on it to</p>
+<ul class="simple">
+<li><p>obtain load factors from global instabilities due to linear or
+nonlinear buckling</p></li>
+<li><p>obtain load factors from local instabilities due to face-sheet
+wrinkling</p></li>
+<li><p>find the maximum value of a failure index</p></li>
+<li><p>stress data required for fatigue analyses</p></li>
+<li><p>cross sectional force and moment results vs spanwise position</p></li>
+<li><p>average cross-sectional rotations and displacements along the span</p></li>
+<li><p>strain along the spar caps vs. spanwise position</p></li>
+<li><p>blade mass</p></li>
+</ul>
+<p>The required inputs are a blade object, the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>, and the <code class="docutils literal notranslate"><span class="pre">config</span></code>
+variable. The script knows which analysis types it should run based on
+config. See <code class="xref std std-numref docutils literal notranslate"><span class="pre">configTable</span></code> for the structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code>
+variable. The <code class="docutils literal notranslate"><span class="pre">IECDef</span></code> class defintion is only needed when the fatigue flage is activated.</p>
+<span id="configtable"></span><table class="colwidths-given docutils align-default" id="id5">
+<caption><span class="caption-text">Structure and usage of the <code class="docutils literal notranslate"><span class="pre">config</span></code> variable.</span><a class="headerlink" href="#id5" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Field Name</strong></p></th>
+<th class="head"><p><strong>Example Value</strong></p></th>
+<th class="head"><p><strong>Activation Logic</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.meshFile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'master'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFileName</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'BAR02'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.np</span></code></p></td>
+<td><p>1</p></td>
+<td><p>If Field Name exists and is not empty. Defaults to 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.globalBuckling</span></code></p></td>
+<td><p>3</p></td>
+<td><p>If Field Name exists and is greater than 0.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.imperfection</span></code></p></td>
+<td><p>0</p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.localBuckling</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'foam'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.failure</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'TWSI'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.fatigue</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'all'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.resultantVSspan</span></code></p></td>
+<td><p>1</p></td>
+<td><p>If Field Name exists and is not equal to 0.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.deflection</span></code></p></td>
+<td><p>1</p></td>
+<td><p>If Field Name exists and is not equal to 0.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.localFields</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'all'</span></code></p></td>
+<td><p>If Field Name exists and is not empty.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">config.analysisFlags.mass</span></code></p></td>
+<td><p>1</p></td>
+<td><p>If Field Name exists and is not empty and is not equal to 0.</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">meshFile</span></code> is the name of the ANSYS model database to begin the analysis
+from. It defaults to <code class="docutils literal notranslate"><span class="pre">'master'</span></code>. analysisFileName is the name of the new
+ANSYS model database which will store the analysis results. It defaults
+to <code class="docutils literal notranslate"><span class="pre">'FEmodel'</span></code>. np is the number of processors (CPUs) ANSYS should use for
+each solve. It defaults to 1.</p>
+<p>The output and it is a variable length struct. Depending on
+which analysis flags are active, results can be accessed with</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">=</span><span class="n">layupDesign_ANSYSmesh</span><span class="p">(</span><span class="n">blade</span><span class="p">)</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">globalBuckling</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">localBuckling</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">deflection</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">failure</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">fatigue</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">resultantVSspan</span><span class="w"></span>
+<span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">mass</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="linear-static-analysis">
+<span id="linearfea"></span><h3>Linear-Static Analysis<a class="headerlink" href="#linear-static-analysis" title="Permalink to this heading"></a></h3>
+<p>A linear-static analysis is defined and solved by default. Since
+linear-buckling is a notable advantage of using a shell model for the
+blade, prestress is activated in this load step in preparation for a
+linear buckling analysis. The effects of inertia are counterbalanced
+with inertia relief.</p>
+<p>Depending on the <code class="docutils literal notranslate"><span class="pre">config</span></code> flags, a number analysis outputs can be
+examined.</p>
+</section>
+<section id="deflection">
+<span id="deflectionfea"></span><h3>Deflection<a class="headerlink" href="#deflection" title="Permalink to this heading"></a></h3>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">config.deflection</span> <span class="pre">=</span> <span class="pre">1</span></code> will cause <code class="docutils literal notranslate"><span class="pre">result.deflection</span></code> to
+hold the average deflection of each cross-section at every <code class="docutils literal notranslate"><span class="pre">blade.ispan</span></code>
+location. For example, access results from the second <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> case as</p>
+<p><code class="docutils literal notranslate"><span class="pre">result.deflection{2}</span></code></p>
+<p>The result is a matrix that has as many rows are <code class="docutils literal notranslate"><span class="pre">blade.ispan</span></code> and 6
+columns. The first three columns are average cross-sectional
+displacements in the <span class="math notranslate nohighlight">\(x_{i}\)</span> system. Columns 1, 2, and, 3,
+correspond to <span class="math notranslate nohighlight">\({\overline{u}}_{1}\)</span>, <span class="math notranslate nohighlight">\({\overline{u}}_{2}\)</span>,
+and <span class="math notranslate nohighlight">\({\overline{u}}_{3}\)</span> respectively. Columns 4, 5, and 6
+correspond to <span class="math notranslate nohighlight">\({\overline{\theta}}_{1}\)</span>,
+<span class="math notranslate nohighlight">\({\overline{\theta}}_{2}\)</span>, and <span class="math notranslate nohighlight">\({\overline{\theta}}_{3}\)</span>,
+respectively.</p>
+</section>
+<section id="failure">
+<span id="failurefea"></span><h3>Failure<a class="headerlink" href="#failure" title="Permalink to this heading"></a></h3>
+<p>If material failure is being considered in an analysis, set
+<code class="docutils literal notranslate"><span class="pre">config.failure</span></code> equal to any one of the entries in <code class="xref std std-numref docutils literal notranslate"><span class="pre">failureCriteriaOptions</span></code>. An
+empty string will skip any material failure analyses.</p>
+<span id="failurecriteriaoptions"></span><table class="colwidths-given docutils align-default" id="id6">
+<caption><span class="caption-text">Supported failure criteria and associated <code class="docutils literal notranslate"><span class="pre">config</span></code> flags.</span><a class="headerlink" href="#id6" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Failure Criterion Type</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">config.failureCriterion</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Maximum Strain</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'EMAX'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Maximum Stress</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'SMAX'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Puck Failure</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'PUCK'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>LaRC03</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'LARC03'</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>LaRC04</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'LARC04'</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Tsai-Wu</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'TWSI'</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Depending on the criterion used, it is necessary for the <code class="docutils literal notranslate"><span class="pre">materialDef</span></code> to
+have the appropriate material properties defined in <code class="docutils literal notranslate"><span class="pre">blade.materials</span></code>.</p>
+<p>Since each element section is a layered composite, by default,
+<code class="docutils literal notranslate"><span class="pre">result.failure</span></code> will hold the maximum failure index of all elements and
+every layer.</p>
+</section>
+<section id="global-buckling">
+<span id="globalbucklingfea"></span><h3>Global Buckling<a class="headerlink" href="#global-buckling" title="Permalink to this heading"></a></h3>
+<p>A nonzero number for <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.globalBuckling</span></code> will call
+ANSYS to run a buckling analysis. The buckling analysis can either be
+linear or nonlinear. The nonlinear case will be activated by creating
+<code class="docutils literal notranslate"><span class="pre">config.analysisFlags.imperfection</span></code> and setting it to a nonempty
+number array. ANSYS will then be directed to perform an eigenvalue
+buckling analysis. The load which results in nonconvergence will be
+reported as the nonlinear buckling load factor.</p>
+<p>For the nonlinear case, it is necessary to introduce a synthetic
+imperfection for the analysis to provide reasonable results. The
+imperfection introduced is of the geometric kind and corresponds to the
+buckled mode shapes obtained in the eigenvalue buckling analysis.
+Therefore, an eigenvalue buckling analysis precedes the nonlinear static
+analyses. Currently, for nonlinear buckling, it is assumed here that
+buckling will be in the aeroshell (not the web). Thus, each mode shape
+is scaled such that the maximum displacement in the <span class="math notranslate nohighlight">\(x_{2}\)</span>
+direction (flapwise) is equal to config.analysisFlags.imperfection
+in value. Robustness could be increased if the script can select whether
+to find the maximum displacement in the <span class="math notranslate nohighlight">\(x_{2}\)</span> (buckling in
+aeroshell) or <span class="math notranslate nohighlight">\(x_{1}\)</span> direction (buckling in the webs).</p>
+<p>Finally, it is supposed that the mode shape corresponding to the lowest
+load factor from the eigenvalue analysis will not always cause the
+lowest load factor from the nonlinear case. Thus, a nonlinear static
+analysis for each requested mode is performed and the minimum load
+factor is reported.</p>
+</section>
+<section id="local-buckling">
+<span id="localbucklingfea"></span><h3>Local Buckling<a class="headerlink" href="#local-buckling" title="Permalink to this heading"></a></h3>
+<p>Sandwich panels typically consist of a relatively soft core layer
+<em>sandwiched</em> between two faces sheets. For the parts of blade that are
+described as sandwhich panels, local instabilities can be checked in
+NuMAD with a strip theory model from Ref. [2]. In particular, this check
+examines if the outermost facesheet wrinkles under compression.</p>
+<p>To activate this check, set <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.localBuckling</span></code>
+equal to the name of the core material in your BladeDef as a string
+(e.g. <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.localBuckling</span> <span class="pre">=</span> <span class="pre">'Balsa'</span></code>). Otherwise an
+empty string will skip the analysis. Currently, all ply angles are
+limited to zero (i.e. no off-axis layups).</p>
+</section>
+<section id="fatigue">
+<span id="fatiguefea"></span><h3>Fatigue<a class="headerlink" href="#fatigue" title="Permalink to this heading"></a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">config.fatigue</span></code> is a nonempty string, then ANSYS will be
+directed to write model data and field output to text files for fatigue
+post-processing in MATLAB. Namely, <code class="docutils literal notranslate"><span class="pre">Elements.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">Materials.txt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Strengths.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">Sections.txt</span></code>, and plate strain measures. The results from running
+the fatigue post-processor will be a <span class="math notranslate nohighlight">\(1 \times n_{\theta}/2\)</span> cell
+array, where <span class="math notranslate nohighlight">\(n_{\theta}\)</span> is the number of cells in the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>
+variable (where each cell holds the loads for a single analysis
+direction). This is because stress results from two orthogonal loading
+directions are utilized for a single evaluation of fatigue damage (e.g.
+one fatigue evaluation is the combined effect of flap loads and edge
+loads). Furthermore, it assumes that the <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> is arranged in
+ascending order for the loads direction angle. This is already accounted
+for if <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code> was constructed from <code class="docutils literal notranslate"><span class="pre">FastLoads4ansys.m</span></code>.
+Make sure to set <code class="docutils literal notranslate"><span class="pre">fatigueCriterion</span></code> to  Shifted Goodman
+in the <code class="docutils literal notranslate"><span class="pre">IECInput.inp</span></code> file.</p>
+<p>Fatigue damage is computed at the root and at the locations of the FAST
+gages. In this document, these will be referred to as the <em>spanwise
+fatigue locations</em>. Fatigue results are restricted to the spanwise
+fatigue locations because the fatigue analysis relies on Markov matrices
+and these matrices need cycle counts from time-history data. The time
+histories that are available from FAST are at the root and the FAST
+gages.</p>
+<p>The end-user has the ability to either obtain a single fatigue damage
+fraction at each spanwise fatigue location or several fatigue damage
+fractions each corresponding to a region in <code class="xref std std-numref docutils literal notranslate"><span class="pre">bladeKeyPoints</span></code>. The former is
+accomplished by setting <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.fatigue</span> <span class="pre">=</span> <span class="pre">[&quot;ALL&quot;]</span></code>.
+The latter is accomplished by setting <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.fatigue</span></code>
+to a MATLAB string array where any and all Region Names in <code class="xref std std-numref docutils literal notranslate"><span class="pre">regionNames</span></code> are allowed.</p>
+<span id="regionnames"></span><table class="colwidths-given docutils align-default" id="id7">
+<caption><span class="caption-text">Region Names to specify in config for fatigue analyses.</span><a class="headerlink" href="#id7" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Region Name</strong></p></th>
+<th class="head"><p><strong>Region Description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_TE_FLAT&quot;</span></code></p></td>
+<td><p>High pressure trailing edge flatback</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_TE_REINF&quot;</span></code></p></td>
+<td><p>High pressure trailing edge reinforcement</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_TE_PANEL&quot;</span></code></p></td>
+<td><p>High pressure trailing edge panel</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_SPAR&quot;</span></code></p></td>
+<td><p>High pressure spar cap</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_LE_PANEL&quot;</span></code></p></td>
+<td><p>High pressure leading edge panel</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;HP_LE&quot;</span></code></p></td>
+<td><p>High pressure leading edge</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_LE&quot;</span></code></p></td>
+<td><p>Low pressure leading edge</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_LE_PANEL&quot;</span></code></p></td>
+<td><p>Low pressure leading edge panel</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_SPAR&quot;</span></code></p></td>
+<td><p>Low pressure spar cap</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_TE_PANEL&quot;</span></code></p></td>
+<td><p>Low pressure trailing edge panel</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_TE_REINF&quot;</span></code></p></td>
+<td><p>Low pressure trailing edge reinforcement</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;LP_TE_FLAT&quot;</span></code></p></td>
+<td><p>Low pressure trailing edge flatback</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;WEBS&quot;</span></code></p></td>
+<td><p>All webs</p></td>
+</tr>
+</tbody>
+</table>
+<p>For example, suppose that the fatigue damage was only desired at the
+spar caps and the reinforcement locations one would set</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">config</span><span class="p">.</span><span class="n">analysisFlags</span><span class="p">.</span><span class="n">fatigue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;HP_TE_FLAT&quot;</span><span class="p">,</span><span class="s">&quot;HP_TE_REINF&quot;</span><span class="p">,</span><span class="s">&quot;HP_SPAR&quot;</span><span class="p">,</span><span class="s">&quot;HP_LE&quot;</span><span class="p">,</span><span class="s">&quot;LP_LE&quot;</span><span class="p">,</span><span class="s">&quot;LP_SPAR&quot;</span><span class="p">,</span><span class="s">&quot;LP_TE_REINF&quot;</span><span class="p">,</span><span class="s">&quot;LP_TE_FLAT&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">&quot;ALL&quot;</span></code> is included along with other regions, the other regions are
+ignored and the analysis carries forth as it would for <code class="docutils literal notranslate"><span class="pre">&quot;ALL&quot;</span></code>.</p>
+<p>The result will be a <span class="math notranslate nohighlight">\(1 \times n_{\theta}/2\)</span> cell array. Each cell
+will hold a struct with the following field names: <code class="docutils literal notranslate"><span class="pre">fatigueDamage</span></code>,
+<code class="docutils literal notranslate"><span class="pre">criticalElement</span></code>, <code class="docutils literal notranslate"><span class="pre">criticalLayerNo</span></code>, and <code class="docutils literal notranslate"><span class="pre">criticalMatNo</span></code>. Each of these field
+names allow access to a <span class="math notranslate nohighlight">\(n_{\text{region}} \times 10\)</span> matrix where
+<span class="math notranslate nohighlight">\(n_{\text{region}}\)</span> is the length of
+<code class="docutils literal notranslate"><span class="pre">config.analysisFlags.fatigue</span></code>. The results are organized such that
+the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> row number corresponds to fatigue damage
+results of the <span class="math notranslate nohighlight">\(i_{\text{th}}\)</span> Region Name from
+<code class="docutils literal notranslate"><span class="pre">config.analysisFlags.fatigue</span></code>. The columns correspond to the
+fatigue damage spanwise locations where column 1 is the results at the
+root. Subsequent columns correspond to successively farther gage
+locations.</p>
+<p>The results from the first fatigue evaluation can visualized as shown in
+<code class="xref std std-numref docutils literal notranslate"><span class="pre">fatigueDamageFractionExample</span></code>.</p>
+<figure class="align-default" id="id8">
+<span id="fatiguedamagefractionexample"></span><a class="reference internal image-reference" href="../_images/fatigueDamageFractionExample.bmp"><img alt="Diagram Description automatically generated" src="../_images/fatigueDamageFractionExample.bmp" style="width: 4.17467in; height: 3.131in;" /></a>
+<figcaption>
+<p><span class="caption-text">Fatigue damage fraction visualization.</span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="local-fields">
+<span id="localfieldsfea"></span><h3>Local Fields<a class="headerlink" href="#local-fields" title="Permalink to this heading"></a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">config.analysisFlags.localFeilds</span></code> is activated, then the plate
+strains and curvatures for every element will be written to
+plateStrains-all-1.txt.</p>
+<p>After mainAnsysAnalysis completes execution, access the local
+fields with</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">myresult</span><span class="p">=</span><span class="n">extractFieldsThruThickness</span><span class="p">(</span><span class="s">&#39;plateStrains-all-1.txt&#39;</span><span class="p">,</span><span class="n">meshData</span><span class="p">,</span><span class="n">blade</span><span class="p">.</span><span class="n">materials</span><span class="p">,</span><span class="n">blade</span><span class="p">.</span><span class="n">stacks</span><span class="p">,</span><span class="n">blade</span><span class="p">.</span><span class="n">swstacks</span><span class="p">,</span><span class="n">elNo</span><span class="p">,</span><span class="n">coordSys</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">elNo</span></code> is an scalar or array of element numbers for
+which to extract the local fields. Set <code class="docutils literal notranslate"><span class="pre">coordSys='local'</span></code> to obtain
+results in the local layer coordinate system or set <code class="docutils literal notranslate"><span class="pre">coordSys='global'</span></code> to
+obtain results in the element coordinate system.</p>
+<p>For example if one sets <code class="docutils literal notranslate"><span class="pre">elNo=[1950,2558]</span></code> then, <code class="docutils literal notranslate"><span class="pre">myresult</span></code> is a struct with
+two fields:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">myresult</span><span class="w"></span>
+<span class="go">         element1950: [1x1 struct]</span>
+<span class="go">         element2558: [1x1 struct]</span>
+</pre></div>
+</div>
+<p>Looking at the first struct shows:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">myresult</span><span class="p">.</span><span class="n">element1950</span><span class="w"></span>
+<span class="go">     x3: [8x1 double]</span>
+<span class="go">     eps11: [8x1 double]</span>
+<span class="go">     eps22: [8x1 double]</span>
+<span class="go">     eps33: [8x1 double]</span>
+<span class="go">     eps23: [8x1 double]</span>
+<span class="go">     eps13: [8x1 double]</span>
+<span class="go">     eps12: [8x1 double]</span>
+<span class="go">     sig11: [8x1 double]</span>
+<span class="go">     sig22: [8x1 double]</span>
+<span class="go">     sig12: [8x1 double]</span>
+<span class="go">     matNumber: [8x1 double]</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">x3</span></code> is the thickness coordinate, <code class="docutils literal notranslate"><span class="pre">eps</span></code> are the strains and sig are the
+stresses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">x3</span></code> value that is zero corresponds to the reference surface in the shell model.</p>
+</div>
+<p>In this example the shell offset in ANSYS was set to <code class="docutils literal notranslate"><span class="pre">BOT</span></code> so the zero appears the end:</p>
+<figure class="align-default" id="id9">
+<span id="localfieldsdataexplanationfigure"></span><a class="reference internal image-reference" href="../_images/localFieldsDataExplanationFigure.png"><img alt="../_images/localFieldsDataExplanationFigure.png" src="../_images/localFieldsDataExplanationFigure.png" style="width: 5.03004in; height: 2.30597in;" /></a>
+<figcaption>
+<p><span class="caption-text">Explanation of how data for local fields is ordered.</span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>A plotting utility has been made to visualize the local fields. This can
+be achieved for example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">scaleFactor</span><span class="p">=</span><span class="mf">1e6</span><span class="p">;</span><span class="w"> </span><span class="c">%Used to plot stress in MPa and strain in microstrain</span><span class="w"></span>
+<span class="nb">close</span><span class="w"> </span><span class="nb">all</span><span class="p">;</span><span class="w"></span>
+<span class="n">figureNumbers</span><span class="p">=[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="n">myYlabel</span><span class="p">=</span><span class="s">&#39;$y_3$ [mm]&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">plotLocalFields</span><span class="p">(</span><span class="n">figureNumbers</span><span class="p">,</span><span class="n">myYlabel</span><span class="p">,</span><span class="n">myresult</span><span class="p">.</span><span class="n">element1950</span><span class="p">,</span><span class="n">scaleFactor</span><span class="p">,</span><span class="s">&#39;k&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">plotLocalFields</span><span class="p">(</span><span class="n">figureNumbers</span><span class="p">,</span><span class="n">myYlabel</span><span class="p">,</span><span class="n">myresult</span><span class="p">.</span><span class="n">element2558</span><span class="p">,</span><span class="n">scaleFactor</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="nb">legend</span><span class="p">(</span><span class="s">&#39;LE Reinf. Element&#39;</span><span class="p">,</span><span class="s">&#39;Spar Cap element&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<figure class="align-default" id="id10">
+<span id="localfieldsplotexample"></span><a class="reference internal image-reference" href="../_images/localFieldsPlotExample.png"><img alt="../_images/localFieldsPlotExample.png" src="../_images/localFieldsPlotExample.png" style="width: 6.5in; height: 2.98472in;" /></a>
+<figcaption>
+<p><span class="caption-text">Local fields example plots.</span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="resultant-forces-and-moments">
+<span id="resultantsfea"></span><h3>Resultant Forces and Moments<a class="headerlink" href="#resultant-forces-and-moments" title="Permalink to this heading"></a></h3>
+<p>The resultant forces and moments due to stresses on cross-sections along
+the span can be obtained by activating
+<code class="docutils literal notranslate"><span class="pre">config.analysisFlags.resultantVSspan</span></code>. <code class="docutils literal notranslate"><span class="pre">result.</span> <span class="pre">resultantVSspan{i}</span></code>
+will yield a <span class="math notranslate nohighlight">\(n \times 7\)</span> matrix, where <span class="math notranslate nohighlight">\(n\)</span> is approximately
+equal to the blade length divided by blade.mesh. The first column is the
+distance along <span class="math notranslate nohighlight">\(x_{3}\)</span> that locates the cross-section. The next
+three columns correspond to resultant forces in the <span class="math notranslate nohighlight">\(x_{1}\)</span>,
+<span class="math notranslate nohighlight">\(x_{2}\)</span>, and <span class="math notranslate nohighlight">\(x_{3}\)</span> directions (in that order). The next
+three columns correspond to resultant moments about in the
+<span class="math notranslate nohighlight">\(x_{1}\)</span>, <span class="math notranslate nohighlight">\(x_{2}\)</span>, and <span class="math notranslate nohighlight">\(x_{3}\)</span> directions (in that
+order). For example, access results such as</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">result</span><span class="p">.</span><span class="n">resultantVSspan</span><span class="p">{</span><span class="nb">i</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where i is the i<sup>th</sup> load case in <code class="docutils literal notranslate"><span class="pre">loadsTable</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="aero_sim.html" class="btn btn-neutral float-left" title="Aeroelastic Simulation and the runIEC Function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="optimization.html" class="btn btn-neutral float-right" title="Optimization and Analysis Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

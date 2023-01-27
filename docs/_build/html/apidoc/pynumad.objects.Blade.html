@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blade Object &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Component Object" href="pynumad.objects.Component.html" />
+    <link rel="prev" title="Airfoil Object" href="pynumad.objects.Airfoil.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pynumad.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pynumad.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pynumad.objects.html">pynumad.objects module</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pynumad.objects.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.utils.html">pynumad.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.io.html">pynumad.io module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="pynumad.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pynumad.objects.html">pynumad.objects module</a></li>
+      <li class="breadcrumb-item active">Blade Object</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/pynumad.objects.Blade.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pynumad.objects.Blade">
+<span id="blade-object"></span><h1>Blade Object<a class="headerlink" href="#module-pynumad.objects.Blade" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynumad.objects.Blade.</span></span><span class="sig-name descname"><span class="pre">Blade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_afs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>BladeDef A class definition for wind &amp; water turbine blades.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> (<em>string</em>) – </p></li>
+<li><p><strong>write_afs</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.aerocenter">
+<span class="sig-name descname"><span class="pre">aerocenter</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.aerocenter" title="Permalink to this definition"></a></dt>
+<dd><p>Aerodynamic center of airfoil (used only by NuMAD-&gt;FAST)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.chord">
+<span class="sig-name descname"><span class="pre">chord</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.chord" title="Permalink to this definition"></a></dt>
+<dd><p>Chord distribution [m]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.chordoffset">
+<span class="sig-name descname"><span class="pre">chordoffset</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.chordoffset" title="Permalink to this definition"></a></dt>
+<dd><p>Chordwise offset (in addition to natural offset)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.components">
+<span class="sig-name descname"><span class="pre">components</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.components" title="Permalink to this definition"></a></dt>
+<dd><p>Blade components such as spar, panels, etc., refer to <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.degreestwist">
+<span class="sig-name descname"><span class="pre">degreestwist</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.degreestwist" title="Permalink to this definition"></a></dt>
+<dd><p>Twist distribution [degrees]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.ispan">
+<span class="sig-name descname"><span class="pre">ispan</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.ispan" title="Permalink to this definition"></a></dt>
+<dd><p>Spanwise locations of interpolated output</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.leband">
+<span class="sig-name descname"><span class="pre">leband</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.leband" title="Permalink to this definition"></a></dt>
+<dd><p>Location of keypoint a</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.materials">
+<span class="sig-name descname"><span class="pre">materials</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.materials" title="Permalink to this definition"></a></dt>
+<dd><p>Material properties, refer to <code class="docutils literal notranslate"><span class="pre">MaterialDef</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.mesh">
+<span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.mesh" title="Permalink to this definition"></a></dt>
+<dd><p>Approximate element edge size for FE model [m]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.percentthick">
+<span class="sig-name descname"><span class="pre">percentthick</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.percentthick" title="Permalink to this definition"></a></dt>
+<dd><p>Percent thickness of airfoil [%]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.prebend">
+<span class="sig-name descname"><span class="pre">prebend</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.prebend" title="Permalink to this definition"></a></dt>
+<dd><p>Blade prebend, reference axis location along x2 [m]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.span">
+<span class="sig-name descname"><span class="pre">span</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.span" title="Permalink to this definition"></a></dt>
+<dd><p>Spanwise location of distributed properties [m]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.sparcapoffset">
+<span class="sig-name descname"><span class="pre">sparcapoffset</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.sparcapoffset" title="Permalink to this definition"></a></dt>
+<dd><p>(Does Nothing)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.sparcapwidth">
+<span class="sig-name descname"><span class="pre">sparcapwidth</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.sparcapwidth" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Locations of keypoints b &amp; c, defines distance</p>
+</div></blockquote>
+<p>between keypoints b &amp; c [mm]. First entry is the HP spar cap.
+Second entry is the LP spar cap</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.stations">
+<span class="sig-name descname"><span class="pre">stations</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.stations" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Blade Stations, define the camber and thickness along the blade,</p>
+</div></blockquote>
+<p>refer to <code class="docutils literal notranslate"><span class="pre">StationDef</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.sweep">
+<span class="sig-name descname"><span class="pre">sweep</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.sweep" title="Permalink to this definition"></a></dt>
+<dd><p>Blade Sweep, Reference axis location along x1 [m]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.self.teband">
+<span class="sig-prename descclassname"><span class="pre">self.</span></span><span class="sig-name descname"><span class="pre">teband</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.self.teband" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.idegreestwist">
+<span class="sig-name descname"><span class="pre">idegreestwist</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.idegreestwist" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated twist</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.ichord">
+<span class="sig-name descname"><span class="pre">ichord</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.ichord" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated chord</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.ipercentthick">
+<span class="sig-name descname"><span class="pre">ipercentthick</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.ipercentthick" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated thickness</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">self.ic</span> <span class="pre">=</span> <span class="pre">array</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">self.icamber</span> <span class="pre">=</span> <span class="pre">array</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">self.ithickness</span> <span class="pre">=</span> <span class="pre">array</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.ichordoffset">
+<span class="sig-name descname"><span class="pre">ichordoffset</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.ichordoffset" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.iaerocenter">
+<span class="sig-name descname"><span class="pre">iaerocenter</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.iaerocenter" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated aerocenter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.isweep">
+<span class="sig-name descname"><span class="pre">isweep</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.isweep" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated sweep</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.iprebend">
+<span class="sig-name descname"><span class="pre">iprebend</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.iprebend" title="Permalink to this definition"></a></dt>
+<dd><p>interpolated prebend</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.xoffset">
+<span class="sig-name descname"><span class="pre">xoffset</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.xoffset" title="Permalink to this definition"></a></dt>
+<dd><p>natural offset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.profiles">
+<span class="sig-name descname"><span class="pre">profiles</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.profiles" title="Permalink to this definition"></a></dt>
+<dd><p>normalized airfoil profiles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.geometry" title="Permalink to this definition"></a></dt>
+<dd><p>actual x,y,z geometry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.arclength">
+<span class="sig-name descname"><span class="pre">arclength</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.arclength" title="Permalink to this definition"></a></dt>
+<dd><p>surface distance from L.E.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.cpos">
+<span class="sig-name descname"><span class="pre">cpos</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.cpos" title="Permalink to this definition"></a></dt>
+<dd><p>chordwise position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.LEindex">
+<span class="sig-name descname"><span class="pre">LEindex</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.LEindex" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.HParcx0">
+<span class="sig-name descname"><span class="pre">HParcx0</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.HParcx0" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.LParcx0">
+<span class="sig-name descname"><span class="pre">LParcx0</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.LParcx0" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.keylabels">
+<span class="sig-name descname"><span class="pre">keylabels</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.keylabels" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.keypoints">
+<span class="sig-name descname"><span class="pre">keypoints</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.keypoints" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.keyarcs">
+<span class="sig-name descname"><span class="pre">keyarcs</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.keyarcs" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.keycpos">
+<span class="sig-name descname"><span class="pre">keycpos</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.keycpos" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.keyareas">
+<span class="sig-name descname"><span class="pre">keyareas</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.keyareas" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.LEbond">
+<span class="sig-name descname"><span class="pre">LEbond</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.LEbond" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.TEbond">
+<span class="sig-name descname"><span class="pre">TEbond</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.TEbond" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webindices">
+<span class="sig-name descname"><span class="pre">webindices</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webindices" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webpoints">
+<span class="sig-name descname"><span class="pre">webpoints</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webpoints" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webarcs">
+<span class="sig-name descname"><span class="pre">webarcs</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webarcs" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webcpos">
+<span class="sig-name descname"><span class="pre">webcpos</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webcpos" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webareas">
+<span class="sig-name descname"><span class="pre">webareas</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webareas" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webwidth">
+<span class="sig-name descname"><span class="pre">webwidth</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webwidth" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.webbonds">
+<span class="sig-name descname"><span class="pre">webbonds</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.webbonds" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.bom">
+<span class="sig-name descname"><span class="pre">bom</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.bom" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.bomIndices">
+<span class="sig-name descname"><span class="pre">bomIndices</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.bomIndices" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.stacks">
+<span class="sig-name descname"><span class="pre">stacks</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.stacks" title="Permalink to this definition"></a></dt>
+<dd><p>array of StackDef</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.swstacks">
+<span class="sig-name descname"><span class="pre">swstacks</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.swstacks" title="Permalink to this definition"></a></dt>
+<dd><p>contains StackDefs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.matdb">
+<span class="sig-name descname"><span class="pre">matdb</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.matdb" title="Permalink to this definition"></a></dt>
+<dd><p>Composite definition for each region at each station</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.TEtype">
+<span class="sig-name descname"><span class="pre">TEtype</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.TEtype" title="Permalink to this definition"></a></dt>
+<dd><p>trailing edge type; assigned in updateKeypoints</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.shearweb">
+<span class="sig-name descname"><span class="pre">shearweb</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.shearweb" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.bomPlot">
+<span class="sig-name descname"><span class="pre">bomPlot</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.bomPlot" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.hgGeometry">
+<span class="sig-name descname"><span class="pre">hgGeometry</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.hgGeometry" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.hgKeypoints">
+<span class="sig-name descname"><span class="pre">hgKeypoints</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.hgKeypoints" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.job_name">
+<span class="sig-name descname"><span class="pre">job_name</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.job_name" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.paths">
+<span class="sig-name descname"><span class="pre">paths</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.paths" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.ansys">
+<span class="sig-name descname"><span class="pre">ansys</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.ansys" title="Permalink to this definition"></a></dt>
+<dd><p>generate ANSYS settings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.write_airfoils">
+<span class="sig-name descname"><span class="pre">write_airfoils</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.write_airfoils" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade</span> <span class="pre">=</span> <span class="pre">BladeDef();</span></code></p>
+<p>See also <code class="docutils literal notranslate"><span class="pre">BladeDef_to_NuMADfile</span></code>, <code class="docutils literal notranslate"><span class="pre">xlsBlade</span></code>, <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code>,
+<code class="docutils literal notranslate"><span class="pre">StationDef</span></code>, <code class="docutils literal notranslate"><span class="pre">ComponentDef</span></code>, <code class="docutils literal notranslate"><span class="pre">StackDef</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.naturaloffset">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">naturaloffset</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.naturaloffset" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.rotorspin">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rotorspin</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.rotorspin" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.swtwisted">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">swtwisted</span></span><a class="headerlink" href="#pynumad.objects.Blade.Blade.swtwisted" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.read_yaml">
+<span class="sig-name descname"><span class="pre">read_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.read_yaml" title="Permalink to this definition"></a></dt>
+<dd><p>Populate blade attributes with yaml file data</p>
+<p>Extended description of function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – name of yaml file to be read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.read_excel">
+<span class="sig-name descname"><span class="pre">read_excel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.read_excel" title="Permalink to this definition"></a></dt>
+<dd><p>Populate blade attributes with exce; file data</p>
+<p>Extended description of function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – name of excel file to be read</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.addStation">
+<span class="sig-name descname"><span class="pre">addStation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">af</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spanlocation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.addStation" title="Permalink to this definition"></a></dt>
+<dd><p>This method adds a station</p>
+<p>Specifically, the station object is created
+and appended to self.stations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>af</strong> (<em>airfoil</em>) – </p></li>
+<li><p><strong>spanlocation</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p><code class="docutils literal notranslate"><span class="pre">blade.addStation(af,spanlocation)</span></code> where  <code class="docutils literal notranslate"><span class="pre">af</span></code> = airfoil filename
+or <code class="docutils literal notranslate"><span class="pre">AirfoilDef</span></code> object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateBlade">
+<span class="sig-name descname"><span class="pre">updateBlade</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateBlade" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateGeometry">
+<span class="sig-name descname"><span class="pre">updateGeometry</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateGeometry" title="Permalink to this definition"></a></dt>
+<dd><p>This method updates the interpolated blade parameters</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateKeypoints">
+<span class="sig-name descname"><span class="pre">updateKeypoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateKeypoints" title="Permalink to this definition"></a></dt>
+<dd><p>This method updates the keypoints (a,b,c,…) which define the blade
+regions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>None</em></p></li>
+<li><p><em>Example</em> – <code class="docutils literal notranslate"><span class="pre">blade.updateKeypoints</span></code></p></li>
+<li><p><em>find the curves which bound each blade region</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateBOM">
+<span class="sig-name descname"><span class="pre">updateBOM</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateBOM" title="Permalink to this definition"></a></dt>
+<dd><p>This method updates the Bill-of-Materials
+See datatypes.BOM</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>None</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.expandBladeGeometryTEs">
+<span class="sig-name descname"><span class="pre">expandBladeGeometryTEs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.expandBladeGeometryTEs" title="Permalink to this definition"></a></dt>
+<dd><p>TODO: docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.generateBeamModel">
+<span class="sig-name descname"><span class="pre">generateBeamModel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.generateBeamModel" title="Permalink to this definition"></a></dt>
+<dd><p>This method generates blade sectional properties used for
+aeroelastic analyses
+TODO extend docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateAirfoilProfile">
+<span class="sig-name descname"><span class="pre">updateAirfoilProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateAirfoilProfile" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.updateOMLgeometry">
+<span class="sig-name descname"><span class="pre">updateOMLgeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.updateOMLgeometry" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.getShellMesh">
+<span class="sig-name descname"><span class="pre">getShellMesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.getShellMesh" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.generateFEA">
+<span class="sig-name descname"><span class="pre">generateFEA</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.generateFEA" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.getprofileTEtype">
+<span class="sig-name descname"><span class="pre">getprofileTEtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.getprofileTEtype" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.findLayerExtents">
+<span class="sig-name descname"><span class="pre">findLayerExtents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerDist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerN</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.findLayerExtents" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.findRegionExtents">
+<span class="sig-name descname"><span class="pre">findRegionExtents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.findRegionExtents" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Blade.Blade.getTEtype">
+<span class="sig-name descname"><span class="pre">getTEtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Blade.Blade.getTEtype" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>xy</strong> (<em>ndarray</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>tetype</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pynumad.objects.Airfoil.html" class="btn btn-neutral float-left" title="Airfoil Object" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pynumad.objects.Component.html" class="btn btn-neutral float-right" title="Component Object" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
