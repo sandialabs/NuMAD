@@ -18,7 +18,7 @@ jobs:
     - name: Install pynumad
       run: |
         python -m pip install --upgrade pip
-        pip install pynumad --no-index --find-links=.
+        pip install -r requirements.txt
     - name: Test with pytest
       run: |
         pip install --upgrade pytest coverage
