@@ -4,6 +4,7 @@ scipy
 pandas
 matplotlib
 pyyaml
+openpyxl
 
 # Testing
 pytest
