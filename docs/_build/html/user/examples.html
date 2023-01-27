@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running NuMAD" href="running_numad.html" />
+    <link rel="prev" title="Blade Definition" href="blade_definition.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#excel-to-numad-examples">Excel To NuMAD Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#excel-to-object">Excel To Object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#excel-to-gui">Excel To GUI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-aeroelastic-simulations-to-analyze-iec-standard-design-load-cases">Run Aeroelastic Simulations to Analyze IEC-Standard Design Load Cases</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-optimization-to-refine-the-design-of-a-blade-to-a-given-objective">Run Optimization to Refine the Design of a Blade to a Given Objective</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User’s Guide</a></li>
+      <li class="breadcrumb-item active">Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/examples.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples">
+<span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<p>This sections shows how to perform basic operations in a step-by-step manner. Refer to <code class="docutils literal notranslate"><span class="pre">$NuMAD/examples</span></code> for files needed for running each example.</p>
+<section id="excel-to-numad-examples">
+<span id="exceltonumadexamples"></span><h2>Excel To NuMAD Examples<a class="headerlink" href="#excel-to-numad-examples" title="Permalink to this heading"></a></h2>
+<p>NuMAD has the capability to generate blade models from Excel-based input files. This capability is offered for both the GUI and blade object
+modes of operation. While both the GUI and blade object offer excel compatability, the excel input file read by the GUI is not compatable with
+the blade object nor is the blade object excel input file compatable with the GUI at this time. To ease use of the excel capabilities within
+NuMAD 3.0 examples for generating a blade model from excel for the GUI and the blade object are given. It is recommended if the user is going to
+make their own blades using the Excel input-file capability, to use the example files as a base and modify to minimize errors in formatting.</p>
+<section id="excel-to-object">
+<span id="exceltoobject"></span><h3>Excel To Object<a class="headerlink" href="#excel-to-object" title="Permalink to this heading"></a></h3>
+<p>The example files needed to begin generating blade models from excel in the blade object are located in folder <code class="docutils literal notranslate"><span class="pre">examples\ExcelToObject</span></code>. In the folder
+there is an airfoils folder with the necessary airfoils for the example blade, the excel input file <code class="docutils literal notranslate"><span class="pre">Excel2ObjectExample.xlsx</span></code>, and the
+example driver script <code class="docutils literal notranslate"><span class="pre">excel2NumadObject.m</span></code>. Running the driver script will generate a blade object from the excel file, produce an equivalent
+beam model using NuMAD objects built-in ability to call PreComp, and finally generate an ANSYS shell model.</p>
+</section>
+<section id="excel-to-gui">
+<span id="exceltogui"></span><h3>Excel To GUI<a class="headerlink" href="#excel-to-gui" title="Permalink to this heading"></a></h3>
+<p>The example files needed to begin generating blade models from excel in the NuMAD GUI are located in folder <code class="docutils literal notranslate"><span class="pre">examples\ExcelToGUI</span></code>. In the folder
+there is the excel input file <code class="docutils literal notranslate"><span class="pre">Excel2NumadGUIExample.xlsx</span></code> and a bill of materials template (for tracking purposes) <code class="docutils literal notranslate"><span class="pre">BOM_template.xlsx</span></code>.
+To begin generating blade models in the NuMAD GUI from an excel file, first open up the NuMAD GUI with the command <code class="docutils literal notranslate"><span class="pre">numad</span></code>. Next, select
+File -&gt; New Model from the drop down menu. Then, select File -&gt; Save model, this will generate the necessary generic airfoil folder and <code class="docutils literal notranslate"><span class="pre">MatDBsi.txt</span></code>
+files needed. Finally, select File -&gt; XLS-to-NuMAD, and select the excel input file in your case directory.</p>
+</section>
+<section id="run-aeroelastic-simulations-to-analyze-iec-standard-design-load-cases">
+<span id="runiec"></span><h3>Run Aeroelastic Simulations to Analyze IEC-Standard Design Load Cases<a class="headerlink" href="#run-aeroelastic-simulations-to-analyze-iec-standard-design-load-cases" title="Permalink to this heading"></a></h3>
+<p>An example script is included to demonstrate the use of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function, which performs aeroelastic simulations using FAST in order to analyze the performance of a blade design under the IEC-standard design load cases.  The script can be found in the directory <code class="docutils literal notranslate"><span class="pre">examples\runIEC\IECLoadsAnalysis.m</span></code>.  The basic steps performed by the script are as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Set basic user options for the run, including which design load cases to run, whether to run a FAST simulation or use existing output files, and whether to generate loads tables and run an optional ANSYS FEA analysis from the results.</dt><dd><ul>
+<li><p>Include the directory containing the NuMAD source code files in the MATLAB operating environment, and establish the paths for external analysis packages.</p></li>
+<li><p>Load the data from the IEC input file into an IECdef class object.</p></li>
+<li><p>Load the pre-saved blade object for the example blade into the MATLAB workspace.</p></li>
+<li><p>Create a NuMAD input file from the blade object.</p></li>
+<li><p>Execute the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function based on the user options, storing the output structure in IECOutput</p></li>
+<li><p>If the option is selected to run an ANSYS analysis:
+* Create a working ANSYS subdirectory, and copy in the NuMAD input file and the airfoils directory.
+* Generate loads tables from the IECOutput data.
+* Set configuration variables for the ansys deflection, rupture/buckling, and frequency analysis
+* Execute ANSYS analysis and store output.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>The directory <code class="docutils literal notranslate"><span class="pre">examples\runIEC</span></code> also contains various files and folders used in the analysis.  The ‘AeroData’ folder contains aerodynamic data used in the FAST analysis by AeroDyn.  The ‘airfoils’ folder contains airfoil shape profiles for the design.  The ‘init’ folder contains sample input files that are used as templates for the input file creation tools within runIEC.  The ‘out’ folder is the directory where FAST output files are to be stored.</p>
+<p>Alongside the main IECLoadsAnalysis script are an example set of FAST input files defining the turbine structure and simulation parameters.  In addition, an input file defining settings for the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function is included, with the example blade stored as a NuMAD blade object, and a file specifing information for the turbine control system, named <code class="docutils literal notranslate"><span class="pre">pitch.ipt</span></code>.  The IEC input file must be provided by the user any time <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> is executed, but the blade object is really only needed if it is desired to run a subsequent ANSYS analysis.  The user may find it useful to build cased by modifying the given example to become comfortable with the workflow.</p>
+<p>Note that to execute <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> in its full capacity, the user must have FAST, Crunch, TurbSim and IECWind installed as additional packages, and the executable paths must be defined in the <code class="docutils literal notranslate"><span class="pre">addNumadPaths</span></code> script in the main NuMAD directory.  It can happen on occasion that a FAST simulation may terminate prematurely, leaving an output file without the entire requested time history of results.  This is usually due to a numerical aspect such as the turbulence seed that only applies to a given run, and it can cause the execution of Crunch to abort, and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> to fail to run to completion.  Incidents such as this can be dealt with on a case-by-case basis, by either changing the seeds for the turbulent cases or adjusting the range of windspeeds in the IEC input file.</p>
+<p>The main results of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> are stored as <code class="docutils literal notranslate"><span class="pre">IECOutput</span></code> in the form of a MATLAB structure in the provided example, and also written in spreadsheet format as .csv files.  Thes results, and the subsequently generated loads tables can be used to assess performance metrics such as maximum tip deflection and failure for a blade, and can be used in optimizations, as detailed in the following example.</p>
+</section>
+<section id="run-optimization-to-refine-the-design-of-a-blade-to-a-given-objective">
+<span id="optimization"></span><h3>Run Optimization to Refine the Design of a Blade to a Given Objective<a class="headerlink" href="#run-optimization-to-refine-the-design-of-a-blade-to-a-given-objective" title="Permalink to this heading"></a></h3>
+<p>An example script is included which demonstrates the basic process of setting up and running a blade structural design optimization problem within the NuMAD framework.  It is located in <code class="docutils literal notranslate"><span class="pre">examples\optimization\optimizationExample.m</span></code>, alongside all resources needed to run it.  Optimization in general is a very open-ended process and the provided example is by no means a comprehensive demonstration containing every functionality or method that could be needed.  It should, however, provide a solid starting point and guide for integrating the analysis functions within NuMAD into an optimization process.  The main script walks through the following steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Set the basic user settings for the optimization, including directory of starting model data, and parameters for how to run the optimization.</dt><dd><ul>
+<li><p>Set configuration variables for the ansys deflection, rupture, buckling, fatigue and frequency analysis.</p></li>
+<li><p>Include the directory containing the NuMAD source code files in the MATLAB operating environment, and establish the paths for external analysis packages.</p></li>
+<li><p>Set up parallel working directories as appropriate.</p></li>
+<li><p>Read the .yaml file defining the blade design and geometry into a NuMAD blade object, and read the IEC input file.</p></li>
+<li><p>Load the pre-saved tables of applied loads into the MATLAB workspace.</p></li>
+<li><p>Execute the optimization based on the method defined in user settings.  Included options are gradient based optimization (<code class="docutils literal notranslate"><span class="pre">OptAl='gradient'</span></code>), particle swarm (<code class="docutils literal notranslate"><span class="pre">OptAl='particleswarm'</span></code>) or evaluate objective with no optimization (<code class="docutils literal notranslate"><span class="pre">OptAl='objective'</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Note that included are only two options for optimization algorithms, but MATLAB has many more which can be invoked similarly to those in the example.  See MATLAB documentation for more details.  For any optimization, the user must define an objective function which calculates and returns the value to be optimized.  In the provided example the objective function is the mass of the blade, with penalty constraints on maximum deflection, maximum material failure index, minumum buckling load factor, maximum fatigue damage, and natural flap frequency.  The design variables are defined to be the thicknesses of the individual blade components along the span.  The objective function is defined in <code class="docutils literal notranslate"><span class="pre">examples\optimization\objectiveExample.m</span></code>, and walks through the following steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>Determine the current parallel working task and change to the appropriate directory.</dt><dd><ul>
+<li><p>Modify the thicknesses of the blade components based on the values in the input design variable vector.</p></li>
+<li><p>Create an ANSYS shell model of the blade.</p></li>
+<li><p>Calulate the penalties due to the constraints using NuMAD’s ANSYS analysis functions, storing the sum in the objective variable.</p></li>
+<li><p>Add the total mass of the blade to the objective value.</p></li>
+<li><p>Write results and key quantities to objective history file, and return the objective value to the optimizer.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>The example script has 2 companion folders alongside it.  The <code class="docutils literal notranslate"><span class="pre">airfoils</span></code> folder contains a collection of airfoil profiles used by the model.  The <code class="docutils literal notranslate"><span class="pre">exampleBlade</span></code> folder contains data defining the given example model, including a .yaml file with all the blade geometry and material properties, MATLAB data files defining the applied loads to be considered, an IEC input file and a MATLAB data file containing the rain-cycle-counting data pertaining to fatigue analysis.  These can be generated from the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function as demonstrated in the previous example.  After executing an optimization, if it runs to full completion, the <code class="docutils literal notranslate"><span class="pre">examples\optimization</span></code> directory will have a file containing a comprehensive list of the outputs at every design state encountered in the optimization process, named <code class="docutils literal notranslate"><span class="pre">completeObjectiveHistory.txt</span></code>, as well as a file containing the final optimized values of the design variables, named <code class="docutils literal notranslate"><span class="pre">FinalDVar.txt</span></code>.  The user has free range to modify this example as they will, to suit their individual needs.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="blade_definition.html" class="btn btn-neutral float-left" title="Blade Definition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="running_numad.html" class="btn btn-neutral float-right" title="Running NuMAD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

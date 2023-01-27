@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aeroelastic Simulation and the runIEC Function &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Finite Element Analysis Operations" href="fea.html" />
+    <link rel="prev" title="Running NuMAD" href="running_numad.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#use-and-functionality-of-runiec">Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recent-updates-to-runiec-functionality">Recent Updates to runIEC Functionality</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#methodology-for-analysis-of-design-load-case-1-1">Methodology for Analysis of Design Load Case 1.1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tools-for-processing-openfast-input-files">Tools for Processing OpenFAST Input Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User’s Guide</a></li>
+      <li class="breadcrumb-item active">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/aero_sim.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="aeroelastic-simulation-and-the-runiec-function">
+<span id="aeroelasticsimruniec"></span><h1>Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function<a class="headerlink" href="#aeroelastic-simulation-and-the-runiec-function" title="Permalink to this heading"></a></h1>
+<p>A critical step in the design and optimization of any blade is
+performing aeroelastic analysis to predict the behavior and response of
+the blade under a range of expected wind and loading conditions. NuMAD’s
+capability for performing this analysis is contained in the
+<code class="docutils literal notranslate"><span class="pre">source\utilities\runIEC</span></code> directory of the standard design codes
+package. In the following sections the basic capability and
+functionality of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> package will be described, followed by
+recent updates related to its operation from previous versions.</p>
+<section id="use-and-functionality-of-runiec">
+<span id="useandfunctofruniec"></span><h2>Use and Functionality of <code class="docutils literal notranslate"><span class="pre">runIEC</span></code><a class="headerlink" href="#use-and-functionality-of-runiec" title="Permalink to this heading"></a></h2>
+<p>The main function called to perform aeroelastic analysis of a NuMAD
+blade is <code class="docutils literal notranslate"><span class="pre">source\utilities\runIEC\runIEC.m.</span></code></p>
+<p>This function calls on the accompanying tools in the directory to
+process and output critical results, either by first running the
+aeroelastic analysis for a set of requested simulation cases or by
+processing a pre-existing set of output files from an analysis that was
+previously run. The aeroelastic analysis is performed by calling FAST v7
+software developed by the National Renewable Energy Laboratory
+specifically for the analysis of wind turbines. FAST is a time-domain
+solver, which output numerous variables defining the state of a wind
+turbine at each time step for every simulation.</p>
+<p>The call to <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> takes three parameters, representing the
+requested set of design load cases, a flag indicating whether to run the
+aeroelastic analysis (as opposed to just processing an existing output
+set) and an IEC input structure in the form of an <code class="docutils literal notranslate"><span class="pre">IECDef</span></code> object, as shown below:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">(</span><span class="n">DLC</span><span class="p">,</span><span class="n">simflag</span><span class="p">,</span><span class="n">IEC</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">simflag</span></code> input should be set to 1 for yes and 0
+for no.  The <code class="docutils literal notranslate"><span class="pre">IEC</span></code> input can be generated with the IECDef constructor,</p>
+<blockquote>
+<div><p>with a provided input file containing the necessary data.  The design load
+case list <code class="docutils literal notranslate"><span class="pre">DLC</span></code> should be a cell array of strings indicating the load
+cases desired. The supported load cases are denoted by their codes in the
+IEC standard as described below:</p>
+</div></blockquote>
+<p><strong>1.1:</strong> Normal operating conditions with the turbine running and
+connected to electric load. Simulations run with normal atmospheric
+turbulence model, and 50-year-maximum loads are extrapolated based on
+peak values in simulation results. Simulations are run for the range of
+wind speeds and the number turbulence seeds specified in the variables
+<code class="docutils literal notranslate"><span class="pre">windSpeeds</span></code> and <code class="docutils literal notranslate"><span class="pre">numSeeds</span></code> in the IEC input file.</p>
+<p><strong>1.2:</strong> Normal operating conditions with the turbine running and
+connected to electric load. Simulations run with normal atmospheric
+turbulence model, and fatigue damage is predicted based on cycle
+counting of local peak values of loads in the simulation results.
+Simulations are run for the range of wind speeds and the number
+turbulence seeds specified in the variables <code class="docutils literal notranslate"><span class="pre">windSpeeds</span></code> and
+<code class="docutils literal notranslate"><span class="pre">numSeeds</span></code> in the IEC input file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>DLC’s 1.1 and 1.2 call for the same simulation conditions, and if
+both are requested a single set of results is generated for both cases.</p>
+</div>
+<p><strong>1.3:</strong> Normal operating conditions with the turbine running and
+connected to electric load. Simulations run with extreme turbulence
+model, and maximum loads taken directly from simulation results.
+Simulations are run for the range of wind speeds and the number
+turbulence seeds specified in the variables <code class="docutils literal notranslate"><span class="pre">windSpeeds</span></code> and
+<code class="docutils literal notranslate"><span class="pre">numSeeds</span></code> in the IEC input file.</p>
+<p><strong>1.4:</strong> Transient modeling of an extreme coherent gust with wind
+direction change with the turbine running and connected to electric
+load, and maximum loads taken directly from simulation results.</p>
+<p><strong>1.5:</strong> Transient modeling of extreme wind shear with the turbine
+running and connected to electric load, and maximum loads taken directly
+from simulation results.</p>
+<p><strong>5.1:</strong> Modeling of emergency shutdown, maximum loads taken directly
+from simulation results.</p>
+<p><strong>6.1:</strong> Modeling of extreme wind speed with the turbine in a parked or
+idle state. Simulations run with extreme turbulence model, maximum loads
+taken directly from simulation results.</p>
+<p><strong>6.3:</strong> Modeling of extreme wind speed and extreme yaw misalignment
+with the turbine in a parked or idle state. Simulations run with extreme
+turbulence model, maximum loads taken directly from simulation results.</p>
+<p>As an example, the following call would run the FAST simulation for
+cases 1.1, 1.3, and 6.1:</p>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">runIEC</span><span class="p">({</span><span class="s">&#39;1.1&#39;</span><span class="p">,</span><span class="s">&#39;1.3&#39;</span><span class="p">,</span><span class="s">&#39;6.1&#39;</span><span class="p">},</span><span class="mi">1</span><span class="p">,</span><span class="n">IEC</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The output of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function is a data structure reporting a
+compilation of critical values from the results of all the simulations
+run. These are mainly extreme values of structural quantities such as
+reaction forces, reaction moments, deflections and strains at certain
+points along the span of each blade. The specific simulation run and
+time step at which these extreme values occur are also reported. In
+addition, <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> can also extract statistical information about
+local peak values of these same structural quantities throughout all the
+time histories for the purpose of predicting fatigue and long-term
+extrapolated maximum values for DLC cases 1.1 and 1.2. The data in the
+output structure as indicated in the example above is also written to a
+spreadsheet file in the main blade model data directory titled
+<code class="docutils literal notranslate"><span class="pre">IECDLC_Results.csv</span></code> upon completion.</p>
+<p>The runIEC function should be called from the main model data directory
+of the blade to be analyzed. This directory must contain the necessary
+FAST input files and airfoil data defining the model, a FAST output
+directory and a NuMAD working directory.  For more information, see the</p>
+<blockquote>
+<div><p>runIEC example in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory.</p>
+</div></blockquote>
+</section>
+<section id="recent-updates-to-runiec-functionality">
+<span id="recentupdatesruniec"></span><h2>Recent Updates to runIEC Functionality<a class="headerlink" href="#recent-updates-to-runiec-functionality" title="Permalink to this heading"></a></h2>
+<p>Two main updates have been made recently affecting the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code>
+process: 1) A change in the method of obtaining 50-year extrapolated
+maximum values in the analysis of DLC case 1.1, and 2) An introduction
+of tools for reading input files for OpenFAST. These changes are
+described in the following two sections.</p>
+<section id="methodology-for-analysis-of-design-load-case-1-1">
+<span id="methodsfordlc1p1"></span><h3>Methodology for Analysis of Design Load Case 1.1<a class="headerlink" href="#methodology-for-analysis-of-design-load-case-1-1" title="Permalink to this heading"></a></h3>
+<p>As per the IEC standards, an analysis of DLC case 1.1 involves the
+simulation of a wind turbine under normal operating conditions for a
+range of wind speeds sufficiently representing what is expected under
+these conditions. Local peak values of important quantities such as
+reaction loads on the turbine throughout the simulation time histories
+are identified and used to derive statistical information. This
+information is then used to predict 50-year extrapolated extreme values,
+that is the highest/lowest value expected to be encountered over a
+period of 50 years of normal operation, for each important quantity.</p>
+<p>Needless to say, it is not common practice to actually simulate 50 years
+of operation time for a turbine. The basic assumption is that if enough
+time is simulated to extract reliable probability distributions of the
+local peak values of the quantities of interest, those probabilities
+would scale proportionally into significantly longer periods of time.
+If, for example, an event is 1% likely to occur once over a period of 10
+minutes, then it should be 10% percent likely to occur once over a
+period of 100 minutes under the same conditions.</p>
+<p>Following this reasoning, a load/quantity that has a probability of
+3.805 x 10<sup>-7</sup> to exceed a certain value in a period of 10
+minutes should be 100% likely to exceed that value once in 50 years of
+operation. That value is the extrapolated 50-year extreme value, which
+is the main result of interest for DLC 1.1.</p>
+<p>While this conceptual approach is standard, there are several ways to
+implement the 50-year extrapolation. The probability that the highest
+local peak value <span class="math notranslate nohighlight">\(F_{\text{ext}}\)</span> of a quantity exceeds a value
+<span class="math notranslate nohighlight">\(F\)</span> within a time period <span class="math notranslate nohighlight">\(T\)</span> can be expressed mathematically
+as follows:</p>
+<div class="math notranslate nohighlight" id="equation-maxpeak">
+<span class="eqno">(1)<a class="headerlink" href="#equation-maxpeak" title="Permalink to this equation"></a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F\  \middle| T \right) = P_{e}(F,T) = \int_{V_{\min}}^{V_{\max}}{\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right)p(V)\text{dV}}\]</div>
+<p>Where
+<span class="math notranslate nohighlight">\(\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right)\)</span> is
+the probability of <span class="math notranslate nohighlight">\(F_{\text{ext}}\)</span> exceeding <span class="math notranslate nohighlight">\(F\)</span> within the
+time period <span class="math notranslate nohighlight">\(T\)</span> at a given wind speed <span class="math notranslate nohighlight">\(V\)</span>, and <span class="math notranslate nohighlight">\(p(V)\)</span>
+is the probability density function of the wind speed. The
+velocity-specific probability function is commonly computed as</p>
+<div class="math notranslate nohighlight" id="equation-velprob">
+<span class="eqno">(2)<a class="headerlink" href="#equation-velprob" title="Permalink to this equation"></a></span>\[\text{Prob}\left( F_{\text{ext}} \geq F \middle| V,T \right) = 1 - \left( \text{CD}\left( F \middle| V,T \right) \right)^{N}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\text{CD}\left( F \middle| V,T \right)\)</span> is the cumulative
+distribution function of the quantity for a given velocity <span class="math notranslate nohighlight">\(V\)</span>
+over the time period <span class="math notranslate nohighlight">\(T\)</span>, and <span class="math notranslate nohighlight">\(N\)</span> is the number of local
+peak values of the quantity within the period <span class="math notranslate nohighlight">\(T\)</span>. In words, Eq.
+<a class="reference internal" href="#equation-velprob">(2)</a> is simply stating that the probability that the highest peak value
+<span class="math notranslate nohighlight">\(F_{\text{ext}}\)</span> exceeds <span class="math notranslate nohighlight">\(F\)</span> is one minus the probability
+that none do. This is a convenient way to evaluate the probability since
+it is put in terms of the standard cumulative distribution function,
+which is commonly available for most standard distribution types.</p>
+<p>The task, then is to find the root <span class="math notranslate nohighlight">\(F\)</span> of the equation</p>
+<div class="math notranslate nohighlight">
+\[P_{e}(F,T) = \frac{T}{T_{50\text{yr}}}\]</div>
+<p>Or, for the typical 10-minute simulation time,</p>
+<div class="math notranslate nohighlight" id="equation-prob10">
+<span class="eqno">(3)<a class="headerlink" href="#equation-prob10" title="Permalink to this equation"></a></span>\[P_{e}(F,T) = \frac{10}{60 \times 24 \times 365 \times 50} = 3.805 \times 10^{- 7}\]</div>
+<p>and determine the 50-year extrapolated value for <span class="math notranslate nohighlight">\(F\)</span>. One approach
+to finding the root of Eq. <a class="reference internal" href="#equation-prob10">(3)</a> is to derive a single probability curve
+representing <span class="math notranslate nohighlight">\(P_{e}(F,T)\)</span> by compiling the local peaks from all
+simulations throughout every wind speed, and fitting a set of parameters
+defining a generalized extreme value distribution to the compiled data.
+This curve can then be extrapolated beyond the range of data values to
+obtain the root. This was the original approach used in the development
+of the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> function. It proved to be potentially problematic,
+however, in that the algorithm used to obtain the parameters for the
+generalized extreme value curve often failed to converge reliably, and
+when it did there were cases when it was infeasible to extrapolate the
+curve to the range of the 50-year limit.</p>
+<p>Consequently, it was determined that an alternative, more robust
+implementation for finding the root of Eq. <a class="reference internal" href="#equation-prob10">(3)</a> was desirable, and new
+procedure was developed and implemented for NuMAD v3. In the new
+approach, a <em>set</em> of normal Gaussian probability distributions is
+obtained, one for each wind speed for each quantity of interest. Those
+distributions are used to evaluate the probability of exceedance (Eq.
+<a class="reference internal" href="#equation-velprob">(2)</a>) for any arbitrary <span class="math notranslate nohighlight">\(F\)</span> at a given velocity <span class="math notranslate nohighlight">\(V\)</span>. Then
+<span class="math notranslate nohighlight">\(P_{e}(F,T)\)</span> (Eq. <a class="reference internal" href="#equation-maxpeak">(1)</a>) is evaluated with trapezoidal numerical
+integration, using the appropriate distributions at each velocity, to
+obtain the composite probability of exceedance of a quantity over
+<span class="math notranslate nohighlight">\(T\)</span> for an arbitrary <span class="math notranslate nohighlight">\(F\)</span>. Finally, the root of Eq. <a class="reference internal" href="#equation-prob10">(3)</a> is
+obtained using the bisection method, evaluating <span class="math notranslate nohighlight">\(P_{e}(F,T)\)</span>
+iteratively and converging to the solution for the 50-year extrapolated
+<span class="math notranslate nohighlight">\(F\)</span>. An algorithmic summary of the process is as follows:</p>
+<p>For every quantity for which a 50-year extrapolated value is of
+interest:</p>
+<ol class="arabic simple">
+<li><p>Process the aeroelastic simulation output files to extract the local
+peak values of the quantity at each simulated wind speed.</p></li>
+<li><p>Calculate the probability distribution parameters (mean and standard
+deviation for normal Gaussian) to define the cumulative distribution
+function <span class="math notranslate nohighlight">\(\text{CD}\left( F \middle| V,T \right)\)</span> for each wind
+speed.</p></li>
+<li><p>Perform a bisection root-finding solve to find <span class="math notranslate nohighlight">\(F\)</span> in Eq. <a class="reference internal" href="#equation-prob10">(3)</a>,
+each iteration evaluating <span class="math notranslate nohighlight">\(P_{e}(F,T)\)</span> with trapezoidal
+integration as</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[P_{e}(F,T) = \sum_{i = 1}^{N_{\text{ws}} - 1}{\frac{1}{2}\left( \left( 1 - \text{CD}\left( F \middle| V_{i},T \right)^{N} \right)p\left( V_{i} \right)\  + \ \left( 1 - \text{CD}\left( F \middle| V_{i + 1},T \right)^{N} \right)p\left( V_{i + 1} \right) \right)\Delta V}\]</div>
+<p>This is an improvement in robustness in the new approach, stemming from
+two main aspects. First a normal Gaussian distribution is defined by the
+mean and standard deviation, which can be directly and reliably computed
+for any data set without any risk of convergence failure. Once those
+parameters are known, the probability of exceedance can be extrapolated
+to any value <span class="math notranslate nohighlight">\(F\)</span>, without concern for the range of the original
+data set. Second, the bisection algorithm for root finding is
+fail-proof, provided that a suitable upper and lower bound is set in
+which one root exists, and the function is continuous within those
+bounds. It does not suffer from extreme gradient/slope values or
+stability concerns.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There can be slight differences between the 50-year extrapolation
+results obtained using different methods, and it is difficult to
+assert that any given approach is certainly more accurate or superior
+to another. The extrapolation process remains subject to further
+modifications and improvements moving forward.</p>
+</div>
+</section>
+<section id="tools-for-processing-openfast-input-files">
+<span id="toolsforopenfast"></span><h3>Tools for Processing OpenFAST Input Files<a class="headerlink" href="#tools-for-processing-openfast-input-files" title="Permalink to this heading"></a></h3>
+<p>NuMAD is currently set up with FAST v7 as the default version of the
+aeroelastic solver. Although FAST v7 is reliable and robust, it is now
+an outdated version succeeded by the current equivalent, OpenFAST. The
+framework of OpenFAST was designed to be customizable so that a broader
+community of users could make contributions and variations for different
+specific needs. As a result, the structure and organization of the input
+files is significantly different from that of FAST v7. For the current
+NuMAD release, some tools have been developed to process data from
+OpenFAST input files to supplement what is currently there for FAST v7.</p>
+<p>These tools primarily read different types OpenFAST input files, storing
+the data in a MATLAB struct object which can then be edited and modified
+for the purposes of design and optimization. Updated versions of the
+input files can then be re-written from the modified data. The tools can
+be found in the <code class="docutils literal notranslate"><span class="pre">source\utilities\runIEC</span></code> directory, along with
+their FAST v7 counterparts.</p>
+<p>As of the release of this document, OpenFAST remains in a state of
+development, and new modules are coming online that will be increasingly
+used in the future. The toolset for input/output processing is subject
+to change to accommodate new input file formats, etc. moving forward.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="running_numad.html" class="btn btn-neutral float-left" title="Running NuMAD" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fea.html" class="btn btn-neutral float-right" title="Finite Element Analysis Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

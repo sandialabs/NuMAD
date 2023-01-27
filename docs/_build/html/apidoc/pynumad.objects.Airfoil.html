@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airfoil Object &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Blade Object" href="pynumad.objects.Blade.html" />
+    <link rel="prev" title="pynumad.objects module" href="pynumad.objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="pynumad.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pynumad.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pynumad.objects.html">pynumad.objects module</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pynumad.objects.html#submodules">Submodules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.utils.html">pynumad.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynumad.io.html">pynumad.io module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">User’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="pynumad.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pynumad.objects.html">pynumad.objects module</a></li>
+      <li class="breadcrumb-item active">Airfoil Object</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/apidoc/pynumad.objects.Airfoil.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pynumad.objects.Airfoil">
+<span id="airfoil-object"></span><h1>Airfoil Object<a class="headerlink" href="#module-pynumad.objects.Airfoil" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">Airfoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Airfoil object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coords</strong> (<em>array</em>) – </p></li>
+<li><p><strong>ref</strong> (<em>string</em>) – Name of airfoil reference</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – path to filename of airfoil (xml somewhat supported)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.name" title="Permalink to this definition"></a></dt>
+<dd><p>User selected airfoil name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.reference">
+<span class="sig-name descname"><span class="pre">reference</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.reference" title="Permalink to this definition"></a></dt>
+<dd><p>Header info in file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.coordinates">
+<span class="sig-name descname"><span class="pre">coordinates</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.coordinates" title="Permalink to this definition"></a></dt>
+<dd><p>Profile data in two columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.c">
+<span class="sig-name descname"><span class="pre">c</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.c" title="Permalink to this definition"></a></dt>
+<dd><p>Computed by NuMAD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.camber">
+<span class="sig-name descname"><span class="pre">camber</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.camber" title="Permalink to this definition"></a></dt>
+<dd><p>Camber line as a function of x.
+Distance in percent chord between LP and HP curves.
+Computed by NuAMD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.thickness">
+<span class="sig-name descname"><span class="pre">thickness</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.thickness" title="Permalink to this definition"></a></dt>
+<dd><p>Relative thickness as a function of the x coordinate.
+Values between 0 and 1, where 1 corresponds to maximum thickness.
+Computed by NuAMD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.percentthick">
+<span class="sig-name descname"><span class="pre">percentthick</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.percentthick" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum airfoil thickness as a percentage of chord length [#]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.maxthick">
+<span class="sig-name descname"><span class="pre">maxthick</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.maxthick" title="Permalink to this definition"></a></dt>
+<dd><p>Airfoil thickness as a percentage of chord. Values between 0 and 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.TEtype">
+<span class="sig-name descname"><span class="pre">TEtype</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.TEtype" title="Permalink to this definition"></a></dt>
+<dd><p>Options, ‘round’, ‘sharp’, or ‘flat’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.x" title="Permalink to this definition"></a></dt>
+<dd><p>Horizontal axis of Airfoil shape coordinates Working
+clockwise starting from the TE to the LE and back to the TE.
+LE must be at (1,0) and TE at (0,0).
+Needed only by <code class="docutils literal notranslate"><span class="pre">AirfoilDef.plot</span></code></p>
+<p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.y" title="Permalink to this definition"></a></dt>
+<dd><p>Vertical axis of Airfoil shape coordinates
+Working clockwise starting from the TE to the LE and back to the TE.
+LE must be at (1,0) and TE at (0,0).
+Needed only by <code class="docutils literal notranslate"><span class="pre">AirfoilDef.plot</span></code></p>
+<p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.read_xml">
+<span class="sig-name descname"><span class="pre">read_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.read_xml" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.manageTE">
+<span class="sig-name descname"><span class="pre">manageTE</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.manageTE" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.resample">
+<span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.resample" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+<p class="rubric">Example</p>
+<p>AirfoilDef.resample
+af.resample(n_samples,spacing)</p>
+<blockquote>
+<div><p>spacing = ‘auto’ | ‘half-cosine’ | ‘cosine’</p>
+</div></blockquote>
+<p>af.resample(200,’half-cosine’);</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.Airfoil.adjustTE">
+<span class="sig-name descname"><span class="pre">adjustTE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pynumad.objects.Airfoil.Airfoil.adjustTE" title="Permalink to this definition"></a></dt>
+<dd><p>TODO docstring</p>
+<p class="rubric">Example</p>
+<p>AirfoilDef.adjustTE
+af.adjustTE(TE_thick,[TE_slope],[onset])
+TE_thick is the amount of TE thickness to add
+TE_slope is the slope of the added thickness profile at TE,</p>
+<blockquote>
+<div><p>defaults to 5/3 * TE_thick</p>
+</div></blockquote>
+<dl>
+<dt>onset    is the chord fraction where adjustment begins,</dt><dd><blockquote>
+<div><p>defaults to location of max thickness</p>
+</div></blockquote>
+<p>af.adjustTE(0.02);
+af.adjustTE(0.02,0);
+af.adjustTE(0.02,[],0.8);</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.readAirfoilColumns">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">readAirfoilColumns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.readAirfoilColumns" title="Permalink to this definition"></a></dt>
+<dd><p>placeholder</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.resampleAirfoil">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">resampleAirfoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">af_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.resampleAirfoil" title="Permalink to this definition"></a></dt>
+<dd><p>Resample airfoil coordinates</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>af_in</strong> (<em>array</em>) – Nx2 array containing N normalized xy airfoil points</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – number of points to be created around surface</p></li>
+<li><p><strong>spacing</strong> (<em>string</em>) – spacing routine to be used:
+‘cosine’, ‘half-cosine’, ‘constant’, ‘auto’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>af_out</strong> (<em>array</em>) – array containing n_samples+1 airfoil points</p></li>
+<li><p><strong>Cosine spacing</strong> (<em>puts higher density of points at both LE and TE;</em>) – constant arc length point spacing around a perfect circle.</p></li>
+<li><p><strong>Half-cosine spacing</strong> (<em>puts higher density of points at LE and lesser</em>) – density of points at TE</p></li>
+<li><p><strong>constant spacing</strong> (<em>constant spacing of points along chord line</em>)</p></li>
+<li><p><strong>auto</strong> (<em>choose between Cosine and Half-cosine based on steepness of TE</em>)</p></li>
+<li><p><em>Assumes coordinates begin at trailing edge (x,y)=(1,0) and trace out the HP</em></p></li>
+<li><p><em>surface, then the LP surface.</em></p></li>
+<li><p><em>Flatback airfoil inputs are designated by ensuring the following</em> – Point #1 = (1,0)   (center of trailing edge)
+Point #2 = (1,-y) where y~=0  (HP corner of flatback trailing edge)
+Point #N = (1,y)  where y~=0  (LP corner of flatback trailing edge)</p></li>
+<li><p><em>Notes</em></p></li>
+<li><p><em>* This routine enforces LE point is at (0,0) - Warning, this may have</em> – complications when it comes ot CFD analyses!!</p></li>
+<li><p><em>* spline_type = spline algorithm to be used for oversampling</em> – ‘linear’, ‘pchip’, ‘spline’; right now, the function is hard-coded
+for ‘spline’, but others can be used by changing the te_type setting
+in the code.</p></li>
+<li><p><em>Assumes leading edge at (0,0) and trailing edge at (1,0)</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>af_out = resampleAirfoil_nmd(af_in, n_samples, spacing)</p>
+<p>JP: initial creation
+BRR: modified for release 1/25/2011</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.getAirfoilNormals">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">getAirfoilNormals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.getAirfoilNormals" title="Permalink to this definition"></a></dt>
+<dd><p>Method finds which airfoil is flatback.</p>
+<p>If points are placed
+in flatback region, they are removed for good resampling
+results. Currently this removal only works
+for one point located on TE region. Method also gets the TE tpye for round sections.
+coordinates m by 2 matrix where m is the number of points about
+airfoil. Coordiantes are 2D.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.getAirfoilNormalsAngleChange">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">getAirfoilNormalsAngleChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unitNormals</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.getAirfoilNormalsAngleChange" title="Permalink to this definition"></a></dt>
+<dd><p>TODO: Docstring
+TODO: Test</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.rotate2d">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">rotate2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.rotate2d" title="Permalink to this definition"></a></dt>
+<dd><p>NOTE: might be able to use affinetrans module here
+TODO: Docstring
+TODO: Test</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.computeCamberAndThickness">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">computeCamberAndThickness</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.computeCamberAndThickness" title="Permalink to this definition"></a></dt>
+<dd><p>TODO: Docstring
+TODO: Test</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pynumad.objects.Airfoil.getTEtype">
+<span class="sig-prename descclassname"><span class="pre">pynumad.objects.Airfoil.</span></span><span class="sig-name descname"><span class="pre">getTEtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pynumad.objects.Airfoil.getTEtype" title="Permalink to this definition"></a></dt>
+<dd><p>Seems deprecated -kb
+TODO: Docstring
+TODO: Test</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pynumad.objects.html" class="btn btn-neutral float-left" title="pynumad.objects module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pynumad.objects.Blade.html" class="btn btn-neutral float-right" title="Blade Object" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

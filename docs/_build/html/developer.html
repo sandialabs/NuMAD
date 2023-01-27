@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developing pynumad &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="gettingstarted.html" />
+    <link rel="prev" title="Object Classes, Properties, and Methods" href="user/classDefs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction/index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/index.html">User’s Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developing pynumad</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#building-docs">Building docs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conventions">Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docstrings">Docstrings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Developing pynumad</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/developer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="developing-pynumad">
+<span id="developer"></span><h1>Developing pynumad<a class="headerlink" href="#developing-pynumad" title="Permalink to this heading"></a></h1>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<p>To maintain a local installation, developers should use the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">cee</span><span class="o">-</span><span class="n">gitlab</span><span class="o">.</span><span class="n">sandia</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">ecamare</span><span class="o">/</span><span class="n">pynumad</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">pynumad</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading"></a></h2>
+<p>To run tests locally, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="n">pynumad</span>
+</pre></div>
+</div>
+<p>at the root of the repository. Note that this requires the installation
+of pytest.</p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
+<section id="building-docs">
+<h3>Building docs<a class="headerlink" href="#building-docs" title="Permalink to this heading"></a></h3>
+<p>To build docs locally, navigate to <code class="docutils literal notranslate"><span class="pre">pynumad/docs</span></code> and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">html</span>
+</pre></div>
+</div>
+<p>After building, the static html files can be found in <code class="docutils literal notranslate"><span class="pre">_build/html</span></code>.</p>
+</section>
+<section id="conventions">
+<h3>Conventions<a class="headerlink" href="#conventions" title="Permalink to this heading"></a></h3>
+</section>
+<section id="docstrings">
+<h3>Docstrings<a class="headerlink" href="#docstrings" title="Permalink to this heading"></a></h3>
+<p>The documentation for pynumad adheres to NumPy style docstrings. Not only does this
+help to keep a consistent style, but it is also necessary for the API documentation
+to be parsed and displayed correctly. For an example of what this should look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="n">arg2</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;Summary line.</span>
+
+<span class="sd">Extended description of function.</span>
+
+<span class="sd">Parameters</span>
+<span class="sd">----------</span>
+<span class="sd">arg1 : int</span>
+<span class="sd">    Description of arg1</span>
+<span class="sd">arg2 : str</span>
+<span class="sd">    Description of arg2</span>
+
+<span class="sd">Returns</span>
+<span class="sd">-------</span>
+<span class="sd">bool</span>
+<span class="sd">    Description of return value</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Additional examples can be found in the
+<a class="reference external" href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html">napoleon documentation</a>.
+The following boilerplate can be copy-pasted into the top of a function definition
+to help get things started:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Summary line.</span>
+
+<span class="sd">Extended description of function.</span>
+
+<span class="sd">Parameters</span>
+<span class="sd">----------</span>
+
+<span class="sd">Returns</span>
+<span class="sd">-------</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="user/classDefs.html" class="btn btn-neutral float-left" title="Object Classes, Properties, and Methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gettingstarted.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

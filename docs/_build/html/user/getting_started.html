@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started &mdash; PyNuMAD 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/my_style.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modes of Operation" href="operation_modes.html" />
+    <link rel="prev" title="User’s Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> PyNuMAD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../apidoc/pynumad.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/index.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User’s Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#download-numad">Download NuMAD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-numad">Install NuMAD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installation-steps">Installation Steps</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operation_modes.html">Modes of Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blade_definition.html">Blade Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running_numad.html">Running NuMAD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aero_sim.html">Aeroelastic Simulation and the <code class="docutils literal notranslate"><span class="pre">runIEC</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fea.html">Finite Element Analysis Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimization.html">Optimization and Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui_coupling.html">One-way Coupling to GUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#known-issues">Known Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conclusion.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classDefs.html">Object Classes, Properties, and Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developing pynumad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PyNuMAD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User’s Guide</a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/user/getting_started.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="getting-started">
+<span id="gettingstarted"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
+<section id="software-requirements">
+<h2>Software Requirements<a class="headerlink" href="#software-requirements" title="Permalink to this heading"></a></h2>
+<p>NuMAD is developed in MATLAB, and requires the following software packages:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 76%" />
+<col style="width: 24%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Required Packages</strong></p></td>
+<td><p><strong>Oldest Compatible Version</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></td>
+<td><p>Version 9.9  (R2020b)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://code.google.com/archive/p/yamlmatlab/">YAMLMatlab (Included)</a></p></td>
+<td><p>v0.4.3</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/18430-txt2mat">txt2mat (Included)</a></p></td>
+<td><p>v7.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/fastv7.html">FAST (Optional)</a></p></td>
+<td><p>v7.02.00d</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.ansys.com/">ANSYS (Optional)</a></p></td>
+<td><p>R12</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/precomp.html">PreComp (Optional)</a></p></td>
+<td><p>v1.00.03</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/turbsim.html">TurbSim (Optional)</a></p></td>
+<td><p>v1.50</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/iecwind.html">IECWind (Optional)</a></p></td>
+<td><p>v5.01.01</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/bmodes.html">BModes (Optional)</a></p></td>
+<td><p>v3.00.00</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.nrel.gov/wind/nwtc/crunch.html">Crunch (Optional)</a></p></td>
+<td><p>v3.00.00</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="download-numad">
+<h2>Download NuMAD<a class="headerlink" href="#download-numad" title="Permalink to this heading"></a></h2>
+<p>The NuMAD source code is hosted on the <a class="reference external" href="https://github.com/sandialabs/NuMAD">NuMAD GitHub repository</a>.
+NuMAD users are recommended to clone the Github repository.
+Cloning the repository allows users to easily pull the latest updates to the NuMAD source code.
+These updates may improve the code’s speed, accuracy and add additional functionality or advanced features.</p>
+<p>To install NuMAD using <a class="reference external" href="https://git-scm.com/">git</a>, type the following in a git interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sandialabs</span><span class="o">/</span><span class="n">NuMAD</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</div>
+<p>The local copy of NuMAD can easily be updated to the latest version of the
+code hosted on the GitHub repository by using the pull command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">git</span> <span class="n">pull</span>
+</pre></div>
+</div>
+<p>For users who are new to git, it is recommended to go through examples on
+<a class="reference external" href="https://docs.github.com/en/free-pro-team&#64;latest/github/getting-started-with-github">GitHub</a>
+or other sources while getting started.
+If you have problems downloading or installing please see the <a class="reference internal" href="conclusion.html#troubleshooting"><span class="std std-ref">Troubleshooting</span></a> page.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users may also download a static version of NuMAD from the latest tagged
+<a class="reference external" href="https://github.com/sandialabs/NuMAD/releases">NuMAD Release</a>.  This is
+the easiest way to obtain the NuMAD code, however it is more difficult to
+manually download future updates.</p>
+</div>
+</section>
+<section id="install-numad">
+<span id="user-install"></span><h2>Install NuMAD<a class="headerlink" href="#install-numad" title="Permalink to this heading"></a></h2>
+<p>Once you have downloaded the NuMAD source code, take the following steps to
+install the NuMAD code. The directory where the NuMAD code is contained is
+referred to as <code class="docutils literal notranslate"><span class="pre">$NuMAD</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">C:/User/Documents/GitHub/NuMAD</span></code>).</p>
+<section id="installation-steps">
+<h3>Installation Steps<a class="headerlink" href="#installation-steps" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://www.mathworks.com/products/matlab.html">MATLAB</a></p></li>
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> in an editor and set the <code class="docutils literal notranslate"><span class="pre">numadPath</span></code> to point to the source directory in the repo.</p></li>
+<li><p>If you plan to use ANSYS or other analysis programs, update the corresponding path variable to the actual path of each executable you plan to use. Save and close <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m.</span></code></p></li>
+<li><p>Move the <code class="docutils literal notranslate"><span class="pre">addNumadPaths.m</span></code> file to the MATLAB directory of your user account (e.g. <code class="docutils literal notranslate"><span class="pre">C:\Users\username\Documents\MATLAB</span></code>)</p></li>
+</ol>
+<p>Every time a new MATLAB session is started type <code class="docutils literal notranslate"><span class="pre">addNumadPaths</span></code> to be able to run NuMAD.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="User’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="operation_modes.html" class="btn btn-neutral float-right" title="Modes of Operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kirk Bonney.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
