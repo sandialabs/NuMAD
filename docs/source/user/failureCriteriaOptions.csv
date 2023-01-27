@@ -1,7 +1,0 @@
-﻿Failure Criterion Type,``config.failureCriterion``
-Maximum Strain,``'EMAX'``
-Maximum Stress,``'SMAX'``
-Puck Failure,``'PUCK'``
-LaRC03,``'LARC03'``
-LaRC04,``'LARC04'``
-Tsai-Wu,``'TWSI'``
