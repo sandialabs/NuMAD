@@ -10,7 +10,6 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import warnings
-import numpy.matlib
 import scipy as sp
 from typing import Optional
 
