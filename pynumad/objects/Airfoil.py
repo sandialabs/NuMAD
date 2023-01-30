@@ -10,7 +10,6 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 import warnings
-import numpy.matlib
 import scipy as sp
 from typing import Optional
 
@@ -350,13 +349,13 @@ def resampleAirfoil(af_in = None,n_samples = None,spacing = None):
     # Instead, we define the LE as the point that is the furthest distance from
     # the TE.
     xyTE = np.array((np.mean([xxyy[0,0],xxyy[-1,0]]), np.mean([xxyy[0,1],xxyy[-1,1]])))
-    xxyy = xxyy - np.matlib.repmat(xyTE,xxyy.shape[0],1)
+    xxyy = xxyy - np.tile(xyTE,(xxyy.shape[0],1))
     rays = np.hypot(xxyy[:,0],xxyy[:,1]) # distance of each point from the TE
     max_ray = np.max(rays)
     max_point = np.argmax(rays)
     ray_angle = np.arctan2(xxyy[max_point,1],- xxyy[max_point,0])
     xxyy = rotate2d(xxyy,ray_angle)
-    xxyy = xxyy / max_ray + np.matlib.repmat(np.array([1,0]),xxyy.shape[0],1)
+    xxyy = xxyy / max_ray + np.tile(np.array([1,0]),(xxyy.shape[0],1))
     #Separate into high and low pressure surfaces
     HP = xxyy[0:max_point+1,:] # HP points progress from TE (x=1) to LE (x=0)
     LP = xxyy[max_point:,:] # LP points progress from LE (x=0) to TE (x=1)
