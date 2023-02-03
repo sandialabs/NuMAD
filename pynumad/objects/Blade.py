@@ -15,7 +15,7 @@ from pynumad.objects.Station import Station
 from pynumad.objects.Airfoil import getAirfoilNormals, getAirfoilNormalsAngleChange
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Subobjects import MatDBentry, Layer, Shearweb, BOM, Ply
-# from pynumad.shell.shell import shellMeshGeneral
+from pynumad.shell.shell import shellMeshGeneral
 # for type hints
 from numpy import ndarray
 
