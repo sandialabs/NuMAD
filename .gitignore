@@ -107,6 +107,5 @@ cython_debug/
 docs/_static/*
 *.code-workspace
 .vscode
-pynumad/shell
 test_matlab*
 *.log

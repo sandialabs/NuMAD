@@ -73,18 +73,30 @@ class Shearweb:
 
 class BOM:
     """A simple class to organize the attributes of a Bill of Materials
+    
+    Attributes
+    ----------
 
-        BOM object properties:
-        1. Layer #
-        2. Material ID
-        3. Component or region name
-        4. Begin station   (m)
-        5. End station     (m)
-        6. Max width       (m)
-        7. Average width   (m)
-        8. 3D area         (m^2)
-        9. Layer thickness (mm)
-        10. Computed dry layer weight (g)
+    layernum : int
+        Layer
+    materialid : int
+        Material ID
+    name : str
+        Component or region name
+    beginsta : float
+        Begin station (m)
+    endsta : float
+        End station (m)
+    maxwidth : float
+        Max width (m)
+    avgwidth : float
+        Average width (m)
+    area : float
+        3D area (m^2)
+    thickness : float
+        Layer thickness (mm)
+    weight : float
+        Computed dry layer weight (g)
     """
     def __init__(self):
 
@@ -102,6 +114,20 @@ class BOM:
 
 class Ply:
     """A simple class to organize the attributes of a ply
+
+    Attributes
+    ----------
+
+    component : str
+        parent component
+    materialid : str
+        Material id of ply
+    thickness : float
+        thickness of single ply (mm)
+    angle : float 
+        ply angle
+    nPlies : int
+        number of plies
     """
     def __init__(self):
         self.component: str = None # parent component``
@@ -109,3 +135,12 @@ class Ply:
         self.thickness: float = None # thickness [mm] of single ply``
         self.angle: float = None # ply angle``
         self.nPlies: int = None # number of plies``
+
+
+class SkinArea:
+    def __init__(self):
+        self.startIB = []
+        self.endIB = []
+        self.startOB = []
+        self.endOB = []
+        self.Material = []

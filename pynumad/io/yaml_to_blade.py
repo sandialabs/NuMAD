@@ -90,7 +90,6 @@ def yaml_to_blade(blade, filename: str):
     add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp)
     
     blade.updateBlade()
-    #TODO: address the below lines -kb
     # save(blade_name)
     # BladeDef_to_NuMADfile(obj,numad_name,matdb_name,numad_af_folder)
 
