@@ -5,6 +5,7 @@ pandas
 matplotlib
 pyyaml
 openpyxl
+plotly
 
 # Testing
 pytest

@@ -1420,8 +1420,8 @@ class Blade():
 
 
     def getShellMesh(self, includeAdhesive): 
-        nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls = shellMeshGeneral(self,0,includeAdhesive)
-        return nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls
+        meshData = shellMeshGeneral(self,0,includeAdhesive)
+        return meshData
     
     """
     #NOTE need team help here -kb

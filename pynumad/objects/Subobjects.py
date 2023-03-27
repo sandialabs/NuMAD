@@ -50,6 +50,15 @@ class MatDBentry:
 
 class Layer:
     """A simple class to organize the attributes of a material layer.
+
+    Attributes
+    ----------
+
+    self.layerName : str
+    self.thicknessA : float
+    self.thicknessB :float
+    self.quantity : int
+    self.theta : float
     """
     def __init__(self):
 
@@ -62,6 +71,14 @@ class Layer:
 
 class Shearweb:
     """A simple class to organize the attributes of a Shearweb
+
+    Attributes
+    ----------
+
+    Material : str
+    BeginStation : int
+    EndStation : int 
+    Corner : list
     """
     def __init__(self):
 
