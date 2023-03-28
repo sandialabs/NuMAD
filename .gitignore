@@ -109,3 +109,4 @@ docs/_static/*
 .vscode
 test_matlab*
 *.log
+pynumad/kirklocal/*
