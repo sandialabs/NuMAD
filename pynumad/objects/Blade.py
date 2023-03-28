@@ -1450,7 +1450,7 @@ class Blade():
                 self.stacks[i,j].plygroups = newPg
     
     for i in range(2):
-        stackLst = obj.swstacks[i]
+        stackLst = self..swstacks[i]
         for j in range(len(stackLst)):
             pg = stackLst[j].plygroups
             if (len(pg) == 3 or len(pg)==0):
@@ -1469,8 +1469,8 @@ class Blade():
                     newPg[1].thickness = 0.3333333 * t1
                     newPg[0].thickness = 0.3333333 * t1
                     newPg[2].thickness = 0.3333333 * t1
-            obj.swstacks[i][j].plygroups = newPg
-    return
+            self.swstacks[i][j].plygroups = newPg
+        return
 
 
     def getShellMesh(self, includeAdhesive): 
