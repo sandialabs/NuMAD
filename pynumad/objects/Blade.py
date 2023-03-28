@@ -1449,27 +1449,27 @@ class Blade():
                             newPg[2].thickness = 0.3333333 * t1
                 self.stacks[i,j].plygroups = newPg
     
-    for i in range(2):
-        stackLst = self..swstacks[i]
-        for j in range(len(stackLst)):
-            pg = stackLst[j].plygroups
-            if (len(pg) == 3 or len(pg)==0):
-                newPg = pg
-            else:
-                if (len(pg) == 2):
-                    newPg = np.array([pg[0],pg[0],pg[1]])
-                    t1 = pg[0].thickness
-                    t2 = pg[1].thickness
-                    newPg[1].thickness = 0.3333333 * (t1 + t2)
-                    newPg[0].thickness = 0.6666666 * t1
-                    newPg[2].thickness = 0.6666666 * t2
+        for i in range(2):
+            stackLst = self.swstacks[i]
+            for j in range(len(stackLst)):
+                pg = stackLst[j].plygroups
+                if (len(pg) == 3 or len(pg)==0):
+                    newPg = pg
                 else:
-                    newPg = np.array([pg[0],pg[0],pg[0]])
-                    t1 = pg[0].thickness
-                    newPg[1].thickness = 0.3333333 * t1
-                    newPg[0].thickness = 0.3333333 * t1
-                    newPg[2].thickness = 0.3333333 * t1
-            self.swstacks[i][j].plygroups = newPg
+                    if (len(pg) == 2):
+                        newPg = np.array([pg[0],pg[0],pg[1]])
+                        t1 = pg[0].thickness
+                        t2 = pg[1].thickness
+                        newPg[1].thickness = 0.3333333 * (t1 + t2)
+                        newPg[0].thickness = 0.6666666 * t1
+                        newPg[2].thickness = 0.6666666 * t2
+                    else:
+                        newPg = np.array([pg[0],pg[0],pg[0]])
+                        t1 = pg[0].thickness
+                        newPg[1].thickness = 0.3333333 * t1
+                        newPg[0].thickness = 0.3333333 * t1
+                        newPg[2].thickness = 0.3333333 * t1
+                self.swstacks[i][j].plygroups = newPg
         return
 
 
