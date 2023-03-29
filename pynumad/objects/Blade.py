@@ -6,6 +6,7 @@
 
 import re, warnings
 import numpy as np
+from copy import copy
 
 from pynumad.io.yaml_to_blade import yaml_to_blade
 from pynumad.io.excel_to_blade import excel_to_blade
@@ -15,7 +16,7 @@ from pynumad.objects.Station import Station
 from pynumad.objects.Airfoil import getAirfoilNormals, getAirfoilNormalsAngleChange
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Subobjects import MatDBentry, Layer, Shearweb, BOM, Ply
-# from pynumad.shell.shell import shellMeshGeneral
+from pynumad.shell.shell import shellMeshGeneral
 # for type hints
 from numpy import ndarray
 
@@ -229,6 +230,20 @@ class Blade():
         except TypeError:
             pass
 
+
+    # def __str__(self):
+    #     return f'Blade with attributes: {vars(self)}'
+
+    def __str__(self):
+        attributes = ''
+        for attr_name, attr_value in vars(self).items():
+            if isinstance(attr_value, list):
+                attributes += f'{attr_name}={len(attr_value)}, '
+            elif isinstance(attr_value, np.ndarray):
+                attributes += f'{attr_name}={attr_value.shape}, '
+            else:
+                attributes += f'{attr_name}={attr_value}, '
+        return f'Blade with {attributes[:-2]}'
 
     @property
     def naturaloffset(self):
@@ -992,14 +1007,14 @@ class Blade():
             cur_ply.component = self.bom['hp'][k].name #parent component of ply
             cur_ply.materialid =  self.bom['hp'][k].materialid # materialid of ply
             cur_ply.thickness = self.bom['hp'][k].thickness # thickness [mm] of single ply
-            cur_ply.angle = 0, #TODO, set to 0 for now, self.bom['lp'](k, );
+            cur_ply.angle = 0 #TODO, set to 0 for now, self.bom['lp'](k, );
             cur_ply.nPlies = 1 # default to 1, modified in addply() if necessary
 
             # ... and add the ply to every area that is part of the region
-            ind = [self.bomIndices['hp'][k][i] for i in range(len(self.bomIndices['hp'][k]))]
+            ind = self.bomIndices['hp'][k]
             for kr in range(ind[2],ind[3]):
                 for kc in range(ind[0],ind[1]):
-                    self.stacks[kr][kc].addply(cur_ply)
+                    self.stacks[kr][kc].addply(copy(cur_ply)) # copy is important to keep make ply object unique in each stack
         
         for k in range(len(self.bom['lp'])):
             # for each row in the BOM, get the ply definition ...
@@ -1007,14 +1022,14 @@ class Blade():
             cur_ply.component = self.bom['lp'][k].name #parent component of ply
             cur_ply.materialid =  self.bom['lp'][k].materialid # materialid of ply
             cur_ply.thickness = self.bom['lp'][k].thickness # thickness [mm] of single ply
-            cur_ply.angle = 0, #TODO, set to 0 for now, self.bom['lp'](k, );
+            cur_ply.angle = 0 #TODO, set to 0 for now, self.bom['lp'](k, );
             cur_ply.nPlies = 1 # default to 1, modified in addply() if necessary
     
             # ... and add the ply to every area that is part of the region
-            ind = [self.bomIndices['lp'][k][i] for i in range(len(self.bomIndices['lp'][k]))]
+            ind = self.bomIndices['lp'][k]
             for kr in range(ind[2],ind[3]):
                 for kc in range(ind[0],ind[1]):
-                    self.stacks[kr][kc].addply(cur_ply)
+                    self.stacks[kr][kc].addply(copy(cur_ply))
         self.swstacks = [None]*nWebs
         for kw in range(nWebs):
             self.swstacks[kw] = []
@@ -1023,7 +1038,7 @@ class Blade():
             for kc in range(nStations):
                 # name the stacks <mm_span_location>_SW#
                 swstack_num = int(np.fix(m_to_mm * self.ispan[kc]))
-                self.swstacks[kw][kc].name = '{:06d}_SW{}'.format(swstack_num,kw)
+                self.swstacks[kw][kc].name = '{:06d}_SW{}'.format(swstack_num,kw+1) # NOTE: 1 is added to kw to match matlab naming
                 ind = self.webindices[kw] # currently, the shearweb indices do not change down the span
                 self.swstacks[kw][kc].indices = [kc,kc + 1,ind[0],ind[1]]
             for k in range(len(self.bom['sw'][kw])):
@@ -1032,13 +1047,13 @@ class Blade():
                 cur_ply.component = self.bom['sw'][kw][k].name #parent component of ply
                 cur_ply.materialid = self.bom['sw'][kw][k].materialid # materialid of ply
                 cur_ply.thickness = self.bom['sw'][kw][k].thickness # thickness [mm] of single ply
-                cur_ply.angle = 0, #TODO, set to 0 for now, self.bom['lp'](k, );
+                cur_ply.angle = 0 #TODO, set to 0 for now, self.bom['lp'](k, );
                 cur_ply.nPlies = 1 # default to 1, modified in addply() if necessary
                 # ... and add the ply to every area that is part of the region
-                ind = [self.bomIndices['sw'][kw][k][i] for i in range(len(self.bomIndices['sw'][kw][k]))]
+                ind = self.bomIndices['sw'][kw][k]
 
                 for kc in range(ind[0],ind[1]):
-                    self.swstacks[kw][kc].addply(cur_ply)
+                    self.swstacks[kw][kc].addply(copy(cur_ply))
     # need to add the 'MatDB' information which stores composite stack
     # information in each region at each station
     # see datatypes.MatDBentry
@@ -1403,10 +1418,64 @@ class Blade():
         
         self.updateKeypoints
 
+    def editStacksForSolidMesh(self): 
+        numSec,numStat = self.stacks.shape
+        for i in range(numSec):
+            for j in range(numStat):
+                pg = self.stacks[i,j].plygroups
+                if (len(pg) == 4):
+                    newPg = pg[1:5]
+                else:
+                    if (len(pg) == 3):
+                        newPg = np.array([pg[1],pg[1],pg[2]])
+                        t2 = pg[1].thickness
+                        t3 = pg[2].thickness
+                        newPg[1].thickness = 0.3333333 * (t2 + t3)
+                        newPg[0].thickness = 0.6666666 * t2
+                        newPg[2].thickness = 0.6666666 * t3
+                    else:
+                        if (len(pg) == 2):
+                            newPg = np.array([pg[0],pg[0],pg[1]])
+                            t1 = pg[0].thickness
+                            t2 = pg[1].thickness
+                            newPg[1].thickness = 0.3333333 * (t1 + t2)
+                            newPg[0].thickness = 0.6666666 * t1
+                            newPg[2].thickness = 0.6666666 * t2
+                        else:
+                            newPg = np.array([pg[0],pg[0],pg[0]])
+                            t1 = pg[0].thickness
+                            newPg[1].thickness = 0.3333333 * t1
+                            newPg[0].thickness = 0.3333333 * t1
+                            newPg[2].thickness = 0.3333333 * t1
+                self.stacks[i,j].plygroups = newPg
+    
+        for i in range(2):
+            stackLst = self.swstacks[i]
+            for j in range(len(stackLst)):
+                pg = stackLst[j].plygroups
+                if (len(pg) == 3 or len(pg)==0):
+                    newPg = pg
+                else:
+                    if (len(pg) == 2):
+                        newPg = np.array([pg[0],pg[0],pg[1]])
+                        t1 = pg[0].thickness
+                        t2 = pg[1].thickness
+                        newPg[1].thickness = 0.3333333 * (t1 + t2)
+                        newPg[0].thickness = 0.6666666 * t1
+                        newPg[2].thickness = 0.6666666 * t2
+                    else:
+                        newPg = np.array([pg[0],pg[0],pg[0]])
+                        t1 = pg[0].thickness
+                        newPg[1].thickness = 0.3333333 * t1
+                        newPg[0].thickness = 0.3333333 * t1
+                        newPg[2].thickness = 0.3333333 * t1
+                self.swstacks[i][j].plygroups = newPg
+        return
+
 
     def getShellMesh(self, includeAdhesive): 
-        nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls = shellMeshGeneral(self,0,includeAdhesive)
-        return nodes,elements,outerShellElSets,shearWebElSets,adhesNds,adhesEls
+        meshData = shellMeshGeneral(self,0,includeAdhesive)
+        return meshData
     
     """
     #NOTE need team help here -kb

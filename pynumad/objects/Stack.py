@@ -27,9 +27,9 @@ class Stack:
     See also ``xlsBlade``, ``BladeDef``, ``BladeDef.updateBOM``
     """
 
-    name: str = None # type: str # Name of the stack or composite material used by NuMAD, e.g. ``'000000_HP_LE_PANEL'``
-    indices = None # Indices of stack, ``[in board station, out board station, 1st kepoint, 2nd keypoint]``, e.g. ``[ibSta,obSta,keypt1,keypt2]``
-    plygroups: list = None# List of ``ply`` dataclasses
+    name: str = None
+    indices = None
+    plygroups: list = []
 
     def addply(self,ply):
         """This method adds a Ply object to stack

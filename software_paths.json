@@ -1,0 +1,10 @@
+{"numadPath" : "~/Documents/GitHub/kirklocal_NuMAD",
+"ansysPath" : "~/ansys_inc/v221/Framework/bin/Linux64/runwb2",
+"precompPath" : "",
+"bmodesPath" : "",
+"fastPath" : "",
+"crunchPath" : "",
+"turbsimPath" :"",
+"iecwindPath" :"",
+"mbcPath" :""
+}
