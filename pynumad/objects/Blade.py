@@ -518,6 +518,7 @@ class Blade():
         n2 = mm_to_m * self.teband # no foam width
 
         #keypoints, keyarcs, keycpos
+        self.TEtype = [] # reset TEtype
         for k in range(0,N):
             # allow for separate definitions of HP and LP spar cap
             # width and offset [HP LP]
@@ -1401,8 +1402,10 @@ class Blade():
                 d = np.array([[tet],[tes],[0],[0]])
                 p = np.linalg.solve(A,d)
                 #onset = self(k).maxthick;  # start of TE modification, measured from LE
-                mc = np.amax((self.ic[:,iStation] - onset) / (1 - onset),0)
-                temod = np.array([mc ** 3,mc ** 4,mc ** 5,mc ** 6]) * p
+                vec = (self.ic[:,iStation] - onset) / (1 - onset)
+                mc = np.maximum(vec, np.zeros(vec.shape))
+                temod = np.vstack([mc ** 3,mc ** 4,mc ** 5,mc ** 6]).T @ p
+                temod = temod.reshape(-1)
                 airFoilThickness = airFoilThickness + temod
 
                 self.ithickness[:,iStation] = airFoilThickness / tratio
@@ -1416,7 +1419,7 @@ class Blade():
                 # edgeLength2=norm(secondPont-firstPoint);
                 # fprintf('station #i, edgeLength: #f, New edgeLength=#f, percent diff: #f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
         
-        self.updateKeypoints
+        self.updateKeypoints()
 
     def editStacksForSolidMesh(self): 
         numSec,numStat = self.stacks.shape
