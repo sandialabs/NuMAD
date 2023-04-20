@@ -1420,59 +1420,89 @@ class Blade():
                 # fprintf('station #i, edgeLength: #f, New edgeLength=#f, percent diff: #f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
         
         self.updateKeypoints()
+        
+    def copyPly(self,ply):
+        newPly = Ply()
+        newPly.component = ply.component
+        newPly.materialid = ply.materialid
+        newPly.thickness = ply.thickness
+        newPly.angle = ply.angle
+        newPly.nPlies = ply.nPlies
+        return newPly
 
-    def editStacksForSolidMesh(self): 
+    def editStacksForSolidMesh(self):
         numSec,numStat = self.stacks.shape
         for i in range(numSec):
             for j in range(numStat):
                 pg = self.stacks[i,j].plygroups
                 if (len(pg) == 4):
-                    newPg = pg[1:5]
+                    ply1 = self.copyPly(pg[1])
+                    ply2 = self.copyPly(pg[2])
+                    ply3 = self.copyPly(pg[3])
+                    newPg = np.array([ply1,ply2,ply3])
                 else:
                     if (len(pg) == 3):
-                        newPg = np.array([pg[1],pg[1],pg[2]])
-                        t2 = pg[1].thickness
-                        t3 = pg[2].thickness
-                        newPg[1].thickness = 0.3333333 * (t2 + t3)
-                        newPg[0].thickness = 0.6666666 * t2
-                        newPg[2].thickness = 0.6666666 * t3
+                        #newPg = np.array([pg[1],pg[1],pg[2]])
+                        ply1 = self.copyPly(pg[1])
+                        ply2 = self.copyPly(pg[1])
+                        ply3 = self.copyPly(pg[2])
+                        t2 = ply1.thickness
+                        t3 = ply3.thickness
+                        ply2.thickness = 0.3333333*(t2 + t3)
+                        ply1.thickness = 0.6666666*t2
+                        ply3.thickness = 0.6666666*t3
+                        newPg = np.array([ply1,ply2,ply3])
                     else:
                         if (len(pg) == 2):
-                            newPg = np.array([pg[0],pg[0],pg[1]])
-                            t1 = pg[0].thickness
-                            t2 = pg[1].thickness
-                            newPg[1].thickness = 0.3333333 * (t1 + t2)
-                            newPg[0].thickness = 0.6666666 * t1
-                            newPg[2].thickness = 0.6666666 * t2
+                            ply1 = self.copyPly(pg[0])
+                            ply2 = self.copyPly(pg[0])
+                            ply3 = self.copyPly(pg[1])
+                            #newPg = np.array([pg[0],pg[0],pg[1]])
+                            t1 = ply1.thickness
+                            t2 = ply3.thickness
+                            ply2.thickness = 0.3333333*(t1 + t2)
+                            ply1.thickness = 0.6666666*t1
+                            ply3.thickness = 0.6666666*t2
+                            newPg = np.array([ply1,ply2,ply3])
                         else:
-                            newPg = np.array([pg[0],pg[0],pg[0]])
-                            t1 = pg[0].thickness
-                            newPg[1].thickness = 0.3333333 * t1
-                            newPg[0].thickness = 0.3333333 * t1
-                            newPg[2].thickness = 0.3333333 * t1
+                            ply1 = self.copyPly(pg[0])
+                            ply2 = self.copyPly(pg[0])
+                            ply3 = self.copyPly(pg[0])
+                            #newPg = np.array([pg[0],pg[0],pg[0]])
+                            t1 = ply1.thickness
+                            ply2.thickness = 0.3333333*t1
+                            ply1.thickness = 0.3333333*t1
+                            ply3.thickness = 0.3333333*t1
+                            newPg = np.array([ply1,ply2.ply3])
                 self.stacks[i,j].plygroups = newPg
     
         for i in range(2):
             stackLst = self.swstacks[i]
             for j in range(len(stackLst)):
                 pg = stackLst[j].plygroups
-                if (len(pg) == 3 or len(pg)==0):
-                    newPg = pg
-                else:
-                    if (len(pg) == 2):
-                        newPg = np.array([pg[0],pg[0],pg[1]])
-                        t1 = pg[0].thickness
-                        t2 = pg[1].thickness
-                        newPg[1].thickness = 0.3333333 * (t1 + t2)
-                        newPg[0].thickness = 0.6666666 * t1
-                        newPg[2].thickness = 0.6666666 * t2
-                    else:
-                        newPg = np.array([pg[0],pg[0],pg[0]])
-                        t1 = pg[0].thickness
-                        newPg[1].thickness = 0.3333333 * t1
-                        newPg[0].thickness = 0.3333333 * t1
-                        newPg[2].thickness = 0.3333333 * t1
-                self.swstacks[i][j].plygroups = newPg
+                if (len(pg) == 2):
+                    ply1 = self.copyPly(pg[0])
+                    ply2 = self.copyPly(pg[0])
+                    ply3 = self.copyPly(pg[1])
+                    #newPg = np.array([pg[0],pg[0],pg[1]])
+                    t1 = ply1.thickness
+                    t2 = ply3.thickness
+                    ply2.thickness = 0.3333333*(t1 + t2)
+                    ply1.thickness = 0.6666666*t1
+                    ply3.thickness = 0.6666666*t2
+                    newPg = np.array([ply1,ply2,ply3])
+                    self.swstacks[i][j].plygroups = newPg
+                elif(len(pg) == 1):
+                    ply1 = self.copyPly(pg[0])
+                    ply2 = self.copyPly(pg[0])
+                    ply3 = self.copyPly(pg[0])                
+                    #newPg = np.array([pg[0],pg[0],pg[0]])
+                    t1 = ply1.thickness
+                    ply2.thickness = 0.3333333*t1
+                    ply1.thickness = 0.3333333*t1
+                    ply3.thickness = 0.3333333*t1
+                    newPg = np.array([ply1,ply2,ply3])
+                    self.swstacks[i][j].plygroups = newPg
         return
 
 
