@@ -1,7 +1,7 @@
 import numpy as np
 import plotly.graph_objects as go
-from SpatialGridList2DClass import *
-from SpatialGridList3DClass import *
+from pynumad.shell.SpatialGridList2DClass import *
+from pynumad.shell.SpatialGridList3DClass import *
 
 ## - Convert list of mesh objects into a single merged mesh, returning sets representing the elements/nodes from the original meshes     
 def mergeDuplicateNodes(meshData):

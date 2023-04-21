@@ -52,6 +52,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
                     minDist = mag
                     pti = k
             keyPts = np.concatenate((keyPts,[pti]))
+            blade.geometry[pti,:,i] = np.array(kpCrd)
 
         keyPts = np.concatenate((keyPts,[lePt]))
         for j in range(5,10):
@@ -66,6 +67,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
                     minDist = mag
                     pti = k
             keyPts = np.concatenate((keyPts,[pti]))
+            blade.geometry[pti,:,i] = np.array(kpCrd)
 
         keyPts = np.concatenate((keyPts,[lenGeom-1]))
         allPts = np.array([keyPts[0]])
