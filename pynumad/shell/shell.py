@@ -2,7 +2,9 @@ import numpy as np
 import warnings
 from os import getcwd
 from os.path import join
+import subprocess
 
+import pynumad
 from pynumad.utils.interpolation import interpolator_wrap
 ##from pynumad.shell.shellClasses import shellRegion, elementSet, NuMesh3D, spatialGridList2D, spatialGridList3D
 from pynumad.shell.SurfaceClass import Surface
@@ -197,7 +199,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
             [24,12,8],
             [27,9,8]])
         for i in range(caseIndex.shape[0]):
-            spl = caseIndexc[i,0]
+            spl = caseIndex[i,0]
             tgtSp = caseIndex[i,1]
             sec = caseIndex[i,2]
             stPt = 0
@@ -385,11 +387,11 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
     return shellData
   
     
-def generateShellModel(blade, feaCode, includeAdhesive, varargin): 
+def generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
     # This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
     
     if str(feaCode.lower()) == str('ansys'):
-        global ansysPath
+        ansysPath = pynumad.path_data['ansysPath']
         # define ANSYS model settings (can be options in generateFEA)
         config = {}
         config["BoundaryCondition"] = 'cantilevered'
@@ -402,34 +404,31 @@ def generateShellModel(blade, feaCode, includeAdhesive, varargin):
         ansys_product = 'ANSYS'
         blade.paths.job = getcwd()
         filename = join(blade.paths.job,APDLname)
-        if len(varargin)==0:
+        if not meshData:
             forSolid = 0
             ## meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls = blade.shellMeshGeneral(forSolid,includeAdhesive)
             meshData = blade.shellMeshGeneral(forSolid,includeAdhesive)
-        else:
-            meshData = varargin[0]
+
         writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)  ## Edit this function for the new structure of meshData - E Anderson
 
         if config["dbgen"]:
-            if len(ansysPath)==0:
-                errordlg('Path to ANSYS not specified. Aborting.','Operation Not Permitted')
-                return meshData
+            assert not len(ansysPath)==0, 'Path to ANSYS not specified. Aborting. Operation Not Permitted'
             try:
                 #tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
-                ansys_call = sprintf('"%s" -b -p %s -I %s -o output.txt',ansysPath,ansys_product,APDLname)
-                status,result = dos(ansys_call)
+                ansys_call = print('"%s" -b -p %s -I %s -o output.txt' % (ansysPath,ansys_product,APDLname))
+                status,result = subprocess.run(ansys_call)
                 if status==0:
                     # dos command completed successfully; log written to output.txt
                     if 1:
                         print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.')
                     else:
-                        helpdlg('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed')
+                        print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed')
                 if status==7:
                     # an error has occured which is stored in output.txt
                     if 1:
                         print('Could not complete ANSYS call. See "output.txt" for details.')
                     else:
-                        warndlg('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call')
+                        print('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call')
             finally:
                 pass
     else:
