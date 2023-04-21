@@ -88,22 +88,22 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
             mat = blade.materials[kmp]
             if mat.type == 'isotropic':
                 fid.write('\n   ! %s' % (mat.name))
-                fid.write('\n   mp,ex,%d,%g' % (kmp,mat.ex))
-                fid.write('\n   mp,dens,%d,%g' % (kmp,mat.density))
-                fid.write('\n   mp,nuxy,%d,%g' % (kmp,mat.prxy))
+                fid.write('\n   mp,ex,%d,%g' % (kmp+1,mat.ex))
+                fid.write('\n   mp,dens,%d,%g' % (kmp+1,mat.density))
+                fid.write('\n   mp,nuxy,%d,%g' % (kmp+1,mat.prxy))
                 xten = mat.uts
             elif 'orthotropic' == mat.type:
                 fid.write('\n   ! %s' % (mat.name))
-                fid.write('\n   mp,ex,%d,%g' % (kmp,mat.ex))
-                fid.write('\n   mp,ey,%d,%g' % (kmp,mat.ey))
-                fid.write('\n   mp,ez,%d,%g' % (kmp,mat.ez))
-                fid.write('\n   mp,prxy,%d,%g' % (kmp,mat.prxy))
-                fid.write('\n   mp,pryz,%d,%g' % (kmp,mat.pryz))
-                fid.write('\n   mp,prxz,%d,%g' % (kmp,mat.prxz))
-                fid.write('\n   mp,gxy,%d,%g' % (kmp,mat.gxy))
-                fid.write('\n   mp,gyz,%d,%g' % (kmp,mat.gyz))
-                fid.write('\n   mp,gxz,%d,%g' % (kmp,mat.gxz))
-                fid.write('\n   mp,dens,%d,%g' % (kmp,mat.density))
+                fid.write('\n   mp,ex,%d,%g' % (kmp+1,mat.ex))
+                fid.write('\n   mp,ey,%d,%g' % (kmp+1,mat.ey))
+                fid.write('\n   mp,ez,%d,%g' % (kmp+1,mat.ez))
+                fid.write('\n   mp,prxy,%d,%g' % (kmp+1,mat.prxy))
+                fid.write('\n   mp,pryz,%d,%g' % (kmp+1,mat.pryz))
+                fid.write('\n   mp,prxz,%d,%g' % (kmp+1,mat.prxz))
+                fid.write('\n   mp,gxy,%d,%g' % (kmp+1,mat.gxy))
+                fid.write('\n   mp,gyz,%d,%g' % (kmp+1,mat.gyz))
+                fid.write('\n   mp,gxz,%d,%g' % (kmp+1,mat.gxz))
+                fid.write('\n   mp,dens,%d,%g' % (kmp+1,mat.density))
             else:
                 raise Exception('Unknown material type in database')
             if mat.type in ['isotropic','orthotropic']:
@@ -150,7 +150,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
                 nStrenghts = uss.shape[0]
                 if nStrenghts < 3:
                     uss = fullyPopluateStrengthsArray(uss)
-                fid.write('\n   tb,fcli,%d,1,20,1' % (kmp))
+                fid.write('\n   tb,fcli,%d,1,20,1' % (kmp+1))
                 fid.write('\n   tbdata,1,%g,%g,%g,%g,%g,%g' % (uts[0],ucs[0],uts[1],ucs[1],uts[2],ucs[2]))
                 fid.write('\n   tbdata,7,%g,%g,%g,,,' % (uss[0],uss[1],uss[2]))
                 fid.write('\n   tbdata,13,%g,%g,%g,%g' % (mat.xzit,mat.xzic,mat.yzit,mat.yzic))
@@ -169,7 +169,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
         if config["elementType"] in ['281','181']:
             #Outer AeroShell
             nStationLayups,nStations = blade.stacks.shape
-            maxSectionNumber = int(str(nStations)+str(nStationLayups))
+            maxSectionNumber = int(str(nStations+1)+str(nStationLayups+1))
             for iStation in range(nStations):
                 for iPerimeter in range(nStationLayups):
                     secID = int(str(iStation+1) + str(iPerimeter+1))
@@ -181,7 +181,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
                         layerThickness = currentLayer.nPlies * currentLayer.thickness / 1000
                         layerLayupAngle = currentLayer.angle
                         matID = currentLayer.materialid
-                        fid.write('\n      secdata,%g,%d,%g,,' % (layerThickness,matID,layerLayupAngle))
+                        fid.write('\n      secdata,%g,%d,%g,,' % (layerThickness,matID+1,layerLayupAngle))
                     fid.write('\n   secoffset,bot\n')
             #Web(s)
             nWebs = len(blade.swstacks)
@@ -194,7 +194,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
                 for iStation in range(nStations):
                     currentStack = blade.swstacks[iWeb][iStation]
                     if not len(currentStack.plygroups)==0 :
-                        secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude
+                        secID = (webSectionIDstart + iStation+1) + (iWeb * 10 ** orderOfMagnitude)
                         fid.write('\n   ! %s' % (currentStack.name))
                         fid.write('\n   sectype,%d,shell' % (secID))
                         for iLayer in range(len(currentStack.plygroups)):
@@ -202,7 +202,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
                             layerThickness = currentLayer.nPlies * currentLayer.thickness / 1000
                             layerLayupAngle = currentLayer.angle
                             matID = currentLayer.materialid
-                            fid.write('\n      secdata,%g,%d,%g,,' % (layerThickness,matID,layerLayupAngle))
+                            fid.write('\n      secdata,%g,%d,%g,,' % (layerThickness,matID+1,layerLayupAngle))
                         fid.write('\n   secoffset,mid\n')
         else:
             # logging.warning('Element System %s not yet available' % config["elementType"],'write_shell7 error')
@@ -269,7 +269,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
             # translation: global X,Y,Z => local y,z,x
             # rotation: presweep is local z rotation & precurve is local y rotation
             fid.write('\n   clocal,%d,CART,%g,%g,%g, %g,%g,%g\n' % \
-                ((1000 + kStation), blade.ispan[kStation],transX,transY,presweepDeg,0,precurveDeg))
+                ((1000 + kStation+1), blade.ispan[kStation],transX,transY,presweepDeg,0,precurveDeg))
             # Create coordinate system at the tip
             fid.write('\nlocal,12,CART,%g,%g,%g, %g,%g,%g\n' % \
                 (transX,transY,blade.ispan[kStation],0,precurve_rot * 180 / np.pi,presweep_rot * 180 / np.pi))
@@ -292,7 +292,7 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
         fid.write('\n! DEFINE NODES =======================================\n')
         for iNode in range(nnodes):
             fid.write('n, %i, %f, %f, %f\n' % \
-                (iNode,nodes[iNode,0],nodes[iNode,1],nodes[iNode,2]))
+                (iNode+1,nodes[iNode,0],nodes[iNode,1],nodes[iNode,2]))
         #Set the elemetn Type
         if '281' == config["elementType"]:
             fid.write('type, 11\n')
@@ -311,88 +311,53 @@ def writeANSYSshellModel(blade, filename, meshData, config, includeAdhesive):
                     elements[iElement,1],
                     elements[iElement,2],
                     elements[iElement,3],
-                    iElement
+                    iElement+1
                 )
                 fid.write('e, %i, %i, %i, %i  !Element %i \n' % elem_data)
             else:
-                dup = np.array([[dup],[iElement]])
+                dup.append(iElement)
 
         # Separate elements into outer shell and shear web
-        # outershell_els = []
-        # shearweb_els = []
+        outershell_els = []
+        shearweb_els = []
         elements = meshData['sets']['element']
         sections = meshData['sections']
-        # for i in range(len(elements)):
-        #     if "SW" in elements[i]["name"]:
-        #         shearweb_els.append((elements[i], sections[i]))
-        #     else:
-        #         outershell_els.append((elements[i], sections[i]))
-        fid.write('\n! ASSIGN SECTIONS TO ELEMENTS =======================================\n')
-        secID = 1
-        for el in elements:
-            # secID = int(str(iStation) + str(iPerimeter)) #not sure how to get this
-            # secID = 0
-            # csID = 1000 + iStation #not sure how to get this
-            # csID = 1
-            # elementList = meshData["outerShellElSets"][iPerimeter,iStation].elementList
-            elementList = el['labels']
-            for iEl in range(len(elementList)):
-                fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
-                # fid.write('   emodif,%i,esys,%i\n' % (elementList[iEl],csID))
-            secID+=1
-        # secID = 1
-        # fid.write('\n! ASSIGN SECTIONS TO SHEARWEB(S) SHELL ELEMENTS =======================================\n')
-        # for el, section in shearweb_els:
-        #     if not len(section['layup'])==0:
-        #         # secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude #not how to get this
-        #         secID = 0
-        #         # csID = 1000 + iStation # not sure how to get this
-        #         elementList = el['labels']
-        #         for iEl in range(len(elementList)):
-        #             fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
-        #         secID+=1
+        for i in range(len(elements)):
+            if "SW" in elements[i]["name"]:
+                shearweb_els.append((elements[i], sections[i]))
+            else:
+                outershell_els.append((elements[i], sections[i]))
+            
+        fid.write('\n! ASSIGN SECTIONS TO OUTER SHELL ELEMENTS =======================================\n')
+        for iStation in range(nStations):
+            for iPerimeter in range(nStationLayups):
+                secID = int(str(iStation+1) + str(iPerimeter+1))
+                csID = 1000 + iStation
+                elementList = meshData["outerShellElSets"][iPerimeter,iStation].elementList
+                for iEl in range(len(elementList)):
+                    fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
+                    fid.write('   emodif,%i,esys,%i\n' % (elementList[iEl],csID))
+        
+        fid.write('\n! ASSIGN SECTIONS TO SHEARWEB(S) SHELL ELEMENTS =======================================\n')
+        nWebs = len(blade.swstacks)
+        for iWeb in range(nWebs):
+            __,nStations = blade.swstacks[iWeb].shape
+            for iStation in range(nStations):
+                currentStack = blade.swstacks[iWeb][iStation]
+                if not len(currentStack.plygroups)==0 :
+                    secID = (webSectionIDstart + iStation + 1) + (iWeb * 10 ** orderOfMagnitude)
+                    csID = 1000 + iStation
+                    elementList = meshData["shearWebElSets"][iWeb][iStation].elementList
+                    for iEl in range(len(elementList)):
+                        fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
+                        # fprintf(fid,'   emodif,#i,esys,#i\n',elementList(iEl),csID);
+       
 
-        
-        # #old version
-        # nWebs = len(blade.swstacks)
-        # for iWeb in range(nWebs):
-        #     __,nStations = blade.swstacks[iWeb].shape
-        #     for iStation in range(nStations):
-        #         currentStack = blade.swstacks[iWeb][iStation]
-        #         if not len(currentStack.plygroups)==0 :
-        #             secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude
-        #             csID = 1000 + iStation
-        #             elementList = meshData["shearWebElSets"][iWeb][iStation].elementList
-        #             for iEl in range(len(elementList)):
-        #                 fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
-        
-#        fid.write('\n! ASSIGN SECTIONS TO OUTER SHELL ELEMENTS =======================================\n')
-#        for iStation in range(nStations):
-#            for iPerimeter in range(nStationLayups):
-#                secID = int(str(iStation) + str(iPerimeter))
-#                csID = 1000 + iStation
-#                elementList = meshData["outerShellElSets"][iPerimeter,iStation].elementList
-#                for iEl in range(len(elementList)):
-#                    fid.write('   emodif,%i,secnum,%i\n' % (elementList(iEl),secID))
-#                    fid.write('   emodif,%i,esys,%i\n' % (elementList(iEl),csID))
-#        fid.write('\n! ASSIGN SECTIONS TO SHEARWEB(S) SHELL ELEMENTS =======================================\n')
-#        nWebs = len(blade.swstacks)
-#        for iWeb in range(nWebs):
-#            __,nStations = blade.swstacks[iWeb].shape
-#            for iStation in range(nStations):
-#                currentStack = blade.swstacks[iWeb][iStation]
-#                if not len(currentStack.plygroups)==0 :
-#                    secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude
-#                    csID = 1000 + iStation
-#                    elementList = meshData["shearWebElSets"][iWeb][iStation].elementList
-#                    for iEl in range(len(elementList)):
-#                        fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
-                        #fprintf(fid,'   emodif,#i,esys,#i\n',elementList(iEl),csID);
-        #     #tcl: reverse area normals if clockwise blade
-        #     #tcl:    shear web areas are reversed as well - not necessary, just easier
-        #     if blade.rotorspin == 1 # clockwise rotation
-        #         fprintf(fid,'\n   areverse,all');
-        #     end
+        #%tcl: reverse area normals if clockwise blade
+        #%tcl:    shear web areas are reversed as well - not necessary, just easier
+        #if blade.rotorspin == 1 % clockwise rotation
+        #    fprintf(fid,'\n   areverse,all');
+        #end 
         fid.write('\n   ENSYM,,,,1,%i' % (nelements))
         #jcb: are these 2 lines necessary now that we have local coordinate
         #  systems to deal with presweep and precurve?
@@ -492,389 +457,52 @@ def fullyPopluateStrengthsArray(strengthArray):
             strengthArray = np.concatenate([strengthArray,[strengthArray[i]]])
     
     return strengthArray
-    
-
-def writeANSYSinputFile(fid, mat, ansysSecNumber, coreMatName): 
-    #####Find the face sheet####
-    cellMat = np.array([])
-    for i in range(len(mat.layer)):
-        cellMat = np.array([[cellMat],[np.array([mat.layer[i].layerName])]])
-    
-    kbalsa = np.where((str(coreMatName) == 1) and (str(cellMat) == 1))
-    iLayer = range(kbalsa - 1)
-    
-    # Find the number of layers in the face
-    qty = 0
-    
-    for i in range(iLayer.size):
-        qty = qty + mat.layer(iLayer[i]).quantity
-    
-    #Loop through the top facesheet layers
-    
-    fid.write('!*************** ansysSecNumber = %i ***************\n' % (ansysSecNumber))
-    fid.write('/POST1\n' % ())
-    fid.write('*DEL,iel\n' % ())
-    fid.write('*DEL,enum\n' % ())
-    fid.write('*DEL,nelTemp\n' % ())
-    fid.write('RSYS, SOLU\n' % ())
-    fid.write('ALLSEL\n' % ())
-    fid.write('ESEL, S, SEC,,%i\n' % (ansysSecNumber))
-    fid.write('*GET, enum, ELEM, 0, NUM, MIN, !  lowest element number in the selected set\n' % ())
-    fid.write('*get, nelTemp, ELEM,0,count\n' % ())
-    fid.write('*DIM, iel,ARRAY,nelTemp\n' % ())
-    fname = 'section-' + str(ansysSecNumber) + '-faceAvgStresses'
-    
-    if os.path.isfile(fname + '.txt'):
-        os.delete(fname + '.txt')
-    
-    fid.write('*CFOPEN, %s, txt,,APPEND\n' % (fname))
-    #Create an array with the element numbers in the selected set
-    fid.write('*DO, J, 1,nelTemp  !Loop through elements\n' % ())
-    fid.write('iel(J)=enum\n' % ())
-    fid.write('enum =ELNEXT(enum)  !Next higher element number above N in selected set\n' % ())
-    fid.write('*ENDDO\n' % ())
-    fid.write('\n' % ())
-    fid.write('ALLSEL\n' % ())
-    fid.write('*DO, J, 1,nelTemp  !Loop through elements\n' % ())
-    fid.write('	S11a=0 !Initialize average stress variables for each element\n' % ())
-    fid.write('	S22a=0\n' % ())
-    fid.write('	S33a=0\n' % ())
-    fid.write('	S23a=0\n' % ())
-    fid.write('	S13a=0\n' % ())
-    fid.write('	S12a=0\n' % ())
-    fid.write('	*DO, I, 1,%i    !Loop through face layers\n' % (qty))
-    fid.write('	    LAYER,I\n' % ())
-    fid.write('		SHELL,MID   !Stress result at midlayer\n' % ())
-    fid.write('		ESEL,S,ELEM,,iel(J)\n' % ())
-    fid.write('		ETABLE,ERAS !Each element gets a new element table\n' % ())
-    fid.write('	    ETABLE,S11,S,X,AVG !AVG - Store averaged element centroid value\n' % ())
-    fid.write('	    ETABLE,S22,S,Y,AVG\n' % ())
-    fid.write('		ETABLE,S33,S,Z,AVG\n' % ())
-    fid.write('		ETABLE,S23,S,YZ,AVG\n' % ())
-    fid.write('		ETABLE,S13,S,XZ,AVG\n' % ())
-    fid.write('        ETABLE,S12,S,XY,AVG\n' % ())
-    fid.write('	    *GET,tempS11, ELEM, iel(J), ETAB, S11\n' % ())
-    fid.write('		*GET,tempS22, ELEM, iel(J), ETAB, S22\n' % ())
-    fid.write('		*GET,tempS33, ELEM, iel(J), ETAB, S33\n' % ())
-    fid.write('		*GET,tempS23, ELEM, iel(J), ETAB, S23\n' % ())
-    fid.write('		*GET,tempS13, ELEM, iel(J), ETAB, S13\n' % ())
-    fid.write('		*GET,tempS12, ELEM, iel(J), ETAB, S12\n' % ())
-    fid.write('		S11a=S11a+tempS11\n' % ())
-    fid.write('		S22a=S22a+tempS22\n' % ())
-    fid.write('		S33a=S33a+tempS33\n' % ())
-    fid.write('		S23a=S23a+tempS23\n' % ())
-    fid.write('		S13a=S13a+tempS13\n' % ())
-    fid.write('		S12a=S12a+tempS12\n' % ())
-    fid.write('	*ENDDO\n' % ())
-    fid.write('	S11a=S11a/%i\n' % (qty))
-    fid.write('	S22a=S22a/%i\n' % (qty))
-    fid.write('	S33a=S33a/%i\n' % (qty))
-    fid.write('	S23a=S23a/%i\n' % (qty))
-    fid.write('	S13a=S13a/%i\n' % (qty))
-    fid.write('	S12a=S12a/%i\n' % (qty))
-    fid.write('	ELNO=iel(J)  !It is needed to refer to ELNO in the command below\n' % ())
-    fid.write('*VWRITE,ELNO,S11a,S22a,S33a,S23a,S13a,S12a\n' % ())
-    fid.write('(E20.12,E20.12,E20.12,E20.12,E20.12,E20.12,E20.12)\n' % ())
-    fid.write('*ENDDO\n' % ())
-    fid.write('*CFCLOS\n' % ())
-    fid.write('\n' % ())
-    fid.write('\n' % ())
-    return
 
 
-import numpy as np
-    
-def writeAnsysDeflections(blade, config, iLoad, fid, deflectionFilename): 
-    #Outer AeroShell
-    nStationLayups,nStations = blade.stacks.shape
-    maxSectionNumber = int(str(nStations) + str(nStationLayups))
-    
-    #The following two lines help make unique IDs for web sections
-#based on the highes section already defined for aeroshell
-    orderOfMagnitude = int(np.floor(np.log10(maxSectionNumber)))
-    webSectionIDstart = np.ceil(maxSectionNumber / 10 ** orderOfMagnitude) * 10 ** orderOfMagnitude
-    fid.write('/POST1\n' % ())
-    fid.write('set,last\n' % ())
-    fid.write('RSYS,0\n' % ())
-    
-    fid.write('seltol,0.05\n' % ())
-    for i in range(blade.ispan.size):
-        fid.write('*CFOPEN, %s,out\n' % (deflectionFilename + '-' + str(i)))
-        fid.write('ESEL,S,SEC,,1,%i   \n' % (webSectionIDstart))
-        #fprintf(fid,'ESEL,S,SEC,,1,999   \n');    #Selects aero shell only
-        fid.write('nsle,S,   \n' % ())
-        fid.write('nsel,r,loc,z,%f  \n' % (blade.ispan(i)))
-        #fprintf(fid,'nsll,s,,\n');
-        if i == blade.ispan.size:
-            fid.write('nsel,u,node,,z_master_node_number\n' % ())
-        #fprintf(fid,'nplot\n');
-        fid.write('*GET, NsectionNodes, NODE,0,COUNT   !Get the number of nodes in the set\n' % ())
-        fid.write('*GET, node_num, NODE,0,NUM,MIN        !Get the smallest number node in the set\n' % ())
-        fid.write('*DO, i, 1, NsectionNodes                 !loop through all nodes in cross section\n' % ())
-        fid.write('*GET, xpos, NODE,node_num,loc,X\n' % ())
-        fid.write('*GET, ypos, NODE,node_num,loc,Y\n' % ())
-        fid.write('*GET, zpos, NODE,node_num,loc,Z\n' % ())
-        fid.write('*GET, u1, NODE,node_num,U,X\n' % ())
-        fid.write('*GET, u2, NODE,node_num,U,Y\n' % ())
-        fid.write('*GET, u3, NODE,node_num,U,Z\n' % ())
-        fid.write(' *VWRITE,node_num,xpos,ypos,zpos,u1,u2,u3\n' % ())
-        fid.write('(E20.12,E20.12,E20.12,E20.12,E20.12,E20.12,E20.12)\n' % ())
-        fid.write('node_num=NDNEXT(node_num)             !Get the next higher node number in the set\n' % ())
-        fid.write('*ENDDO\n' % ())
-        fid.write('*CFCLOS\n' % ())
-        fid.write('\n \n \n' % ())
-    
-    fid.write('finish\n' % ())
-    return
-    
-## Panel Stresses Analysis Script
-    
-def writeAnsysGetFaceStresses(blade, fid, coreMatName): 
-    isoorthoInModel,compsInModel,SkinAreas,app = getMatrialLayerInfoWithOutGUI(blade)
-    #fid=fopen('getFaceStresses.mac','w+');
-    TotalStations = blade.ispan.size
-    for kStation in range(TotalStations - 1):
-        #kPanel=find(~cellfun('isempty',strfind([SkinAreas(kStation).Material],'PANEL'))); #Array that stores the kArea index that contains 'PANEL' in the name
-        #for i=1:numel(kPanel)
-        for kArea in range(SkinAreas[kStation].startIB.size):
-            #See if the section contatins Balsa/core material name (i.e find
-            #the sandwhich panels)
-            n = str(SkinAreas[kStation].Material[kArea]) == str(app.matlist)
-            mat = app.matdb[n]
-            if coreMatName in [mat.layer.layerName]:
-                ansysSecNumber = np.where(str(SkinAreas[kStation].Material[kArea]) == str(compsInModel) == 1)
-                writeANSYSinputFile(fid,mat,ansysSecNumber,coreMatName)
-    
-    fid.write('\n' % ())
-    fid.write('\n' % ())
-    fid.write('!*************** WEB ***************\n' % ())
-    fid.write('\n' % ())
-    fid.write('\n' % ())
-    fid.close()
-    #Web
-    TotalShearwebs = np.asarray(app.shearweb).size
-    for kShearweb in range(TotalShearwebs):
-        n = str(app.shearweb[kShearweb].Material) == str(app.matlist)
-        mat = app.matdb[n]
-        if coreMatName in [mat.layer.layerName]:
-            ansysSecNumber = np.where(str([app.shearweb[kShearweb].Material]) == str(compsInModel) == 1)
-            ansysSecNumber = ansysSecNumber + 1000
-            writeANSYSinputFile(fid,mat,ansysSecNumber,coreMatName)
-    
-    fid.write('FINISH\n' % ())
-    fid.write('allsel\n' % ())
-    return app,SkinAreas,compsInModel
+"""
+# Attempting to write all elements together
+        fid.write('\n! ASSIGN SECTIONS TO ELEMENTS =======================================\n')
+        secID = 1
+        for el in elements:
+            # secID = int(str(iStation) + str(iPerimeter)) #not sure how to get this
+            # secID = 0
+            # csID = 1000 + iStation #not sure how to get this
+            # csID = 1
+            # elementList = meshData["outerShellElSets"][iPerimeter,iStation].elementList
+            elementList = el['labels']
+            for iEl in range(len(elementList)):
+                fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
+                # fid.write('   emodif,%i,esys,%i\n' % (elementList[iEl],csID))
+            secID+=1
+        # secID = 1
+        # fid.write('\n! ASSIGN SECTIONS TO SHEARWEB(S) SHELL ELEMENTS =======================================\n')
+        # for el, section in shearweb_els:
+        #     if not len(section['layup'])==0:
+        #         # secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude #not how to get this
+        #         secID = 0
+        #         # csID = 1000 + iStation # not sure how to get this
+        #         elementList = el['labels']
+        #         for iEl in range(len(elementList)):
+        #             fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
+        #         secID+=1
 
-    
-def writeAnsysResultantVSSpan(blade, config, iLoad, fid): 
-    fid.write('/POST1\n' % ())
-    fid.write('set,LAST\n' % ())
-    fid.write('RSYS,0\n' % ())
-    
-    #fprintf(fid,'seltol,0.05\n');
-    #fprintf(fid,'*CFOPEN, resultantVSspan,txt\n');
-    #for i=1:numel(blade.ispan)
-    #fprintf(fid,'nsel,s,loc,z,0,#f  \n',blade.ispan(i));
-    
-    #if i==numel(blade.ispan)
-    #fprintf(fid,'nsel,u,node,,z_master_node_number\n');
-    #end
-    
-    #fprintf(fid,'spoint,0,#f,#f,#f\n',blade.sweep(i),blade.prebend(i),blade.ispan(i));
-    #fprintf(fid,'nplot\n');
-    #fprintf(fid,'FSUM\n');
-    #fprintf(fid,'*GET, F1, FSUM, 0, ITEM,FX\n');
-    #fprintf(fid,'*GET, F2, FSUM, 0, ITEM,FY\n');
-    #fprintf(fid,'*GET, F3, FSUM, 0, ITEM,FZ\n');
-    #fprintf(fid,'*GET, M1, FSUM, 0, ITEM,MX\n');
-    #fprintf(fid,'*GET, M2, FSUM, 0, ITEM,MY\n');
-    #fprintf(fid,'*GET, M3, FSUM, 0, ITEM,MZ\n');
-    #fprintf(fid,'*VWRITE,#f,F1,F2,F3,M1,M2,M3\n',blade.ispan(i));
-    #fprintf(fid,'(E20.12,E20.12,E20.12,E20.12,E20.12,E20.12,E20.12)\n');
-    #fprintf(fid,'\n \n \n');
-    #end
-    #fprintf(fid,'*CFCLOS\n');
-    #fprintf(fid,'finish\n');
-    
-    fid.write('/post1\n' % ())
-    fid.write('elsize=%f\n' % (blade.mesh))
-    fid.write('nz=nint(%f/elsize) !Integer number of points to output resultant loads\n' % (blade.ispan[-1]))
-    fid.write('zloc=0\n' % ())
-    fid.write('delta=0.1\n' % ())
-    fid.write('*CFOPEN, resultantVSspan,txt\n' % ())
-    fid.write('*do,I,1,nz+1\n' % ())
-    fid.write('allsel\n' % ())
-    fid.write('nsel,s,loc,z,0,zloc+delta\n' % ())
-    fid.write('spoint,0,0,0,zloc\n' % ())
-    fid.write('!nplot\n' % ())
-    fid.write('FSUM\n' % ())
-    fid.write('*GET, F1, FSUM, 0, ITEM,FX\n' % ())
-    fid.write('*GET, F2, FSUM, 0, ITEM,FY\n' % ())
-    fid.write('*GET, F3, FSUM, 0, ITEM,FZ\n' % ())
-    fid.write('*GET, M1, FSUM, 0, ITEM,MX\n' % ())
-    fid.write('*GET, M2, FSUM, 0, ITEM,MY\n' % ())
-    fid.write('*GET, M3, FSUM, 0, ITEM,MZ\n' % ())
-    fid.write('*VWRITE,zloc,F1,F2,F3,M1,M2,M3\n' % ())
-    fid.write('(E20.12,E20.12,E20.12,E20.12,E20.12,E20.12,E20.12)\n' % ())
-    fid.write('zloc=zloc+elsize\n' % ())
-    fid.write('*ENDDO\n' % ())
-    fid.write('*CFCLOS\n' % ())
-    fid.write('finish\n' % ())
-    return
-
- 
-def writeAnsysFatigue(fid, iLoad): 
-    ###################Outputs for fatigue analysis in MATLAB#################
-    fid.write('! BEGIN FATIGUE SCRIPT\n' % ())
-    fid.write('allsel\n' % ())
-    fid.write('/prep7\n' % ())
-    fid.write('esel,all\n' % ())
-    fid.write('allsel\n' % ())
-    fid.write('/prep7\n' % ())
-    fid.write('esel,all\n' % ())
-    fid.write('esel,u,type,,21  \n' % ())
-    fid.write('/POST1\n' % ())
-    fid.write('set,LAST\n' % ())
-    fid.write('RSYS,SOLU\n' % ())
-    
-    ### Element strains and curvatures ###
-    fid.write('ALLSEL\n' % ())
-    fid.write('ETABLE, zcent,CENT,Z\n' % ())
-    fid.write('ETABLE, eps11,SMISC,9 \n' % ())
-    fid.write('ETABLE, eps22,SMISC,10 \n' % ())
-    fid.write('ETABLE, eps12,SMISC,11 \n' % ())
-    fid.write('ETABLE, kapa11,SMISC,12 \n' % ())
-    fid.write('ETABLE, kapa22,SMISC,13 \n' % ())
-    fid.write('ETABLE, kapa12,SMISC,14 \n' % ())
-    fid.write('ETABLE, gamma13,SMISC,15 \n' % ())
-    fid.write('ETABLE, gamma23,SMISC,16 \n' % ())
-    fid.write('/output,plateStrains-all-%s,txt\n' % (str(iLoad)))
-    fid.write('PRETAB,zcent,eps11,eps22,eps12,kapa11,kapa22,kapa12,gamma12,gamma13,gamma23\n' % ())
-    fid.write('ETABLE,ERAS\n\n' % ())
-    fid.write('finish\n' % ())
-    fid.write('! END FATIGUE OUTPUT SCRIPT\n' % ())
-    return
-    
-
-def writeAnsysLocalFields(blade, config, iLoad, fid): 
-    ###################Outputs for fatigue analysis in MATLAB#################
-    fid.write('! BEGIN LOCAL FIELD SCRIPT\n' % ())
-    fid.write('allsel\n' % ())
-    fid.write('/post1\n' % ())
-    fid.write('set,last\n' % ())
-    fid.write('esel,all\n' % ())
-    ### Element Stress ###
-    fid.write('ALLSEL\n' % ())
-    fid.write('ETABLE, zcent,CENT,Z\n' % ())
-    fid.write('ETABLE, eps11,SMISC,9 \n' % ())
-    fid.write('ETABLE, eps22,SMISC,10 \n' % ())
-    fid.write('ETABLE, eps12,SMISC,11 \n' % ())
-    fid.write('ETABLE, kapa11,SMISC,12 \n' % ())
-    fid.write('ETABLE, kapa22,SMISC,13 \n' % ())
-    fid.write('ETABLE, kapa12,SMISC,14 \n' % ())
-    fid.write('ETABLE, gamma13,SMISC,15 \n' % ())
-    fid.write('ETABLE, gamma23,SMISC,16 \n' % ())
-    fid.write('/output,plateStrains-all-%s,txt\n' % (str(iLoad)))
-    fid.write('PRETAB,zcent,eps11,eps22,eps12,kapa11,kapa22,kapa12,gamma12,gamma13,gamma23\n' % ())
-    fid.write('ETABLE,ERAS\n\n' % ())
-    #fprintf(fid,'ETABLE, zcent,CENT,Z\n');
-    #fprintf(fid,'ETABLE, N11,SMISC,1 \n');
-    #fprintf(fid,'ETABLE, N22,SMISC,2 \n');
-    #fprintf(fid,'ETABLE, N12,SMISC,3 \n');
-    #fprintf(fid,'ETABLE, M11,SMISC,4 \n');
-    #fprintf(fid,'ETABLE, M22,SMISC,5 \n');
-    #fprintf(fid,'ETABLE, M12,SMISC,6 \n');
-    #fprintf(fid,'ETABLE, Q13,SMISC,7 \n');
-    #fprintf(fid,'ETABLE, Q23,SMISC,8 \n');
-    #fprintf(fid,'/output,plateExamplePlateForces-all-#s,txt\n',int2str(iLoad));
-    #fprintf(fid,'/output,plateForces-all-#s,txt\n',int2str(iLoad));
-    #fprintf(fid,'PRETAB,zcent,N11,N22,N12,M11,M22,M12,Q12,Q13,Q23\n');
-    #fprintf(fid, 'ETABLE,ERAS\n\n');
-    fid.write('finish\n' % ())
-    return
-
-    
-def writeAnsysRupture(config, iLoad, fid, failureFilename): 
-    fid.write('! BEGIN FAILURE SCRIPT\n' % ())
-    fid.write('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n' % ())
-    fid.write('!Add for PLESOL and *get,findex,PLNSOL,0,MAX to work' % ())
-    fid.write('/BATCH  \n' % ())
-    fid.write('/COM,ANSYS RELEASE Release 18.1      BUILD 18.1      UP20170403       15:49:08\n' % ())
-    fid.write('/GRA,POWER\n ' % ())
-    fid.write('/GST,ON\n ' % ())
-    fid.write('/PLO,INFO,3\n ' % ())
-    fid.write('/GRO,CURL,ON\n ' % ())
-    fid.write('/CPLANE,1   \n ' % ())
-    fid.write('/REPLOT,RESIZE  \n ' % ())
-    fid.write('WPSTYLE,,,,,,,,0\n ' % ())
-    fid.write('/SHOW\n ' % ())
-    fid.write('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n' % ())
-    fid.write('/POST1\n' % ())
-    fid.write('set,last\n' % ())
-    fid.write('allsel\n' % ())
-    fid.write('RSYS,LSYS \n' % ())
-    
-    fid.write('layer,fcmax\n' % ())
-    if config.analysisFlags.failure.upper() not in ['PUCK','LARC03','LARC04']:
-        #Do this for the failure criteria that do not distinguish between fiber
-        #and matrix failure
-        fc = config.analysisFlags.failure.upper()
-        fid.write('FCTYP,add,%s\n' % (fc))
-        fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-        fid.write('*get,findex,PLNSOL,0,MAX\n' % ())
-    else:
-        #Do this for the failure criteria that do distinguish between fiber
-        #and matrix failure
-        if 'PUCK' == config.analysisFlags.failure.upper():
-            #Fiber Failure
-            fc = 'PFIB'
-            fid.write('FCTYP,add,%s\n' % (fc))
-            fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-            fid.write('*get,Ffindex,PLNSOL,0,MAX\n' % ())
-            #Matrix Failure
-            fc = 'PMAT'
-            fid.write('FCTYP,add,%s\n' % (fc))
-            fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-            fid.write('*get,Mfindex,PLNSOL,0,MAX\n' % ())
-        else:
-            if 'LARC03' == config.analysisFlags.failure.upper():
-                #Fiber Failure
-                fc = 'L3FB'
-                fid.write('FCTYP,add,%s\n' % (fc))
-                fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-                fid.write('*get,Ffindex,PLNSOL,0,MAX\n' % ())
-                #Matrix Failure
-                fc = 'L3MT'
-                fid.write('FCTYP,add,%s\n' % (fc))
-                fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-                fid.write('*get,Mfindex,PLNSOL,0,MAX\n' % ())
-            else:
-                if 'LARC04' == config.analysisFlags.failure.upper():
-                    #Fiber Failure
-                    fc = 'L4FB'
-                    fid.write('FCTYP,add,%s\n' % (fc))
-                    fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-                    fid.write('*get,Ffindex,PLNSOL,0,MAX\n' % ())
-                    #Matrix Failure
-                    fc = 'L4MT'
-                    fid.write('FCTYP,add,%s\n' % (fc))
-                    fid.write('PLESOL, FAIL,%s, 0,1.0\n' % (fc))
-                    fid.write('*get,Mfindex,PLNSOL,0,MAX\n' % ())
-        #Report the higher of the fiber failure index or the matrix
-        fid.write('*IF, Ffindex, GT,Mfindex, THEN\n' % ())
-        fid.write('findex=Ffindex\n' % ())
-        fid.write('*ELSE\n' % ())
-        fid.write('findex=Mfindex\n' % ())
-        fid.write('*ENDIF\n' % ())
-    
-    fid.write(np.array(['/output,',failureFilename,',out\n']) % ())
-    fid.write('*status,findex\n' % ())
-    fid.write('/output\n' % ())
-    ## EMA added:
-    fid.write('/output,allElemFailureResults%s,out\n' % (str(iLoad)))
-    fid.write('PRESOL,FAIL\n' % ())
-    fid.write('/output\n' % ())
-    ## END
-    fid.write('finish\n' % ())
-    fid.write('! END FAILURE SCRIPT\n' % ())
-    return
+        
+        # #old version
+        # nWebs = len(blade.swstacks)
+        # for iWeb in range(nWebs):
+        #     __,nStations = blade.swstacks[iWeb].shape
+        #     for iStation in range(nStations):
+        #         currentStack = blade.swstacks[iWeb][iStation]
+        #         if not len(currentStack.plygroups)==0 :
+        #             secID = webSectionIDstart + iStation + (iWeb - 1) * 10 ** orderOfMagnitude
+        #             csID = 1000 + iStation
+        #             elementList = meshData["shearWebElSets"][iWeb][iStation].elementList
+        #             for iEl in range(len(elementList)):
+        #                 fid.write('   emodif,%i,secnum,%i\n' % (elementList[iEl],secID))
+        
+        #     #tcl: reverse area normals if clockwise blade
+        #     #tcl:    shear web areas are reversed as well - not necessary, just easier
+        #     if blade.rotorspin == 1 # clockwise rotation
+        #         fprintf(fid,'\n   areverse,all');
+        #     end
+"""
