@@ -7,36 +7,16 @@ blade = pynu.objects.Blade.Blade()
 fileName = 'myBlade.yaml'
 blade.read_yaml(fileName)
 
+for stat in blade.stations:
+    stat.airfoil.resample(n_samples=300)
+    
+blade.updateGeometry()
+
 blade.expandBladeGeometryTEs()
 blade.mesh = 0.2
 
 # with open('myBlade.obj','rb') as file:
     # blade = pickle.load(file)
-    
-## reduce number of plies
-# numSec,numStat = blade.stacks.shape
-
-# for stat in range(0,numStat):
-    # for sec in range(0,numSec):
-        # for pgi in range(0,len(blade.stacks[sec,stat].plygroups)):
-            # newNp = int(np.ceil(0.02*blade.stacks[sec,stat].plygroups[pgi].nPlies))
-            # numP = blade.stacks[sec,stat].plygroups[pgi].nPlies
-            # if(numP > 50):
-                # numP = int(np.ceil(0.02*numP))
-                # blade.stacks[sec,stat].plygroups[pgi].nPlies = numP
-            # blade.stacks[sec,stat].plygroups[pgi].nPlies = newNp
-            
-
-# for webi in range(0,len(blade.swstacks)):
-    # for stki in range(0,len(blade.swstacks[webi])):
-        # for pgi in range(0,len(blade.swstacks[webi][stki].plygroups)):
-            # newNp = int(np.ceil(0.02*blade.swstacks[webi][stki].plygroups[pgi].nPlies))
-            # blade.swstacks[webi][stki].plygroups[pgi].nPlies = newNp
-            # numP = blade.swstacks[webi][stki].plygroups[pgi].nPlies
-            # if(numP > 50):
-                # numP = int(np.ceil(0.02*numP))
-                # blade.swstacks[webi][stki].plygroups[pgi].nPlies = numP
-##
 
 bladeMesh = pynu.shell.shell.getSolidMesh(blade, layerNumEls=[1,1,1])
 
@@ -75,7 +55,7 @@ for el in bladeMesh['elements']:
     i = i + 1
     
 for es in bladeMesh['sets']['element']:
-    ln = '*Elset, elset=' + es['name'] + '\n'
+    ln = '*Elset, elset=set' + es['name'] + '\n'
     outFile.write(ln)
     for el in es['labels']:
         ln = '  ' + str(el+1) + '\n'
@@ -114,7 +94,7 @@ for el in bladeMesh['adhesiveEls']:
     i = i + 1
 
 es = bladeMesh['adhesiveElSet']
-ln = '*Elset, elset=' + es['name'] + '\n'
+ln = '*Elset, elset=set' + es['name'] + '\n'
 outFile.write(ln)
 for el in es['labels']:
     ln = '  ' + str(el+1) + '\n'

@@ -1,5 +1,5 @@
 import numpy as np
-from SpatialGridList2DClass import *
+from pynumad.shell.SpatialGridList2DClass import *
 import plotly.graph_objects as go
 
 class Mesh2D():
