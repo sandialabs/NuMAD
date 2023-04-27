@@ -30,9 +30,9 @@ def mergeDuplicateNodes(meshData):
         minY = minY - 0.01*meshDim
         maxZ = maxZ + 0.01*meshDim
         minZ = minZ - 0.01*meshDim
-        xSpacing = (maxX - minX)/nto1_4
-        ySpacing = (maxY - minY)/nto1_4
-        zSpacing = (maxZ - minZ)/nto1_4
+        xSpacing = 0.5*(maxX - minX)/nto1_3
+        ySpacing = 0.5*(maxY - minY)/nto1_3
+        zSpacing = 0.5*(maxZ - minZ)/nto1_3
         nodeGL = SpatialGridList3D(minX,maxX,minY,maxY,minZ,maxZ,xSpacing,ySpacing,zSpacing)
         tol = 1.0e-6*meshDim/nto1_3
     else:
@@ -42,8 +42,8 @@ def mergeDuplicateNodes(meshData):
         minX = minX - 0.01*meshDim
         maxY = maxY + 0.01*meshDim
         minY = minY - 0.01*meshDim
-        xSpacing = (maxX - minX)/nto1_3
-        ySpacing = (maxY - minY)/nto1_3
+        xSpacing = 0.5*(maxX - minX)/nto1_3
+        ySpacing = 0.5*(maxY - minY)/nto1_3
         nodeGL = SpatialGridList2D(minX,maxX,minY,maxY,xSpacing,ySpacing)
         tol = 1.0e-6*meshDim/nto1_2
         

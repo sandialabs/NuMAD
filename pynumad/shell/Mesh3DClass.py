@@ -71,10 +71,12 @@ class Mesh3D():
         self.wedgeElements = -np.ones((elSize,6),dtype=int)
         self.wedgeElSize = elSize
         self.numWedgeEls = 0
+        wERank = np.zeros(elSize,dtype=int)
         
         self.hexElements = -np.ones((elSize,8),dtype=int)
         self.hexElSize = elSize
         self.numHexEls = 0
+        hERank = np.zeros(elSize,dtype=int)
         
         methString = 'inDirection toPoint fromPoint'
         if(sweepMethod in methString):
@@ -100,6 +102,7 @@ class Mesh3D():
             nNds = self.numNodes
             wE = self.numWedgeEls
             hE = self.numHexEls
+            eli = 0
             for i in range(0,sweepElements):
                 for j in range(0,rowNds):
                     newNd = self.nodes[j] + (i+1)*stepLen*ndDir[j]
@@ -114,6 +117,7 @@ class Mesh3D():
                         n5 = n2 + rowNds
                         n6 = n3 + rowNds
                         self.wedgeElements[wE] = np.array([n1,n2,n3,n4,n5,n6])
+                        wERank[wE] = eli
                         wE = wE + 1
                     else:
                         n4 = self.faceNodes[j,3] + i*rowNds
@@ -122,8 +126,9 @@ class Mesh3D():
                         n7 = n3 + rowNds
                         n8 = n4 + rowNds
                         self.hexElements[hE] = np.array([n1,n2,n3,n4,n5,n6,n7,n8])
+                        hERank[hE] = eli
                         hE = hE + 1
-            
+                    eli = eli + 1           
             self.numNodes = nNds
             self.numWedgeEls = wE
             self.numHexEls = hE
@@ -132,41 +137,45 @@ class Mesh3D():
             nbNds = self.numBndNodes
             wE = self.numWedgeEls
             hE = self.numHexEls
+            eli = 0
             if(not multiStage):
                 sweepElements = [sweepElements]
                 destNodes = [destNodes]
             if(interpMethod == 'linear'):
                 prevDest = self.nodes.copy()
+                cumElLay = 0
                 for stg in range(0,stages):
                     dNds = np.array(destNodes[stg])
-                    ndDir = list()
+                    ndDir = np.zeros((nbNds,3))
                     for ndi in range(0,nbNds):
-                        vec = (1.0/sweepElements[stg])*(dNds[ndi] - prevDest[ndi])
-                        ndDir.append(vec)
-                    ndDir = np.array([ndDir])
+                        ndDir[ndi] = (1.0/sweepElements[stg])*(dNds[ndi] - prevDest[ndi])
                     for i in range(0,sweepElements[stg]):
                         for ndi in range(0,nbNds):
-                            self.nodes[nNds] = self.nodes[ndi] + (i+1)*ndDir[ndi]
+                            self.nodes[nNds] = self.nodes[nNds-nbNds] + ndDir[ndi]
                             nNds = nNds + 1
                         for fci in range(0,self.numBndFaces):
-                            n1 = self.faceNodes[fci,0] + i*nbNds
-                            n2 = self.faceNodes[fci,1] + i*nbNds
-                            n3 = self.faceNodes[fci,2] + i*nbNds
+                            n1 = self.faceNodes[fci,0] + cumElLay*nbNds
+                            n2 = self.faceNodes[fci,1] + cumElLay*nbNds
+                            n3 = self.faceNodes[fci,2] + cumElLay*nbNds
                             if(self.faceNodes[fci,3] == -1):
                                 n4 = n1 + nbNds
                                 n5 = n2 + nbNds
                                 n6 = n3 + nbNds
                                 self.wedgeElements[wE] = np.array([n1,n2,n3,n4,n5,n6])
+                                wERank[wE] = eli
                                 wE = wE + 1
                             else:
-                                n4 = self.faceNodes[fci,3] + i*nbNds
+                                n4 = self.faceNodes[fci,3] + cumElLay*nbNds
                                 n5 = n1 + nbNds
                                 n6 = n2 + nbNds
                                 n7 = n3 + nbNds
                                 n8 = n4 + nbNds
                                 self.hexElements[hE] = np.array([n1,n2,n3,n4,n5,n6,n7,n8])
+                                hERank[hE] = eli
                                 hE = hE + 1
-                    prevDest = dNds
+                            eli = eli + 1
+                        cumElLay = cumElLay + 1
+                    prevDest = dNds.copy();
             else:  ## Smooth interpolation
                 xMat = np.zeros((nbNds,totSweepEls+1))
                 yMat = np.zeros((nbNds,totSweepEls+1))
@@ -193,6 +202,7 @@ class Mesh3D():
                     iFun = interpolate.interp1d(pDest,zDest,'cubic', axis=0,bounds_error=False,fill_value='extrapolate')
                     zAll = iFun(pAll)
                     zMat[ndi,:] = zAll
+                eli = 0
                 for i in range(0,totSweepEls):
                     for ndi in range(0,nbNds):
                         self.nodes[nNds] = np.array([xMat[ndi,i+1],yMat[ndi,i+1],zMat[ndi,i+1]])
@@ -206,6 +216,7 @@ class Mesh3D():
                             n5 = n2 + nbNds
                             n6 = n3 + nbNds
                             self.wedgeElements[wE] = np.array([n1,n2,n3,n4,n5,n6])
+                            wERank[wE] = eli
                             wE = wE + 1
                         else:
                             n4 = self.faceNodes[fci,3] + i*nbNds
@@ -214,7 +225,9 @@ class Mesh3D():
                             n7 = n3 + nbNds
                             n8 = n4 + nbNds
                             self.hexElements[hE] = np.array([n1,n2,n3,n4,n5,n6,n7,n8])
+                            hERank[hE] = eli
                             hE = hE + 1
+                        eli = eli + 1
             self.numNodes = nNds
             self.numWedgeEls = wE
             self.numHexEls = hE
@@ -258,9 +271,13 @@ class Mesh3D():
         meshOut['nodes'] = self.nodes
         totEls = self.numWedgeEls + self.numHexEls
         allEls = -np.ones((totEls,8),dtype=int)
-        if(self.numWedgeEls > 0):
-            allEls[0:self.numWedgeEls,0:6] = self.wedgeElements[0:self.numWedgeEls]
-        if(self.numHexEls > 0):
-            allEls[self.numWedgeEls:totEls,0:8] = self.hexElements[0:self.numHexEls]
+        for eli in range(0,self.numWedgeEls):
+            allEls[wERank[eli],0:6] = self.wedgeElements[eli]
+        for eli in range(0,self.numHexEls):
+            allEls[hERank[eli],0:8] = self.hexElements[eli]
+        # if(self.numWedgeEls > 0):
+            # allEls[0:self.numWedgeEls,0:6] = self.wedgeElements[0:self.numWedgeEls]
+        # if(self.numHexEls > 0):
+            # allEls[self.numWedgeEls:totEls,0:8] = self.hexElements[0:self.numHexEls]
         meshOut['elements'] = allEls
         return meshOut

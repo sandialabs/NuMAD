@@ -10,7 +10,7 @@ from pynumad.utils.interpolation import interpolator_wrap
 from pynumad.shell.SurfaceClass import Surface
 from pynumad.shell.Mesh3DClass import Mesh3D
 from pynumad.shell.ShellRegionClass import ShellRegion
-from pynumad.analysis.ansys.ansys import writeANSYSshellModel
+##from pynumad.io.ansys import writeANSYSshellModel
 
 
 def shellMeshGeneral(blade, forSolid, includeAdhesive):
@@ -19,14 +19,12 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
     stored in blade.geometry, blade.keypoints, and blade.profiles.  Output is given as
     a python dictionary.
 
-
     Parameters
     -----------
 
     Returns
     -------
     """
-
     geomSz = blade.geometry.shape
     lenGeom = geomSz[0]
     numXsec = geomSz[2]
@@ -56,6 +54,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
                     minDist = mag
                     pti = k
             keyPts = np.concatenate((keyPts,[pti]))
+            blade.geometry[pti,:,i] = np.array(kpCrd)
 
         keyPts = np.concatenate((keyPts,[lePt]))
         for j in range(5,10):
@@ -70,6 +69,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
                     minDist = mag
                     pti = k
             keyPts = np.concatenate((keyPts,[pti]))
+            blade.geometry[pti,:,i] = np.array(kpCrd)
 
         keyPts = np.concatenate((keyPts,[lenGeom-1]))
         allPts = np.array([keyPts[0]])
@@ -80,6 +80,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
 
         XSCurvePts = np.vstack((XSCurvePts,allPts)) if XSCurvePts.size else allPts
     rws,cls = XSCurvePts.shape
+    
     ## Create longitudinal splines down the blade through each of the key X-section points
 
     splineX = blade.geometry[XSCurvePts[0,:],0,0]
@@ -188,7 +189,6 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
             newSec['elementSet'] = blade.stacks[j,i].name
             secList.append(newSec)
             stSp = stSp + 3
-
         stPt = stPt + 3
     
     ## Shift the appropriate splines if the mesh is for a solid model seed
@@ -272,7 +272,6 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
             newSec['layup'] = layup
             newSec['elementSet'] = blade.swstacks[0][i].name
             secList.append(newSec)
-
         if blade.swstacks[1][i].plygroups:
             shellKp = np.zeros((16,3))
             shellKp[0,:] = np.array([splineXi[stPt,27],splineYi[stPt,27],splineZi[stPt,27]])
@@ -410,7 +409,6 @@ def generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
             meshData = blade.shellMeshGeneral(forSolid,includeAdhesive)
 
         writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)  ## Edit this function for the new structure of meshData - E Anderson
-
         if config["dbgen"]:
             assert not len(ansysPath)==0, 'Path to ANSYS not specified. Aborting. Operation Not Permitted'
             try:
@@ -439,7 +437,7 @@ def generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
     
 def getSolidMesh(blade, layerNumEls=[]): 
     ## Edit stacks to be usable for 3D solid mesh
-    blade.editStacksForSolidMesh()  ## (Still needs to be translated from the MATLAB version) -E Anderson 3/1/23
+    blade.editStacksForSolidMesh()
     ## Create shell mesh as seed
     ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
     shellMesh = shellMeshGeneral(blade,1,1)
@@ -448,6 +446,7 @@ def getSolidMesh(blade, layerNumEls=[]):
     shElements = shellMesh['elements']
     elSets = shellMesh['sets']['element']
     sectns = shellMesh['sections']
+    
     ## Initialize 3D solid mesh from the shell mesh
     bladeMesh = Mesh3D(shNodes,shElements)
     ## Calculate unit normal vectors for all nodes
@@ -479,7 +478,6 @@ def getSolidMesh(blade, layerNumEls=[]):
     for i in range(numNds):
         mag = np.linalg.norm(nodeNorms[i])
         nodeNorms[i] = (1.0/mag)*nodeNorms[i]
-
     
     ## Extrude shell mesh into solid mesh
     if (len(layerNumEls)==0):
@@ -505,6 +503,12 @@ def getSolidMesh(blade, layerNumEls=[]):
             if(nodeHitCt[j] != 0):
                 nodeDist[j] = nodeDist[j]/nodeHitCt[j]
                 newLayer[j] = prevLayer[j] + nodeDist[j]*nodeNorms[j]
+                
+        ##
+        # print('layer ' + str(i)) 
+        # for deb in range(0,10):
+            # print(newLayer[deb])
+        ##
         guideNds.append(newLayer)
         prevLayer = newLayer.copy()
     
@@ -535,5 +539,4 @@ def getSolidMesh(blade, layerNumEls=[]):
     solidMesh['adhesiveElSet'] = shellMesh['adhesiveElSet']
     
     return solidMesh
-
 
