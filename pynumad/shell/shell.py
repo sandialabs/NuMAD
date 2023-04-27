@@ -387,9 +387,11 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
   
     
 def generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
+def generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
     # This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
     
     if str(feaCode.lower()) == str('ansys'):
+        ansysPath = pynumad.path_data['ansysPath']
         ansysPath = pynumad.path_data['ansysPath']
         # define ANSYS model settings (can be options in generateFEA)
         config = {}
