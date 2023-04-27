@@ -7,7 +7,7 @@ blade = pynu.Blade()
 fileName = 'example_data/myBlade.yaml'
 blade.read_yaml(fileName)
 
-# blade.mesh = 0.2
+blade.mesh = 0.2
 
 # with open('example_data/myBlade.obj','rb') as file:
 #     blade = pickle.load(file)
