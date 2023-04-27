@@ -3,20 +3,8 @@ import numpy as np
 import pickle
 import os
 
-blade = pynu.objects.Blade.Blade()
-fileName = 'myBlade.yaml'
-blade.read_yaml(fileName)
-
-for stat in blade.stations:
-    stat.airfoil.resample(n_samples=300)
-    
-blade.updateGeometry()
-
-blade.expandBladeGeometryTEs()
-blade.mesh = 0.2
-
-# with open('myBlade.obj','rb') as file:
-    # blade = pickle.load(file)
+with open('myBlade.obj','rb') as file:
+    blade = pickle.load(file)
 
 bladeMesh = pynu.shell.shell.getSolidMesh(blade, layerNumEls=[1,1,1])
 
@@ -47,7 +35,7 @@ for el in bladeMesh['elements']:
 outFile.write('*Element, type=C3D6\n')
 i = 1
 for el in bladeMesh['elements']:
-    if(el[7] == -1):
+    if(el[3] == -1):
         el[0:6] = el[0:6] + 1
         lst = [str(i),str(el[0]),str(el[1]),str(el[2]),str(el[3]),str(el[4]),str(el[5]),'\n']
         ln = ', '.join(lst)
@@ -55,7 +43,7 @@ for el in bladeMesh['elements']:
     i = i + 1
     
 for es in bladeMesh['sets']['element']:
-    ln = '*Elset, elset=set' + es['name'] + '\n'
+    ln = '*Elset, elset=' + es['name'] + '\n'
     outFile.write(ln)
     for el in es['labels']:
         ln = '  ' + str(el+1) + '\n'
@@ -94,7 +82,7 @@ for el in bladeMesh['adhesiveEls']:
     i = i + 1
 
 es = bladeMesh['adhesiveElSet']
-ln = '*Elset, elset=set' + es['name'] + '\n'
+ln = '*Elset, elset=' + es['name'] + '\n'
 outFile.write(ln)
 for el in es['labels']:
     ln = '  ' + str(el+1) + '\n'

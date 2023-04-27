@@ -4,25 +4,19 @@ import pickle
 import os
 
 
-blade = pynu.objects.Blade.Blade()
-fileName = 'myBlade.yaml'
+blade = pynu.Blade()
+fileName = 'example_data/myBlade.yaml'
 blade.read_yaml(fileName)
 
-for stat in blade.stations:
-    stat.airfoil.resample(n_samples=300)
-    
-blade.updateGeometry()
-
-blade.expandBladeGeometryTEs()
-blade.mesh = 0.2
+# blade.mesh = 0.2
 
 adhes = 1
 
-# with open('myBlade.obj','rb') as file:
-    # blade = pickle.load(file)
+with open('myBlade.obj','rb') as file:
+    blade = pickle.load(file)
+
 
 bladeMesh = blade.getShellMesh(includeAdhesive=adhes)
-# bladeMesh = pynu.shell.shell.shellMeshGeneral(blade,1,1)
 
 ## Write Abaqus input
 
@@ -59,7 +53,7 @@ for el in bladeMesh['elements']:
     i = i + 1
     
 for es in bladeMesh['sets']['element']:
-    ln = '*Elset, elset=set' + es['name'] + '\n'
+    ln = '*Elset, elset=' + es['name'] + '\n'
     outFile.write(ln)
     for el in es['labels']:
         ln = '  ' + str(el+1) + '\n'
@@ -98,7 +92,7 @@ for el in bladeMesh['adhesiveEls']:
     i = i + 1
 
 es = bladeMesh['adhesiveElSet']
-ln = '*Elset, elset=set' + es['name'] + '\n'
+ln = '*Elset, elset=' + es['name'] + '\n'
 outFile.write(ln)
 for el in es['labels']:
     ln = '  ' + str(el+1) + '\n'
