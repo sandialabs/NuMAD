@@ -34,11 +34,11 @@ def yaml_to_blade(blade, filename: str):
     mat_data = data['materials']
 
     ### STATIONS / AIRFOILS
-    add_stations(blade, blade_outer_shape_bem, hub_outer_shape_bem, 
+    _add_stations(blade, blade_outer_shape_bem, hub_outer_shape_bem, 
                     af_data, filename)
     
     ### MATERIALS
-    add_materials(blade, mat_data)
+    _add_materials(blade, mat_data)
 
     ## Blade Components
     N_layer_comp = len(blade_internal_structure['layers'])
@@ -87,14 +87,15 @@ def yaml_to_blade(blade, filename: str):
     blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
     
     ### COMPONENTS
-    add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp)
+    _add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp)
     
     blade.updateBlade()
     # save(blade_name)
     # BladeDef_to_NuMADfile(obj,numad_name,matdb_name,numad_af_folder)
+    return blade
 
 
-def add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
+def _add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
                     af_data, file: str):
 
     # Obtaining some parameters not explicitly given in YAML file
@@ -185,7 +186,7 @@ def add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
     pass
 
 
-def add_materials(blade, mat_data):
+def _add_materials(blade, mat_data):
     for i in range(len(mat_data)):
         cur_mat = Material()
         cur_mat.name = mat_data[i]['name']
@@ -261,7 +262,7 @@ def add_materials(blade, mat_data):
             blade.materials.append(cur_mat)
 
 
-def add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp):
+def _add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp):
     N_layer_comp = len(blade_internal_structure['layers'])
     for i in range(N_layer_comp):
         cur_comp = Component()
