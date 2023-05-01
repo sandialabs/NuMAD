@@ -1,6 +1,6 @@
 import numpy as np
 from os.path import join
-from pynumad.analysis.ansys.ansys import writeANSYSshellModel
+from pynumad.analysis.ansys.write import writeAnsysShellModel
 from pynumad.objects.Blade import Blade
 
 """
@@ -22,9 +22,9 @@ config["dbgen"] = 1
 config["dbname"] = 'master'
 analysisConfig = dict()
 
-filename = "myblade_ansys.src"
+filename = 'buildAnsysShell.src'
 includeAdhesive = 1
 
-writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)
+writeAnsysShellModel(blade,filename,meshData,config,includeAdhesive)
 
 whatever

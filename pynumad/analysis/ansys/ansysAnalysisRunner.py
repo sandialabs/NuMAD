@@ -1,84 +1,23 @@
-import numpy as np
-import os
-import warnings
-import matplotlib.pyplot as plt
-from datetime import datetime
-import subprocess
-import time
-
-from pynumad import path_data
-from pynumad.objects.Blade import Blade
-from pynumad.analysis.ansys.ansysAnalysisRunner import *
-from pynumad.analysis.ansys.utility import *
 from pynumad.analysis.ansys.read import *
-from pynumad.analysis.ansys.write import *
-from pynumad.analysis.ansys.beamforce import *
-    
-def mainAnsysAnalysis(
-        blade: Blade,
-        meshData: dict,
-        loadsTable: list,
-        analysisConfig: dict,
-        varargin = None
-    ):
-    """
-    Parameters
-    ----------
-    blade: Blade
-        pynumad blade object
-    meshData: dict
-        pynumad mesh output
-    loadsTable: list
-        list of loads
-    analysisConfig: dict
-        #TODO define parameters
-    varargin = None
+from pynumad.analysis.ansys.write import writeAnsysShellModel
 
-    Returns
-    -------
+class ansysAnalysisRunner():
     """
-    anFlagNames = analysisConfig["analysisFlags"].keys()
-    ansysPath = path_data['ansysPath']
-    ansys_product = 'ANSYS'
-    if ('imperfection' in analysisConfig["analysisFlags"]) and \
-        analysisConfig["analysisFlags"]["imperfection"] and \
-        not analysisConfig["analysisFlags"]["globalBuckling"]:
-        raise Exception('Specify number of buckling modes when performing nonlinear buckling')
+    """
+
+    def __init__(self, blade, meshData: dict, loads: list, config: dict):
+        self.config = config
+        self.blade = blade
+
     
-    # Original mesh file to analize
-    if ('meshFile' not in analysisConfig):
-        analysisConfig["meshFile"] = 'master'
+    def writeShellModel(self, filename, meshData, config):
+        writeAnsysShellModel(self.blade, filename, meshData, config)
+
     
-    # File name base name for ansys analysis files
-    if ('analysisFileName' in analysisConfig):
-        ansysFilename = analysisConfig["analysisFileName"]
-    else:
-        ansysFilename = 'FEmodel'
-    
-    # Number of CPUs to use
-    if 'np' in analysisConfig and analysisConfig["np"] > 0:
-        ncpus = analysisConfig["np"]
-    else:
-        ncpus = 1
-    
-    #Initialize
-    designvar = dict()
-    for key in anFlagNames:
-        if key in ['globalBuckling', 'resultantVSspan', 'deflection', 'mass']:
-            if analysisConfig["analysisFlags"][key] != 0:
-                designvar[key] = [None]*len(loadsTable)
-        elif key in ['localBuckling', 'failure', 'fatigue', 'imperfection', 'mass']:
-            if not len(analysisConfig["analysisFlags"][key]) == 0:
-                designvar[key] = [None]*len(loadsTable)
-    
-    if not designvar:
-        raise Exception('no analyses are configured in configuration st.')
-    
-    for iLoad in range(len(loadsTable)):
+    def writeAnalysisScript(self):
         ## ************************************************************************
         # ================= APPLY LOADS TO FEA MESH ================= #NOTE: Priority
         forcefilename = 'forces'
-        # only want outershell VVV
         nodeData = np.concatenate([np.arange(meshData['nodes'].shape[0]).reshape((-1,1)),meshData['nodes']], axis=1)
         loads = loadsTable[iLoad]
         write_ansys_loads(nodeData, loads, forcefilename, analysisConfig)
@@ -247,33 +186,4 @@ def mainAnsysAnalysis(
             wrinklingLimitingElementData = writeAnsysFagerberWrinkling(app,SkinAreas,compsInModel,analysisConfig["analysisFlags"].localBuckling)
             designvar.localBuckling[iLoad] = wrinklingLimitingElementData[2]
             os.path.delete('*faceAvgStresses.txt') # NOTE: I believe * is supposed to glob here, but I am not sure it is doing that -kb
-        ## ************************************************************************
-        # ================= READ FAILURE RESULTS INTO MATLAB =================
-        if 'failure' in analysisConfig["analysisFlags"] and not len(analysisConfig["analysisFlags"]['failure'])==0 :
-            fileName = np.array([failureFilename,'.out'])
-            designvar.failure[iLoad] = read_1_ANSYSoutput(fileName)
-            os.delete(fileName)
-    
-    ## ************************************************************************
-    
-    # ================= RUN FATIGUE POST PROCESSOR =================
-    #After all load directions are solved compute fatige damage if needed
-    if 'fatigue' in analysisConfig["analysisFlags"] and not len(analysisConfig["analysisFlags"]['fatigue'])==0 :
-        if not len(varargin)==0  and class_(varargin[0])=='IECDef':
-            # cd ..
-            IEC = varargin[0]
-            wt,rccdata = getWindSpeedDistribution(IEC.avgws)
-            # cd 'NuMAD'
-            designvar.fatigue = postprocessANSYSfatigue(blade,meshData,wt,rccdata,IEC,loadsTable,analysisConfig)
-        else:
-            raise Exception('IECDef required to run fatigue analysis in mainAnsysAnalysis')
-    
-    return designvar
-    
-    
-def saveData(designvar = None,iLoad = None,airfoilSegmentName = None,iSpan = None,nodes = None,midNodei = None): 
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].x[iSpan] = nodes[midNodei,1]
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].y[iSpan] = nodes[midNodei,2]
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].z[iSpan] = nodes[midNodei,3]
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].data[iSpan] = nodes[midNodei,4]
-    return designvar
+        

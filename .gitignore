@@ -127,3 +127,4 @@ pynumad/kirklocal/*
 *.txt
 *.pkl
 *.csv
+*.bat

@@ -1,19 +1,25 @@
 import pynumad as pynu
+import json 
+import pickle
+
 from pynumad.analysis.ansys.mainAnsysAnalysis import mainAnsysAnalysis
 
 # Create a blade object from a yaml file
-blade = pynu.Blade()
-fileName = 'myBlade.yaml'
-blade.read_yaml(fileName)
+# blade = pynu.Blade()
+# fileName = 'example_data/myBlade.yaml'
+# blade.read_yaml(fileName)
+# blade.mesh = 0.2
+with open('myblade_blade.pkl', "rb") as fid:
+    blade = pickle.load(fid)
 
-blade.mesh = 0.2
 # create a shell model in ansys w/o adhesive
+meshData=blade.generateShellModel('ansys',includeAdhesive=1)
+# with open('myblade_mesh.pkl', "rb") as fid:
+#     meshData = pickle.load(fid)
 
-includeAdhesive=1
-meshData=blade.generateShellModel('ansys',includeAdhesive);
-
-# Load a previously build loadsTable
-defLoadsTable = [] # load('defLoadsTable.mat')
+# Load a previously built loadsTable
+with open('myBlade_loadsTable.json','r') as fid:
+    loadsTable = json.load(fid)
 
 # Set up configuration for deflection run
 analysisConfig = dict()
@@ -25,7 +31,7 @@ analysisConfig['analysisFlags']['mass'] = 0
 analysisConfig['analysisFlags']['deflection'] = 1
 
 
-ansysResult = mainAnsysAnalysis(blade,meshData,defLoadsTable,analysisConfig)
+ansysResult = mainAnsysAnalysis(blade,meshData,[loadsTable],analysisConfig)
 
 foo # stop here
 
