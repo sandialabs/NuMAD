@@ -16,7 +16,7 @@ from pynumad.objects.Station import Station
 from pynumad.objects.Airfoil import getAirfoilNormals, getAirfoilNormalsAngleChange
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Subobjects import MatDBentry, Layer, Shearweb, BOM, Ply
-from pynumad.shell.shell import shellMeshGeneral
+from pynumad.shell.shell import shellMeshGeneral, _generateShellModel, _getSolidMesh
 # for type hints
 from numpy import ndarray
 
@@ -136,7 +136,7 @@ class Blade():
     See also ``BladeDef_to_NuMADfile``, ``xlsBlade``, ``AirfoilDef``, 
     ``StationDef``, ``ComponentDef``, ``StackDef``
     """
-    def __init__(self, filename=None, write_afs=False):
+    def __init__(self, filename: str = None, write_afs: bool = False):
 
         self.aerocenter : ndarray = None
         self.chord : ndarray = None
@@ -231,9 +231,6 @@ class Blade():
             pass
 
 
-    # def __str__(self):
-    #     return f'Blade with attributes: {vars(self)}'
-
     def __str__(self):
         attributes = ''
         for attr_name, attr_value in vars(self).items():
@@ -301,6 +298,8 @@ class Blade():
             self._swtwisted = new_swtwisted
 
     
+    ### IO 
+
     def read_yaml(self, filename):
         """Populate blade attributes with yaml file data
 
@@ -317,9 +316,10 @@ class Blade():
 
         """
         yaml_to_blade(self, filename)
+        return self
 
 
-    def read_excel(self, filename):
+    def read_excel(self, filename: str):
         """Populate blade attributes with excel file data
 
         Extended description of function.
@@ -331,11 +331,14 @@ class Blade():
 
         Returns
         -------
-        None
+        self
 
         """
         excel_to_blade(self, filename)
+        return self
 
+
+    ### Update methods
 
     def updateBlade(self):
         """
@@ -344,7 +347,7 @@ class Blade():
         self.updateGeometry()
         self.updateKeypoints()
         self.updateBOM()
-        return
+        return self
 
 
     def updateGeometry(self):
@@ -359,11 +362,9 @@ class Blade():
             raise Exception(
                 'BladeDef must have at least one station before updating geometry.')
         
-        # ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         # add some error checking -- first station must be at blade
         # root to prevent extrapolation
-        #   assert(self.stations(1).spanlocation==0,'first station must be at the blade root')
-        # ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        assert(self.stations[1].spanlocation==0, 'first station must be at the blade root')
         
         # Collect parameter tables from the stations.
         spanlocation = np.array([self.stations[i].spanlocation for i in range(len(self.stations))])
@@ -381,12 +382,10 @@ class Blade():
             thickness[:,k] = self.stations[k].airfoil.thickness
             tetype[k] = self.stations[k].airfoil.TEtype
         
-        # ble: <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         # fix numerical issue due to precision on camber calculation
         # camber should start and end at y-values of zero
         camber[0,:] = np.zeros((1,nStations))
         camber[-1,:] = np.zeros((1,nStations))
-        # ble: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         
         # Interpolate the station parameter tables.
         # Each column corresponds to an interpolated station.
@@ -398,11 +397,6 @@ class Blade():
         self.ithickness = ithickness
         self.cpos = np.concatenate((-ic[-1,:].reshape(1,-1),-np.flipud(ic),
             ic[1:,:],ic[-1,:].reshape(1,-1)),axis=0)
-        
-        # figure(101); surf(repmat(spanlocation,nPoints,1),c,camber,'MeshStyle','column');
-        # figure(102); surf(repmat(spanlocation,nPoints,1),c,thickness,'MeshStyle','column');
-        # figure(103); surf(repmat(self.ispan,nPoints,1),ic,icamber,'MeshStyle','column');
-        # figure(104); surf(repmat(self.ispan,nPoints,1),ic,ithickness,'MeshStyle','column');
         
         # Adjust the thickness profiles based on TEtype of stations.
         # This is mainly for transitions to flatbacks were the
@@ -428,7 +422,7 @@ class Blade():
         self.ipercentthick = iabsolutethick / self.ichord * 100
 
         # ensure that the interpolation doesn't reduce the percent
-        #   thickness beneath the thinnest airfoil
+        # thickness beneath the thinnest airfoil
         self.ipercentthick[self.ipercentthick < np.amin(self.percentthick)] = np.amin(self.percentthick)
         self.ichordoffset = interpolator_wrap(self.span,self.chordoffset,self.ispan,'pchip')
         self.iaerocenter = interpolator_wrap(self.span,self.aerocenter,self.ispan,'pchip')
@@ -457,14 +451,9 @@ class Blade():
         self.arclength = np.zeros((M,N))
         self.HParcx0 = np.zeros((1,N))
         self.LParcx0 = np.zeros((1,N))
-            # ptind = 1:M;  # point indices
-            # ptindover = 1:0.2:M;  # over-sample point indices
-            # LE = find(ptindover==self.LEindex);
+
         LE = self.LEindex
         for k in range(N):
-            # xx = spline(ptind,self.geometry(:,1,k),ptindover);
-            # yy = spline(ptind,self.geometry(:,2,k),ptindover);
-            # zz = spline(ptind,self.geometry(:,3,k),ptindover);
             xx = self.geometry[:,0,k]
             yy = self.geometry[:,1,k]
             zz = self.geometry[:,2,k]
@@ -474,11 +463,12 @@ class Blade():
             self.arclength[:,k] = arclen
             LEarcsum = self.arclength[self.LEindex,k]
             self.arclength[:,k] = self.arclength[:,k] - LEarcsum
+
             # find where x=0 intersects the surface
             self.HParcx0[0,k] = interpolator_wrap(xx[1:LE+1],arclen[1:LE+1],0) - LEarcsum
             self.LParcx0[0,k] = interpolator_wrap(xx[-2:LE-1:-1],arclen[-2:LE-1:-1],0) - LEarcsum
         
-        return
+        return self
 
 
     def updateKeypoints(self):
@@ -488,7 +478,7 @@ class Blade():
         Returns
         -------
 
-        None
+        self
 
         Example:
           ``blade.updateKeypoints``
@@ -496,7 +486,6 @@ class Blade():
         find the curves which bound each blade region
         """
         
-        #NOTE this might not work right with ispan taken as a 2D array
         N = self.ispan.size # number of interpolated span stations
         M = 12 # number of areas around airfoil profile; must be even (see calc of web areas)
 
@@ -513,7 +502,6 @@ class Blade():
         # start and finish indices in geometry/arcs
         ns = 1
         nf = self.geometry.shape[0] - 2
-
         n1 = mm_to_m * self.leband # no foam width
         n2 = mm_to_m * self.teband # no foam width
 
@@ -573,6 +561,7 @@ class Blade():
                 e = 0.99 * self.arclength[ns,k]
                 self.keypoints[0,:,k] = interpolator_wrap(k_arclen,k_geom,e)
                 self.keycpos[1,k] = interpolator_wrap(k_arclen,k_cpos,e)
+
             # 1 -> e
             self.keypoints[1,:,k] = interpolator_wrap(k_arclen,k_geom,d)
             self.keypoints[2,:,k] = interpolator_wrap(k_arclen,k_geom,c)
@@ -642,7 +631,6 @@ class Blade():
         
         # find the points used by each shear web
         cmpt_groups = [self.components[i].group for i in range(len(self.components))]
-        #NOTE I am not sure if I translated the next two lines correctly -kb
         uniq_groups = np.unique(cmpt_groups)
         uniq_groups = uniq_groups[uniq_groups != 0] # group "0" is the blade skins
         self.webindices = []
@@ -729,11 +717,6 @@ class Blade():
                 for k in range(N):
                     self.webarcs[ksw][0,k] = interpolator_wrap(self.cpos[ns:nf+1,:,k],self.arclength[ns:nf+1,:,k],p[k])
                     self.webpoints[ksw][0,:,k] = interpolator_wrap(k_cpos,k_geom,p[k])
-                # ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                #NOTE confused about these lines.-kb
-                # p3Save[ksw][0,:] = - 1.0 * p3
-                # pSave[ksw][0,:] = - 1.0 * p
-                # ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             else:
                 raise Exception('Shear web geometry HP extents not defined correctly (e.g., 0.5b-c, b, b+200)')
             # get shear web placement on LP side
@@ -785,11 +768,6 @@ class Blade():
                 for k in range(N):
                     self.webarcs[ksw][1,k] = interpolator_wrap(k_cpos,k_arclen,p[k])
                     self.webpoints[ksw][1,:,k] = interpolator_wrap(k_cpos,k_geom,p[k])
-                # ble <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                #NOTE again, not sure where these vars are coming from -kb
-                # p3Save[ksw][1,:] = p3
-                # pSave[ksw][1,:] = p
-                # ble >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             else:
                 raise Exception('Shear web geometry LP extents not defined correctly (e.g., 0.5b-c, b, b+200)')
         
@@ -840,7 +818,7 @@ class Blade():
                 self.webbonds[ksw][0:2,kc] = np.sqrt(np.sum((ob - ib) ** 2, 1))
             self.webwidth[ksw][N-1] = base2
         
-        return
+        return self
 
 
     def updateBOM(self): 
@@ -875,20 +853,10 @@ class Blade():
             hpRegion,lpRegion = self.findRegionExtents(comp)
             nlay = comp.getNumLayers(ndspan)
             nlay = np.round(nlay)
-            # if 1
             layermult = 1 # multiplier=1 for individual layers
-            # else
-                # layermult = nlay(1);  # multiplies layer thickness
-                # assert(all(nlay==nlay(1)),'updateBOM: component #d, ''T'' flag requires uniform layer thickness',kc);
-                # nlay = ones(size(ndspan));
-                # end
+
             for klay in range(1,int(np.max(nlay))+1):
-                #NOTE: a little confused on beginSta endSta - are they
-                # numbers, arrays? Assuming numbers for now...
                 beginSta,endSta = self.findLayerExtents(nlay,klay)
-                ## EMA original:
-                # for ks = 1:length(beginSta)
-                ## changed to :
                 ksMax = np.amin((len(beginSta),len(endSta)))
                 # situation that beginSta/endSta is longer than 1
                 for ks in range(ksMax):
@@ -935,18 +903,12 @@ class Blade():
                         if swnum != comp.group - 1:
                             swnum = comp.group - 1
                             swrow = 0
-                            #NOTE unsure of how to handle swBeginSta -kb
                             swBeginSta.append(beginSta[0])
                             swEndSta.append(endSta[0])
                             self.bom['sw'].append([])
                             self.bomIndices['sw'].append([])
-                        # EMA original:
-                        # swBeginSta(swnum) = min(beginSta,swBeginSta(swnum));
-                        # swEndSta(swnum) = max(endSta,swEndSta(swnum));
-                        # changed to:
                         swBeginSta[swnum] = np.amin([*beginSta,swBeginSta[swnum]])
                         swEndSta[swnum] = np.amax([*endSta,swEndSta[swnum]])
-                        # END
                         areas = self.webareas[swnum][beginSta[ks]:endSta[ks]]
                         regionarea = sum(areas.flatten())
                         cur_bom = BOM()
@@ -994,9 +956,8 @@ class Blade():
 
         for kr in range(nSegments):
             for kc in range(nStations):
-                # name the stacks <mm_span_location>_<segmentLabel>
-                stack_num = int(np.fix(m_to_mm * self.ispan[kc]))
-                self.stacks[kr][kc].name = '{:06d}_{}'.format(stack_num,segmentLabels[kr])
+                # name the stacks <segmentnumber+1>_<stationnumber+1>_<segmentLabel>
+                self.stacks[kr][kc].name = '{:02d}_{:02d}_{}'.format(kr, kc, segmentLabels[kr])
                 self.stacks[kr][kc].indices = [kc,kc + 1,kr,kr + 1]
         
 
@@ -1035,9 +996,8 @@ class Blade():
             for swsk in range(nStations):
                 self.swstacks[kw].append(Stack())
             for kc in range(nStations):
-                # name the stacks <mm_span_location>_SW#
-                swstack_num = int(np.fix(m_to_mm * self.ispan[kc]))
-                self.swstacks[kw][kc].name = '{:06d}_SW{}'.format(swstack_num,kw+1) # NOTE: 1 is added to kw to match matlab naming
+                # name the stacks <webnumber+1>_<stationnumber+1>_SW
+                self.swstacks[kw][kc].name = '{:02d}_{:02d}_SW'.format(kw,kc) 
                 ind = self.webindices[kw] # currently, the shearweb indices do not change down the span
                 self.swstacks[kw][kc].indices = [kc,kc + 1,ind[0],ind[1]]
             for k in range(len(self.bom['sw'][kw])):
@@ -1058,7 +1018,6 @@ class Blade():
     # see datatypes.MatDBentry
     # prepare material database ==========================================
         self.matdb = []
-        #NOTE stopped cleaning here -kb
         for k in range(len(self.materials)):
             cur_entry = MatDBentry()
             cur_entry.name = self.materials[k].name
@@ -1139,7 +1098,7 @@ class Blade():
                     cur_sw.Corner = [ind[1]-1,ind[0]-1,ind[0]-1,ind[1]-1]  # dp number is offset by 1 in NuMAD v1
                     self.shearweb.append(cur_sw)
                     ctr += 1
-        return
+        return self
 
 
     def updateAirfoilProfile(self,k):
@@ -1168,9 +1127,10 @@ class Blade():
         profile2 = np.concatenate(([0],np.flipud(hp),lp[1:],[0]))
         profile = np.stack((profile1,profile2),axis=1)
         self.profiles[:,:,k] = profile
+        return self
 
     
-    def updateOMLgeometry(self,k):
+    def updateOMLgeometry(self, k):
         """
         TODO docstring
         """
@@ -1221,10 +1181,10 @@ class Blade():
         # self.geometry[:,0,k] = coords[:,0]
         # self.geometry[:,1,k] = coords[:,1]
         # self.geometry[:,2,k] = coords[:,2]
-        pass
+        return self
 
 
-    def addStation(self,af = None,spanlocation = None): 
+    def addStation(self, af = None, spanlocation: float = None): 
         """This method adds a station
 
         Specifically, the station object is created 
@@ -1262,9 +1222,9 @@ class Blade():
         
         # self.stations[k].spanlocation = spanlocation
         # self.stations[k].parent = self
-        return
+        return self
 
-        
+    # Supporting function for updateBOM
     def findLayerExtents(self,layerDist = None,layerN = None): 
         """
         TODO docstring
@@ -1285,7 +1245,7 @@ class Blade():
         
         return beginSta,endSta
         
-
+    # Supporting function for updateBOM
     def findRegionExtents(self,comp = None): 
         """
         TODO docstring
@@ -1335,36 +1295,9 @@ class Blade():
         # else
         swRegion = []
         return hpRegion,lpRegion #,swRegion
-        
-
-    def getTEtype(self,xy):
-        """
-        TODO docstring
-
-        Parameters
-        ----------
-        xy : ndarray
-
-        Returns
-        -------
-
-        tetype : str
-
-        """
-        unitNormals = getAirfoilNormals(xy)
-        angleChange = getAirfoilNormalsAngleChange(unitNormals)
-        disconts = np.flatnonzero(angleChange>30)
-
-        if np.std(angleChange) < 2:
-            tetype = 'round'
-        elif len(disconts) > 1:
-            tetype = 'flat'
-        else:
-            tetype = 'sharp'
-        return tetype
 
 
-    def getprofileTEtype(self,k: int):
+    def getprofileTEtype(self, k: int):
         """
         
         Parameters
@@ -1376,12 +1309,21 @@ class Blade():
         tetype : str
         """
         xy = self.profiles[:,:,k]
-        tetype = self.getTEtype(xy)       
-        return tetype
+        unitNormals = getAirfoilNormals(xy)
+        angleChange = getAirfoilNormalsAngleChange(unitNormals)
+        disconts = np.flatnonzero(angleChange>30)
+
+        if np.std(angleChange) < 2:
+            tetype = 'round'
+        elif len(disconts) > 1:
+            tetype = 'flat'
+        else:
+            tetype = 'sharp'
+        return tetype 
     
     
     def expandBladeGeometryTEs(self): 
-        """NOTE: is this deprecated? I don't see it used anywhere
+        """
         TODO: docstring
         """
         nStations = self.geometry.shape[2]
@@ -1431,7 +1373,11 @@ class Blade():
                 # fprintf('station #i, edgeLength: #f, New edgeLength=#f, percent diff: #f\n',iStation,edgeLength*1000,edgeLength2*1000,(edgeLength2-edgeLength)/edgeLength2*100)
         
         self.updateKeypoints()
-        
+        return
+    
+    
+    ### Shell
+
     def copyPly(self,ply):
         newPly = Ply()
         newPly.component = ply.component
@@ -1440,6 +1386,7 @@ class Blade():
         newPly.angle = ply.angle
         newPly.nPlies = ply.nPlies
         return newPly
+    
 
     def editStacksForSolidMesh(self):
         numSec,numStat = self.stacks.shape
@@ -1521,6 +1468,13 @@ class Blade():
         meshData = shellMeshGeneral(self,0,includeAdhesive)
         return meshData
     
+    def generateShellModel(self, feaCode, includeAdhesive, meshData=None):
+        return _generateShellModel(self, feaCode, includeAdhesive, meshData=None)
+        
+    def getSolidMesh(blade, layerNumEls=[]):
+        return _getSolidMesh(blade, layerNumEls=[])
+
+    
     """
     #NOTE need team help here -kb
     # not converted
@@ -1596,27 +1550,6 @@ class Blade():
         warnings.warn('this code is not correct -- should be based on distance to neutral axis, not purely geometry')
         make_c_array_BladeDef(self)
         return bmodesFrequencies
-
-    def old_getTEtype(self,xy = None):
-        
-        if np.abs(xy[1,1] - xy[-2,1]) > 1e-5:
-            # y-diff of second and end-1 points is non-zero for flatback
-            tetype = 'flat'
-            print('FLATBACK AIRFOIL')
-        else:
-            # y-diff of first two points is zero otherwise (point
-            # is duplicated)
-            hp_angle = np.arctan2(xy[1,1] - xy[2,1],xy[1,0] - xy[2,0])
-            lp_angle = np.arctan2(xy[-3,1] - xy[-2,1],xy[-2,0] - xy[-3,0])
-            if (hp_angle + lp_angle) > 0.8 * np.pi:
-                # if angle is approaching 180deg, then treat as
-                # 'round'
-                # jcb: it may be better to base this decision on
-                # continuity of slope or curvature
-                tetype = 'round'
-            else:
-                tetype = 'sharp'
-        return tetype
 
     def generateFEA(self): 
         # This method generates FEA

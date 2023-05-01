@@ -47,6 +47,7 @@ class Component:
 
     See also: ``xlsBlade``, ``BladeDef``, ``BladeDef.addComponent`` 
     """
+    
     def __init__(self):
         self.group: int = None
         self.name: str = None

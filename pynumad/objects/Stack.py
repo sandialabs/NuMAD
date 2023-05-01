@@ -56,4 +56,6 @@ class Stack:
             self.plygroups = []
             self.plygroups.append(ply)
 
+        return self
+
             

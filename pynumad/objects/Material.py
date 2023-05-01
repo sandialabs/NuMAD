@@ -14,34 +14,34 @@ class Material():
     Attributes
     ----------
     name : str
-		User selected name of the material
+		  User selected name of the material
     type : str
-		Two options: isotropic or orthotropic
+		  Two options: isotropic or orthotropic
     layerthickness : float
-		Layer thickness [mm]
+		  Layer thickness [mm]
     ex : float
-		Longitudinal elastic modulus [Pa]
+		  Longitudinal elastic modulus [Pa]
     ey : float
-		Transverse elastic modulus [Pa]
+		  Transverse elastic modulus [Pa]
     ez : float
 		Through-the-thickness elastic modulus in the 
       principal material coordinates [Pa]
     gxy : float
-		In-plane shear modulus [Pa]
+		  In-plane shear modulus [Pa]
     gyz : float
-		Transverse shear modulus [Pa]
+		  Transverse shear modulus [Pa]
     gxz : float
-		Transverse shear modulus [Pa]
+		  Transverse shear modulus [Pa]
     prxy : float
-		In-plane Poisson ratio [ ]
+		  In-plane Poisson ratio [ ]
     pryz : float
-		Transverse Poisson ratio [ ]
+		  Transverse Poisson ratio [ ]
     prxz : float
-		Transverse Poisson ratio [ ]
+		  Transverse Poisson ratio [ ]
     density : float
-		Cured mass density [kg/m2]
+		  Cured mass density [kg/m2]
     drydensity : float
-		Density of fabric
+		  Density of fabric
     uts : float
 		1 x 3 array of ultimate tensile strength design values.
         Sequence: SL , ST, Sz, 1 x 1 for isotropic.
@@ -52,27 +52,27 @@ class Material():
 		1 x 3 array of ultimate shear strength design values.
         Sequence: SLT , STz, SLz, 1 x 1 for isotropic.
     xzit : float
-		Lz tensile inclination parameter for Puck failure index
+		  Lz tensile inclination parameter for Puck failure index
     xzic : float
-		Lz compressive inclination parameter for Puck failure index
+		  Lz compressive inclination parameter for Puck failure index
     yzit : float
-		Tz tensile inclination parameter for Puck failure index
+		  Tz tensile inclination parameter for Puck failure index
     yzic : float
-		Tz compressive inclination parameter for Puck failure index
+		  Tz compressive inclination parameter for Puck failure index
     g1g2 : float
-		Fracture toughness ratio between GI (mode I) and GII (mode II) [ ]
+		  Fracture toughness ratio between GI (mode I) and GII (mode II) [ ]
     alp0 : float
-		Fracture angle under pure transverse compression [degrees]
+		  Fracture angle under pure transverse compression [degrees]
     etat : float
-		Transverse friction coefficient for Larc [ ]
+		  Transverse friction coefficient for Larc [ ]
     etal : float
-		Longitudinal friction coefficient for Larc [ ]
+		  Longitudinal friction coefficient for Larc [ ]
     m : list
-		Fatigue slope exponent [ ]
+		  Fatigue slope exponent [ ]
     gamma_mf : list
-		from DNL-GL standard, fatigue strength reduction factor
+		  from DNL-GL standard, fatigue strength reduction factor
     gamma_ms : list
-		from DNV-GL standard, short term strength reduction factor
+		  from DNV-GL standard, short term strength reduction factor
     reference : str = None
 
     Examples

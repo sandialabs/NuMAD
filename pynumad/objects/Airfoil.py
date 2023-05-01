@@ -100,6 +100,7 @@ class Airfoil():
                 self.coordinates = np.stack((xcoord,ycoord),axis=1)
         self.manageTE()
 
+
     # Properties
     @property
     def x(self):
@@ -127,15 +128,19 @@ class Airfoil():
         """
         lp = self.camber + (self.thickness / 2)
         hp = self.camber - (self.thickness / 2)
-        ycoord = np.concatenate((0, np.flipud(hp), lp[1:], 0))
+        ycoord = np.concatenate(([0], np.flipud(hp), lp[1:], [0]))
         return ycoord
 
+
+    ### IO
 
     def read_xml(self, filename):
         """
         TODO docstring
         """
         xml_to_airfoil(self,filename)
+        return self
+
 
     def manageTE(self) -> None:
         """TODO docstring
@@ -163,10 +168,12 @@ class Airfoil():
         # ddof set to 1 to match default matlab behavior
         if np.std(angleChange,ddof=1) < 1:
             self.TEtype='round'
-        pass
+        return self
 
+
+    ### Geometry
     
-    def resample(self,n_samples: int = None,spacing: str = None) -> None: 
+    def resample(self,n_samples: int = 150,spacing: str = 'cosine') -> None: 
         """TODO docstring
         
         Parameters
@@ -183,10 +190,6 @@ class Airfoil():
         
         af.resample(200,'half-cosine');
         """
-        if not n_samples:
-            n_samples = 150
-        if not spacing:
-            spacing = 'cosine'
         af_out = resampleAirfoil(self.coordinates,n_samples,spacing)
         xcoord = af_out[:,0]
         ycoord = af_out[:,1]
@@ -201,11 +204,11 @@ class Airfoil():
                 self.TEtype = 'sharp'
             else:
                 self.TEtype = 'flatback'
-        pass
+        return self
         
 
     #currently unused
-    def adjustTE(self,tet = None,tes = None,onset = None) -> None:
+    def adjustTE(self, tet, tes, onset) -> None:
         """TODO docstring
         
         Parameters
@@ -250,15 +253,28 @@ class Airfoil():
         pass
 
 
+    ### Plotting 
 
-def readAirfoilColumns(file):
-    """
-    placeholder
-    """
-    pass
+    def plotAirfoil(self): 
+        """ Plot airfoil
+        """
+        fig, ax = plt.subplots(2)
+        if not len(self.c)==0:
+            ax[0].plot(self.x,self.y,'.-')
+            ax[1].plot(self.coordinates[:,0],self.coordinates[:,1],'.-')
+            # line(self.c,self.camber,'LineStyle','-.','Color','k')
+            # mtx = self.maxthick * np.array([1,1])
+            # kn = find(self.c >= self.maxthick,1)
+            # mty = self.camber(kn) + self.thickness(kn) * np.array([0.5,- 0.5])
+            # line(mtx,mty,'LineStyle',':','Color','k')
+        # else:
+        fig.show()
+        return
 
 
-def resampleAirfoil(af_in = None,n_samples = None,spacing = None): 
+### Helper functions
+
+def resampleAirfoil(af_in, n_samples, spacing): 
     """Resample airfoil coordinates
 
     Parameters
@@ -329,9 +345,11 @@ def resampleAirfoil(af_in = None,n_samples = None,spacing = None):
     
     #Get total arc length
     arc_length = t[-1]
+
     #Spline airfoil with many points
     oversample = 10000
     delta = arc_length / (oversample - 1)
+
     #  The manypoints range from 0 to total arc_length, adding a bit on each
     #  side so that flatbacks extend past x=1 after rotation corrections.
     manypoints = np.linspace(- delta,arc_length + delta,num = oversample+2)
@@ -356,6 +374,7 @@ def resampleAirfoil(af_in = None,n_samples = None,spacing = None):
     ray_angle = np.arctan2(xxyy[max_point,1],- xxyy[max_point,0])
     xxyy = rotate2d(xxyy,ray_angle)
     xxyy = xxyy / max_ray + np.tile(np.array([1,0]),(xxyy.shape[0],1))
+
     #Separate into high and low pressure surfaces
     HP = xxyy[0:max_point+1,:] # HP points progress from TE (x=1) to LE (x=0)
     LP = xxyy[max_point:,:] # LP points progress from LE (x=0) to TE (x=1)
@@ -392,29 +411,15 @@ def resampleAirfoil(af_in = None,n_samples = None,spacing = None):
     #NOTE need to address 'extrap' option used in matlab code  below
     LP_new = np.stack((x_fwd,interpolator_wrap(LP[:,0],LP[:,1],x_fwd)),axis=1)
     HP_new = np.stack((x_rev,interpolator_wrap(HP[:,0],HP[:,1],x_rev)),axis=1)
+    
     # Make sure that LE point is at (0,0)
     HP_new[-1,:] = np.array([0,0])
     xyTE = np.array([1,0])
+
     #Assemble the two curves into a continuous line
     af_out = np.concatenate((xyTE.reshape(1,-1),HP_new,
         LP_new[1:,:],xyTE.reshape(1,-1)),axis=0)
-    #Get index of leading edge point in resampled coordinates
-    # LE = 1 + (n_panels + 1);  # or 1 + length(HP_new)
-    
-    # if 0: #debugging plots
-    #     plt.figure(701)
-    #     subplot(2,1,1)
-    #     plt.plot(t,xy(:,1),'k-x',t,xy(:,2),'r-x',manypoints,xxyy(:,1),'b-',manypoints,xxyy(:,2),'g-')
-    #     plt.xlabel('airfoil surface distance from first point')
-    #     plt.ylabel('oversampled coordinate value')
-    #     plt.legend('af\_in x','af\_in y','oversampled x','oversampled y','Location','North')
-    #     subplot(2,1,2)
-    #     plt.plot(xy(:,1),xy(:,2),'r-x',xxyy(:,1),xxyy(:,2),'b',af_out(:,1),af_out(:,2),'k-o')
-    #     plt.axis('equal')
-    #     xaf_out(1:5,:)
-    #     af_out(end-5:end,:)
-    #     plt.legend('af\_in points',np.array(['af\_in points oversampled by factor of ',num2str(oversample)]),'af\_out','Location','SouthEast')
-    
+
     return af_out
     
 
@@ -479,7 +484,7 @@ def getAirfoilNormalsAngleChange(unitNormals):
     return angleChange
 
 
-def rotate2d(xyin = None,angle = None): 
+def rotate2d(xyin, angle): 
     """
     NOTE: might be able to use affinetrans module here
     TODO: Docstring
@@ -491,7 +496,7 @@ def rotate2d(xyin = None,angle = None):
     return xyout
     
 
-def computeCamberAndThickness(x = None,y = None):
+def computeCamberAndThickness(x, y):
     """
     TODO: Docstring
     TODO: Test
@@ -509,151 +514,81 @@ def computeCamberAndThickness(x = None,y = None):
     camber = (yhp + ylp) / 2
     thickness = np.abs(ylp - yhp)
     return c,camber,thickness
-    
+        
 
-def getTEtype(xy = None): 
+def readAirfoilColumns(filecontents):
     """
-    Seems deprecated -kb
-    TODO: Docstring
-    TODO: Test
     """
-    #NOTE need to figure out eps replacement
-    # temporarily replacing eps(1) with 0
-    # if np.abs(xy[0,1] - xy[1,1]) > eps(1):
-    if np.abs(xy[0,1] - xy[1,1]) > 0:
-        # y-diff of first two points is non-zero for flatback
-        tetype = 'flat'
-    else:
-        # y-diff of first two points is zero otherwise (point
-        # is duplicated)
-        hp_angle = np.arctan2(xy[1,1] - xy[2,1],xy[1,0] - xy[2,0])
-        lp_angle = np.arctan2(xy[-3,1] - xy[-2,1],xy[-2,0] - xy[-3,0])
-        if (hp_angle + lp_angle) > 0.8 * np.pi:
-            # if angle is approaching 180deg, then treat as
-            # 'round'
-            # jcb: it may be better to base this decision on
-            # continuity of slope or curvature
-            tetype = 'round'
+    # All of these file formats assume that the
+    # LE is at (0,0) and the TE is at (1,0)
+    raw = re.findall('[^\n\r]*',filecontents) # get lines
+    
+    Nraw = np.asarray(raw).size
+    kh = 1  # index counter for header lines
+    kt = 1  # index counter for tables
+    kr = 1  # index counter for rows
+    header = []
+    table = []
+    for k in range(0,Nraw+1):
+        # try to read pairs of coordinates
+        pair = cell2mat(textscan(raw[k],'%f %f'))
+        if len(pair)==0:
+            if kt > 1 or kr > 1:
+                # then move to a new table
+                kt = kt + 1
+                kr = 1
+            else:
+                # otherwise keep reading the header
+                header[kh] = raw(k)
+                kh = kh + 1
         else:
-            tetype = 'sharp'
+            # place coordinate pair in table
+            table[kt][kr,:] = pair
+            kr = kr + 1
     
-    return tetype
-
+    if np.asarray(table).size == 1:
+        # assume points wrap around either LE or TE
+        coords = table[0]
+        if coords[0,0] < 0 or coords[0,0] > 1:
+            raise Exception('First x-coordinate not in range 0..1')
+        dc = np.diff(coords[:,1])
+        dc = dc * np.sign(dc[1])
+        k = np.find(dc < 0,1)
+        sideA = coords[0:k+1:2]
+        sideB = coords[k:-1:2]
+        if np.mean(sideA) > np.mean(sideB):
+            # LP (upper) surface given first, so flipud
+            #             disp('LP first');
+            coords = np.flipud(coords)
+            k = coords.shape[1-1] - k + 1
+        if (1 - coords[0,0]) > 0.5:
+            # coordinates begin at LE and wrap around TE
+            #             disp('TE wrap');
+            if coords[0,:]==coords[-1,:]:
+                coords[-1,:] = []
+            coords = np.concatenate([
+                [coords[k,0,-1,:]],
+                [coords[-1,k,-1,:]]])
+    else:
+        if np.asarray(table).size == 3:
+            # assume "Lednicer's" format
+            #(see http://www.ae.illinois.edu/m-selig/ads.html)
+            npoints = table[0]
+            lp = table[2]
+            hp = table[3]
+            if npoints.shape[1-1] != 1:
+                raise Exception('Format similar to "Lednicers", but more than one row found for table sizes')
+            if hp[0,:]==lp[0,:]:
+                lp[1,:] = []
+            coords = np.concatenate([[np.flipud(hp)],[lp]])
+        else:
+            raise Exception('File format not recognized')
     
-
-
-    #NOTE function flagged as low priority (plotting) -kb    
-    # def plot(self = None): 
-    #     # AirfoilDef.plot
-    # # plot(af)  Plots an AirfoilDef selfect (or an array of them)
-    #     N = np.asarray(self).size
-    #     if N == 1:
-    #         nc = 1
-    #         nr = 1
-    #     else:
-    #         nc = np.rint(np.sqrt(N))
-    #         nr = np.ceil(N / nc)
-        
-    #     clf
-    #     for k in np.arange(1,N+1).reshape(-1):
-    #         subplot(nr,nc,k)
-    #         if not len(self(k).c)==0 :
-    #             plt.plot(self(k).x,self(k).y,'.-')
-    #             line(self(k).c,self(k).camber,'LineStyle','-.','Color','k')
-    #             mtx = self(k).maxthick * np.array([1,1])
-    #             kn = find(self(k).c >= self(k).maxthick,1)
-    #             mty = self(k).camber(kn) + self(k).thickness(kn) * np.array([0.5,- 0.5])
-    #             line(mtx,mty,'LineStyle',':','Color','k')
-    #         else:
-    #             plt.plot(self(k).coordinates(:,1),self(k).coordinates(:,2),'.-')
-    #         plt.axis('equal')
-    #         plt.title(self(k).name,'Interpreter','none')
-        
-    #     return
-        
-    # methods (Static)
+    if np.asarray(header).size >= 1:
+        reference = header[0]
+        for k in np.arange(2,np.asarray(header).size+1).reshape(-1):
+            reference = '%s\n%s' % (reference,header[k])
+    else:
+        reference = ''
     
-    
-#==========================================================================
-# #NOTE function flagged as low priority -kb
-# # used in AirfoilDef init
-# def readAirfoilColumns(filecontents = None): 
-#     # [coords, reference] = readAirfoilColumns(filecontents)
-    
-#     # All of these file formats assume that the
-#     # LE is at (0,0) and the TE is at (1,0)
-#     raw = re.findall('[^\n\r]*',filecontents) # get lines
-    
-#     Nraw = np.asarray(raw).size
-#     kh = 1  # index counter for header lines
-#     kt = 1  # index counter for tables
-#     kr = 1  # index counter for rows
-#     header = []
-#     table = []
-#     #NOTE stoppe conversion here. Need to work with matlab example to figure this out -kb
-#     for k in range(0,Nraw+1):
-#         # try to read pairs of coordinates
-#         pair = cell2mat(textscan(raw[k],'%f %f'))
-#         if len(pair)==0:
-#             if kt > 1 or kr > 1:
-#                 # then move to a new table
-#                 kt = kt + 1
-#                 kr = 1
-#             else:
-#                 # otherwise keep reading the header
-#                 header[kh] = raw(k)
-#                 kh = kh + 1
-#         else:
-#             # place coordinate pair in table
-#             table[kt][kr,:] = pair
-#             kr = kr + 1
-    
-#     if np.asarray(table).size == 1:
-#         # assume points wrap around either LE or TE
-#         coords = table[0]
-#         if coords(1,1) < 0 or coords(1,1) > 1:
-#             raise Exception('First x-coordinate not in range 0..1')
-#         dc = np.diff(coords(:,1))
-#         dc = dc * np.sign(dc(1))
-#         k = find(dc < 0,1)
-#         sideA = coords(np.arange(1,k+1),2)
-#         sideB = coords(np.arange(k,end()+1),2)
-#         if mean(sideA) > mean(sideB):
-#             # LP (upper) surface given first, so flipud
-# #             disp('LP first');
-#             coords = flipud(coords)
-#             k = coords.shape[1-1] - k + 1
-#         if (1 - coords(1,1)) > 0.5:
-#             # coordinates begin at LE and wrap around TE
-# #             disp('TE wrap');
-#             if coords(1,:)==coords(end(),:):
-#                 coords[end(),:] = []
-#             coords = np.array([[coords(np.arange(k,1+- 1,- 1),:)],[coords(np.arange(end(),k + 1+- 1,- 1),:)]])
-#     else:
-#         if np.asarray(table).size == 3:
-#             # assume "Lednicer's" format
-# #(see http://www.ae.illinois.edu/m-selig/ads.html)
-#             npoints = table[0]
-#             lp = table[2]
-#             hp = table[3]
-#             if npoints.shape[1-1] != 1:
-#                 raise Exception('Format similar to "Lednicers", but more than one row found for table sizes')
-#             if hp(1,:)==lp(1,:):
-#                 lp[1,:] = []
-#             coords = np.array([[flipud(hp)],[lp]])
-#         else:
-#             raise Exception('File format not recognized')
-    
-#     if np.asarray(header).size >= 1:
-#         reference = header[0]
-#         for k in np.arange(2,np.asarray(header).size+1).reshape(-1):
-#             reference = sprintf('%s\n%s',reference,header[k])
-#     else:
-#         reference = ''
-    
-#     return coords,reference
-    
-#==========================================================================
-
-if __name__ == "__main__":
-    af = Airfoil()
+    return coords,reference
