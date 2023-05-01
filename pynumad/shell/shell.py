@@ -10,10 +10,10 @@ from pynumad.utils.interpolation import interpolator_wrap
 from pynumad.shell.SurfaceClass import Surface
 from pynumad.shell.Mesh3DClass import Mesh3D
 from pynumad.shell.ShellRegionClass import ShellRegion
-##from pynumad.io.ansys import writeANSYSshellModel
+from pynumad.analysis.ansys.write import writeAnsysShellModel
 
 
-def shellMeshGeneral(blade, forSolid, includeAdhesive):
+def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
     """
     This method generates a finite element shell mesh for the blade, based on what is
     stored in blade.geometry, blade.keypoints, and blade.profiles.  Output is given as
@@ -21,9 +21,55 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
 
     Parameters
     -----------
+    blade: Blade
+    forSolid
+    includeAdhesive: bool
 
     Returns
     -------
+    meshData:
+    Nodes and elements for outer shell and shear webs:
+    nodes:
+        - [x, y, z]
+        - [x, y, z]
+        ...
+    elements:
+        - [n1,n2,n3,n4]
+        - [n1,n2,n3,n4]
+        ...
+    Set list and section list for the outer shell and shear webs.  
+    These are companion lists with the same length and order, 
+    so meshData['sets']['element'][i] corresponds to meshData['sections'][i]
+    sets:
+        element:
+            - name: set1Name
+              labels: [e1, e2, e3 ...]
+            - name: set2Name
+              labels: [e1, e2, e3 ...]
+            ...
+    sections:
+        - type: 'shell'
+          layup:
+             - [materialid,thickness,angle] ## layer 1
+             - [materialid,thickness,angle] ## layer 2
+             ...
+          elementSet: set1Name
+        - type: 'shell'
+          layup:
+             - [materialid,thickness,angle] ## layer 1
+             - [materialid,thickness,angle] ## layer 2
+             ...
+          elementSet: set2Name
+    Nodes, elements and set for adhesive elements
+    adhesiveNds:
+        - [x, y, z]
+        ...
+    adhesiveEls:
+        - [n1,n2,n3,n4,n5,n6,n7,n8]
+        ...
+    adhesiveElSet:
+        name: 'adhesiveElements'
+        labels: [0,1,2,3....(number of adhesive elements)]
     """
     geomSz = blade.geometry.shape
     lenGeom = geomSz[0]
@@ -386,7 +432,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive):
     return shellData
   
     
-def generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
+def _generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
     # This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
     
     if str(feaCode.lower()) == str('ansys'):
@@ -401,32 +447,31 @@ def generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
         # Generate a mesh using shell elements
         APDLname = 'buildAnsysShell.src'
         ansys_product = 'ANSYS'
-        blade.paths.job = getcwd()
-        filename = join(blade.paths.job,APDLname)
+        blade.paths['job'] = getcwd()
+        filename = join(blade.paths['job'],APDLname)
         if not meshData:
             forSolid = 0
-            ## meshData.nodes,meshData.elements,meshData.outerShellElSets,meshData.shearWebElSets,meshData.adhesNds,meshData.adhesEls = blade.shellMeshGeneral(forSolid,includeAdhesive)
-            meshData = blade.shellMeshGeneral(forSolid,includeAdhesive)
+            meshData = shellMeshGeneral(blade, forSolid,includeAdhesive)
 
-        writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)  ## Edit this function for the new structure of meshData - E Anderson
+        writeAnsysShellModel(blade,filename,meshData,config)  
         if config["dbgen"]:
             assert not len(ansysPath)==0, 'Path to ANSYS not specified. Aborting. Operation Not Permitted'
             try:
                 #tcl: exec "$ANSYS_path" -b -p $AnsysProductVariable -I shell7.src -o output.txt
-                ansys_call = print('"%s" -b -p %s -I %s -o output.txt' % (ansysPath,ansys_product,APDLname))
-                status,result = subprocess.run(ansys_call)
-                if status==0:
-                    # dos command completed successfully; log written to output.txt
-                    if 1:
-                        print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.')
-                    else:
-                        print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed')
-                if status==7:
-                    # an error has occured which is stored in output.txt
-                    if 1:
-                        print('Could not complete ANSYS call. See "output.txt" for details.')
-                    else:
-                        print('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call')
+                ansys_call = '"%s" -b -p %s -I %s -o output.txt' % (ansysPath,ansys_product,APDLname)
+                process = subprocess.run(ansys_call, shell=True)
+                # if status==0:
+                #     # dos command completed successfully; log written to output.txt
+                #     if 1:
+                #         print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.')
+                #     else:
+                #         print('ANSYS batch run to generate database (.db) has completed. See "output.txt" for any warnings.','ANSYS Call Completed')
+                # if status==7:
+                #     # an error has occured which is stored in output.txt
+                #     if 1:
+                #         print('Could not complete ANSYS call. See "output.txt" for details.')
+                #     else:
+                #         print('Could not complete ANSYS call. See "output.txt" for details.','Error: ANSYS Call')
             finally:
                 pass
     else:
@@ -435,7 +480,7 @@ def generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
     return meshData
     
     
-def getSolidMesh(blade, layerNumEls=[]): 
+def _getSolidMesh(blade, layerNumEls=[]): 
     ## Edit stacks to be usable for 3D solid mesh
     blade.editStacksForSolidMesh()
     ## Create shell mesh as seed
