@@ -515,20 +515,27 @@ class Blade():
         ns = 1
         nf = self.geometry.shape[0] - 2
 
-        n1 = mm_to_m * self.leband # no foam width
-        n2 = mm_to_m * self.teband # no foam width
+        # n1 = mm_to_m * self.leband # no foam width
+        # n2 = mm_to_m * self.teband # no foam width
 
         #keypoints, keyarcs, keycpos
         self.TEtype = [] # reset TEtype
         for k in range(0,N):
             # allow for separate definitions of HP and LP spar cap
             # width and offset [HP LP]
-            if len(self.sparcapwidth) > 2 or len(self.sparcapoffset) > 2:
-                raise Exception('too many entries for spar cap definition')
-            scwidth_hp = mm_to_m * self.sparcapwidth[0] #type: float
-            scwidth_lp = mm_to_m * self.sparcapwidth[-1] #type: float
-            scoffset_hp = mm_to_m * self.sparcapoffset[0] #type: float
-            scoffset_lp = mm_to_m * self.sparcapoffset[-1] #type: float
+            # if len(self.sparcapwidth) > 2 or len(self.sparcapoffset) > 2:
+            #     raise Exception('too many entries for spar cap definition')
+            # scwidth_hp = mm_to_m * self.sparcapwidth[0] #type: float
+            # scwidth_lp = mm_to_m * self.sparcapwidth[-1] #type: float
+            n1 = mm_to_m * self.leband[k] # no foam width
+            n2 = mm_to_m * self.teband[k] # no foam width
+
+
+            scwidth_hp = mm_to_m * self.sparcapwidth_hp[k] #type: float
+            scwidth_lp = mm_to_m * self.sparcapwidth_lp[k] #type: float
+
+            scoffset_hp = mm_to_m * self.sparcapoffset_hp[k] #type: float
+            scoffset_lp = mm_to_m * self.sparcapoffset_lp[k] #type: float
 
             tempTE = self.getprofileTEtype(k)
             if self.TEtype:
@@ -691,7 +698,6 @@ class Blade():
                 n = n - 1
                 self.webpoints[ksw][0,:,:] = self.keypoints[n,:,:]
             elif hp['pt1']:
-                #NOTE not sure what hp['fraction'] looks like, but hopefully this line works -kb
                 f = float(hp['fraction'])
                 if f <= 0 or f >= 1:
                     raise Exception(f'Component group {ksw}: HP extent fraction={f}, which is outside range (0..1)')
@@ -766,7 +772,6 @@ class Blade():
                 p2 = self.keyarcs[n2,:]
                 p = (1 - f) * p1 + f * p2
                 self.webarcs[ksw][1,:] = p
-                #NOTE stopped translating here
                 for k in range(N):
                     self.webcpos[ksw][1,k] = interpolator_wrap(k_arclen,k_cpos,p[k])
                     self.webpoints[ksw][1,:,k] = interpolator_wrap(k_arclen,k_geom,p[k])
@@ -1147,7 +1152,13 @@ class Blade():
 
     def updateAirfoilProfile(self,k):
         """
-        TODO docstring 
+        
+        Parameters
+        ----------
+
+        Returns
+        -------
+        None
         """
         thickness = self.ithickness[:,k]
         percentthick = self.ipercentthick[k]
@@ -1363,19 +1374,26 @@ class Blade():
 
     def getprofileTEtype(self,k: int):
         """
-        TODO docstring
+        
+        Parameters
+        ----------
+        k
+
+        Return
+        ------
+        tetype : str
         """
         xy = self.profiles[:,:,k]
         tetype = self.getTEtype(xy)       
         return tetype
     
     
-    def expandBladeGeometryTEs(self): 
-        """NOTE: is this deprecated? I don't see it used anywhere
+    def expandBladeGeometryTEs(self,minimumTEedgelength): 
+        """
         TODO: docstring
         """
         nStations = self.geometry.shape[2]
-        minimumTEedgelength = 0.003
+  
 
         for iStation in range(0,nStations):
             firstPoint = self.ichord[iStation] * self.profiles[-2,:,iStation]

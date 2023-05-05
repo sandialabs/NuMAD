@@ -4,7 +4,7 @@ import os
 
 ## Read blade data from yaml file
 blade = pynu.objects.Blade.Blade()
-fileName = 'myBlade.yaml'
+fileName = 'example_data/myBlade.yaml'
 blade.read_yaml(fileName)
 
 ## Set the airfoil point resolution
@@ -12,7 +12,7 @@ for stat in blade.stations:
     stat.airfoil.resample(n_samples=300)
     
 blade.updateGeometry()
-blade.expandBladeGeometryTEs()
+blade.expandBladeGeometryTEs(0.001)
 
 ## Set the target element size for the mesh
 blade.mesh = 0.2

@@ -2,8 +2,15 @@ import numpy as np
 import os
 import warnings
 import matplotlib.pyplot as plt
+from datetime import datetime
+import subprocess
+import time
+
 from pynumad import path_data
 from pynumad.analysis.ansys.ansys import *
+from pynumad.analysis.ansys.utility import *
+from pynumad.analysis.ansys.read import *
+from pynumad.analysis.ansys.write import *
     
 def mainAnsysAnalysis(
         blade,
@@ -55,9 +62,9 @@ def mainAnsysAnalysis(
     if not designvar:
         raise Exception('no analyses are configured in configuration st.')
     
-    for iLoad in np.arange(1,len(loadsTable)+1).reshape(-1):
+    for iLoad in range(len(loadsTable)):
         ## ************************************************************************
-        # ================= APPLY LOADS TO FEA MESH =================
+        # ================= APPLY LOADS TO FEA MESH ================= #NOTE: Priority
         forcefilename = 'forces'
         nodeData = np.array([meshData.outerShellNodes,meshData.nodes[meshData.outerShellNodes,:]])
         if ('FollowerForces' in analysisConfig["analysisFlags"]) and \
@@ -71,7 +78,7 @@ def mainAnsysAnalysis(
             beamForceToAnsysShell('map3D_fxM0',nodeData,loadsTable[iLoad],forcefilename+'.src')
         print('Forces mapped to ANSYS model')
         ## ************************************************************************
-        # ================= PERFORM LINEAR STATIC ANALYSIS =================
+        # ================= PERFORM LINEAR STATIC ANALYSIS ================= #NOTE: Priority
         # run buckling computations in ansys
         print(' ')
         print('Running ANSYS analysis...')
@@ -79,10 +86,10 @@ def mainAnsysAnalysis(
         script_out = 'ansysAnalysisEcho.out'
         fid = open(script_name,'w+')
         fid.write('/NERR,,99999999\n' % ())
-        fid.write('/CWD, '%s'\n' % (pwd))
+        fid.write('/CWD, %s\n' % (os.getcwd()))
         fid.write('resume,master,db\n' % ())
         #         fprintf(fid,'/FILNAME,''#s'',1\n',ansysFilename);   #From master, change the jobname
-        fid.write('/FILNAME,'%s',1\n' % (strcat(ansysFilename,'-Load',int2str(iLoad))))
+        fid.write('/FILNAME,%s,1\n' % (ansysFilename+'-Load'+str(iLoad)))
         #fprintf(fid,'resume\n');
         fid.write('! BEGIN LINEAR STATIC SCRIPT\n' % ())
         fid.write('esel,all\n' % ())
@@ -110,33 +117,33 @@ def mainAnsysAnalysis(
             fid.write('/output\n' % ())
             fid.write('finish\n' % ())
         ## ************************************************************************
-        #================= PERFORM Deflection ANALYSIS =================
+        #================= PERFORM Deflection ANALYSIS =================  #NOTE: Priority
         if hasattr(analysisConfig["analysisFlags"],'deflection') and analysisConfig["analysisFlags"].deflection != 0:
             deflectionFilename = 'results_deflection'
             writeAnsysDeflections(blade,analysisConfig,iLoad,fid,deflectionFilename)
-        # calculate face stresses for wrinkling
+        # calculate face stresses for wrinkling NOTE: Skip
         if hasattr(analysisConfig["analysisFlags"],'localBuckling') and not len(analysisConfig["analysisFlags"].localBuckling)==0  and not (hasattr(analysisConfig["analysisFlags"],'imperfection') and not len(analysisConfig["analysisFlags"].imperfection)==0 ) :
             #Check for wrinkling here in a linear analysis
             app,SkinAreas,compsInModel = writeAnsysGetFaceStresses(blade,fid,analysisConfig["analysisFlags"].localBuckling)
-        ### Output resultant force and moments to file
+        ### Output resultant force and moments to file NOTE: Skip
         if hasattr(analysisConfig["analysisFlags"],'resultantVSspan') and analysisConfig["analysisFlags"].resultantVSspan != 0:
             writeAnsysResultantVSSpan(blade,analysisConfig,iLoad,fid)
         ## ************************************************************************
-        # ================= PERFORM FATIGUE ANALYSIS =================
+        # ================= PERFORM FATIGUE ANALYSIS ================= 
         if hasattr(analysisConfig["analysisFlags"],'fatigue') and not len(analysisConfig["analysisFlags"].fatigue)==0 :
             writeAnsysFatigue(fid,iLoad)
         ## ************************************************************************
-        # ================= CREAT LOCAL FIELD RESULTS FOR MATLAB =================
+        # ================= CREAT LOCAL FIELD RESULTS FOR MATLAB ================= #NOTE: Priority
         if hasattr(analysisConfig["analysisFlags"],'localFields') and not len(analysisConfig["analysisFlags"].localFields)==0 :
             writeAnsysLocalFields(blade,analysisConfig,iLoad,fid)
         ## ************************************************************************
-        # ================= PERFORM FAILURE ANALYSIS =================
+        # ================= PERFORM FAILURE ANALYSIS ================= #NOTE: Priority
         # Initialize GUI commands from batch operation to identify maxima
         if hasattr(analysisConfig["analysisFlags"],'failure') and not len(analysisConfig["analysisFlags"].failure)==0 :
             failureFilename = 'results_failure'
             writeAnsysRupture(analysisConfig,iLoad,fid,failureFilename)
         ## ************************************************************************
-        # ================= PERFORM BUCKLING ANALYSIS =================
+        # ================= PERFORM BUCKLING ANALYSIS ================= #NOTE: Priority
         #Linear Buckling Analysis
         if hasattr(analysisConfig["analysisFlags"],'globalBuckling') and analysisConfig["analysisFlags"].globalBuckling > 0:
             bucklingFilename = 'results_buckling'
@@ -161,8 +168,8 @@ def mainAnsysAnalysis(
                 print('ANSYS analysis completed')
                 #delete(script_name);
                 break
-            print('%s: Waiting for ANSYS analysis steps...\n' % (datestr(now)))
-            pause(3)
+            print('%s: Waiting for ANSYS analysis steps...\n' % (datetime.now()))
+            time.sleep(3)
 
         #  MATLAB POST PROCESS ##########################################
         ## ************************************************************************
@@ -181,17 +188,17 @@ def mainAnsysAnalysis(
             designvar.resultantVSspan[iLoad] = txt2mat(fileName)
             os.delete(fileName)
             #             fileName='resultantVSspan2.txt';
-#             designvar.resultantVSspan2{iLoad}=txt2mat(fileName);
-#             delete(fileName);
+            #             designvar.resultantVSspan2{iLoad}=txt2mat(fileName);
+            #             delete(fileName);
         ## ************************************************************************
-# ================= READ LINEAR BUCKLING RESULTS =================
-# read buckling results
+        # ================= READ LINEAR BUCKLING RESULTS =================
+        # read buckling results
         if hasattr(analysisConfig["analysisFlags"],'globalBuckling') and analysisConfig["analysisFlags"].globalBuckling > 0:
             linearLoadFactors = readAnsysLinearBuckling(blade,analysisConfig,iLoad,fid,bucklingFilename)
         ## ************************************************************************
-# ================= PERFORM NON-LINEAR BUCKLING/WRINKLING ANALYSIS =================
-# Perform nonlinear buckling here if required (and writeANSYSgetFaceStresses
-# at the end of the nonlinear analysis for wrikling check
+        # ================= PERFORM NON-LINEAR BUCKLING/WRINKLING ANALYSIS =================
+        # Perform nonlinear buckling here if required (and writeANSYSgetFaceStresses
+        # at the end of the nonlinear analysis for wrikling check
         if hasattr(analysisConfig["analysisFlags"],'imperfection') and not len(analysisConfig["analysisFlags"].imperfection)==0 :
             warnings.warn('output designvar. Currently does not work for nonlinear cases')
             imperfection = analysisConfig["analysisFlags"].imperfection / 1000
@@ -200,8 +207,8 @@ def mainAnsysAnalysis(
             wrinklingLimitingElementData = np.zeros((len(linearLoadFactors),4,len(imperfection)))
             marker = np.array(['-ok','-sk','-dk','-*k','-^k','-<k','->k','-pk','-hk'])
             #SF=max(LLF); #Use one loads file for all buckling modes
-            for jj in np.arange(1,len(imperfection)+1).reshape(-1):
-                for ii in np.arange(1,len(linearLoadFactors)+1).reshape(-1):
+            for jj in range(len(imperfection)):
+                for ii in range(len(linearLoadFactors)):
                     # For each load factor, create a new jobname and database and run a nonlinear static analysis
                     nonlinearLoadFactors[ii,jj] = writeAnsysNonLinearBuckling(ansysFilename,ansysPath,ansys_product,analysisConfig,ii,jj,ncpus,iLoad)
                     wrinklingLimitingElementData[ii,:,jj] = wrinklingForNonlinearBuckling(blade,analysisConfig["analysisFlags"].localBuckling,settings,ncpus,ansysFilename,ii,jj)
@@ -223,17 +230,17 @@ def mainAnsysAnalysis(
             if hasattr(analysisConfig["analysisFlags"],'globalBuckling') and analysisConfig["analysisFlags"].globalBuckling > 0:
                 designvar.globalBuckling[iLoad] = linearLoadFactors(1)
         ## ************************************************************************
-# ================= POST-PROCESS PANEL WRINKLING FACTORS =================
+        # ================= POST-PROCESS PANEL WRINKLING FACTORS =================
         if hasattr(analysisConfig["analysisFlags"],'localBuckling') and not len(analysisConfig["analysisFlags"].localBuckling)==0 :
             if hasattr(analysisConfig["analysisFlags"],'imperfection') and not len(analysisConfig["analysisFlags"].imperfection)==0 :
                 #UNSUPPORTED AT THIS TIME
                 writeAnsysNonLinearLocalBuckling(blade,analysisConfig,iLoad,fid,ansysFilename,ii,jj)
             # perform wrinkling check
             wrinklingLimitingElementData = writeAnsysFagerberWrinkling(app,SkinAreas,compsInModel,analysisConfig["analysisFlags"].localBuckling)
-            designvar.localBuckling[iLoad] = wrinklingLimitingElementData(3)
-            delete * faceAvgStresses.txt
+            designvar.localBuckling[iLoad] = wrinklingLimitingElementData[2]
+            os.path.delete('*faceAvgStresses.txt') # NOTE: I believe * is supposed to glob here, but I am not sure it is doing that -kb
         ## ************************************************************************
-# ================= READ FAILURE RESULTS INTO MATLAB =================
+        # ================= READ FAILURE RESULTS INTO MATLAB =================
         if hasattr(analysisConfig["analysisFlags"],'failure') and not len(analysisConfig["analysisFlags"].failure)==0 :
             fileName = np.array([failureFilename,'.out'])
             designvar.failure[iLoad] = read_1_ANSYSoutput(fileName)
@@ -242,7 +249,7 @@ def mainAnsysAnalysis(
     ## ************************************************************************
     
     # ================= RUN FATIGUE POST PROCESSOR =================
-#After all load directions are solved compute fatige damage if needed
+    #After all load directions are solved compute fatige damage if needed
     if hasattr(analysisConfig["analysisFlags"],'fatigue') and not len(analysisConfig["analysisFlags"].fatigue)==0 :
         if not len(varargin)==0  and class_(varargin[0])=='IECDef':
             # cd ..
@@ -257,10 +264,8 @@ def mainAnsysAnalysis(
     
     
 def saveData(designvar = None,iLoad = None,airfoilSegmentName = None,iSpan = None,nodes = None,midNodei = None): 
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].x[iSpan] = nodes(midNodei,2)
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].y[iSpan] = nodes(midNodei,3)
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].z[iSpan] = nodes(midNodei,4)
-    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].data[iSpan] = nodes(midNodei,5)
-    return designvar
-    
+    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].x[iSpan] = nodes[midNodei,1]
+    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].y[iSpan] = nodes[midNodei,2]
+    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].z[iSpan] = nodes[midNodei,3]
+    getattr[designvar.localFields[iLoad],[airfoilSegmentName]].data[iSpan] = nodes[midNodei,4]
     return designvar
