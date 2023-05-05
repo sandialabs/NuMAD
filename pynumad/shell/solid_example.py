@@ -1,24 +1,29 @@
 import pynumad as pynu
 import numpy as np
-import pickle
 import os
 
+## Read blade data from yaml file
 blade = pynu.objects.Blade.Blade()
 fileName = 'myBlade.yaml'
 blade.read_yaml(fileName)
 
+## Set the airfoil point resolution
 for stat in blade.stations:
     stat.airfoil.resample(n_samples=300)
     
 blade.updateGeometry()
-
 blade.expandBladeGeometryTEs()
+
+## Set the target element size for the mesh
 blade.mesh = 0.2
 
-# with open('myBlade.obj','rb') as file:
-    # blade = pickle.load(file)
+## Specify the elements per primary layer and generate mesh
+layNumEls = [1,1,1]
+bladeMesh = blade.getSolidMesh(layerNumEls=layNumEls)
 
-bladeMesh = pynu.shell.shell.getSolidMesh(blade, layerNumEls=[1,1,1])
+## Write mesh to yaml
+meshFile = 'solidMeshData.yaml'
+pynu.io.mesh_to_yaml.mesh_to_yaml(bladeMesh,meshFile)
 
 ## Write Abaqus input
 
