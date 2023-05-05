@@ -59,12 +59,16 @@ def yaml_to_blade(blade, filename: str):
     I_spar_lp = I_spar_lp[0]
     # Because spar cap width must be constant, average the yaml file on
     # pressure and suction surfaces across span
-    blade.sparcapwidth = np.zeros((2))
+    # blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
-    blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][I_spar_hp]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][I_spar_lp]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapoffset[0] = np.multiply(np.mean(blade_internal_structure['layers'][I_spar_hp]['offset_y_pa']['values']),1000)
-    blade.sparcapoffset[1] = np.multiply(np.mean(blade_internal_structure['layers'][I_spar_lp]['offset_y_pa']['values']),1000)
+    # blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][I_spar_hp]['width']['values'], keepdims = True).mode[0],1000)
+    # blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][I_spar_lp]['width']['values'], keepdims = True).mode[0],1000)
+
+    blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][I_spar_hp]['width']['values'])*1000
+    blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][I_spar_lp]['width']['values'])*1000
+
+    blade.sparcapoffset_hp = np.array(blade_internal_structure['layers'][I_spar_hp]['offset_y_pa']['values'])*1000
+    blade.sparcapoffset_lp = np.array(blade_internal_structure['layers'][I_spar_lp]['offset_y_pa']['values'])*1000
     
     # TE and LE Bands
     I_reinf = []
@@ -83,9 +87,11 @@ def yaml_to_blade(blade, filename: str):
     I_LE = I_LE[0]
     I_TE = I_TE[0]
     # Leading and Trailing Edge bands are constants in millimeters
-    blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
-    blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
-    
+    # blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
+    # blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
+
+    blade.leband = np.array(blade_internal_structure['layers'][I_LE]['width']['values'])*1000 / 2
+    blade.teband = np.array(blade_internal_structure['layers'][I_TE]['width']['values'])*1000 / 2
     ### COMPONENTS
     add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp)
     
