@@ -15,27 +15,46 @@ from pynumad.objects.Airfoil import Airfoil
 from pynumad.objects.Material import Material
 
 
-def yaml_to_blade(blade, filename: str):
+def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
     """
-    TODO docstring
-    """
-    #NOTE this ignores warnings from numpy - comment for debugging
-    # np.seterr(invalid='ignore')
+    This method writes blade information from a .yaml file to a Blade object.
+    The yaml file is expected to be formatted according to the WindIO ontology.
+    See https://windio.readthedocs.io/en/stable/source/turbine.html.
 
-    # Read in NREL yaml file
+    Parameters
+    ----------
+    blade : Blade
+    filename : string 
+        path to .yaml file
+    write_airfoils : bool
+        Set true to write airfoil files while reading in data. Defaults to false.
+
+    Returns
+    -------
+    blade : Blade
+        input blade object populated with yaml data
+    """
+
+    # Read in yaml file as a nested dictionary
     with open(filename) as blade_yaml:
         data = yaml.load(blade_yaml,Loader=yaml.FullLoader)
 
     # Name some key subdata
     blade_outer_shape_bem = data['components']['blade']['outer_shape_bem']
-    hub_outer_shape_bem = data['components']['hub']['outer_shape_bem']
+    
+    # older versions of wind ontology do not have 'outer_shape_bem' subsection for hub data
+    try:
+        hub_outer_shape_bem = data['components']['hub']['outer_shape_bem']
+    except KeyError:
+        hub_outer_shape_bem = data['components']['hub']
+    
     blade_internal_structure = data['components']['blade']['internal_structure_2d_fem']
     af_data = data['airfoils']
     mat_data = data['materials']
 
     ### STATIONS / AIRFOILS
     _add_stations(blade, blade_outer_shape_bem, hub_outer_shape_bem, 
-                    af_data, filename)
+                    af_data, filename, write_airfoils)
     
     ### MATERIALS
     _add_materials(blade, mat_data)
@@ -44,50 +63,40 @@ def yaml_to_blade(blade, filename: str):
     N_layer_comp = len(blade_internal_structure['layers'])
     
     # Spar Cap Width and Offset
-    I_spar_lp = []
-    I_spar_hp = []
+    # Obtain component name and index for hp and lp sides of sparcap
     for i in range(N_layer_comp):
         if 'spar' in blade_internal_structure['layers'][i]['name'].lower():
+            name = blade_internal_structure['layers'][i]['name']
             if 'suc' in blade_internal_structure['layers'][i]['side'].lower():
-                I_spar_lp.append(i)
+                spar_lp_index = i
+                spar_lp_name = name
             if 'pres' in blade_internal_structure['layers'][i]['side'].lower():
-                I_spar_hp.append(i)
+                spar_hp_index = i
+                spar_hp_name = name
 
-    # Syntax from NuMAD 3.0 suggests that I_spar_hp/lp should always be
-    # length 1. -kb
-    I_spar_hp = I_spar_hp[0]
-    I_spar_lp = I_spar_lp[0]
     # Because spar cap width must be constant, average the yaml file on
     # pressure and suction surfaces across span
     blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
-    blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][I_spar_hp]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][I_spar_lp]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapoffset[0] = np.multiply(np.mean(blade_internal_structure['layers'][I_spar_hp]['offset_y_pa']['values']),1000)
-    blade.sparcapoffset[1] = np.multiply(np.mean(blade_internal_structure['layers'][I_spar_lp]['offset_y_pa']['values']),1000)
+    blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][spar_hp_index]['width']['values'], keepdims = True).mode[0],1000)
+    blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][spar_lp_index]['width']['values'], keepdims = True).mode[0],1000)
+    blade.sparcapoffset[0] = np.multiply(np.mean(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values']),1000)
+    blade.sparcapoffset[1] = np.multiply(np.mean(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values']),1000)
     
     # TE and LE Bands
-    I_reinf = []
-    I_LE = []
-    I_TE = []
     for i in range(N_layer_comp):
         if 'reinf' in blade_internal_structure['layers'][i]['name'].lower():
-            I_reinf.append(i) # I_reinf not used for anything currently
             if 'le' in blade_internal_structure['layers'][i]['name'].lower():
-                I_LE.append(i)
+                I_LE = i
             else:
-                I_TE.append(i)
+                I_TE = i
     
-    # Syntax from NuMAD 3.0 suggests that I_LE/TE should always be
-    # length 1. -kb
-    I_LE = I_LE[0]
-    I_TE = I_TE[0]
     # Leading and Trailing Edge bands are constants in millimeters
     blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
     blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
     
     ### COMPONENTS
-    _add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp)
+    _add_components(blade, blade_internal_structure, spar_hp_index, spar_lp_index)
     
     blade.updateBlade()
     # save(blade_name)
@@ -96,7 +105,7 @@ def yaml_to_blade(blade, filename: str):
 
 
 def _add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
-                    af_data, file: str):
+                    af_data, file: str, write_airfoils):
 
     # Obtaining some parameters not explicitly given in YAML file
     L = np.ceil(blade_outer_shape_bem['reference_axis']['z']['values'][-1])
@@ -135,7 +144,7 @@ def _add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
             if np.nanmean(np.gradient(np.arctan(xf_coords[:,1] / xf_coords[:,0]))) > 0:
                 xf_coords = np.flipud(xf_coords)
 
-        if blade.write_airfoils:
+        if write_airfoils:
             import os
             out_folder = 'yaml2BladeDef_' + file.replace('.yaml','')
             # blade_name = out_folder + '/' + file.replace('.yaml','') + '_blade.mat'
@@ -183,23 +192,24 @@ def _add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
     #         '.txt')
     #     blade.addStation(afc,np.multiply(tc_xL[i],L))
     # afc.resample #NOTE afc isn't used after this... why resample?
-    pass
+    return
 
 
-def _add_materials(blade, mat_data):
-    for i in range(len(mat_data)):
+def _add_materials(blade, material_data):
+    materials_dict =dict()
+    for i in range(len(material_data)):
         cur_mat = Material()
-        cur_mat.name = mat_data[i]['name']
-        if mat_data[i]['orth'] == 1:
+        cur_mat.name = material_data[i]['name']
+        if material_data[i]['orth'] == 1:
             cur_mat.type = 'orthotropic'
         else:
             cur_mat.type = 'isotropic'
         # Add ply thickness option if ply thickness exists in yaml
         try:
-            cur_mat.layerthickness = mat_data[i]['ply_t'] * 1000
+            cur_mat.layerthickness = material_data[i]['ply_t'] * 1000
         except KeyError:
                 print('Warning! material ply thickness ' + 
-                        mat_data[i]['name'] + 
+                        material_data[i]['name'] + 
                         ' not defined, assuming 1 mm thickness')
                 cur_mat.layerthickness = 1
             
@@ -207,227 +217,235 @@ def _add_materials(blade, mat_data):
             pass
 
         # first
-        cur_mat.uts = _parse_data(mat_data[i]['Xt'])
-        cur_mat.ucs = -_parse_data(mat_data[i]['Xc'])
-        cur_mat.uss = _parse_data(mat_data[i]['S'])
+        cur_mat.uts = _parse_data(material_data[i]['Xt'])
+        cur_mat.ucs = -_parse_data(material_data[i]['Xc'])
+        cur_mat.uss = _parse_data(material_data[i]['S'])
         cur_mat.xzit = 0.3
         cur_mat.xzic = 0.25
         cur_mat.yzit = 0.3
         cur_mat.yzic = 0.25
-        with np.errstate(divide='ignore', invalid='ignore'):
-            cur_mat.g1g2 = np.divide(mat_data[i]['GIc'], mat_data[i]['GIIc'])
-        cur_mat.alp0 = _parse_data(mat_data[i]['alp0'])
+        try: 
+            cur_mat.g1g2 = material_data[i].get('GIc',0) / material_data[i].get('GIIc',0)
+        except ZeroDivisionError:
+            cur_mat.g1g2 = np.nan
+        if 'alp0' in material_data[i]:
+            cur_mat.alp0 = _parse_data(material_data[i]['alp0'])
+        else: cur_mat.alp0 = None
         cur_mat.etat = LARCetaT(cur_mat.alp0)
         try:
-            #test if it is a list
-            mat_data[i]['E']+[]
+            #test if property is a list
+            material_data[i]['E']+[]
         except TypeError:
-            cur_mat.ex = _parse_data(mat_data[i]['E'])
-            cur_mat.ey = _parse_data(mat_data[i]['E'])
-            cur_mat.ez = _parse_data(mat_data[i]['E'])
-            cur_mat.gxy = _parse_data(mat_data[i]['G'])
-            cur_mat.gxz = _parse_data(mat_data[i]['G'])
-            cur_mat.gyz = _parse_data(mat_data[i]['G'])
-            cur_mat.prxy = _parse_data(mat_data[i]['nu'])
-            cur_mat.prxz = _parse_data(mat_data[i]['nu'])
-            cur_mat.pryz = _parse_data(mat_data[i]['nu'])
+            cur_mat.ex = _parse_data(material_data[i]['E'])
+            cur_mat.ey = _parse_data(material_data[i]['E'])
+            cur_mat.ez = _parse_data(material_data[i]['E'])
+            cur_mat.gxy = _parse_data(material_data[i]['G'])
+            cur_mat.gxz = _parse_data(material_data[i]['G'])
+            cur_mat.gyz = _parse_data(material_data[i]['G'])
+            cur_mat.prxy = _parse_data(material_data[i]['nu'])
+            cur_mat.prxz = _parse_data(material_data[i]['nu'])
+            cur_mat.pryz = _parse_data(material_data[i]['nu'])
             cur_mat.etal = LARCetaL(cur_mat.uss,cur_mat.ucs,cur_mat.alp0)
         else:
-            cur_mat.ex = _parse_data(mat_data[i]['E'][0])
-            cur_mat.ey = _parse_data(mat_data[i]['E'][1])
-            cur_mat.ez = _parse_data(mat_data[i]['E'][2])
-            cur_mat.gxy = _parse_data(mat_data[i]['G'][0])
-            cur_mat.gxz = _parse_data(mat_data[i]['G'][1])
-            cur_mat.gyz = _parse_data(mat_data[i]['G'][2])
-            cur_mat.prxy = _parse_data(mat_data[i]['nu'][0])
-            cur_mat.prxz = _parse_data(mat_data[i]['nu'][1])
-            cur_mat.pryz = _parse_data(mat_data[i]['nu'][2])
+            cur_mat.ex = _parse_data(material_data[i]['E'][0])
+            cur_mat.ey = _parse_data(material_data[i]['E'][1])
+            cur_mat.ez = _parse_data(material_data[i]['E'][2])
+            cur_mat.gxy = _parse_data(material_data[i]['G'][0])
+            cur_mat.gxz = _parse_data(material_data[i]['G'][1])
+            cur_mat.gyz = _parse_data(material_data[i]['G'][2])
+            cur_mat.prxy = _parse_data(material_data[i]['nu'][0])
+            cur_mat.prxz = _parse_data(material_data[i]['nu'][1])
+            cur_mat.pryz = _parse_data(material_data[i]['nu'][2])
             cur_mat.etal = LARCetaL(cur_mat.uss[0],cur_mat.ucs[1],cur_mat.alp0)
         try:
-            cur_mat.m = mat_data[i]['m']
+            cur_mat.m = material_data[i]['m']
         except KeyError:
-            print(f"No fatigue exponent found for material: {mat_data[i]['name']}")
-        cur_mat.density = mat_data[i]['rho']
+            print(f"No fatigue exponent found for material: {material_data[i]['name']}")
+        cur_mat.density = material_data[i]['rho']
         # cur_mat.dens = mat_data[i]['rho']
-        cur_mat.drydensity = mat_data[i]['rho']
-        if 'description' in mat_data[i].keys() and 'source' in mat_data[i].keys():
-            desc_sourc = [mat_data[i]['description'],', ',mat_data[i]['source']]
+        cur_mat.drydensity = material_data[i]['rho']
+        if 'description' in material_data[i].keys() and 'source' in material_data[i].keys():
+            desc_sourc = [material_data[i]['description'],', ',material_data[i]['source']]
             cur_mat.reference = ''.join(desc_sourc)
         else:
             cur_mat.reference = []
-        if blade.materials:
-            blade.materials.append(cur_mat)
-        else:
-            blade.materials = []
-            blade.materials.append(cur_mat)
+
+        materials_dict[cur_mat.name] = cur_mat
+    blade.materials = materials_dict
+    return
 
 
-def _add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp):
+def _add_components(blade, blade_internal_structure, spar_hp, spar_lp):
     N_layer_comp = len(blade_internal_structure['layers'])
+    component_list = list()
     for i in range(N_layer_comp):
+        i_component_data = blade_internal_structure['layers'][i]
         cur_comp = Component()
         cur_comp.group = 0
-        cur_comp.name = blade_internal_structure['layers'][i]['name']
+        cur_comp.name = i_component_data['name']
         #   comp['material'] = blade_internal_structure['layers']{i}['material'];
-        mat_names = [mat.name for mat in blade.materials]
-        C,IA,IB = np.intersect1d(mat_names,blade_internal_structure['layers'][i]['material'],return_indices=True)
-        cur_comp.materialid = IA[0]
+        # mat_names = [mat.name for mat in blade.materials]
+        # C,IA,IB = np.intersect1d(mat_names,i_component_data['material'],return_indices=True)
+        cur_comp.materialid = i_component_data['name']
         try:
-            cur_comp.fabricangle = np.mean(blade_internal_structure['layers'][i]['fiber_orientation']['values'])
+            cur_comp.fabricangle = np.mean(i_component_data['fiber_orientation']['values'])
         finally:
             pass
-        if 'spar' in blade_internal_structure['layers'][i]['name'].lower():
+        if 'spar' in i_component_data['name'].lower():
             cur_comp.imethod = 'pchip'
         else:
             cur_comp.imethod = 'linear'
-        # cur_comp.cp[:,0] = np.transpose(blade_internal_structure['layers'][i]['thickness']['grid'])
-        cptemp1 = np.transpose(blade_internal_structure['layers'][i]['thickness']['grid'])
-        temp_n_layer = np.multiply(np.transpose(blade_internal_structure['layers'][i]['thickness']['values']),1000.0) / blade.materials[cur_comp.materialid].layerthickness
+        # cur_comp.cp[:,0] = np.transpose(i_component_data['thickness']['grid'])
+        cptemp1 = np.transpose(i_component_data['thickness']['grid'])
+        temp_n_layer = np.multiply(np.transpose(i_component_data['thickness']['values']),1000.0) / blade.materials[cur_comp.materialid].layerthickness
         I_round_up = np.flatnonzero((temp_n_layer > 0.05) & (temp_n_layer < 0.5))
-        cptemp2 = np.round(np.multiply(np.transpose(blade_internal_structure['layers'][i]['thickness']['values']),1000.0) / blade.materials[cur_comp.materialid].layerthickness)
+        cptemp2 = np.round(np.multiply(np.transpose(i_component_data['thickness']['values']),1000.0) / blade.materials[cur_comp.materialid].layerthickness)
         cur_comp.cp = np.stack((cptemp1,cptemp2),axis=1)
         if I_round_up.size > 0:
             cur_comp.cp[I_round_up,1] = 1 # increase n_layers from 0 to 1 for 0.05<n_layers<0.5
         #     comp['cp'](:,2) = cell2mat(blade_internal_structure['layers']{i}['thickness']['values'])'.*1000;  # use when each material ply is 1 mm
         cur_comp.pinnedends = 0
-        if blade.components:
-            blade.components.append(cur_comp)
-        else:
-            blade.components = []
-            blade.components.append(cur_comp)
+        component_list.append(cur_comp)
+
 
 
     # Spar Caps (pressure and suction)
-    blade.components[I_spar_hp].hpextents = ['b','c']
-    blade.components[I_spar_lp].lpextents = ['b','c']
+    component_list[spar_hp].hpextents = ['b','c']
+    component_list[spar_lp].lpextents = ['b','c']
     
-    for i in range(N_layer_comp):
+    for comp in range(len(component_list)):
 
         # uv coating
-        if 'uv' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['le','te']
-            blade.components[i].lpextents = ['le','te']
-            blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+        if 'uv' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['le','te']
+            component_list[comp].lpextents = ['le','te']
+            component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
 
         # Shell skin1
-        if 'shell_skin_outer' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['le','te']
-            blade.components[i].lpextents = ['le','te']
+        if 'shell_skin_outer' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['le','te']
+            component_list[comp].lpextents = ['le','te']
             # CK Change me when yaml is fixed!!!!
-            blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+            component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
         
         # LE Band
-        if 'le_reinf' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['le','a']
-            blade.components[i].lpextents = ['le','a']  
+        if 'le_reinf' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['le','a']
+            component_list[comp].lpextents = ['le','a']  
         
         # TE Band
-        if 'te_reinf' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['d','te']
-            blade.components[i].lpextents = ['d','te']
+        if 'te_reinf' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['d','te']
+            component_list[comp].lpextents = ['d','te']
         
         # Trailing edge suction surface panel
-        if 'te_ss' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].lpextents = ['c','d']
+        if 'te_ss' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].lpextents = ['c','d']
     
         # Leading edge suction surface panel
-        if 'le_ss' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].lpextents = ['a','b']
+        if 'le_ss' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].lpextents = ['a','b']
 
         # Leading edge pressure surface panel)
-        if 'le_ps' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['a','b']
+        if 'le_ps' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['a','b']
 
         # Trailing edge pressure surface panel
-        if 'te_ps' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = ['c','d']
+        if 'te_ps' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = ['c','d']
     
         # Shell skin2
-        if 'shell_skin_inner' in blade_internal_structure['layers'][i]['name'].lower():
-            blade.components[i].hpextents = np.array(['le','te'])
-            blade.components[i].lpextents = np.array(['le','te'])
+        if 'shell_skin_inner' in blade_internal_structure['layers'][comp]['name'].lower():
+            component_list[comp].hpextents = np.array(['le','te'])
+            component_list[comp].lpextents = np.array(['le','te'])
             # CK Change me when yaml is fixed!!!!
-            blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+            component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
 
         # Forward Shear
-        if 'web' in blade_internal_structure['layers'][i].keys():
-            if 'fore' in blade_internal_structure['layers'][i]['web'].lower():
+        if 'web' in blade_internal_structure['layers'][comp].keys():
+            if 'fore' in blade_internal_structure['layers'][comp]['web'].lower():
                 # Web Skin1
-                if 'skin_le' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z+' sw_offset]};
-                    # comp[i].lpextents = {['z+' sw_offset]};
-                    blade.components[i].hpextents = ['b']
-                    blade.components[i].lpextents = ['b']
-                    blade.components[i].group = 1
-                    blade.components[i].name = blade_internal_structure['layers'][i]['name']
+                if 'skin_le' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z+' sw_offset]};
+                    # comp[comp].lpextents = {['z+' sw_offset]};
+                    component_list[comp].hpextents = ['b']
+                    component_list[comp].lpextents = ['b']
+                    component_list[comp].group = 1
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
                     # CK Change me when yaml is fixed!!!!
-                    blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+                    component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
                 
                 # Web Filler
-                if 'filler' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z+' sw_offset]};
-                    # comp[i].lpextents = {['z+' sw_offset]};
-                    blade.components[i].hpextents = ['b']
-                    blade.components[i].lpextents = ['b']
-                    blade.components[i].group = 1
-                    blade.components[i].name = blade_internal_structure['layers'][i]['name']
+                if 'filler' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z+' sw_offset]};
+                    # comp[comp].lpextents = {['z+' sw_offset]};
+                    component_list[comp].hpextents = ['b']
+                    component_list[comp].lpextents = ['b']
+                    component_list[comp].group = 1
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
 
                 # Web Skin2
-                if 'skin_te' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z+' sw_offset]};
-                    # comp[i].lpextents = {['z+' sw_offset]};
-                    blade.components[i].hpextents = ['b']
-                    blade.components[i].lpextents = ['b']
-                    blade.components[i].group = 1
-                    blade.components[i].name = np.array([blade_internal_structure['layers'][i]['name']])
+                if 'skin_te' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z+' sw_offset]};
+                    # comp[comp].lpextents = {['z+' sw_offset]};
+                    component_list[comp].hpextents = ['b']
+                    component_list[comp].lpextents = ['b']
+                    component_list[comp].group = 1
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
                     # CK Change me when yaml is fixed!!!!
-                    blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+                    component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
 
         # Rear Shear
-        if 'web' in blade_internal_structure['layers'][i].keys():
-            if 'rear' in blade_internal_structure['layers'][i]['web'].lower():
+        if 'web' in blade_internal_structure['layers'][comp].keys():
+            if 'rear' in blade_internal_structure['layers'][comp]['web'].lower():
                 # Web Skin1
-                if 'skin_le' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z-' sw_offset]};
-                    # comp[i].lpextents = {['z-' sw_offset]};
-                    blade.components[i].hpextents = ['c']
-                    blade.components[i].lpextents = ['c']
-                    blade.components[i].group = 2
-                    blade.components[i].name = blade_internal_structure['layers'][i]['name']
+                if 'skin_le' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z-' sw_offset]};
+                    # comp[comp].lpextents = {['z-' sw_offset]};
+                    component_list[comp].hpextents = ['c']
+                    component_list[comp].lpextents = ['c']
+                    component_list[comp].group = 2
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
                     # CK Change me when yaml is fixed!!!!
-                    blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+                    component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
                 # Web Filler
-                if 'filler' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z-' sw_offset]};
-                    # comp[i].lpextents = {['z-' sw_offset]};
-                    blade.components[i].hpextents = ['c']
-                    blade.components[i].lpextents = ['c']
-                    blade.components[i].group = 2
-                    blade.components[i].name = blade_internal_structure['layers'][i]['name']
+                if 'filler' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z-' sw_offset]};
+                    # comp[comp].lpextents = {['z-' sw_offset]};
+                    component_list[comp].hpextents = ['c']
+                    component_list[comp].lpextents = ['c']
+                    component_list[comp].group = 2
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
     
                 # Web Skin2
-                if 'skin_te' in blade_internal_structure['layers'][i]['name'].lower():
-                    # comp[i].hpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].lpextents = {[num2str(xs,2) 'b-c']};
-                    # comp[i].hpextents = {['z-' sw_offset]};
-                    # comp[i].lpextents = {['z-' sw_offset]};
-                    blade.components[i].hpextents = ['c']
-                    blade.components[i].lpextents = ['c']
-                    blade.components[i].group = 2
-                    blade.components[i].name = blade_internal_structure['layers'][i]['name']
+                if 'skin_te' in blade_internal_structure['layers'][comp]['name'].lower():
+                    # comp[comp].hpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].lpextents = {[num2str(xs,2) 'b-c']};
+                    # comp[comp].hpextents = {['z-' sw_offset]};
+                    # comp[comp].lpextents = {['z-' sw_offset]};
+                    component_list[comp].hpextents = ['c']
+                    component_list[comp].lpextents = ['c']
+                    component_list[comp].group = 2
+                    component_list[comp].name = blade_internal_structure['layers'][comp]['name']
                     # CK Change me when yaml is fixed!!!!
-                    blade.components[i].cp[:,1] = blade.components[i].cp[:,1]
+                    component_list[comp].cp[:,1] = component_list[comp].cp[:,1]
 
+    ### add components to blade
+    component_dict = dict()
+    for comp in component_list:
+        component_dict[comp.name] = comp
+    blade.components = component_dict
+    return
 
 
 def writeNuMADAirfoil(coords, reftext, fname): 

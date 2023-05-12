@@ -26,7 +26,6 @@ class Blade():
     Parameters
     ----------
     file : string
-    write_afs : bool
 
     Attributes
     ----------
@@ -136,7 +135,7 @@ class Blade():
     See also ``BladeDef_to_NuMADfile``, ``xlsBlade``, ``AirfoilDef``, 
     ``StationDef``, ``ComponentDef``, ``StackDef``
     """
-    def __init__(self, filename: str = None, write_afs: bool = False):
+    def __init__(self, filename: str = None):
 
         self.aerocenter : ndarray = None
         self.chord : ndarray = None
@@ -218,7 +217,6 @@ class Blade():
         self._naturaloffset = 1  # 1 = offset by max thickness location, 0= do not offset to max thickness
         self._rotorspin = 1 # Rotor Spin, 1= CW rotation looking downwind, -1= CCW rotation
         self._swtwisted = 0 # Shear Web, 0 = planar shear webs, 1= shear webs twisted by blade twist
-        self.write_airfoils = write_afs # To determine whether to write airfoil files when parsing yaml
         try:
             if 'yaml' in filename or 'yml' in filename:
                 self.read_yaml(filename)
@@ -230,17 +228,6 @@ class Blade():
         except TypeError:
             pass
 
-
-    def __str__(self):
-        attributes = ''
-        for attr_name, attr_value in vars(self).items():
-            if isinstance(attr_value, list):
-                attributes += f'{attr_name}={len(attr_value)}, '
-            elif isinstance(attr_value, np.ndarray):
-                attributes += f'{attr_name}={attr_value.shape}, '
-            else:
-                attributes += f'{attr_name}={attr_value}, '
-        return f'Blade with {attributes[:-2]}'
 
     @property
     def naturaloffset(self):
@@ -296,6 +283,65 @@ class Blade():
             raise Exception('swtwisted must be 0 or 1')
         else:
             self._swtwisted = new_swtwisted
+
+    
+    ### Magic methods
+
+    def __str__(self):
+        attributes = ''
+        for attr_name, attr_value in vars(self).items():
+            if isinstance(attr_value, list):
+                attributes += f'{attr_name}={len(attr_value)}, '
+            elif isinstance(attr_value, np.ndarray):
+                attributes += f'{attr_name}={attr_value.shape}, '
+            else:
+                attributes += f'{attr_name}={attr_value}, '
+        return f'Blade with {attributes[:-2]}'
+
+
+    def _compare(self, other, level=1):
+        """
+        Parameters
+        ----------
+        other: Blade
+        level: int
+
+        Returns
+        -------
+        bool
+        """
+        if (
+            self.num_junctions != other.num_junctions
+            or self.num_reservoirs != other.num_reservoirs
+            or self.num_tanks != other.num_tanks
+            or self.num_pipes != other.num_pipes
+            or self.num_pumps != other.num_pumps
+            or self.num_valves != other.num_valves
+        ):
+            return False
+        for name, node in self.nodes():
+            if not node._compare(other.get_node(name)):
+                return False
+        for name, link in self.links():
+            if not link._compare(other.get_link(name)):
+                return False
+            
+        if level > 0:
+            for name, pat in self.patterns():
+                if pat != other.get_pattern(name):
+                    return False
+            for name, curve in self.curves():
+                if curve != other.get_curve(name):
+                    return False
+            for name, source in self.sources():
+                if source != other.get_source(name):
+                    return False
+            if self.options != other.options:
+                return False
+            for name, control in self.controls():
+                if not control._compare(other.get_control(name)):
+                    return False
+        return True
 
     
     ### IO 
@@ -630,7 +676,7 @@ class Blade():
             self.keycpos[12,k] = self.cpos[nf,k] # te, lp surface
         
         # find the points used by each shear web
-        cmpt_groups = [self.components[i].group for i in range(len(self.components))]
+        cmpt_groups = [self.components[name].group for name in self.components]
         uniq_groups = np.unique(cmpt_groups)
         uniq_groups = uniq_groups[uniq_groups != 0] # group "0" is the blade skins
         self.webindices = []
@@ -640,7 +686,7 @@ class Blade():
         self.webareas = []
         self.webwidth = []
         self.webbonds = []
-        for ksw in uniq_groups - 1: # for each shear web
+        for ksw in range(len(uniq_groups)): # for each shear web
             # pre-allocating arrays
             self.webindices.append([])
             self.webarcs.append(np.ndarray((2,N)))

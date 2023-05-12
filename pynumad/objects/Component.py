@@ -45,7 +45,6 @@ class Component:
      
     	``comp_self = ComponentDef(comp_struct);``
 
-    See also: ``xlsBlade``, ``BladeDef``, ``BladeDef.addComponent`` 
     """
     
     def __init__(self):
@@ -85,7 +84,7 @@ class Component:
         return nLayers
 
     # TODO translate
-    def plotcp(self = None):
+    def plotcp(self):
         """
         TODO docstring
         """
@@ -99,49 +98,3 @@ class Component:
         set(self.hLine,'HitTest','off')
         plt.title(self.name)
         return
-    
-
-# non methods
-    
-
-#NOTE IGNORED 
-#is this gui stuff?
-# def bdf_movepts(cbo = None,__ = None): 
-#     click = get(gca,'CurrentPoint')
-    
-#     self = get(cbo,'UserData')
-#     pt = click(1,np.arange(1,2+1))
-    
-#     cpx,cpy = getcp(self)
-#     dist = hypot(cpx - pt(1),cpy - pt(2))
-#     m,i = np.amin(dist)
-    
-#     if self.pinnedends and np.any(i == np.array([1,np.asarray(cpx).size])):
-#         return
-    
-#     ax = axis
-#     if m < 0.05 * np.amax((ax(2) - ax(1)),(ax(4) - ax(3))):
-#         rbbox
-#         release = get(gca,'CurrentPoint')
-#         pt = release(1,np.arange(1,2+1))
-#         if self.pinnedends:
-#             pt[1] = np.amin(np.amax(pt(1),0),1)
-#         pt[2] = np.amax(pt(2),0)
-#         if i > 1:
-#             pt[1] = np.amax(pt(1),cpx(i - 1) + eps(cpx(i - 1)))
-#         if i < np.asarray(cpx).size:
-#             pt[1] = np.amin(pt(1),cpx(i + 1) - eps(cpx(i + 1)))
-#         cpx[i] = pt(1)
-#         cpy[i] = pt(2)
-#         set(self.hCtrl,'XData',cpx,'YData',cpy)
-#         x = get(self.hLine,'XData')
-#         y = np.round(interp1(cpx,cpy,x,'pchip',0))
-#         set(self.hLine,'XData',x,'YData',y)
-#         if self.pinnedends:
-#             self.cp[i - 1,1] = pt(1)
-#             self.cp[i - 1,2] = pt(2)
-#         else:
-#             self.cp[i,1] = pt(1)
-#             self.cp[i,2] = pt(2)
-    
-#     return
