@@ -37,7 +37,8 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
 
     # Read in yaml file as a nested dictionary
     with open(filename) as blade_yaml:
-        data = yaml.load(blade_yaml,Loader=yaml.FullLoader)
+        # data = yaml.load(blade_yaml,Loader=yaml.FullLoader)
+        data = yaml.load(blade_yaml,Loader=yaml.Loader)
 
     # Name some key subdata
     blade_outer_shape_bem = data['components']['blade']['outer_shape_bem']
@@ -286,7 +287,7 @@ def _add_components(blade, blade_internal_structure, spar_hp, spar_lp):
         #   comp['material'] = blade_internal_structure['layers']{i}['material'];
         # mat_names = [mat.name for mat in blade.materials]
         # C,IA,IB = np.intersect1d(mat_names,i_component_data['material'],return_indices=True)
-        cur_comp.materialid = i_component_data['name']
+        cur_comp.materialid = i_component_data['material']
         try:
             cur_comp.fabricangle = np.mean(i_component_data['fiber_orientation']['values'])
         finally:

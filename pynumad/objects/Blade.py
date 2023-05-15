@@ -403,14 +403,14 @@ class Blade():
         # update the interpolated station profiles
         nStations = len(self.stations)
         if nStations > 0:
-            nPoints = len(self.stations[1].airfoil.c)
+            nPoints = len(self.stations[0].airfoil.c)
         else:
             raise Exception(
                 'BladeDef must have at least one station before updating geometry.')
         
         # add some error checking -- first station must be at blade
         # root to prevent extrapolation
-        assert(self.stations[1].spanlocation==0, 'first station must be at the blade root')
+        assert self.stations[0].spanlocation==0, 'first station must be at the blade root'
         
         # Collect parameter tables from the stations.
         spanlocation = np.array([self.stations[i].spanlocation for i in range(len(self.stations))])
@@ -676,9 +676,7 @@ class Blade():
             self.keycpos[12,k] = self.cpos[nf,k] # te, lp surface
         
         # find the points used by each shear web
-        cmpt_groups = [self.components[name].group for name in self.components]
-        uniq_groups = np.unique(cmpt_groups)
-        uniq_groups = uniq_groups[uniq_groups != 0] # group "0" is the blade skins
+        component_groups = [self.components[name].group for name in self.components]
         self.webindices = []
         self.webarcs = []
         self.webcpos = []
@@ -686,7 +684,7 @@ class Blade():
         self.webareas = []
         self.webwidth = []
         self.webbonds = []
-        for ksw in range(len(uniq_groups)): # for each shear web
+        for ksw in range(max(component_groups)): # for each shear web
             # pre-allocating arrays
             self.webindices.append([])
             self.webarcs.append(np.ndarray((2,N)))
@@ -695,10 +693,9 @@ class Blade():
             self.webareas.append(np.ndarray((N-1)))
             self.webwidth.append(np.ndarray((N)))
             self.webbonds.append(np.ndarray((2,N-1)))
-
-            ksw_cmpts = np.argwhere(ksw+1 == cmpt_groups).reshape(-1) # find the components that are part of the shear web
-            hpextents = np.unique([self.components[i].hpextents for i in ksw_cmpts]).tolist() # get the hp extents
-            lpextents = np.unique([self.components[i].lpextents for i in ksw_cmpts]).tolist() # get the lp extents
+            ksw_cmpts = [self.components[comp] for comp in self.components if self.components[comp].group == ksw+1] # find the components that are part of the shear web
+            hpextents = np.unique([comp.hpextents for comp in ksw_cmpts]).tolist() # get the hp extents
+            lpextents = np.unique([comp.lpextents for comp in ksw_cmpts]).tolist() # get the lp extents
             assert len(hpextents) == 1,f'HP Extents for components in group {ksw} must be identical and contain no spaces or commas'
             assert len(lpextents) == 1,f'LP Extents for components in group {ksw} must be identical and contain no spaces or commas'
             # match extents that have form of either '0.5b-c' or
@@ -893,16 +890,15 @@ class Blade():
         mm_to_m = 0.001
         swBeginSta = []
         swEndSta = []
-        for kc in range(len(self.components)):
-            comp = self.components[kc]
+        for comp_name in self.components:
+            comp = self.components[comp_name]
             mat = self.materials[comp.materialid]
             hpRegion,lpRegion = self.findRegionExtents(comp)
-            nlay = comp.getNumLayers(ndspan)
-            nlay = np.round(nlay)
-            layermult = 1 # multiplier=1 for individual layers
+            num_layers = comp.getNumLayers(ndspan)
+            num_layers = np.round(num_layers)
 
-            for klay in range(1,int(np.max(nlay))+1):
-                beginSta,endSta = self.findLayerExtents(nlay,klay)
+            for k_layer in range(1,int(np.max(num_layers))+1):
+                beginSta,endSta = self.findLayerExtents(num_layers,k_layer)
                 ksMax = np.amin((len(beginSta),len(endSta)))
                 # situation that beginSta/endSta is longer than 1
                 for ks in range(ksMax):
@@ -920,8 +916,8 @@ class Blade():
                         cur_bom.maxwidth = np.amax(arcs)
                         cur_bom.avgwidth = np.mean(arcs)
                         cur_bom.area = regionarea
-                        cur_bom.thickness = layermult * mat.layerthickness
-                        cur_bom.weight = layermult * mat.drydensity * regionarea
+                        cur_bom.thickness = mat.layerthickness
+                        cur_bom.weight = mat.drydensity * regionarea
                         self.bomIndices['hp'].append([beginSta[ks],endSta[ks],*hpRegion])
                         self.bom['hp'].append(cur_bom)
                         hprow = hprow + 1
@@ -939,8 +935,8 @@ class Blade():
                         cur_bom.maxwidth = np.amax(arcs)
                         cur_bom.avgwidth = np.mean(arcs)
                         cur_bom.area = regionarea
-                        cur_bom.thickness = layermult * mat.layerthickness
-                        cur_bom.weight = layermult * mat.drydensity * regionarea
+                        cur_bom.thickness = mat.layerthickness
+                        cur_bom.weight = mat.drydensity * regionarea
                         self.bomIndices['lp'].append([beginSta[ks],endSta[ks],*lpRegion])
                         self.bom['lp'].append(cur_bom)
                         lprow = lprow + 1
@@ -966,8 +962,8 @@ class Blade():
                         cur_bom.maxwidth = np.amax(self.webwidth[swnum])
                         cur_bom.avgwidth = np.mean(self.webwidth[swnum])
                         cur_bom.area = regionarea
-                        cur_bom.thickness = layermult * mat.layerthickness
-                        cur_bom.weight = layermult * mat.drydensity * regionarea
+                        cur_bom.thickness = mat.layerthickness
+                        cur_bom.weight = mat.drydensity * regionarea
                         self.bom['sw'][swnum].append(cur_bom)
                         self.bomIndices['sw'][swnum].append([beginSta[ks],endSta[ks]])
                         swrow = swrow + 1
@@ -1063,26 +1059,27 @@ class Blade():
     # information in each region at each station
     # see datatypes.MatDBentry
     # prepare material database ==========================================
-        self.matdb = []
-        for k in range(len(self.materials)):
+        self.matdb = dict()
+        for mat_name in self.materials:
             cur_entry = MatDBentry()
-            cur_entry.name = self.materials[k].name
-            cur_entry.type = self.materials[k].type
-            cur_entry.ex = self.materials[k].ex
-            cur_entry.ey = self.materials[k].ey
-            cur_entry.ez = self.materials[k].ez
-            cur_entry.gxy = self.materials[k].gxy
-            cur_entry.gyz = self.materials[k].gyz
-            cur_entry.gxz = self.materials[k].gxz
+            cur_material = self.materials[mat_name]
+            cur_entry.name = cur_material.name
+            cur_entry.type = cur_material.type
+            cur_entry.ex = cur_material.ex
+            cur_entry.ey = cur_material.ey
+            cur_entry.ez = cur_material.ez
+            cur_entry.gxy = cur_material.gxy
+            cur_entry.gyz = cur_material.gyz
+            cur_entry.gxz = cur_material.gxz
             if cur_entry.type == 'isotropic':
-                cur_entry.nuxy = self.materials[k].prxy
+                cur_entry.nuxy = cur_material.prxy
             else:
-                cur_entry.prxy = self.materials[k].prxy
-                cur_entry.pryz = self.materials[k].pryz
-                cur_entry.prxz = self.materials[k].prxz
-            cur_entry.dens = self.materials[k].density
-            cur_entry.reference = self.materials[k].reference
-            self.matdb.append(cur_entry)
+                cur_entry.prxy = cur_material.prxy
+                cur_entry.pryz = cur_material.pryz
+                cur_entry.prxz = cur_material.prxz
+            cur_entry.dens = cur_material.density
+            cur_entry.reference = cur_material.reference
+            self.matdb[mat_name] = cur_entry
         
         flat_stacks = self.stacks.flatten('F')
         for k in range(self.stacks.size):
@@ -1103,7 +1100,7 @@ class Blade():
                 cur_layer.quantity = flat_stacks[k].plygroups[j].nPlies
                 cur_layer.theta = flat_stacks[k].plygroups[j].angle
                 cur_entry.layer[j] = cur_layer
-            self.matdb.append(cur_entry)
+            self.matdb[cur_entry.name] = cur_entry
 
         for kw in range(len(self.swstacks)):
             for k in range(len(self.swstacks[kw])):
@@ -1127,7 +1124,7 @@ class Blade():
                     cur_layer.quantity = self.swstacks[kw][k].plygroups[j].nPlies
                     cur_layer.theta = self.swstacks[kw][k].plygroups[j].angle
                     cur_entry.layer[j] = cur_layer
-                self.matdb.append(cur_entry)
+                self.matdb[cur_entry.name] = cur_entry
         # shearweb information from NuMAD v1 is formatted in a specific
         # way, recreating that here
         # recreating data.shearweb ====================================

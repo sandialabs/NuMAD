@@ -6,6 +6,7 @@
 
 from matplotlib import pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
 from pynumad.utils.interpolation import interpolator_wrap
 
@@ -55,7 +56,7 @@ class Component:
         self.hpextents: list = None
         self.lpextents: list = None
         self.cp: np.ndarray = None
-        self.imethod: str = None
+        self.imethod: str = 'linear'
         self.pinnedends: bool = None
         self.hCtrl = None
         self.hLine = None
@@ -76,11 +77,7 @@ class Component:
         
     def getNumLayers(self,span): 
         cpx,cpy = self.getcp()
-        try:
-            nLayers = interpolator_wrap(cpx,cpy,span,self.imethod,0)
-        finally:
-            nLayers = interpolator_wrap(cpx,cpy,span,'linear',0)
-        
+        nLayers = interpolator_wrap(cpx,cpy,span,self.imethod,0)
         return nLayers
 
     # TODO translate
@@ -89,12 +86,10 @@ class Component:
         TODO docstring
         """
         cpx,cpy = self.getcp()
-        self.hCtrl = line(cpx,cpy,'Marker','s','LineStyle','none')
-        #             x = linspace(min(cpx),max(cpx),100);
+        fig, ax = plt.subplots()
+        ax.plot(cpx,cpy)
         x = np.linspace(0,1,100)
         y = np.round(interpolator_wrap(cpx,cpy,x,'pchip',0))
-        self.hLine = line(x,y,'LineStyle','--')
-        set(self.hCtrl,'ButtonDownFcn',bdf_movepts,'UserData',self)
-        set(self.hLine,'HitTest','off')
+        ax.plot(x,y)
         plt.title(self.name)
         return

@@ -258,18 +258,17 @@ class Airfoil():
     def plotAirfoil(self): 
         """ Plot airfoil
         """
-        fig, ax = plt.subplots(2)
-        if not len(self.c)==0:
-            ax[0].plot(self.x,self.y,'.-')
-            ax[1].plot(self.coordinates[:,0],self.coordinates[:,1],'.-')
-            # line(self.c,self.camber,'LineStyle','-.','Color','k')
-            # mtx = self.maxthick * np.array([1,1])
-            # kn = find(self.c >= self.maxthick,1)
-            # mty = self.camber(kn) + self.thickness(kn) * np.array([0.5,- 0.5])
-            # line(mtx,mty,'LineStyle',':','Color','k')
+        fig, ax = plt.subplots()
+        # ax[0].plot(self.x,self.y,'.-')
+        ax.plot(self.coordinates[:,0],self.coordinates[:,1],'.-')
+        ax.plot(self.c,self.camber)
+        # mtx = self.maxthick * np.array([1,1])
+        # kn = find(self.c >= self.maxthick,1)
+        # mty = self.camber(kn) + self.thickness(kn) * np.array([0.5,- 0.5])
+        # line(mtx,mty,'LineStyle',':','Color','k')
         # else:
         fig.show()
-        return
+        return fig, ax
 
 
 ### Helper functions
