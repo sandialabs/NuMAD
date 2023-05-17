@@ -1230,6 +1230,30 @@ class Blade():
         # self.geometry[:,2,k] = coords[:,2]
         pass
 
+    def addInterpolatedStation(self,newSpanLocation):
+        x0=self.ispan
+
+        if newSpanLocation < self.ispan[-1] and newSpanLocation>0:
+            for iSpan, spanLocation in enumerate(self.ispan[1:]):
+
+                if newSpanLocation < spanLocation:
+                    insertIndex=iSpan+1
+                    break
+        else:
+            raise ValueError(f'A new span location with value {newSpanLocation} is not possible.' ) 
+
+            
+        self.ispan=np.insert(self.ispan, insertIndex,np.array([newSpanLocation]))
+
+        self.leband=interpolator_wrap(x0,self.leband,self.ispan)
+        self.teband=interpolator_wrap(x0,self.teband,self.ispan)
+        self.sparcapwidth_hp=interpolator_wrap(x0,self.sparcapwidth_hp,self.ispan)
+        self.sparcapwidth_lp=interpolator_wrap(x0,self.sparcapwidth_lp,self.ispan)
+        self.sparcapoffset_hp=interpolator_wrap(x0,self.sparcapoffset_hp,self.ispan)
+        self.sparcapoffset_lp=interpolator_wrap(x0,self.sparcapoffset_lp,self.ispan)
+
+        self.updateBlade()
+        return insertIndex
 
     def addStation(self,af = None,spanlocation = None): 
         """This method adds a station
@@ -1387,7 +1411,7 @@ class Blade():
         return tetype
     
     
-    def expandBladeGeometryTEs(self,minimumTEedgelength): 
+    def expandBladeGeometryTEs(self,minimumTEedgelengths): 
         """
         TODO: docstring
         """
@@ -1405,8 +1429,9 @@ class Blade():
             tratio = self.ipercentthick[iStation] / (maxthick * 100)
             airFoilThickness = self.ithickness[:,iStation] * tratio
             onset = self.ic[mtindex,iStation]
-            if edgeLength < minimumTEedgelength:
-                tet = (minimumTEedgelength - edgeLength) / self.ichord[iStation]
+            if edgeLength < minimumTEedgelengths[iStation]:
+                print(f'Updating station: {iStation} TE separation from {edgeLength} to {minimumTEedgelengths[iStation]}')
+                tet = (minimumTEedgelengths[iStation] - edgeLength) / self.ichord[iStation]
                 tes = 5 / 3 * tet # slope of TE adjustment; 5/3*tet is "natural"
                 # continuous first & second derivatives at 'onset'
                 # maintain second & third derivative at mc==1 (TE)

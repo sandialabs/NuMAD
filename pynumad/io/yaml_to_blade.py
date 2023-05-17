@@ -61,8 +61,6 @@ def yaml_to_blade(blade, filename: str):
     # pressure and suction surfaces across span
     # blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
-    # blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][I_spar_hp]['width']['values'], keepdims = True).mode[0],1000)
-    # blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][I_spar_lp]['width']['values'], keepdims = True).mode[0],1000)
 
     blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][I_spar_hp]['width']['values'])*1000
     blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][I_spar_lp]['width']['values'])*1000
@@ -87,8 +85,6 @@ def yaml_to_blade(blade, filename: str):
     I_LE = I_LE[0]
     I_TE = I_TE[0]
     # Leading and Trailing Edge bands are constants in millimeters
-    # blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
-    # blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
 
     blade.leband = np.array(blade_internal_structure['layers'][I_LE]['width']['values'])*1000 / 2
     blade.teband = np.array(blade_internal_structure['layers'][I_TE]['width']['values'])*1000 / 2
@@ -291,8 +287,8 @@ def add_components(blade, blade_internal_structure, I_spar_hp, I_spar_lp):
         I_round_up = np.flatnonzero((temp_n_layer > 0.05) & (temp_n_layer < 0.5))
         cptemp2 = np.round(np.multiply(np.transpose(blade_internal_structure['layers'][i]['thickness']['values']),1000.0) / blade.materials[cur_comp.materialid].layerthickness)
         cur_comp.cp = np.stack((cptemp1,cptemp2),axis=1)
-        if I_round_up.size > 0:
-            cur_comp.cp[I_round_up,1] = 1 # increase n_layers from 0 to 1 for 0.05<n_layers<0.5
+        # if I_round_up.size > 0:
+        #     cur_comp.cp[I_round_up,1] = 1 # increase n_layers from 0 to 1 for 0.05<n_layers<0.5
         #     comp['cp'](:,2) = cell2mat(blade_internal_structure['layers']{i}['thickness']['values'])'.*1000;  # use when each material ply is 1 mm
         cur_comp.pinnedends = 0
         if blade.components:
