@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import subprocess
 import time
+import os
 
 from pynumad import path_data
 from pynumad.objects.Blade import Blade
@@ -19,7 +20,6 @@ def mainAnsysAnalysis(
         meshData: dict,
         loadsTable: list,
         analysisConfig: dict,
-        varargin = None
     ):
     """
     Parameters

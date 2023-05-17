@@ -1,5 +1,5 @@
-{"numadPath" : "~/Documents/GitHub/kirklocal_NuMAD",
-"ansysPath" : "~/ansys_inc/v221/Framework/bin/Linux64/runwb2",
+{"numadPath" : "~/repos/NuMAD",
+"ansysPath" : "mapdl",
 "precompPath" : "",
 "bmodesPath" : "",
 "fastPath" : "",
