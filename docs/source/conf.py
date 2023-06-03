@@ -55,6 +55,7 @@ bibtex_bibfiles = ['refs/userGuide.bib']
 primary_domain = 'mat'
 matlab_src_dir = os.path.abspath("../../source")
 matlab_keep_package_prefix = False
+matlab_short_links = True
 
 # Add any paths that contain templates here, relative to this directory.
 #templates_path = ['_templates']
@@ -75,13 +76,13 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
-html_context = {
-    'css_files': [
-        '_static/theme_overrides.css',  # override wide tables in RTD theme
-        ],
-     }
+# html_context = {
+#     'css_files': [
+#         '_static/theme_overrides.css',  # override wide tables in RTD theme
+#         ],
+#      }
 
 
 # -- Options for EPUB output
