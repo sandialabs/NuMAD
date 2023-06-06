@@ -50,6 +50,11 @@ def getCrossSectionNormalVector(xyz):
     return crossSectionNormal
 def getBladeGeometryForStation(blade,iStation):
     return np.array([blade.geometry[:,0,iStation],blade.geometry[:,1,iStation],blade.geometry[:,2,iStation]]).transpose()
+    # xcoords=blade.profiles[:,0,iStation]*blade.ichord[iStation]
+    # ycoords=blade.profiles[:,1,iStation]*blade.ichord[iStation]
+    # zcoord=blade.ispan[iStation]
+    # zcoords=[zcoord]*len(xcoords)    
+    # return np.array([xcoords,ycoords,zcoords]).transpose()
 
 
 def writeSplineFromCoordinatePoints(cubit,xyz):
@@ -489,7 +494,7 @@ def getAdjustmentCurve(curveIDs,layerOffsetDist,curveStartOrEnd,endLayerTaperCur
     curveFraction=1.0/3
     for iCurve,curveID in enumerate(curveIDs):
         curveLength=cubit.curve(curveID).length()
-        if iCurve < endLayerTaperCurve-1:
+        if endLayerTaperCurve is not None and iCurve < endLayerTaperCurve-1:
             if curveLength*curveFraction < layerOffsetDist:
                 cubit.cmd(f'create vertex on curve {curveID} fraction {curveFraction} from {curveStartOrEnd}')
             else:
@@ -667,9 +672,7 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                 extensionLength=1*cubit.curve(topBoundingCurve).length()
                 topBoundingCurve=extendCurveAtVertexToLength(topBoundingCurve,extensionLength,curveStartOrEnd)
                 keepCurve=2
-                if lpHpside == 'LP':
-                    cubit.cmd(f'save as "debug.cub" overwrite')        
-                    foo
+
                 topBoundingCurve,beginLayerTaperVertexID=streamlineCurveIntersections(camberOffset,topBoundingCurve,keepCurve)
 
             else:
@@ -693,16 +696,17 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             topBoundingCurve=get_last_id("curve")
             offsetSign_topBoundingCurve=printOffsetDirectionCheck(topBoundingCurve,lpHpside,crossSectionNormal)
 
-            if isFlatback:
+            if isFlatback:# and beginLayerTaperVertexID is not None:
 
                 #Make list of curves that will be used to taper each layer
                 npts=30
                 nStart=get_last_id("curve")+1
-                foundFlag=False
+                
                 if lpHpside.lower()=='hp':
                     signCorrection=1
                 else:
                     signCorrection=-1
+
                 for iPoint in range(npts):
                     if iPoint==0:
                         cubit.cmd(f'create vertex on curve {baseCurveIDCopy} start')
@@ -712,20 +716,31 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                         cubit.cmd(f'create vertex on curve {topBoundingCurve} fraction {(iPoint)/(npts-1)} from start')
                     cubit.cmd(f'create curve vertex {get_last_id("vertex")-1} {get_last_id("vertex")}')
 
-                    temp=cubit.curve(get_last_id("curve")).curve_center()
-                    tangentDirection=cubit.curve(get_last_id("curve")).tangent(temp)
-                    
-
-                    momentArm=np.array(temp)-np.array(cubit.vertex(beginLayerTaperVertexID).coordinates())
-
-                    normalDirection=signCorrection*np.array(crossProd(tangentDirection,momentArm))
-
-                    if not foundFlag and dotProd(normalDirection,crossSectionNormal)<0:
-                        foundFlag=True
-                        endLayerTaperCurve=iPoint
-
                 nEnd=get_last_id("curve")
                 curveIDs=list(range(nStart,nEnd+1))
+                
+                #If layers are tapeded toward TE find the index in the list of curves (curveIDs) marks the end of the tapering
+                if beginLayerTaperVertexID is not None:
+                    foundFlag=False
+                    for curveID in curveIDs:
+                        temp=cubit.curve(curveID).curve_center()
+                        tangentDirection=cubit.curve(get_last_id("curve")).tangent(temp)
+
+                        print(f'beginLayerTaperVertexID {beginLayerTaperVertexID}')
+                        print(f'baseCurveIDCopy{baseCurveIDCopy} topBoundingCurve {topBoundingCurve}')
+
+                        momentArm=np.array(temp)-np.array(cubit.vertex(beginLayerTaperVertexID).coordinates())
+
+                        normalDirection=signCorrection*np.array(crossProd(tangentDirection,momentArm))
+
+                        if not foundFlag and dotProd(normalDirection,crossSectionNormal)<0:
+                            foundFlag=True
+                            endLayerTaperCurve=iPoint
+                else:
+                    endLayerTaperCurve=None
+                    
+                
+
 
             #TE Adhesive curve
             if isFlatback:
@@ -785,7 +800,7 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                 curveStartOrEnd='start'
                 firstLayerOffset=getAdjustmentCurve(curveIDs,layerOffsetDist,curveStartOrEnd,endLayerTaperCurve)
 
- 
+
 
             cubit.cmd(f'create curve offset curve {lpHpCurveDict["camberID"]} distance {camberOffsetSign*offsetSign_camberID*params["TE_adhesive"][iStation]/2} extended')
             camberOffset=get_last_id("curve")
@@ -1153,8 +1168,6 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
         logFile.write(f'Working on Station: {iStation}\n')
 
     partNameID=0
-    webBaseCurves=[]
-    webCornerVerts=[]
     crossSectionNormal=getCrossSectionNormalVector(np.array([blade.keypoints[2,:,iStationGeometry],blade.keypoints[3,:,iStationGeometry],blade.keypoints[7,:,iStationGeometry]]))
 
 
@@ -1171,6 +1184,24 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     writeSplineFromCoordinatePoints(cubit,splinePoints)
     lpKeyCurve=get_last_id("curve")
 
+    # curveID=hpKeyCurve
+    # npts=150
+    # maxCurvature=0
+    # maxCurveFraction=0.25 #Only check curvatue in the first 25% of curve length
+    # for iPoint in range(npts):
+    #     position = cubit.curve(curveID).position_from_fraction(iPoint/npts*maxCurveFraction)
+    #     curvature=math.sqrt(sum(i**2 for i in cubit.curve(curveID).curvature(position)))
+    #     print(f'curvature {curvature}')
+    #     if curvature > maxCurvature:
+    #         maxCurvature=curvature
+    #         maxCurvatureCoords=position
+    # print(f'maxCurvature {maxCurvature}')
+    # create_vertex(position[0],position[1],position[2])
+
+    # create_vertex(maxCurvatureCoords[0],maxCurvatureCoords[1],maxCurvatureCoords[2])
+
+       
+
 
     flatBack_vBot,_=selCurveVerts(hpKeyCurve)
     flatBack_vTop,_=selCurveVerts(lpKeyCurve)
@@ -1183,20 +1214,21 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     flatBackCurve=cubit.create_curve(cubit.vertex(flatBack_vBot),cubit.vertex(flatBack_vTop))
     flatBackCurveID=flatBackCurve.id()
 
-    #### Extend flatback ###
-    curveStartOrEnd='start'
-    extensionLength=8*cubit.curve(flatBackCurveID).length()
-    flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
+    # #### Extend flatback ###
+    # curveStartOrEnd='start'
+    # extensionLength=25*blade.ichord[iStationGeometry]*cubit.curve(flatBackCurveID).length()
+    # flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
 
-    curveStartOrEnd='end'
-    extensionLength=0.5*cubit.curve(flatBackCurveID).length()
-    flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
+    # curveStartOrEnd='end'
+    # extensionLength=0.5*cubit.curve(flatBackCurveID).length()
+    # flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
 
     #remove beginning portion of curve due to sometimes high curvature (bad geometry fix)
     hpKeyCurve=removeBadTEgeometry(blade,iStation,hpKeyCurve,flatBackCurveID)
     lpKeyCurve=removeBadTEgeometry(blade,iStation,lpKeyCurve,flatBackCurveID)
 
-
+    cubit.cmd(f'save as "debug.cub" overwrite')        
+    foo
     curveFraction=0
     TEangle = getTEangle(hpKeyCurve,lpKeyCurve,curveFraction)
     print(f'station {iStation}')
@@ -1205,23 +1237,16 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     print(f'athickness={crosssectionParams["TE_adhesive"][iStation]*1000}') 
     print(f'TE_adhesive_width {crosssectionParams["TE_adhesive_width"][iStation]*1000}')
     print(f'TEangle {TEangle}')
-
     if isFlatback:
-        #Make camber line based on geometry modified by "removeBadTEgeometry"
-        cubit.cmd(f'curve {hpKeyCurve} copy')
-        cubit.cmd(f'split curve {get_last_id("curve")} fraction 0.5 from start')
-        camberBaseCurve=get_last_id("curve")-1
+        #Crate camber line
+        offsetDistance=0
+        npts=100
+        spacing=blade.ichord[iStationGeometry]*0.5/npts
+
+        cubit.cmd(f'curve {flatBackCurveID} copy')
+        flatBackOffsetCurveID=get_last_id("curve")
 
         vertexList=[]
-        nStart=get_last_id("vertex")+1
-        cubit.cmd(f'create vertex on curve {camberBaseCurve} segment 100')
-        nEnd=get_last_id("vertex")
-        vertexList+=list(range(nStart,nEnd+1))
-        _,v1=selCurveVerts(camberBaseCurve) 
-        vertexList.append(v1)
-        print(f'vertexList {vertexList}')
-        nStart=get_last_id("vertex")+1
-
         #Do first point manually outside of loop
         flatBack_vBot,_=selCurveVerts(hpKeyCurve)
         flatBack_vTop,_=selCurveVerts(lpKeyCurve)
@@ -1229,30 +1254,84 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
         coordsLP=np.array(cubit.vertex(flatBack_vTop).coordinates())
         coords=np.mean(np.vstack((coordsHP,coordsLP)),0)
         cubit.create_vertex(coords[0],coords[1],coords[2])
-
-        for vertexID in vertexList:
-            coordsHP=np.array(cubit.vertex(vertexID).coordinates())
-
-            coordsLP=np.array(cubit.curve(lpKeyCurve).closest_point(coordsHP))
-            #print(f'lpKeyCurve {lpKeyCurve} vertexID {vertexID}')
+        vertexList.append(get_last_id("vertex"))
+        for iPoint in range(npts):
+            offsetDistance+=spacing
+            axialDirection=crossSectionNormal
+            position = cubit.curve(flatBackOffsetCurveID).position_from_fraction(1.0)
+            tangentDirection=cubit.curve(flatBackOffsetCurveID).tangent(position)
+        
+            normalDirection=crossProd(axialDirection,tangentDirection)
+            normalDirection=-1*spacing*np.array(vectNorm([normalDirection[0],normalDirection[1],normalDirection[2]]))
+            cubit.cmd(f'curve {flatBackOffsetCurveID} move x {normalDirection[0]} y {normalDirection[1]} z {normalDirection[2]} nomesh')
+        
+            cubit.cmd(f'create vertex atintersection curve {flatBackOffsetCurveID} {hpKeyCurve}')
+            cubit.cmd(f'create vertex atintersection curve {flatBackOffsetCurveID} {lpKeyCurve}')
+            
+            coordsHP=np.array(cubit.vertex(get_last_id("vertex")-1).coordinates())
+            coordsLP=np.array(cubit.vertex(get_last_id("vertex")).coordinates())
 
             coords=np.mean(np.vstack((coordsHP,coordsLP)),0)
             cubit.create_vertex(coords[0],coords[1],coords[2])
-
-    
-
-        nEnd=get_last_id("vertex")
-        vertexList=list(range(nStart,nEnd+1))
-
+            vertexList.append(get_last_id("vertex"))
 
 
         cubit.cmd(f'create curve spline vertex {l2s(vertexList)}')
         cubit.cmd(f'delete vertex {l2s(vertexList[1:-1])}')
-        camberID=get_last_id("curve")
+        cubit.cmd(f'delete curve {flatBackOffsetCurveID}')
+
+        camberID=get_last_id("curve")  
+        
+
+
+
+    # if isFlatback:
+    #     #Make camber line based on geometry modified by "removeBadTEgeometry"
+    #     cubit.cmd(f'curve {hpKeyCurve} copy')
+    #     cubit.cmd(f'split curve {get_last_id("curve")} fraction 0.5 from start')
+    #     camberBaseCurve=get_last_id("curve")-1
+
+    #     vertexList=[]
+    #     nStart=get_last_id("vertex")+1
+    #     cubit.cmd(f'create vertex on curve {camberBaseCurve} segment 100')
+    #     nEnd=get_last_id("vertex")
+    #     vertexList+=list(range(nStart,nEnd+1))
+    #     _,v1=selCurveVerts(camberBaseCurve) 
+    #     vertexList.append(v1)
+    #     print(f'vertexList {vertexList}')
+    #     nStart=get_last_id("vertex")+1
+
+    #     #Do first point manually outside of loop
+    #     flatBack_vBot,_=selCurveVerts(hpKeyCurve)
+    #     flatBack_vTop,_=selCurveVerts(lpKeyCurve)
+    #     coordsHP=np.array(cubit.vertex(flatBack_vBot).coordinates())
+    #     coordsLP=np.array(cubit.vertex(flatBack_vTop).coordinates())
+    #     coords=np.mean(np.vstack((coordsHP,coordsLP)),0)
+    #     cubit.create_vertex(coords[0],coords[1],coords[2])
+
+    #     for vertexID in vertexList:
+    #         coordsHP=np.array(cubit.vertex(vertexID).coordinates())
+
+    #         coordsLP=np.array(cubit.curve(lpKeyCurve).closest_point(coordsHP))
+    #         #print(f'lpKeyCurve {lpKeyCurve} vertexID {vertexID}')
+
+    #         coords=np.mean(np.vstack((coordsHP,coordsLP)),0)
+    #         cubit.create_vertex(coords[0],coords[1],coords[2])
 
     
-        # cubit.cmd(f'save as "debug.cub" overwrite')        
-        # foo  
+
+    #     nEnd=get_last_id("vertex")
+    #     vertexList=list(range(nStart,nEnd+1))
+
+
+
+    #     cubit.cmd(f'create curve spline vertex {l2s(vertexList)}')
+    #     cubit.cmd(f'delete vertex {l2s(vertexList[1:-1])}')
+    #     camberID=get_last_id("curve")
+
+    
+    #     # cubit.cmd(f'save as "debug.cub" overwrite')        
+    #     # foo  
     else:
         xyz=getMidLine(blade,iLE,iStationGeometry,geometryScaling)
         npts,_=xyz.shape
@@ -1262,7 +1341,8 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
         writeSplineFromCoordinatePoints(cubit,splinePoints)
         camberID=get_last_id("curve")
     
-
+    # cubit.cmd(f'save as "debug.cub" overwrite')        
+    # foo 
 
     nStacks=len(blade.stacks)
 

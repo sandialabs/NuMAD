@@ -3,6 +3,7 @@ from pynumad.analysis.cubit.solidModelUtils import *
 
 import numpy as np
 import os
+import glob
 
 
 def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, model2Dor3D, stationList=None, directory='.'):
@@ -20,15 +21,20 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
 
     # Set up Cubit
     cubit.init(['cubit','-nojournal'])
-    cubit.cmd('reset ')
+    
     cubit.cmd('undo off')
     cubit.cmd('set geometry accuracy 1e-6')
     # making numerus 3D volumes is very slow with autosize on
     cubit.cmd('set default autosize off')
 
     # Modify blade object to accomodate actual layer thicknesses
-    blade.expandBladeGeometryTEs(
-        (crosssectionParams['TE_adhesive']+2*crosssectionParams['minimumLayerThickness']))
+    
+    blade.expandBladeGeometryTEs((crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness']))
+    print(crosssectionParams['TE_adhesive'])
+    print(6*crosssectionParams['minimumLayerThickness'])
+    print(crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness'])
+    
+
     blade.editStacksForSolidMesh()
 
     hasWebs = []
@@ -44,10 +50,10 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
     # WARNING - Last station never has webs. Fix later
 
     # Create Referece line as a spline
-    temp = np.vstack(([blade.sweep, blade.prebend, blade.ispan])).transpose()
-    writeSplineFromCoordinatePoints(cubit, temp)
-    spanwiseMatOriCurve = get_last_id("curve")
 
+    refLineCoords = np.vstack(([blade.sweep, blade.prebend, blade.ispan])).transpose()
+    spanwiseMatOriCurve = 1
+    
     roundStations=np.argwhere(np.array(blade.TEtype)=='round')
     roundStations=list(roundStations[:,0])
     lastRoundStation = roundStations[-1]
@@ -56,8 +62,13 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
     with open('cubitBlade.log', 'w') as logFile:
         logFile.write(f'Making cross sections for {wt_name}\n')
 
+
+    pathName=directory+'/'+wt_name+'-crossSections'
+    
     for iStation in stationList:
 
+        cubit.cmd('reset ') # This is needed to restart node numbering for VABS. VABS neeeds every element and node starting from 1 to nelem/nnode should be present
+        writeSplineFromCoordinatePoints(cubit, refLineCoords)
         iStationGeometry = iStation
         if iStation == len(blade.ispan)-1:  # Only do this for the last station
             blade.addInterpolatedStation(blade.ispan[-1]*0.999)
@@ -110,8 +121,7 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
                                    iLE, crosssectionParams, geometryScaling, thicknessScaling, isFlatback, lastRoundStation, materialIDsUsed)
             birdsMouthVerts = []
 
-        cubit.cmd(
-            f'delete curve all with Is_Free except {spanwiseMatOriCurve}')
+        cubit.cmd(f'delete curve all with Is_Free except {spanwiseMatOriCurve}')
 
         # Chord line for rotation of cross-section for homogenization
         if model2Dor3D.lower() == '2d':
@@ -137,22 +147,18 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
             volumeIDs = parse_cubit_list('surface', parseString)
 
             # Undo initial twist
-            cubit.cmd(
-                f'rotate Surface {l2s(volumeIDs)} angle {blade.degreestwist[iStation]} about Z include_merged ')
+            cubit.cmd(f'rotate Surface {l2s(volumeIDs)} angle {blade.degreestwist[iStation]} about Z include_merged ')
 
             # Undo prebend
             if blade.prebend[iStation] != 0:
-                cubit.cmd(
-                    f'move surface {l2s(volumeIDs)} y {-1*blade.prebend[iStation]} include_merged')
+                cubit.cmd(f'move surface {l2s(volumeIDs)} y {-1*blade.prebend[iStation]} include_merged')
 
             # Undo sweep
             if blade.sweep[iStation] != 0:
-                raise ValueError(
-                    'Presweep is untested for cross-sectional meshing')
+                raise ValueError('Presweep is untested for cross-sectional meshing')
 
             # Mesh the cross-section
-            cubit.cmd(
-                f'curve with name "layerThickness*" interval {crosssectionParams["nelPerLayer"]}')
+            cubit.cmd(f'curve with name "layerThickness*" interval {crosssectionParams["nelPerLayer"]}')
             #cubit.cmd(f'imprint volume {l2s(surfaceIDs)}')
             cubit.cmd(f'merge volume {l2s(volumeIDs)}')
             cubit.cmd(f'set default autosize on')
@@ -169,32 +175,38 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
             if not os.path.exists(directory):
                 os.makedirs(directory)
 
-            pathName=directory+'/'+wt_name+'-crossSections'
 
             if settings['export'] is not None:
                 if 'g' in settings['export'].lower():
                     cubit.cmd(f'export mesh "{pathName}.g" overwrite')
                 elif 'cub' in settings['export'].lower():
-                    cubit.cmd(f'save as "{pathName}.cub" overwrite')
+                    cubit.cmd(f'delete curve {spanwiseMatOriCurve}')
+                    cubit.cmd(f'save as "{pathName}-{str(iStation)}.cub" overwrite')
                 else:
                     raise NameError(f'Unknown model export format: {settings["export"]}')
-
+            
             if settings['solver'] is not None:
                 if  'vabs' in settings['solver'].lower():
                     writeVABSinput(surfaceDict, blade, crosssectionParams,directory,fileName, volumeIDs)
-                    # This is needed to restart node numbering for VABS. VABS neeeds every element and node starting from 1 to nelem/nnode should be present
-                    cubit.cmd(f'reset ')
+           
 
-                    # Create Referece line as a spline
-                    temp = np.array(
-                        [blade.sweep, blade.prebend, blade.ispan]).transpose()
-                    print(temp)
-                    writeSplineFromCoordinatePoints(cubit, temp)
-                    spanwiseMatOriCurve = get_last_id("curve")
                 elif 'anba' in settings['solver'].lower():
                     raise ValueError('ANBA currently not supported')
                 else:
                     raise NameError(f'Unknown beam cross-sectional solver: {settings["solver"]}')
+
+    #Import all cross-sections into one cub file
+    if settings['export'] is not None and'cub' in settings['export'].lower():
+        cubit.cmd('reset ') 
+        writeSplineFromCoordinatePoints(cubit, refLineCoords)
+
+        for iStation in stationList:
+            cubit.cmd(f'import cubit "{pathName}-{str(iStation)}.cub"')
+        cubit.cmd(f'save as "{pathName}.cub" overwrite')
+
+        # Remove unnecessary files to save space
+        for filePath in glob.glob(f'{pathName}-*.cub'):
+            os.remove(filePath)
     return cubit, blade, surfaceDict, birdsMouthVerts, iStationFirstWeb, iStationLastWeb, materialIDsUsed, spanwiseMatOriCurve
 
 
