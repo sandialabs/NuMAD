@@ -154,7 +154,7 @@ def add_stations(blade,blade_outer_shape_bem, hub_outer_shape_bem,
 
         ref = blade_outer_shape_bem['airfoil_position']['labels'][i]
         af = Airfoil(coords = xf_coords, ref = ref)
-        af.resample()
+        af.resample(spacing='half-cosine')
         blade.addStation(af,tc_xL*L)
     # Obtain some key blade attributes
     blade.span = blade.ispan
