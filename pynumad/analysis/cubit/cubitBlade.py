@@ -29,10 +29,9 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
 
     # Modify blade object to accomodate actual layer thicknesses
     
-    blade.expandBladeGeometryTEs((crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness']))
-    print(crosssectionParams['TE_adhesive'])
-    print(6*crosssectionParams['minimumLayerThickness'])
-    print(crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness'])
+     expandTEthicknesses=list(crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness'])
+     blade.expandBladeGeometryTEs(expandTEthicknesses)
+
     
 
     blade.editStacksForSolidMesh()
@@ -73,10 +72,9 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
         if iStation == len(blade.ispan)-1:  # Only do this for the last station
             blade.addInterpolatedStation(blade.ispan[-1]*0.999)
             blade.editStacksForSolidMesh()
-            crosssectionParams['TE_adhesive'] = np.append(
-                crosssectionParams['TE_adhesive'], crosssectionParams['TE_adhesive'][-1])
-            blade.expandBladeGeometryTEs(
-                (crosssectionParams['TE_adhesive']+2*crosssectionParams['minimumLayerThickness']))
+            expandTEthicknesses.append(expandTEthicknesses[-1])
+            blade.expandBladeGeometryTEs(expandTEthicknesses)
+
 
             # adjustLastStackAfterNewTipStation(iStation)
 
