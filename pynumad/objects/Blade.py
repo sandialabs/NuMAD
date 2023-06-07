@@ -298,51 +298,6 @@ class Blade():
                 attributes += f'{attr_name}={attr_value}, '
         return f'Blade with {attributes[:-2]}'
 
-
-    def _compare(self, other, level=1):
-        """
-        Parameters
-        ----------
-        other: Blade
-        level: int
-
-        Returns
-        -------
-        bool
-        """
-        if (
-            self.num_junctions != other.num_junctions
-            or self.num_reservoirs != other.num_reservoirs
-            or self.num_tanks != other.num_tanks
-            or self.num_pipes != other.num_pipes
-            or self.num_pumps != other.num_pumps
-            or self.num_valves != other.num_valves
-        ):
-            return False
-        for name, node in self.nodes():
-            if not node._compare(other.get_node(name)):
-                return False
-        for name, link in self.links():
-            if not link._compare(other.get_link(name)):
-                return False
-            
-        if level > 0:
-            for name, pat in self.patterns():
-                if pat != other.get_pattern(name):
-                    return False
-            for name, curve in self.curves():
-                if curve != other.get_curve(name):
-                    return False
-            for name, source in self.sources():
-                if source != other.get_source(name):
-                    return False
-            if self.options != other.options:
-                return False
-            for name, control in self.controls():
-                if not control._compare(other.get_control(name)):
-                    return False
-        return True
-
     
     ### IO 
 
