@@ -1,6 +1,6 @@
 import unittest
 from os.path import abspath, dirname, join
-from pynumad.analysis.ansys.ansys import writeANSYSshellModel
+from pynumad.analysis.ansys.write import writeAnsysShellModel
 from pynumad.objects.Blade import Blade
 
 testdir = dirname(abspath(str(__file__)))
@@ -30,7 +30,7 @@ class TestANSYSWorkflow(unittest.TestCase):
         filename = "myblade_ansys.src"
         includeAdhesive = 0
 
-        writeANSYSshellModel(
+        writeAnsysShellModel(
             self.blade,
             filename,
             self.meshData,
