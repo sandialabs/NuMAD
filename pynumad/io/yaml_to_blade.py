@@ -80,11 +80,11 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
     # blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
 
-    blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][I_spar_hp]['width']['values'])*1000
-    blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][I_spar_lp]['width']['values'])*1000
+    blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['width']['values'])*1000
+    blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][spar_lp_index]['width']['values'])*1000
 
-    blade.sparcapoffset_hp = np.array(blade_internal_structure['layers'][I_spar_hp]['offset_y_pa']['values'])*1000
-    blade.sparcapoffset_lp = np.array(blade_internal_structure['layers'][I_spar_lp]['offset_y_pa']['values'])*1000
+    blade.sparcapoffset_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values'])*1000
+    blade.sparcapoffset_lp = np.array(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values'])*1000
     
     # TE and LE Bands
     for i in range(N_layer_comp):
