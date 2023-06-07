@@ -13,7 +13,7 @@ from pynumad.shell.ShellRegionClass import ShellRegion
 from pynumad.analysis.ansys.write import writeAnsysShellModel
 
 
-def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
+def shellMeshGeneral(blade, forSolid, includeAdhesive, elementSize):
     """
     This method generates a finite element shell mesh for the blade, based on what is
     stored in blade.geometry, blade.keypoints, and blade.profiles.  Output is given as
@@ -22,9 +22,10 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
     Parameters
     -----------
     blade: Blade
-    forSolid
+    forSolid: bool
     includeAdhesive: bool
-
+    elementSize: float
+    
     Returns
     -------
     meshData:
@@ -213,16 +214,16 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
             vec = shellKp[1,:] - shellKp[0,:]
             mag = np.linalg.norm(vec)
             nEl = np.array([],dtype=int)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[2,:] - shellKp[1,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[3,:] - shellKp[2,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[0,:] - shellKp[3,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             bladeSurf.addShellRegion('quad3',shellKp,nEl,name=blade.stacks[j,i].name,elType='quad',meshMethod='structured')
             newSec = dict()
             newSec['type'] = 'shell'
@@ -296,16 +297,16 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
             mag = np.linalg.norm(vec)
 
             nEl = np.array([],dtype=int)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[2,:] - shellKp[1,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[3,:] - shellKp[2,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[0,:] - shellKp[3,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
 
             bladeSurf.addShellRegion('quad3',shellKp,nEl,name=blade.swstacks[0][i].name,elType='quad',meshMethod='structured')
             newSec = dict()
@@ -341,16 +342,16 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
             mag = np.linalg.norm(vec)
 
             nEl = np.array([],dtype=int)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[2,:] - shellKp[1,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[3,:] - shellKp[2,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
             vec = shellKp[0,:] - shellKp[3,:]
             mag = np.linalg.norm(vec)
-            nEl = np.concatenate([nEl,[np.ceil(mag / blade.mesh).astype(int)]])
+            nEl = np.concatenate([nEl,[np.ceil(mag / elementSize).astype(int)]])
 
             bladeSurf.addShellRegion('quad3',shellKp,nEl,name=blade.swstacks[1][i].name,elType='quad',meshMethod='structured')
             newSec = dict()
@@ -389,10 +390,10 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
         v4y = splineYi[stPt,4] - splineYi[stPt,32]
         v4z = splineZi[stPt,4] - splineZi[stPt,32]
         mag4 = np.sqrt(v4x * v4x + v4y * v4y + v4z * v4z)
-        nE1 = np.ceil(mag1 / blade.mesh).astype(int)
-        nE2 = np.ceil(mag3 / blade.mesh).astype(int)
-        nE3 = np.ceil(mag2 / blade.mesh).astype(int)
-        nE4 = np.ceil(mag4 / blade.mesh).astype(int)
+        nE1 = np.ceil(mag1 / elementSize).astype(int)
+        nE2 = np.ceil(mag3 / elementSize).astype(int)
+        nE3 = np.ceil(mag2 / elementSize).astype(int)
+        nE4 = np.ceil(mag4 / elementSize).astype(int)
         nEl = np.array([nE1,nE2,nE3,nE4])
         gdLayer = 0
         sweepElements = []
@@ -415,7 +416,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
                 adhesMesh = Mesh3D(regMesh['nodes'],regMesh['elements'])
             else:
                 guideNds.append(regMesh['nodes'])
-                layerSwEl = np.ceil((splineZi[stPt,4] - splineZi[(stPt-3),4]) / blade.mesh).astype(int)
+                layerSwEl = np.ceil((splineZi[stPt,4] - splineZi[(stPt-3),4]) / elementSize).astype(int)
                 sweepElements.append(layerSwEl)
             stPt = stPt + 3
 
@@ -599,6 +600,6 @@ def getSolidMesh(blade, layerNumEls):
     solidMesh = solidMeshFromShell(blade,shellMesh,layerNumEls)
     return solidMesh
 
-def getShellMesh(blade, includeAdhesive): 
-    meshData = shellMeshGeneral(blade,0,includeAdhesive)
+def getShellMesh(blade, includeAdhesive, elementSize): 
+    meshData = shellMeshGeneral(blade,0,includeAdhesive, elementSize)
     return meshData
