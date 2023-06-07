@@ -9,7 +9,6 @@ import os
 
 from pynumad import path_data
 from pynumad.objects.Blade import Blade
-from pynumad.analysis.ansys.ansysAnalysisRunner import *
 from pynumad.analysis.ansys.utility import *
 from pynumad.analysis.ansys.read import *
 from pynumad.analysis.ansys.write import *
