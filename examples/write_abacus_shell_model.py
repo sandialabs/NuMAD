@@ -1,22 +1,29 @@
 import pynumad as pynu
 import numpy as np
-import pickle
 import os
 
-
-blade = pynu.Blade()
+## Read blade data from yaml file
+blade = pynu.objects.Blade.Blade()
 fileName = 'example_data/myBlade.yaml'
 blade.read_yaml(fileName)
 
-# blade.mesh = 0.2
+## Set the airfoil point resolution
+for stat in blade.stations:
+    stat.airfoil.resample(n_samples=300)
+    
+blade.updateGeometry()
+blade.expandBladeGeometryTEs(0.001)
 
+## Set the target element size for the mesh
+blade.mesh = 0.2
+
+## Generate mesh
 adhes = 1
-
-with open('myBlade.obj','rb') as file:
-    blade = pickle.load(file)
-
-
 bladeMesh = blade.getShellMesh(includeAdhesive=adhes)
+
+## Write mesh to yaml
+meshFile = 'shellMeshData.yaml'
+pynu.io.mesh_to_yaml.mesh_to_yaml(bladeMesh,meshFile)
 
 ## Write Abaqus input
 
@@ -53,7 +60,7 @@ for el in bladeMesh['elements']:
     i = i + 1
     
 for es in bladeMesh['sets']['element']:
-    ln = '*Elset, elset=' + es['name'] + '\n'
+    ln = '*Elset, elset=set' + es['name'] + '\n'
     outFile.write(ln)
     for el in es['labels']:
         ln = '  ' + str(el+1) + '\n'
@@ -92,7 +99,7 @@ for el in bladeMesh['adhesiveEls']:
     i = i + 1
 
 es = bladeMesh['adhesiveElSet']
-ln = '*Elset, elset=' + es['name'] + '\n'
+ln = '*Elset, elset=set' + es['name'] + '\n'
 outFile.write(ln)
 for el in es['labels']:
     ln = '  ' + str(el+1) + '\n'
@@ -103,10 +110,3 @@ outFile.write('*End Part\n')
 outFile.close()    
 
 ## End write Abaqus
-
-# [nodes,elements,OSSets,SWSets,adNds,adEls] = blade.getShellMesh(adhes)
-
-# print(5) #for breakpoint
-# np.savtext("save_data/nodes.csv", nodes, delimiter=",")
-# np.savtext("save_data/elements.csv", elements, delimiter=",")
-# np.savtext("save_data/nodes.csv", nodes, delimiter=",")

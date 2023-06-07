@@ -5,6 +5,7 @@ from pynumad.objects.Material import Material
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Station import Station
 from pynumad.objects.Subobjects import MatDBentry, BOM, Ply, Layer, Shearweb
+from pynumad.io.mesh_to_yaml import mesh_to_yaml
 
 from os.path import abspath, dirname, join
 

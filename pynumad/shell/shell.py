@@ -480,13 +480,8 @@ def _generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
     return meshData
     
     
-def _getSolidMesh(blade, layerNumEls=[]): 
-    ## Edit stacks to be usable for 3D solid mesh
-    blade.editStacksForSolidMesh()
-    ## Create shell mesh as seed
-    ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
-    shellMesh = shellMeshGeneral(blade,1,1)
-    print('finished shell mesh')
+
+def solidMeshFromShell(blade, shellMesh, layerNumEls=[]): 
     shNodes = shellMesh['nodes']
     shElements = shellMesh['elements']
     elSets = shellMesh['sets']['element']
@@ -561,6 +556,8 @@ def _getSolidMesh(blade, layerNumEls=[]):
     
     ## Construct the element set list, extrapolated from the shell model
     newSetList = list()
+    newSectList = list()
+    esi = 0
     for es in elSets:
         elArray = np.array(es['labels'])
         elLayer = 0
@@ -574,10 +571,17 @@ def _getSolidMesh(blade, layerNumEls=[]):
                 elLayer = elLayer + 1
             newSet['labels'] = newLabels
             newSetList.append(newSet)
+            newSec = dict()
+            newSec['type'] = 'solid'
+            newSec['elementSet'] = newSet['name']
+            newSec['materialId'] = sectns[esi]['layup'][li-1][0]
+            newSectList.append(newSec)
             li = li + 1
+        esi = esi + 1
     
     solidMesh['sets'] = dict()
     solidMesh['sets']['element'] = newSetList
+    solidMesh['sections'] = newSectList
     
     solidMesh['adhesiveNds'] = shellMesh['adhesiveNds']
     solidMesh['adhesiveEls'] = shellMesh['adhesiveEls']

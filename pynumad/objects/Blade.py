@@ -17,6 +17,8 @@ from pynumad.objects.Airfoil import getAirfoilNormals, getAirfoilNormalsAngleCha
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Subobjects import MatDBentry, Layer, Shearweb, BOM, Ply
 from pynumad.shell.shell import shellMeshGeneral, _generateShellModel, _getSolidMesh
+from pynumad.shell.shell import shellMeshGeneral
+from pynumad.shell.shell import solidMeshFromShell
 # for type hints
 from numpy import ndarray
 
@@ -548,20 +550,25 @@ class Blade():
         # start and finish indices in geometry/arcs
         ns = 1
         nf = self.geometry.shape[0] - 2
-        n1 = mm_to_m * self.leband # no foam width
-        n2 = mm_to_m * self.teband # no foam width
 
         #keypoints, keyarcs, keycpos
         self.TEtype = [] # reset TEtype
         for k in range(0,N):
             # allow for separate definitions of HP and LP spar cap
             # width and offset [HP LP]
-            if len(self.sparcapwidth) > 2 or len(self.sparcapoffset) > 2:
-                raise Exception('too many entries for spar cap definition')
-            scwidth_hp = mm_to_m * self.sparcapwidth[0] #type: float
-            scwidth_lp = mm_to_m * self.sparcapwidth[-1] #type: float
-            scoffset_hp = mm_to_m * self.sparcapoffset[0] #type: float
-            scoffset_lp = mm_to_m * self.sparcapoffset[-1] #type: float
+            # if len(self.sparcapwidth) > 2 or len(self.sparcapoffset) > 2:
+            #     raise Exception('too many entries for spar cap definition')
+            # scwidth_hp = mm_to_m * self.sparcapwidth[0] #type: float
+            # scwidth_lp = mm_to_m * self.sparcapwidth[-1] #type: float
+            n1 = mm_to_m * self.leband[k] # no foam width
+            n2 = mm_to_m * self.teband[k] # no foam width
+
+
+            scwidth_hp = mm_to_m * self.sparcapwidth_hp[k] #type: float
+            scwidth_lp = mm_to_m * self.sparcapwidth_lp[k] #type: float
+
+            scoffset_hp = mm_to_m * self.sparcapoffset_hp[k] #type: float
+            scoffset_lp = mm_to_m * self.sparcapoffset_lp[k] #type: float
 
             tempTE = self.getprofileTEtype(k)
             if self.TEtype:
@@ -1226,6 +1233,30 @@ class Blade():
         # self.geometry[:,2,k] = coords[:,2]
         return self
 
+    def addInterpolatedStation(self,newSpanLocation):
+        x0=self.ispan
+
+        if newSpanLocation < self.ispan[-1] and newSpanLocation>0:
+            for iSpan, spanLocation in enumerate(self.ispan[1:]):
+
+                if newSpanLocation < spanLocation:
+                    insertIndex=iSpan+1
+                    break
+        else:
+            raise ValueError(f'A new span location with value {newSpanLocation} is not possible.' ) 
+
+            
+        self.ispan=np.insert(self.ispan, insertIndex,np.array([newSpanLocation]))
+
+        self.leband=interpolator_wrap(x0,self.leband,self.ispan)
+        self.teband=interpolator_wrap(x0,self.teband,self.ispan)
+        self.sparcapwidth_hp=interpolator_wrap(x0,self.sparcapwidth_hp,self.ispan)
+        self.sparcapwidth_lp=interpolator_wrap(x0,self.sparcapwidth_lp,self.ispan)
+        self.sparcapoffset_hp=interpolator_wrap(x0,self.sparcapoffset_hp,self.ispan)
+        self.sparcapoffset_lp=interpolator_wrap(x0,self.sparcapoffset_lp,self.ispan)
+
+        self.updateBlade()
+        return insertIndex
 
     def addStation(self, af = None, spanlocation: float = None): 
         """This method adds a station
@@ -1365,12 +1396,13 @@ class Blade():
         return tetype 
     
     
-    def expandBladeGeometryTEs(self): 
+
+    def expandBladeGeometryTEs(self,minimumTEedgelengths): 
         """
         TODO: docstring
         """
         nStations = self.geometry.shape[2]
-        minimumTEedgelength = 0.003
+  
 
         for iStation in range(0,nStations):
             firstPoint = self.ichord[iStation] * self.profiles[-2,:,iStation]
@@ -1383,8 +1415,9 @@ class Blade():
             tratio = self.ipercentthick[iStation] / (maxthick * 100)
             airFoilThickness = self.ithickness[:,iStation] * tratio
             onset = self.ic[mtindex,iStation]
-            if edgeLength < minimumTEedgelength:
-                tet = (minimumTEedgelength - edgeLength) / self.ichord[iStation]
+            if edgeLength < minimumTEedgelengths[iStation]:
+                print(f'Updating station: {iStation} TE separation from {edgeLength} to {minimumTEedgelengths[iStation]}')
+                tet = (minimumTEedgelengths[iStation] - edgeLength) / self.ichord[iStation]
                 tes = 5 / 3 * tet # slope of TE adjustment; 5/3*tet is "natural"
                 # continuous first & second derivatives at 'onset'
                 # maintain second & third derivative at mc==1 (TE)
@@ -1510,6 +1543,17 @@ class Blade():
     def getShellMesh(self, includeAdhesive): 
         meshData = shellMeshGeneral(self,0,includeAdhesive)
         return meshData
+        
+    def getSolidMesh(self, layerNumEls):
+        ## Edit stacks to be usable for 3D solid mesh
+        self.editStacksForSolidMesh()
+        ## Create shell mesh as seed
+        ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
+        shellMesh = shellMeshGeneral(self,1,1)
+        print('finished shell mesh')
+        solidMesh = solidMeshFromShell(self,shellMesh,layerNumEls)
+        return solidMesh
+        
     
     def generateShellModel(self, feaCode, includeAdhesive, meshData=None):
         return _generateShellModel(self, feaCode, includeAdhesive, meshData=None)

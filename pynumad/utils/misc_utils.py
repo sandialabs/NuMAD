@@ -6,7 +6,16 @@
 
 import numpy as np
 
-
+# SED-like substitution
+def copy_and_replace(fin, fout, replacements):
+    inf = open(fin, 'r')
+    outf = open(fout, 'w')
+    for line in inf:
+        for src, target in replacements.items():
+            line = line.replace(src, target)
+        outf.write(line)
+    inf.close()
+    outf.close()
 
 def LARCetaT(alp0):
     #TODO complete docstring
