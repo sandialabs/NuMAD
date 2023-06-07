@@ -59,3 +59,11 @@ class Stack:
         return self
 
             
+    def layerThicknesses(self):
+        nLayers=len(self.plygroups)
+        thickness=0
+        layerThicknesses=[]
+        for iLayer in range(nLayers):
+            layerThicknesses.append(self.plygroups[iLayer].nPlies*self.plygroups[iLayer].thickness)
+        return layerThicknesses
+    
