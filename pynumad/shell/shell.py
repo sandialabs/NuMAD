@@ -432,7 +432,7 @@ def shellMeshGeneral(blade, forSolid, includeAdhesive: bool):
     return shellData
   
     
-def _generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
+def generateShellModel(blade, feaCode, includeAdhesive, meshData=None): 
     # This method generates a shell FEA model in one of the supported FEA codes; w/ or w/o adhesieve
     
     if str(feaCode.lower()) == str('ansys'):
@@ -478,10 +478,9 @@ def _generateShellModel(blade, feaCode, includeAdhesive, meshData=None):
         raise Exception('FEA code "%s" not supported.',feaCode)
     
     return meshData
-    
-    
 
-def solidMeshFromShell(blade, shellMesh, layerNumEls=[]): 
+
+def solidMeshFromShell(blade, shellMesh, layerNumEls=[]):
     shNodes = shellMesh['nodes']
     shElements = shellMesh['elements']
     elSets = shellMesh['sets']['element']
@@ -589,3 +588,17 @@ def solidMeshFromShell(blade, shellMesh, layerNumEls=[]):
     
     return solidMesh
 
+
+def getSolidMesh(blade, layerNumEls):
+    ## Edit stacks to be usable for 3D solid mesh
+    blade.editStacksForSolidMesh()
+    ## Create shell mesh as seed
+    ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
+    shellMesh = shellMeshGeneral(blade,1,1)
+    print('finished shell mesh')
+    solidMesh = solidMeshFromShell(blade,shellMesh,layerNumEls)
+    return solidMesh
+
+def getShellMesh(blade, includeAdhesive): 
+    meshData = shellMeshGeneral(blade,0,includeAdhesive)
+    return meshData

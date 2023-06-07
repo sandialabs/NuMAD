@@ -3,6 +3,8 @@ import numpy as np
 import pickle
 from pprint import pprint
 
+from pynumad.shell.shell import getShellMesh
+
 blade = pynu.Blade()
 fileName = 'example_data/myBlade.yaml'
 blade.read_yaml(fileName)
@@ -14,7 +16,7 @@ blade.mesh = 0.2
 
 adhes = 1
 
-meshData = blade.getShellMesh(adhes)
+meshData = getShellMesh(blade, adhes)
 
 # Print first 10 nodes coordinates
 

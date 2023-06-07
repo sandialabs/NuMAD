@@ -16,9 +16,7 @@ from pynumad.objects.Station import Station
 from pynumad.objects.Airfoil import getAirfoilNormals, getAirfoilNormalsAngleChange
 from pynumad.objects.Stack import Stack
 from pynumad.objects.Subobjects import MatDBentry, Layer, Shearweb, BOM, Ply
-from pynumad.shell.shell import shellMeshGeneral, _generateShellModel, _getSolidMesh
-from pynumad.shell.shell import shellMeshGeneral
-from pynumad.shell.shell import solidMeshFromShell
+
 # for type hints
 from numpy import ndarray
 
@@ -1540,28 +1538,6 @@ class Blade():
         return
 
 
-    def getShellMesh(self, includeAdhesive): 
-        meshData = shellMeshGeneral(self,0,includeAdhesive)
-        return meshData
-        
-    def getSolidMesh(self, layerNumEls):
-        ## Edit stacks to be usable for 3D solid mesh
-        self.editStacksForSolidMesh()
-        ## Create shell mesh as seed
-        ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
-        shellMesh = shellMeshGeneral(self,1,1)
-        print('finished shell mesh')
-        solidMesh = solidMeshFromShell(self,shellMesh,layerNumEls)
-        return solidMesh
-        
-    
-    def generateShellModel(self, feaCode, includeAdhesive, meshData=None):
-        return _generateShellModel(self, feaCode, includeAdhesive, meshData=None)
-        
-    def getSolidMesh(blade, layerNumEls=[]):
-        return _getSolidMesh(blade, layerNumEls=[])
-
-    
     """
     #NOTE need team help here -kb
     # not converted
