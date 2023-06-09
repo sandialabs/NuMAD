@@ -84,6 +84,10 @@ def write_beamdyn_axis(directory, wt_name, blade,radial_stations):
 
     n_pts = 50
     grid = np.linspace(0, 1, n_pts)
+    
+    print(f'radial_stations {len(radial_stations)}')
+    print(f'blade.prebend {len(blade.prebend)}')
+    print(f'grid {len(grid)}')
 
     kp_xr=interpolator_wrap(radial_stations,blade.prebend,grid,'pchip', axis=1)
     kp_yr=interpolator_wrap(radial_stations,blade.sweep,grid,'pchip', axis=1)

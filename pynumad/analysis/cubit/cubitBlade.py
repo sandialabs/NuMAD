@@ -29,8 +29,8 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
 
     # Modify blade object to accomodate actual layer thicknesses
     
-     expandTEthicknesses=list(crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness'])
-     blade.expandBladeGeometryTEs(expandTEthicknesses)
+    expandTEthicknesses=list(crosssectionParams['TE_adhesive']+6*crosssectionParams['minimumLayerThickness'])
+    blade.expandBladeGeometryTEs(expandTEthicknesses)
 
     
 

@@ -1214,21 +1214,20 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     flatBackCurve=cubit.create_curve(cubit.vertex(flatBack_vBot),cubit.vertex(flatBack_vTop))
     flatBackCurveID=flatBackCurve.id()
 
-    # #### Extend flatback ###
-    # curveStartOrEnd='start'
-    # extensionLength=25*blade.ichord[iStationGeometry]*cubit.curve(flatBackCurveID).length()
-    # flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
+    #### Extend flatback ###
+    curveStartOrEnd='start'
+    extensionLength=25*blade.ichord[iStationGeometry]*cubit.curve(flatBackCurveID).length()
+    flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
 
-    # curveStartOrEnd='end'
-    # extensionLength=0.5*cubit.curve(flatBackCurveID).length()
-    # flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
+    curveStartOrEnd='end'
+    extensionLength=0.5*cubit.curve(flatBackCurveID).length()
+    flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
 
-    #remove beginning portion of curve due to sometimes high curvature (bad geometry fix)
-    hpKeyCurve=removeBadTEgeometry(blade,iStation,hpKeyCurve,flatBackCurveID)
-    lpKeyCurve=removeBadTEgeometry(blade,iStation,lpKeyCurve,flatBackCurveID)
+    # #remove beginning portion of curve due to sometimes high curvature (bad geometry fix)
+    # hpKeyCurve=removeBadTEgeometry(blade,iStation,hpKeyCurve,flatBackCurveID)
+    # lpKeyCurve=removeBadTEgeometry(blade,iStation,lpKeyCurve,flatBackCurveID)
 
-    cubit.cmd(f'save as "debug.cub" overwrite')        
-    foo
+
     curveFraction=0
     TEangle = getTEangle(hpKeyCurve,lpKeyCurve,curveFraction)
     print(f'station {iStation}')
