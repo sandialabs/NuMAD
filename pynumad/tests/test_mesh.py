@@ -1,5 +1,4 @@
 import unittest
-import pytest
 from os.path import abspath, dirname, join
 from pynumad.analysis.ansys.write import writeAnsysShellModel
 from pynumad.shell.shell import getShellMesh
@@ -8,7 +7,6 @@ from pynumad.objects.Blade import Blade
 testdir = dirname(abspath(str(__file__)))
 test_datadir = join(testdir, "test_data")
 
-@pytest.mark.skip(reason="currently troubleshooting mesh")
 class TestANSYSWorkflow(unittest.TestCase):
     @classmethod
     def setUpClass(self):
@@ -22,24 +20,24 @@ class TestANSYSWorkflow(unittest.TestCase):
         adhes = 1
         self.meshData = getShellMesh(self.blade, includeAdhesive=adhes, elementSize=self.elementSize)
 
-    def step3_write_ANSYS_src(self):
-        config = {}
-        config["BoundaryCondition"] = 'cantilevered'
-        config["elementType"] = '181'
-        config["MultipleLayerBehavior"] = 'multiply'
-        config["dbgen"] = 1
-        config["dbname"] = 'master'
+    # def step3_write_ANSYS_src(self):
+    #     config = {}
+    #     config["BoundaryCondition"] = 'cantilevered'
+    #     config["elementType"] = '181'
+    #     config["MultipleLayerBehavior"] = 'multiply'
+    #     config["dbgen"] = 1
+    #     config["dbname"] = 'master'
 
-        filename = "myblade_ansys.src"
-        includeAdhesive = 1
+    #     filename = "myblade_ansys.src"
+    #     includeAdhesive = 1
 
-        writeAnsysShellModel(
-            self.blade,
-            filename,
-            self.meshData,
-            config,
-            includeAdhesive
-        )
+    #     writeAnsysShellModel(
+    #         self.blade,
+    #         filename,
+    #         self.meshData,
+    #         config,
+    #         includeAdhesive
+    #     )
     
     def get_steps(self):
         for name in dir(self): #look at all functions
