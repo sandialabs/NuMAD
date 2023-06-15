@@ -536,6 +536,7 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
     stationStacks.shape
 
     lastPerimeter=nStationLayups-2
+
     for iPerimeter in range(nStationLayups-1): #Skip the last stack since the current and the next stack are generated at the same time.
         with open('cubitBlade.log', 'a') as logFile:
             logFile.write(f'\tlpHpside {lpHpside}, iPerimeter={iPerimeter}\n')
@@ -586,30 +587,22 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
 
 
         if iPerimeter in [0,2]:
-            leftOffsetCurve=currentBaseCurveID
+            leftBottomCurve=currentBaseCurveID
             cubit.cmd(f'split curve {nextBaseCurveID} distance {maxLayerThicknessTransitionLength} from start ')
-            splitBaseCurve_ShortID=get_last_id("curve")-1
-            rightOffsetCurve=get_last_id("curve")
+            transitionBottomCurve=get_last_id("curve")-1
+            rightBottomCurve=get_last_id("curve")
             transitionStack = nextStack
         elif iPerimeter in [1,3]:
-            rightOffsetCurve=nextBaseCurveID
+            rightBottomCurve=nextBaseCurveID
             cubit.cmd(f'split curve {currentBaseCurveID} distance {maxLayerThicknessTransitionLength} from end ')
-            leftOffsetCurve=get_last_id("curve")-1
-            splitBaseCurve_ShortID=get_last_id("curve")
+            leftBottomCurve=get_last_id("curve")-1
+            transitionBottomCurve=get_last_id("curve")
             transitionStack = currentStack
         else:
             raise ValueError(f'iPerimeter {iPerimeter} not recognized')
 
-        bottomLeftVertexCurveLeft,bottomRightVertexCurveLeft=selCurveVerts(leftOffsetCurve)
-        bottomLeftVertexCurveRight,bottomRightVertexCurveRight=selCurveVerts(rightOffsetCurve)
-
-        offsetSign_leftOffsetCurve=printOffsetDirectionCheck(leftOffsetCurve,lpHpside,crossSectionNormal)
-        offsetSign_rightOffsetCurve=printOffsetDirectionCheck(rightOffsetCurve,lpHpside,crossSectionNormal)
-
-
-        leftBottomCurve=leftOffsetCurve
-        transitionBottomCurve=splitBaseCurve_ShortID
-        rightBottomCurve=rightOffsetCurve
+        bottomLeftVertexCurveLeft,bottomRightVertexCurveLeft=selCurveVerts(leftBottomCurve)
+        bottomLeftVertexCurveRight,bottomRightVertexCurveRight=selCurveVerts(rightBottomCurve)
 
 
 
@@ -619,14 +612,13 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             currentStackLeftCurves=[]
 
             #Base curve copy
-            cubit.cmd(f'curve {leftOffsetCurve} copy')
+            cubit.cmd(f'curve {leftBottomCurve} copy')
             baseCurveIDCopy=get_last_id("curve")
             offsetSign_baseCurveIDCopy=printOffsetDirectionCheck(baseCurveIDCopy,lpHpside,crossSectionNormal)
             
             #offset camber to make gap
             cubit.cmd(f'create curve offset curve {lpHpCurveDict["camberID"]} distance {camberOffsetSign*offsetSign_camberID*params["TE_adhesive"][iStation]/2} extended')
             camberOffset=get_last_id("curve")
-            offsetSign_camberOffset=printOffsetDirectionCheck(camberOffset,lpHpside,crossSectionNormal)
 
             #Top Bounding Curve
             offsetDistance=1*offsetSign_baseCurveIDCopy*sum(currentStackLayerThicknesses)
@@ -774,21 +766,10 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             currentStackLeftCurves.append(get_last_id("curve")-1)
             currentStackRightCurves.append(get_last_id("curve"))
 
-#             if TEangle > 120:
-#                 vertexList=[]
-#                 for icurve in currentStackLeftCurves:
-#                     v1,_=selCurveVerts(icurve)
-#                     vertexList.append(v1)
-#                 #cubit.cmd(f'delete curve {HPTEadhesiveCurveID}')
-#                 cubit.cmd(f'create curve spline vertex {l2s(vertexList)}')
-#                 #HPTEadhesiveCurveID=get_last_id("curve")
-#                 lpHpCurveDict['TEadhesiveCurveList'][lpHpsideIndex].append(get_last_id("curve"))
-#                 #HPTEadhesiveCurveList.append(HPTEadhesiveCurveID)
-
 
             #### Next Stack (the panel might intersect the camberline so the following is needed 
             nextStackCurves=[]
-            cubit.cmd(f'curve {rightOffsetCurve} copy')
+            cubit.cmd(f'curve {rightBottomCurve} copy')
             baseCurveIDCopy=get_last_id("curve")
             offsetSign_baseCurveIDCopy=printOffsetDirectionCheck(baseCurveIDCopy,lpHpside,crossSectionNormal)
             nextStackCurves.append(baseCurveIDCopy)
@@ -798,8 +779,6 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             #to not self intersect during a simulation (this may not be needed)
             cubit.cmd(f'create curve offset curve {lpHpCurveDict["camberID"]} distance {camberOffsetSign*offsetSign_camberID*0.001*4} extended')
             camberOffset=get_last_id("curve")
-
-            offsetSign_camberOffset=printOffsetDirectionCheck(camberOffset,lpHpside,crossSectionNormal)
             
             iLayer=0
             offsetDistance=1*offsetSign_baseCurveIDCopy*nextStackLayerThicknesses[0]
@@ -828,12 +807,14 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             lastLayerOffset=get_last_id("curve")
             nextStackCurves.insert(-1,lastLayerOffset)
 
-        currentStackOffset=0
-        nextStackOffset=0
 
         for iModeledLayers in range(nModeledLayers):
-            currentStackOffset+=currentStackLayerThicknesses[iModeledLayers]
-            nextStackOffset+=nextStackLayerThicknesses[iModeledLayers]
+            currentStackOffset=currentStackLayerThicknesses[iModeledLayers]
+            nextStackOffset=nextStackLayerThicknesses[iModeledLayers]
+
+
+            offsetSign_leftBottomCurve=printOffsetDirectionCheck(leftBottomCurve,lpHpside,crossSectionNormal)
+            offsetSign_rightBottomCurve=printOffsetDirectionCheck(rightBottomCurve,lpHpside,crossSectionNormal)
 
             #Special Treatment for TE
             if iPerimeter==0:
@@ -868,12 +849,11 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                 [bottomLeftVertexCurveRight,bottomRightVertexCurveRight]=selCurveVerts(nextStackCurves[iModeledLayers])
                 [topLeftVertexCurveRight,topRightVertexCurveRight]=selCurveVerts(nextStackCurves[iModeledLayers+1])
             else:
-                cubit.cmd(f'create curve offset curve {leftOffsetCurve} distance {offsetSign_leftOffsetCurve*currentStackOffset} extended')
+                cubit.cmd(f'create curve offset curve {leftBottomCurve} distance {offsetSign_leftBottomCurve*currentStackOffset} extended')
                 leftTopCurve=get_last_id("curve")
                 [topLeftVertexCurveLeft,topRightVertexCurveLeft]=selCurveVerts(get_last_id("curve"))
 
-                offsetCurveAndCombineFragmentsIfNeeded(rightOffsetCurve,offsetSign_rightOffsetCurve*nextStackOffset)
-                #cubit.cmd(f'create curve offset curve {rightOffsetCurve} distance {offsetSign_rightOffsetCurve*nextStackOffset} extended')
+                offsetCurveAndCombineFragmentsIfNeeded(rightBottomCurve,offsetSign_rightBottomCurve*nextStackOffset)
                 lastOffsetCurve=get_last_id("curve")
                 rightTopCurve=get_last_id("curve")
                 [topLeftVertexCurveRight,topRightVertexCurveRight]=selCurveVerts(get_last_id("curve"))
