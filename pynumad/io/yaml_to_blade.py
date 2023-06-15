@@ -77,12 +77,13 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
 
     # Because spar cap width must be constant, average the yaml file on
     # pressure and suction surfaces across span    
-    blade.sparcapwidth = np.zeros((2))
+    # blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
-    blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][spar_hp_index]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][spar_lp_index]['width']['values'], keepdims = True).mode[0],1000)
-    blade.sparcapoffset[0] = np.multiply(np.mean(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values']),1000)
-    blade.sparcapoffset[1] = np.multiply(np.mean(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values']),1000)
+    blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['width']['values'])*1000
+    blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][spar_lp_index]['width']['values'])*1000
+
+    blade.sparcapoffset_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values'])*1000
+    blade.sparcapoffset_lp = np.array(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values'])*1000
     
     # TE and LE Bands
     for i in range(N_layer_comp):

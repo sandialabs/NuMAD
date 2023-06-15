@@ -503,8 +503,6 @@ class Blade():
         # start and finish indices in geometry/arcs
         ns = 1
         nf = self.geometry.shape[0] - 2
-        
-
 
         #keypoints, keyarcs, keycpos
         self.TEtype = [] # reset TEtype
