@@ -557,19 +557,6 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
         transitionStackSurfaceList=[]
         nextStackSurfaceList=[]
 
-        # #Find out if the next or the current stack contains reinforcement. The foam/balsa will be build arround the reinf.
-        # currentStackHasReinf = False
-        # nextStackHasReinf = False
-        # #Search for reinforcements
-        # for ply in currentStack.plygroups:
-        #     if 'reinf' in ply.component.lower() or 'spar' in ply.component.lower():
-        #         currentStackHasReinf=True
-        #         break
-        # for ply in nextStack.plygroups:
-        #     if 'reinf' in ply.component.lower() or 'spar' in ply.component.lower():
-        #         nextStackHasReinf=True
-        #         break
-
         currentStackLayerOffset = 0
         nextStackLayerOffset = 0
         layerThicknessTransitionLengths = []
@@ -598,15 +585,12 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
         maxLayerThicknessTransitionLength=max(layerThicknessTransitionLengths)
 
 
-
-        #if currentStackHasReinf and  not nextStackHasReinf:
         if iPerimeter in [0,2]:
             leftOffsetCurve=currentBaseCurveID
             cubit.cmd(f'split curve {nextBaseCurveID} distance {maxLayerThicknessTransitionLength} from start ')
             splitBaseCurve_ShortID=get_last_id("curve")-1
             rightOffsetCurve=get_last_id("curve")
             transitionStack = nextStack
-        #elif nextStackHasReinf  and not currentStackHasReinf:
         elif iPerimeter in [1,3]:
             rightOffsetCurve=nextBaseCurveID
             cubit.cmd(f'split curve {currentBaseCurveID} distance {maxLayerThicknessTransitionLength} from end ')
@@ -614,31 +598,7 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             splitBaseCurve_ShortID=get_last_id("curve")
             transitionStack = currentStack
         else:
-            foo
-            if iPerimeter == 1:
-                rightOffsetCurve=nextBaseCurveID
-                cubit.cmd(f'split curve {currentBaseCurveID} distance {maxLayerThicknessTransitionLength} from end ')
-                leftOffsetCurve=get_last_id("curve")-1
-                splitBaseCurve_ShortID=get_last_id("curve")
-                transitionStack = currentStack
-            elif iPerimeter == 2:
-                leftOffsetCurve=currentBaseCurveID
-                cubit.cmd(f'split curve {nextBaseCurveID} distance {maxLayerThicknessTransitionLength} from start ')
-                splitBaseCurve_ShortID=get_last_id("curve")-1
-                rightOffsetCurve=get_last_id("curve")
-                transitionStack = nextStack
-            else:
-                cubit.cmd(f'curve {currentBaseCurveID} copy')
-                leftOffsetCurve=get_last_id("curve")
-                cubit.cmd(f'split curve {currentBaseCurveID} distance {maxLayerThicknessTransitionLength} from end ')
-                leftOffsetCurve=get_last_id("curve")-1
-                leftTransitionCurve=get_last_id("curve")
-                cubit.cmd(f'split curve {nextBaseCurveID} distance {maxLayerThicknessTransitionLength} from start ')
-                rightTransitionCurve=get_last_id("curve")-1
-                rightOffsetCurve=get_last_id("curve")
-                cubit.cmd(f'create curve combine curve {leftTransitionCurve} {rightTransitionCurve}')
-                splitBaseCurve_ShortID=get_last_id("curve")
-                transitionStack = currentStack
+            raise ValueError(f'iPerimeter {iPerimeter} not recognized')
 
         bottomLeftVertexCurveLeft,bottomRightVertexCurveLeft=selCurveVerts(leftOffsetCurve)
         bottomLeftVertexCurveRight,bottomRightVertexCurveRight=selCurveVerts(rightOffsetCurve)
@@ -745,8 +705,6 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                             endLayerTaperCurve=iPoint
                 else:
                     endLayerTaperCurve=None
-                    
-                
 
 
             #TE Adhesive curve
@@ -776,32 +734,6 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             #Only do the following if all layer thicknesses are unequal
 
             if isFlatback and abs(min(currentStack.layerThicknesses())-max(currentStack.layerThicknesses())) > 0.0001: 
-                # nStart=get_last_id("vertex")+1
-                # curveFraction=1.0/3
-                # for iCurve in curveIDs:
-                #     cubit.cmd(f'create vertex on curve {iCurve} fraction {curveFraction} from start')
-                # nEnd=get_last_id("vertex")
-                # vertexList=list(range(nStart,nEnd+1))
-                # cubit.cmd(f'create curve spline vertex {l2s(vertexList)}')
-                # adjustmentCurve=get_last_id("curve")
-                # cubit.cmd(f'delete vertex {l2s(vertexList[1:-1])}')
-                # print(f'adjustmentCurve {adjustmentCurve}')
-                # print(f'firstLayerOffset {firstLayerOffset}')
-                
-                # #See if firstLayerOffset and adjustmentCurveIntersect
-                # nStart=get_last_id("vertex")
-                # cubit.cmd(f'create vertex atintersection curve {adjustmentCurve} {firstLayerOffset}')
-                # nEnd=get_last_id("vertex")
-                # if nEnd > nStart:
-                #     keepCurve=2 
-                #     cubit.cmd(f'save as "debug.cub" overwrite')
-            
-                #     foo 
-                #     firstLayerOffset,intersectionVertex=streamlineCurveIntersections(adjustmentCurve,firstLayerOffset,keepCurve)
-                    
-                # else:
-                #     cubit.cmd(f'delete curve {firstLayerOffset}')
-                #     firstLayerOffset=adjustmentCurve
 
                 layerOffsetDist=currentStackLayerThicknesses[0]
                 curveStartOrEnd='start'
@@ -823,36 +755,6 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             lastLayerOffset=extendCurvePastCurveAndTrim(lastLayerOffset,curveStartOrEnd,lpHpCurveDict['flatBackCurveID'])
 
             if isFlatback and abs(min(currentStack.layerThicknesses())-max(currentStack.layerThicknesses())) > 0.0001: 
-                # layerOffsetDist=currentStackLayerThicknesses[-1]
-                # nStart=get_last_id("vertex")+1
-                # curveFraction=1.0/3
-                # for iCurve,curveID in enumerate(curveIDs):
-                #     curveLength=cubit.curve(curveID).length()
-                #     if iCurve < endLayerTaperCurve-1:
-                #         if curveLength*curveFraction < layerOffsetDist:
-                #             cubit.cmd(f'create vertex on curve {curveID} fraction {curveFraction} from end')
-                #         else:
-                #             cubit.cmd(f'create vertex on curve {curveID} distance {layerOffsetDist} from end')
-
-                #     else:
-                #         cubit.cmd(f'create vertex on curve {curveID} distance {layerOffsetDist} from end')
-
-                    
-                # nEnd=get_last_id("vertex")
-                # vertexList=list(range(nStart,nEnd+1))
-                # cubit.cmd(f'create curve spline vertex {l2s(vertexList)}')
-                # adjustmentCurve=get_last_id("curve")
-                # lastLayerOffset=adjustmentCurve
-                # cubit.cmd(f'delete vertex {l2s(vertexList[1:-1])}')
-
-
-                # # keepCurve=2
-                # # lastLayerOffset,intersectionVertex=streamlineCurveIntersections(adjustmentCurve,lastLayerOffset,keepCurve)
-                # # print(f'lastLayerOffset {lastLayerOffset} adjustmentCurve{adjustmentCurve}')
-                # # if intersectionVertex is None:
-                # #     cubit.cmd(f'save as "debug.cub" overwrite')        
-                # #     foo
-                # cubit.cmd(f'delete curve {l2s(curveIDs)}')
 
                 layerOffsetDist=currentStackLayerThicknesses[-1]
                 curveStartOrEnd='end'
