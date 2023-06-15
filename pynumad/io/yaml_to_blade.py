@@ -76,15 +76,13 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
                 spar_hp_name = name
 
     # Because spar cap width must be constant, average the yaml file on
-    # pressure and suction surfaces across span
-    # blade.sparcapwidth = np.zeros((2))
+    # pressure and suction surfaces across span    
+    blade.sparcapwidth = np.zeros((2))
     blade.sparcapoffset = np.zeros((2))
-
-    blade.sparcapwidth_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['width']['values'])*1000
-    blade.sparcapwidth_lp  = np.array(blade_internal_structure['layers'][spar_lp_index]['width']['values'])*1000
-
-    blade.sparcapoffset_hp = np.array(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values'])*1000
-    blade.sparcapoffset_lp = np.array(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values'])*1000
+    blade.sparcapwidth[0] = np.multiply(mode(blade_internal_structure['layers'][spar_hp_index]['width']['values'], keepdims = True).mode[0],1000)
+    blade.sparcapwidth[1] = np.multiply(mode(blade_internal_structure['layers'][spar_lp_index]['width']['values'], keepdims = True).mode[0],1000)
+    blade.sparcapoffset[0] = np.multiply(np.mean(blade_internal_structure['layers'][spar_hp_index]['offset_y_pa']['values']),1000)
+    blade.sparcapoffset[1] = np.multiply(np.mean(blade_internal_structure['layers'][spar_lp_index]['offset_y_pa']['values']),1000)
     
     # TE and LE Bands
     for i in range(N_layer_comp):
@@ -96,8 +94,8 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
     
     # Leading and Trailing Edge bands are constants in millimeters
 
-    blade.leband = np.array(blade_internal_structure['layers'][I_LE]['width']['values'])*1000 / 2
-    blade.teband = np.array(blade_internal_structure['layers'][I_TE]['width']['values'])*1000 / 2
+    blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
+    blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
     ### COMPONENTS
     _add_components(blade, blade_internal_structure, spar_hp_index, spar_lp_index)
     
