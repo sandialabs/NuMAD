@@ -141,6 +141,13 @@ def offsetCurveAndCombineFragmentsIfNeeded(curveID,offsetDistance):
     nStart=get_last_id("curve")
     cubit.cmd(f'create curve offset curve {curveID} distance {offsetDistance} extended')
     nEnd=get_last_id("curve")
+    # print(f'curveID {curveID}')
+    # print(f'nStart {nStart}')
+    # print(f'nEnd {nEnd}')
+    # print(f'offsetDistance {nEnd}')
+
+    # cubit.cmd(f'save as "debug.cub" overwrite')        
+
     if nEnd-nStart > 1:
         curveList=[]
         curveList+=list(range(nStart+1,nEnd+1))
@@ -962,6 +969,7 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                 cubit.cmd(f'create curve offset curve {leftOffsetCurve} distance {offsetSign_leftOffsetCurve*currentStackOffset} extended')
                 leftTopCurve=get_last_id("curve")
                 [topLeftVertexCurveLeft,topRightVertexCurveLeft]=selCurveVerts(get_last_id("curve"))
+
                 offsetCurveAndCombineFragmentsIfNeeded(rightOffsetCurve,offsetSign_rightOffsetCurve*nextStackOffset)
                 #cubit.cmd(f'create curve offset curve {rightOffsetCurve} distance {offsetSign_rightOffsetCurve*nextStackOffset} extended')
                 lastOffsetCurve=get_last_id("curve")
@@ -1216,7 +1224,7 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
 
     #### Extend flatback ###
     curveStartOrEnd='start'
-    extensionLength=25*blade.ichord[iStationGeometry]*cubit.curve(flatBackCurveID).length()
+    extensionLength=100*blade.ichord[iStationGeometry]*cubit.curve(flatBackCurveID).length()
     flatBackCurveID=extendCurveAtVertexToLength(flatBackCurveID,extensionLength,curveStartOrEnd)
 
     curveStartOrEnd='end'
@@ -1340,8 +1348,7 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
         writeSplineFromCoordinatePoints(cubit,splinePoints)
         camberID=get_last_id("curve")
     
-    # cubit.cmd(f'save as "debug.cub" overwrite')        
-    # foo 
+
 
     nStacks=len(blade.stacks)
 
