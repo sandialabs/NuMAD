@@ -15,11 +15,11 @@ blade.updateGeometry()
 blade.expandBladeGeometryTEs(0.001)
 
 ## Set the target element size for the mesh
-blade.mesh = 0.2
+elementSize = 0.2
 
 ## Generate mesh
 adhes = 1
-bladeMesh = blade.getShellMesh(includeAdhesive=adhes)
+bladeMesh = blade.getShellMesh(includeAdhesive=adhes, elementSize=elementSize)
 
 ## Write mesh to yaml
 meshFile = 'shellMeshData.yaml'

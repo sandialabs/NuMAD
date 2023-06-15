@@ -94,17 +94,14 @@ class Station():
         xyz[:,3] = self.spanlocation
         return xyz
 
-
-    # flagging as low priority -kb
-    # def updateProfiles(self = None): 
-    #     N = np.asarray(self).size
-    #     for k in np.arange(1,N+1).reshape(-1):
-    #         xyz = self(k).xyz
-    #         if len(self(k).hgProfile)==0 or not ishandle(self(k).hgProfile) :
-    #             self(k).hgProfile = line(0,0,0)
-    #         set(self(k).hgProfile,'XData',xyz[:,3],'YData',xyz[:,1],'ZData',xyz[:,2])
-        
-    #     return
+    
+    # NOTE: Not finished. Not sure what this is used for
+    def updateProfile(self): 
+        xyz = self.xyz
+        if len(self.hgProfile)==0:
+            self.hgProfile = line(0,0,0)
+        set(self.hgProfile,'XData',xyz[:,0],'YData',xyz[:,1],'ZData',xyz[:,2])
+        return
         
         
     # def delete(self = None): 
@@ -112,8 +109,3 @@ class Station():
     #         os.delete(self.hgProfile)
         
     #     return
-
-
-if __name__ == "__main__":
-    s = Station()
-    print(5)

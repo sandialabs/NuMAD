@@ -1,7 +1,7 @@
 import pynumad as pynu
 import numpy as np
 import os
-
+from pynumad.shell.shell import getSolidMesh
 ## Read blade data from yaml file
 blade = pynu.objects.Blade.Blade()
 fileName = 'example_data/myBlade.yaml'
@@ -19,7 +19,7 @@ blade.mesh = 0.2
 
 ## Specify the elements per primary layer and generate mesh
 layNumEls = [1,1,1]
-bladeMesh = blade.getSolidMesh(layerNumEls=layNumEls)
+bladeMesh = getSolidMesh(blade,layerNumEls=layNumEls)
 
 ## Write mesh to yaml
 meshFile = 'solidMeshData.yaml'

@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from pynumad.analysis.ansys.utility import txt2mat
 
 def read_1_ANSYSoutput(filename):
     with open(filename, 'r') as fid:
@@ -55,59 +56,63 @@ def readAnsysDeflections(blade, config, iLoad, deflectionFilename):
     
     for iSpan in range(nSpan):
         fileName = deflectionFilename+'-'+str(iSpan)+'.out'
-        temp = txt2mat(fileName)
-        os.delete(fileName)
+        temp_results = txt2mat(fileName)
+        os.remove(fileName)
         #Displacement
         for k in range(3):
-            data[iSpan,k] = np.mean(temp[:,k + 4])
-        nNode,__ = temp.shape
-        xmax,LE = np.amax(temp[:,1])
-        xmin,TE = np.amin(temp[:,1])
-        ymax,LP = np.amax(temp[:,2])
-        ymin,HP = np.amin(temp[:,2])
+            data[iSpan,k] = np.mean(temp_results[:,k + 4])
+        nNode,__ = temp_results.shape
+        xmax = np.amax(temp_results[:,1])
+        LE = np.argmax(temp_results[:,1])
+        xmin = np.amin(temp_results[:,1])
+        TE = np.argmin(temp_results[:,1])
+        ymax = np.amax(temp_results[:,2])
+        LP = np.argmax(temp_results[:,2])
+        ymin = np.amin(temp_results[:,2])
+        HP = np.argmin(temp_results[:,2])
         #close all;
         #plot(temp(:,2),temp(:,3),'ok')
         #hold on;
-        P = temp[LE,1:5]
-        Q = temp[TE,1:5]
+        P = temp_results[LE,1:5]
+        Q = temp_results[TE,1:5]
         PQ = P - Q
         #quiver(Q(1),Q(2),PQ(1),PQ(2));
         #plot(temp(:,2)+temp(LE,2),temp(:,3)+temp(LE,3),'xb')
         #axis equal;
-        R = P + temp[LE,1:5]
-        S = Q + temp[TE,1:5]
+        R = P + temp_results[LE,1:5]
+        S = Q + temp_results[TE,1:5]
         RS = R - S
         #quiver(Q(1),Q(2),RS(1),RS(2));
         #data(iSpan, 5) =  180/pi* acos(dot(RS(1:2:3),PQ(1:2:3))/(vecnorm(RS(1:2:3))*vecnorm(PQ(1:2:3))));
         #data(iSpan, 6) =  180/pi* acos(dot(RS(1:2),PQ(1:2))/(vecnorm(RS(1:2))*vecnorm(PQ(1:2))));
         index = [0,2]
-        a = RS(index[0]) * PQ(index[0])
-        b = RS(index[1]) * PQ(index[1])
-        c = np.sqrt(PQ(index[0]) ** 2 + PQ(index[1]) ** 2)
-        d = np.sqrt(RS(index[0]) ** 2 + RS(index[1]) ** 2)
+        a = RS[index[0]] * PQ[index[0]]
+        b = RS[index[1]] * PQ[index[1]]
+        c = np.sqrt(PQ[index[0]] ** 2 + PQ[index[1]] ** 2)
+        d = np.sqrt(RS[index[0]] ** 2 + RS[index[1]] ** 2)
         data[iSpan,5] = 180 / np.pi * np.arccos((a + b) / (c * d))
         index = [0,1]
-        a = RS(index[0]) * PQ(index[0])
-        b = RS(index[1]) * PQ(index[1])
-        c = np.sqrt(PQ(index[0]) ** 2 + PQ(index[1]) ** 2)
-        d = np.sqrt(RS(index[0]) ** 2 + RS(index[1]) ** 2)
+        a = RS[index[0]] * PQ[index[0]]
+        b = RS[index[1]] * PQ[index[1]]
+        c = np.sqrt(PQ[index[0]] ** 2 + PQ[index[1]] ** 2)
+        d = np.sqrt(RS[index[0]] ** 2 + RS[index[1]] ** 2)
         arg = (a + b) / (c * d)
         if arg > 1:
             if np.round(arg,6) == 1:
-                data[iSpan,6] = 180 / np.pi * np.arccos(np.round(arg,6))
+                data[iSpan,5] = 180 / np.pi * np.arccos(np.round(arg,6))
             else:
-                data[iSpan,6] = 180 / np.pi * np.arccos(arg)
-        T = temp[LP,1:5]
-        U = temp[HP,1:5]
+                data[iSpan,5] = 180 / np.pi * np.arccos(arg)
+        T = temp_results[LP,1:5]
+        U = temp_results[HP,1:5]
         TU = T - U
-        V = T + temp[LP,1:5]
-        W = U + temp[HP,1:5]
+        V = T + temp_results[LP,1:5]
+        W = U + temp_results[HP,1:5]
         VW = V - W
         index = [1,2]
-        a = VW(index[0]) * TU(index[0])
-        b = VW(index[1]) * TU(index[1])
-        c = np.sqrt(TU(index[0]) ** 2 + TU(index[1]) ** 2)
-        d = np.sqrt(VW(index[0]) ** 2 + VW(index[1]) ** 2)
+        a = VW[index[0]] * TU[index[0]]
+        b = VW[index[1]] * TU[index[1]]
+        c = np.sqrt(TU[index[0]] ** 2 + TU[index[1]] ** 2)
+        d = np.sqrt(VW[index[0]] ** 2 + VW[index[1]] ** 2)
         data[iSpan,3] = 180 / np.pi * np.arccos((a + b) / (c * d))
         #title(['ispan:' int2str(iSpan) ' theta:' num2str(data(iSpan, 6))])
     
