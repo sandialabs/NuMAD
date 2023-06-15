@@ -94,8 +94,8 @@ def yaml_to_blade(blade, filename: str, write_airfoils: bool = False):
     
     # Leading and Trailing Edge bands are constants in millimeters
 
-    blade.leband = np.multiply(np.mean(blade_internal_structure['layers'][I_LE]['width']['values']),1000) / 2
-    blade.teband = np.multiply(np.mean(blade_internal_structure['layers'][I_TE]['width']['values']),1000) / 2
+    blade.leband = np.array(blade_internal_structure['layers'][I_LE]['width']['values'])*1000 / 2
+    blade.teband = np.array(blade_internal_structure['layers'][I_TE]['width']['values'])*1000 / 2
     ### COMPONENTS
     _add_components(blade, blade_internal_structure, spar_hp_index, spar_lp_index)
     

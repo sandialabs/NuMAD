@@ -504,20 +504,22 @@ class Blade():
         ns = 1
         nf = self.geometry.shape[0] - 2
         
-        n1 = mm_to_m * self.leband # no foam width
-        n2 = mm_to_m * self.teband # no foam width
+
 
         #keypoints, keyarcs, keycpos
         self.TEtype = [] # reset TEtype
         for k in range(0,N):
             # allow for separate definitions of HP and LP spar cap
             # width and offset [HP LP]
-            if len(self.sparcapwidth) > 2 or len(self.sparcapoffset) > 2:
-                raise Exception('too many entries for spar cap definition')
-            scwidth_hp = mm_to_m * self.sparcapwidth[0] #type: float
-            scwidth_lp = mm_to_m * self.sparcapwidth[-1] #type: float
-            scoffset_hp = mm_to_m * self.sparcapoffset[0] #type: float
-            scoffset_lp = mm_to_m * self.sparcapoffset[-1] #type: float
+            n1 = mm_to_m * self.leband[k] # no foam width
+            n2 = mm_to_m * self.teband[k] # no foam width
+
+
+            scwidth_hp = mm_to_m * self.sparcapwidth_hp[k] #type: float
+            scwidth_lp = mm_to_m * self.sparcapwidth_lp[k] #type: float
+
+            scoffset_hp = mm_to_m * self.sparcapoffset_hp[k] #type: float
+            scoffset_lp = mm_to_m * self.sparcapoffset_lp[k] #type: float
 
             tempTE = self.getprofileTEtype(k)
             if self.TEtype:
