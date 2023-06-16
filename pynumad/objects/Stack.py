@@ -56,6 +56,8 @@ class Stack:
             self.plygroups = []
             self.plygroups.append(ply)
 
+        return self
+
             
     def layerThicknesses(self):
         nLayers=len(self.plygroups)

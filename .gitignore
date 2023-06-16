@@ -110,3 +110,21 @@ docs/_static/*
 test_matlab*
 *.log
 pynumad/kirklocal/*
+## Ansys
+*.mac
+*.db
+*.DSP
+*.emat
+*.err
+*.esav
+*.full
+*.mntr
+*.rst
+*.stat
+*.src
+*.out
+*.dbb
+*.txt
+*.pkl
+*.csv
+*.bat

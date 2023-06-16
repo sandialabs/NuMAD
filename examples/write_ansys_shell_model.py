@@ -1,6 +1,7 @@
 import numpy as np
 from os.path import join
-from pynumad.analysis.ansys.ansys import writeANSYSshellModel
+from pynumad.analysis.ansys.write import writeAnsysShellModel
+from pynumad.shell.shell import getShellMesh
 from pynumad.objects.Blade import Blade
 
 """
@@ -10,21 +11,18 @@ model to an ansys .src file
 
 yamlpath = join("..","data","blade_yamls","myBlade.yaml")
 blade = Blade(yamlpath)
-blade.mesh = 0.2
+elementSize = 0.2
 adhes = 1
 
-meshData = blade.getShellMesh(includeAdhesive=adhes)
+meshData = getShellMesh(blade, includeAdhesive=adhes, elementSize=elementSize)
 config = dict()
 config["BoundaryCondition"] = 'cantilevered'
 config["elementType"] = '181'
 config["MultipleLayerBehavior"] = 'multiply'
 config["dbgen"] = 1
 config["dbname"] = 'master'
-analysisConfig = dict()
 
-filename = "myblade_ansys.src"
+filename = 'buildAnsysShell.src'
 includeAdhesive = 1
 
-writeANSYSshellModel(blade,filename,meshData,config,includeAdhesive)
-
-whatever
+writeAnsysShellModel(blade,filename,meshData,config,includeAdhesive)

@@ -1,9 +1,18 @@
 import numpy as np
 import warnings
     
-def calcFatigue(blade = None,meshData = None,IEC = None,Ltheta = None,LthetaPlus90 = None,Mtheta = None,MthetaPlus90 = None,binnedElements = None,plateStrainsTheta = None,plateStrainsThetaPlus90 = None,iSegment = None): 
+def calcFatigue(blade = None,
+                meshData = None,
+                IEC = None,
+                Ltheta = None,
+                LthetaPlus90 = None,
+                Mtheta = None,
+                MthetaPlus90 = None,
+                binnedElements = None,
+                plateStrainsTheta = None,
+                plateStrainsThetaPlus90 = None,
+                iSegment = None): 
     #blade.materials read in to obtain fatigue exponents
-    
     #Initialize damage variables, get section data, and get element strains
     
     numElem = np.asarray(binnedElements).size
@@ -53,15 +62,15 @@ def calcFatigue(blade = None,meshData = None,IEC = None,Ltheta = None,LthetaPlus
                 MthetaPlus90Factor = getattr(localFieldsThetaPlus90,(np.array(['element',num2str(elNo)]))).sig11(ix3) / MthetaPlus90
                 LthetaWithFactor = Ltheta
                 LthetaPlus90WithFactor = LthetaPlus90
-                LthetaWithFactor[1,:] = LthetaWithFactor(1,:) * MthetaFactor
-                LthetaWithFactor[:,1] = np.abs(LthetaWithFactor(:,1) * MthetaFactor)
-                LthetaPlus90WithFactor[1,:] = LthetaPlus90WithFactor(1,:) * MthetaPlus90Factor
-                LthetaPlus90WithFactor[:,1] = np.abs(LthetaPlus90WithFactor(:,1) * MthetaPlus90Factor)
+                LthetaWithFactor[1,:] = LthetaWithFactor[0,:] * MthetaFactor
+                LthetaWithFactor[:,1] = np.abs(LthetaWithFactor[:,0] * MthetaFactor)
+                LthetaPlus90WithFactor[1,:] = LthetaPlus90WithFactor[0,:] * MthetaPlus90Factor
+                LthetaPlus90WithFactor[:,1] = np.abs(LthetaPlus90WithFactor[:,0] * MthetaPlus90Factor)
                 m = blade.materials(matNumber).m
                 XTEN = blade.materials(matNumber).uts(1) * SFs
                 XCMP = blade.materials(matNumber).ucs(1) * SFs
                 # Determine the maximum number of cycles for failure based
-# on available fatigue failure criterion or from data
+                # on available fatigue failure criterion or from data
                 #Calculate fatigue damage value, layer, and material for flap and edge cycles
                 if isfinite(MthetaFactor):
                     if 'Shifted Goodman' == IEC.fatigueCriterion:
@@ -93,110 +102,112 @@ def calcFatigue(blade = None,meshData = None,IEC = None,Ltheta = None,LthetaPlus
         #         plotFatigue=[plotFatigue;elements(binnedElements(i),1) FDvalue(1)];
     
     #Output results in comma-delimited format
-#table(fatigue_damage(:,1),fatigue_damage(:,2),fatigue_damage(:,5),fatigue_damage(:,8))
+    #table(fatigue_damage(:,1),fatigue_damage(:,2),fatigue_damage(:,5),fatigue_damage(:,8))
     
-    __,imax = np.amax(fatigueDamage(:,2))
-    fatigueDamage = fatigueDamage(imax,:)
+    __,imax = np.amax(fatigueDamage[:,1])
+    fatigueDamage = fatigueDamage[imax,:]
     
     
     #         #########################
-#         for j=1:nLayers #Loop through layers
-#             #Get material values
-#             matNumber = sections.layers{sections.secID==sec_num}(j,3);
+    #         for j=1:nLayers #Loop through layers
+    #             #Get material values
+    #             matNumber = sections.layers{sections.secID==sec_num}(j,3);
     
     #             if ~isempty(blade.materials(matNumber).m)
-#                 #Determine mean and amplitude stress
-#                 MthetaFactor=stressesTheta(binnedElements(i),j+2)/Mtheta;
-#                 MthetaPlus90Factor=stressesThetaPlus90(binnedElements(i),j+2)/MthetaPlus90;
+    #                 #Determine mean and amplitude stress
+    #                 MthetaFactor=stressesTheta(binnedElements(i),j+2)/Mtheta;
+    #                 MthetaPlus90Factor=stressesThetaPlus90(binnedElements(i),j+2)/MthetaPlus90;
     
     #                 LthetaWithFactor=Ltheta; #Initialize for every layer
-#                 LthetaPlus90WithFactor=LthetaPlus90;
+    #                 LthetaPlus90WithFactor=LthetaPlus90;
     
     #                 LthetaWithFactor(1,:)=LthetaWithFactor(1,:)*MthetaFactor; #Means
-#                 LthetaWithFactor(:,1)=abs(LthetaWithFactor(:,1)*MthetaFactor); #Amplitudes
+    #                 LthetaWithFactor(:,1)=abs(LthetaWithFactor(:,1)*MthetaFactor); #Amplitudes
     
     #                 LthetaPlus90WithFactor(1,:)=LthetaPlus90WithFactor(1,:)*MthetaPlus90Factor; #Means
-#                 LthetaPlus90WithFactor(:,1)=abs(LthetaPlus90WithFactor(:,1)*MthetaPlus90Factor); #Amplitudes
+    #                 LthetaPlus90WithFactor(:,1)=abs(LthetaPlus90WithFactor(:,1)*MthetaPlus90Factor); #Amplitudes
     
     #                 m=blade.materials(matNumber).m;
-#                 XTEN=materials(matNumber).XTEN*SFs; #Unfactor the factored resistance
-#                 XCMP=materials(matNumber).XCMP*SFs; #Unfactor the factored resistance
+    #                 XTEN=materials(matNumber).XTEN*SFs; #Unfactor the factored resistance
+    #                 XCMP=materials(matNumber).XCMP*SFs; #Unfactor the factored resistance
     
     
     #                 # Determine the maximum number of cycles for failure based
-#                 # on available fatigue failure criterion or from data
+    #                 # on available fatigue failure criterion or from data
     
     #                 #Calculate fatigue damage value, layer, and material for flap and edge cycles
-#                 if isfinite(MthetaFactor)
-#                     switch IEC.fatigueCriterion
-#                         case 'Shifted Goodman'  #one case for now
-#                             layerFDtheta=shiftedGoodman(LthetaWithFactor,XTEN,XCMP,m,SFs,SFf);
-#                     end
-#                 else
-#                     layerFDtheta=0;
-#                 end
+    #                 if isfinite(MthetaFactor)
+    #                     switch IEC.fatigueCriterion
+    #                         case 'Shifted Goodman'  #one case for now
+    #                             layerFDtheta=shiftedGoodman(LthetaWithFactor,XTEN,XCMP,m,SFs,SFf);
+    #                     end
+    #                 else
+    #                     layerFDtheta=0;
+    #                 end
     
     #                 if isfinite(MthetaPlus90Factor)
-#                     switch IEC.fatigueCriterion
-#                         case 'Shifted Goodman' #one case for now
-#                             layerFDthetaPlus90=shiftedGoodman(LthetaPlus90WithFactor,XTEN,XCMP,m,SFs,SFf);
-#                     end
-#                 else
-#                     layerFDthetaPlus90=0;
-#                 end
+    #                     switch IEC.fatigueCriterion
+    #                         case 'Shifted Goodman' #one case for now
+    #                             layerFDthetaPlus90=shiftedGoodman(LthetaPlus90WithFactor,XTEN,XCMP,m,SFs,SFf);
+    #                     end
+    #                 else
+    #                     layerFDthetaPlus90=0;
+    #                 end
     
     
     
     #                 layerFD=layerFDtheta+layerFDthetaPlus90;
-# #                 if elNo==1950
-# #                     keyboard
-# #                 end
+    # #                 if elNo==1950
+    # #                     keyboard
+    # #                 end
     
     #                 if layerFD>elemFD
-#                     elemFD=layerFD;
-#                     elemFDlayer=j;
-#                     elemFDmat=matNumber;
-#                 end
-#                 if layerFDtheta>=elemFDflap
-#                     elemFDflap=layerFDtheta;
-#                     elemFDflapLayer=j;
-#                     elemFDflapMat=matNumber;
-#                 end
-#                 if layerFDthetaPlus90>=elemFDedge
-#                     elemFDedge=layerFDthetaPlus90;
-#                     elemFDedgeLayer=j;
-#                     elemFDedgeMat=matNumber;
-#                 end
+    #                     elemFD=layerFD;
+    #                     elemFDlayer=j;
+    #                     elemFDmat=matNumber;
+    #                 end
+    #                 if layerFDtheta>=elemFDflap
+    #                     elemFDflap=layerFDtheta;
+    #                     elemFDflapLayer=j;
+    #                     elemFDflapMat=matNumber;
+    #                 end
+    #                 if layerFDthetaPlus90>=elemFDedge
+    #                     elemFDedge=layerFDthetaPlus90;
+    #                     elemFDedgeLayer=j;
+    #                     elemFDedgeMat=matNumber;
+    #                 end
     
     #                 FDvalue=[elemFD elemFDflap elemFDedge];
-#                 FDlayer=[elemFDlayer elemFDflapLayer elemFDedgeLayer];
-#                 FDmat=[elemFDmat elemFDflapMat elemFDedgeMat];
-#                 fatigueDamage(i,:)=[elNo FDvalue FDlayer FDmat];
-#            end
-#         end
-# #         plotFatigue=[plotFatigue;elements(binnedElements(i),1) FDvalue(1)];
+    #                 FDlayer=[elemFDlayer elemFDflapLayer elemFDedgeLayer];
+    #                 FDmat=[elemFDmat elemFDflapMat elemFDedgeMat];
+    #                 fatigueDamage(i,:)=[elNo FDvalue FDlayer FDmat];
+    #            end
+    #         end
+    # #         plotFatigue=[plotFatigue;elements(binnedElements(i),1) FDvalue(1)];
     
     #     end
-#     #Output results in comma-delimited format
-#     #table(fatigue_damage(:,1),fatigue_damage(:,2),fatigue_damage(:,5),fatigue_damage(:,8))
+    #     #Output results in comma-delimited format
+    #     #table(fatigue_damage(:,1),fatigue_damage(:,2),fatigue_damage(:,5),fatigue_damage(:,8))
     
     #     [~,imax]=max(fatigueDamage(:,2));
-#     fatigueDamage = fatigueDamage(imax,:);
-    return fatigueDamage,plotFatigue
-    
+    #     fatigueDamage = fatigueDamage(imax,:);
     return fatigueDamage,plotFatigue
 
-
-import numpy as np
     
-def getMomentMarkov(rccdata = None,wt = None,Yr = None,simtime = None,markovSize = None,chSpan = None,direction = None): 
+def getMomentMarkov(rccdata = None,
+                    wt = None,
+                    Yr = None,
+                    simtime = None,
+                    markovSize = None,
+                    chSpan = None,
+                    direction = None): 
     if chSpan == 1:
         baseStr = 'Root'
     else:
         baseStr = np.array(['Spn',int2str(chSpan - 1)])
     
     #Search through first windspeed column of rccdata for the first appearance of
-#baseStr + M + direction e.g. RootMyb1
+    #baseStr + M + direction e.g. RootMyb1
     ct = 1
     
     # of baseStr + M + direction e.g. RootMyb1.
@@ -214,7 +225,7 @@ def getMomentMarkov(rccdata = None,wt = None,Yr = None,simtime = None,markovSize
         # put data from rccdata structure for this channel and wind speed into a temporary variable, data
         data = rccdata[ct,w]
         # Make sure that fatigue data are only summed accross
-# windspeeds for the same channel.
+        # windspeeds for the same channel.
         if w == 1 or str(data.label) == str(rccdata[ct,w - 1].label):
             means = np.array([[means],[data.means]])
             ampl = np.array([[ampl],[data.amplitudes]])
