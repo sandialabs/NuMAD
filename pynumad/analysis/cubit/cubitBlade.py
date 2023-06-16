@@ -14,7 +14,7 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
     # Initialize variables
     surfaceDict = {}
     # Uniquly track which materiall IDs are actuall used in blade model
-    materialIDsUsed = set()
+    materialsUsed = set()
     iLE = blade.LEindex+1
     thicknessScaling = 0.001
     geometryScaling = thicknessScaling*1000
@@ -112,11 +112,11 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
         # Only save birdsMouthVerts for the right cross-section
         if iStation == iStationFirstWeb:
             birdsMouthVerts = writeCubitCrossSection(surfaceDict, iStation, iStationGeometry, blade,
-                                                     hasWebs[iStation], aftWebStack, foreWebStack, iLE, crosssectionParams, geometryScaling, thicknessScaling, isFlatback, lastRoundStation, materialIDsUsed)
+                                                     hasWebs[iStation], aftWebStack, foreWebStack, iLE, crosssectionParams, geometryScaling, thicknessScaling, isFlatback, lastRoundStation, materialsUsed)
         else:
 
             writeCubitCrossSection(surfaceDict, iStation, iStationGeometry, blade, hasWebs[iStation], aftWebStack, foreWebStack,
-                                   iLE, crosssectionParams, geometryScaling, thicknessScaling, isFlatback, lastRoundStation, materialIDsUsed)
+                                   iLE, crosssectionParams, geometryScaling, thicknessScaling, isFlatback, lastRoundStation, materialsUsed)
             birdsMouthVerts = []
 
         cubit.cmd(f'delete curve all with Is_Free except {spanwiseMatOriCurve}')
@@ -124,9 +124,9 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
         # Chord line for rotation of cross-section for homogenization
         if model2Dor3D.lower() == '2d':
             #         #Blocks
-            for imat, material in enumerate(blade.materials):
-                cubit.cmd(
-                    f'block {imat+1} add surface with name "*material{imat}*"')
+
+            for imat, materialName in enumerate(materialsUsed):
+                cubit.cmd(f'block {imat+1} add surface with name "*{materialName}*"')
 
             addColor(blade, 'surface')
 
@@ -185,7 +185,7 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
             
             if settings['solver'] is not None:
                 if  'vabs' in settings['solver'].lower():
-                    writeVABSinput(surfaceDict, blade, crosssectionParams,directory,fileName, volumeIDs)
+                    writeVABSinput(surfaceDict, blade, crosssectionParams,directory,fileName, volumeIDs,materialsUsed)
            
 
                 elif 'anba' in settings['solver'].lower():
@@ -205,7 +205,7 @@ def generateCubitCrossSections(blade, wt_name, settings, crosssectionParams, mod
         # Remove unnecessary files to save space
         for filePath in glob.glob(f'{pathName}-*.cub'):
             os.remove(filePath)
-    return cubit, blade, surfaceDict, birdsMouthVerts, iStationFirstWeb, iStationLastWeb, materialIDsUsed, spanwiseMatOriCurve
+    return cubit, blade, surfaceDict, birdsMouthVerts, iStationFirstWeb, iStationLastWeb, materialsUsed, spanwiseMatOriCurve
 
 
 def generateCubitSolidModel(blade, wt_name, settings, crosssectionParams, stationList=None):
@@ -215,7 +215,7 @@ def generateCubitSolidModel(blade, wt_name, settings, crosssectionParams, statio
     elif len(stationList)==1:
         raise ValueError('Need more that one cross section to make a solid model')
 
-    cubit, blade, surfaceDict, birdsMouthVerts, iStationFirstWeb, iStationLastWeb, materialIDsUsed, spanwiseMatOriCurve = generateCubitCrossSections(
+    cubit, blade, surfaceDict, birdsMouthVerts, iStationFirstWeb, iStationLastWeb, materialsUsed, spanwiseMatOriCurve = generateCubitCrossSections(
         blade, wt_name, settings, crosssectionParams, '3D', stationList)
 
     iStationStart = stationList[0]
@@ -270,12 +270,9 @@ def generateCubitSolidModel(blade, wt_name, settings, crosssectionParams, statio
 
     # Blocks
     # for imat,material in enumerate(blade.materials):
-    for materialID in materialIDsUsed:
-        cubit.cmd(
-            f'block {materialID+1} add volume with name "*material{materialID}*"')
-        # materialID+1 b/c can't have 0 for block ID
-        cubit.cmd(
-            f'block {materialID+1} name "{blade.materials[materialID].name}"')
+    for imat, materialName in enumerate(materialsUsed):
+        cubit.cmd(f'block {imat+1} add volume with name "*{materialName}*"')
+        cubit.cmd(f'block {imat+1} name "{materialName}"')
 
     addColor(blade, 'volume')
 

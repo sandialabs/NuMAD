@@ -8,18 +8,23 @@ def addColor(blade,volumeOrSurface):
     #Adds color to volume or surfaces by material
     colorDict={}
     colorDict['adhesive']='yellow'
-    colorDict['uni']='grey'  
+    colorDict['carbon']='grey'  
+    colorDict['uni']='seagreen'  
     colorDict['triax']='lightgreen' 
-    colorDict['biax']='lightblue' 
-    colorDict['foam']='orange'
-    for imat,material in enumerate(blade.materials):
-        matName=material.name.lower()
+    colorDict['biax']='greenyellow' 
+    colorDict['foam']='khaki'
+
+    for matName in blade.materials:
         for color in colorDict.keys():
-            if color in matName:
-                parseString=f'with name "*material{imat}*"'
+            if color in matName.lower():
+                parseString=f'with name "*{matName}*"'
 
                 volIDs=parse_cubit_list(volumeOrSurface, parseString)
                 cubit.cmd(f'color {volumeOrSurface} {l2s(volIDs)}  mesh {colorDict[color]}')
+                cubit.cmd(f'color {volumeOrSurface} {l2s(volIDs)}  geometry {colorDict[color]}')
+
+                break
+
 def surfaceFromTwoCurves(topCurve,bottomCurve):
     v2Left,v2Right=selCurveVerts(topCurve)
     v1Left,v1Right=selCurveVerts(bottomCurve)
@@ -242,14 +247,14 @@ def extendCurvePastCurveAndTrim(curveToExtendID,curveStartOrEnd,curveIDThatCutsE
         curveToExtendID=get_last_id("curve")-1
         cubit.cmd(f'delete curve {get_last_id("curve")}')   
     return curveToExtendID
-def renameLastSurface(partName, iStation,iModeledLayers,materialID,partNameID):
+def renameLastSurface(partName, iStation,iModeledLayers,materialName,partNameID):
     #Every cross sectional surface that is created must be followed by a call to this function
     partNameID+=1
-    surfaceName=partName+'Station'+str(iStation)+'_layer'+str(iModeledLayers)+'_material'+str(materialID)+'_surface'+str(partNameID)
+    surfaceName=partName+'Station'+str(iStation)+'_layer'+str(iModeledLayers)+'_'+materialName+'_surface'+str(partNameID)
     cubit.cmd(f'surface {get_last_id("surface")} rename "{surfaceName}"')
     return partNameID
 
-def addSurfaceDictEntry(surfaceDict,surfaceObject,myCurveOrder, myVertOrder,materialID,plyAngle):
+def addSurfaceDictEntry(surfaceDict,surfaceObject,myCurveOrder, myVertOrder,materialName,plyAngle):
     surfaceDict[surfaceObject.id()]={}
 
     #Curves:
@@ -267,24 +272,24 @@ def addSurfaceDictEntry(surfaceDict,surfaceObject,myCurveOrder, myVertOrder,mate
         idList.append(vertObject.id())
     idList = [idList[i] for i in myVertOrder]
     surfaceDict[surfaceObject.id()]['verts']=idList
-    surfaceDict[surfaceObject.id()]['materialID']=materialID
+    surfaceDict[surfaceObject.id()]['materialName']=materialName
     surfaceDict[surfaceObject.id()]['plyAngle']=plyAngle
     # getSurfaceVerts[surfaceObject.id()]=idList
     
-def makeCrossSectionSurface(surfaceDict,iStation,partName,topCurve,bottomCurve,materialID,plyAngle,partNameID,iModeledLayers,materialIDsUsed):  
+def makeCrossSectionSurface(surfaceDict,iStation,partName,topCurve,bottomCurve,materialName,plyAngle,partNameID,iModeledLayers,materialsUsed):  
     #Given two curves in a cross section, create a surface by connecting the end points then
     #rename the surface and add to the surface dictionary
     surfaceFromTwoCurves(topCurve,bottomCurve)
-    materialIDsUsed.add(materialID)
+    materialsUsed.add(materialName)
     
-    partNameID=renameLastSurface(partName,iStation,iModeledLayers,materialID,partNameID)
-    addSurfaceDictEntry(surfaceDict,cubit.surface(get_last_id("surface")),[0,1,2,3],[0,1,2,3],materialID,plyAngle) 
+    partNameID=renameLastSurface(partName,iStation,iModeledLayers,materialName,partNameID)
+    addSurfaceDictEntry(surfaceDict,cubit.surface(get_last_id("surface")),[0,1,2,3],[0,1,2,3],materialName,plyAngle) 
     
     cubit.cmd(f'curve {surfaceDict[get_last_id("surface")]["curves"][1]} rename "layerThickness"')
     cubit.cmd(f'curve {surfaceDict[get_last_id("surface")]["verts"][-1]} rename "layerThickness"')
 
     
-    return partNameID,materialIDsUsed
+    return partNameID,materialsUsed
 
 
 def writeLEAdhesiveCurves(HPstackThickness,LPstackThickness,adhesiveThickness,hpKeyCurve,lpKeyCurve,crossSectionNormal): 
@@ -517,7 +522,7 @@ def getAdjustmentCurve(curveIDs,layerOffsetDist,curveStartOrEnd,endLayerTaperCur
     adjustmentCurve=get_last_id("curve")
     cubit.cmd(f'delete vertex {l2s(vertexList[1:-1])}')
     return adjustmentCurve
-def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,params,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID, nModeledLayers,crossSectionNormal,lpHpCurveDict,materialIDsUsed):
+def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,params,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID, nModeledLayers,crossSectionNormal,lpHpCurveDict,materialsUsed):
     partName=lpHpside+'shell'
 
     #Assumes that #HP side is made first
@@ -820,14 +825,10 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
             if iPerimeter==0:
                 #Create Left Areas Only
 
-#                 if iModeledLayers==1:
-#                     materialID=currentStack.plygroups[0].materialid
-#                     plyAngle=currentStack.plygroups[0].angle
-#                 else:
-                materialID=currentStack.plygroups[iModeledLayers].materialid
+                materialName=currentStack.plygroups[iModeledLayers].materialid
                 plyAngle=currentStack.plygroups[iModeledLayers].angle
 
-                partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,currentStackLeftCurves[iModeledLayers+1],currentStackLeftCurves[iModeledLayers],materialID,plyAngle,partNameID,iModeledLayers,materialIDsUsed)
+                partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,currentStackLeftCurves[iModeledLayers+1],currentStackLeftCurves[iModeledLayers],materialName,plyAngle,partNameID,iModeledLayers,materialsUsed)
                 
                 if TEangle > 120:
                     lpHpCurveDict['TEadhesiveCurveList'][lpHpsideIndex].append(surfaceDict[get_last_id('surface')]['curves'][-1])
@@ -890,21 +891,21 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
 
             ### Create Surfaces ###
             #Sufaces for currentStack
-            materialID=currentStack.plygroups[iModeledLayers].materialid
+            materialName=currentStack.plygroups[iModeledLayers].materialid
             plyAngle=currentStack.plygroups[iModeledLayers].angle
-            partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,leftTopCurve,leftBottomCurve,materialID,plyAngle,partNameID,iModeledLayers,materialIDsUsed)
+            partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,leftTopCurve,leftBottomCurve,materialName,plyAngle,partNameID,iModeledLayers,materialsUsed)
             currentStackSurfaceList.append(get_last_id("surface"))
 
             #Surfaces for transitionStack
-            materialID=transitionStack.plygroups[iModeledLayers].materialid
+            materialName=transitionStack.plygroups[iModeledLayers].materialid
             plyAngle=transitionStack.plygroups[iModeledLayers].angle
-            partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,transitionTopCurve,transitionBottomCurve,materialID,plyAngle,partNameID,iModeledLayers,materialIDsUsed)
+            partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,transitionTopCurve,transitionBottomCurve,materialName,plyAngle,partNameID,iModeledLayers,materialsUsed)
             transitionStackSurfaceList.append(get_last_id("surface"))
                 
             #Surfaces for nextStack
-            materialID=nextStack.plygroups[iModeledLayers].materialid
+            materialName=nextStack.plygroups[iModeledLayers].materialid
             plyAngle=nextStack.plygroups[iModeledLayers].angle
-            partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,rightTopCurve,rightBottomCurve,materialID,plyAngle,partNameID,iModeledLayers,materialIDsUsed)
+            partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,rightTopCurve,rightBottomCurve,materialName,plyAngle,partNameID,iModeledLayers,materialsUsed)
             nextStackSurfaceList.append(get_last_id("surface"))
 
                 
@@ -932,9 +933,9 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
                     cubit.cmd(f'create curve offset curve {bottomCurve} distance {offSetSign*thickness} extended')
                     topCurve=get_last_id("curve")
 
-                    materialID=nextStack.plygroups[it].materialid
+                    materialName=nextStack.plygroups[it].materialid
                     plyAngle=nextStack.plygroups[it].angle
-                    partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,topCurve,bottomCurve,materialID,plyAngle,partNameID,it,materialIDsUsed)
+                    partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,topCurve,bottomCurve,materialName,plyAngle,partNameID,it,materialsUsed)
                     nextStackSurfaceList.append(get_last_id("surface"))     
 
                     if it==2 and ic!=3:
@@ -950,10 +951,10 @@ def makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,stationStacks,para
 ####################################################
 
 
-def createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,adhesiveCurveList,adhesiveMatID,partNameID,nModeledLayers,materialIDsUsed):
+def createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,adhesiveCurveList,adhesiveMatID,partNameID,nModeledLayers,materialsUsed):
     for iCurve in range(len(adhesiveCurveList[0])):
         plyAngle=0 #Ply angle is always zero since adhesive is always assumed as isotropic
-        partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,adhesiveCurveList[1][iCurve],adhesiveCurveList[0][iCurve],adhesiveMatID,plyAngle,partNameID,nModeledLayers+1,materialIDsUsed)
+        partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName,adhesiveCurveList[1][iCurve],adhesiveCurveList[0][iCurve],adhesiveMatID,plyAngle,partNameID,nModeledLayers+1,materialsUsed)
         
     return partNameID
     
@@ -978,7 +979,7 @@ def printSineCurveBetweenTwoVerts(vBot,vTop,amplitude,direction):
         cubit.cmd(f'delete curve {idCurve}')
     return get_last_id("curve")
 
-def makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack,webInterfaceCurves,crosssectionParams,partNameID,crossSectionNormal,nModeledLayers,materialIDsUsed):
+def makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack,webInterfaceCurves,crosssectionParams,partNameID,crossSectionNormal,nModeledLayers,materialsUsed):
     aftWebOverwrapThickness=(aftWebStack.layerThicknesses()[0]+aftWebStack.layerThicknesses()[-1])/1000
     foreWebOverwrapThickness=(foreWebStack.layerThicknesses()[0]+foreWebStack.layerThicknesses()[-1])/1000
     partName='web'
@@ -1006,18 +1007,18 @@ def makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack
                 topCurve=get_last_id("curve")
 
                 if it==0:
-                    materialID=crosssectionParams['adhesiveMatID']
+                    materialName=crosssectionParams['adhesiveMatID']
                     plyAngle=0 
                     
                 else:
                     if iCurve<nBaseCurvesWeb/2:
-                        materialID=aftWebStack.plygroups[0].materialid
+                        materialName=aftWebStack.plygroups[0].materialid
                         plyAngle=aftWebStack.plygroups[0].angle
                     else:
-                        materialID=foreWebStack.plygroups[0].materialid
+                        materialName=foreWebStack.plygroups[0].materialid
                         plyAngle=foreWebStack.plygroups[0].angle
 
-                partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName, topCurve,bottomCurve,materialID,plyAngle,partNameID,nModeledLayers+it,materialIDsUsed)
+                partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName, topCurve,bottomCurve,materialName,plyAngle,partNameID,nModeledLayers+it,materialsUsed)
 
                 bottomCurve=topCurve
 
@@ -1044,15 +1045,15 @@ def makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack
 
 
         if iCurve<nBaseCurvesWeb/2:
-            materialID=aftWebStack.plygroups[iCurve].materialid
+            materialName=aftWebStack.plygroups[iCurve].materialid
             plyAngle=aftWebStack.plygroups[iCurve].angle
         else:
-            materialID=foreWebStack.plygroups[iCurve-int(nBaseCurvesWeb/2)].materialid
+            materialName=foreWebStack.plygroups[iCurve-int(nBaseCurvesWeb/2)].materialid
             plyAngle=foreWebStack.plygroups[iCurve-int(nBaseCurvesWeb/2)].angle
-        partNameID,materialIDsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName, topCurve,bottomCurve,materialID,plyAngle,partNameID,nModeledLayers+it+2+iCurve,materialIDsUsed)
+        partNameID,materialsUsed=makeCrossSectionSurface(surfaceDict,iStation,partName, topCurve,bottomCurve,materialName,plyAngle,partNameID,nModeledLayers+it+2+iCurve,materialsUsed)
     return partNameID, (vHP,vLP)
 
-def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,aftWebStack,foreWebStack,iLE,crosssectionParams,geometryScaling,thicknessScaling,isFlatback,lastRoundStation,materialIDsUsed):
+def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,aftWebStack,foreWebStack,iLE,crosssectionParams,geometryScaling,thicknessScaling,isFlatback,lastRoundStation,materialsUsed):
    
     with open('cubitBlade.log', 'a') as logFile:
         logFile.write(f'Working on Station: {iStation}\n')
@@ -1285,16 +1286,16 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     lpHpside='HP'
     
     
-    partNameID,lpHpCurveDict=makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,blade.stacks[1:6,iStation],crosssectionParams,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID,nModeledLayers,crossSectionNormal,lpHpCurveDict,materialIDsUsed)
+    partNameID,lpHpCurveDict=makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,blade.stacks[1:6,iStation],crosssectionParams,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID,nModeledLayers,crossSectionNormal,lpHpCurveDict,materialsUsed)
 
 
     lpHpside='LP'
     temp=blade.stacks[:,iStation]
     temp=np.flip(temp)
-    partNameID,lpHpCurveDict=makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,temp[1:6],crosssectionParams,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID,nModeledLayers,crossSectionNormal,lpHpCurveDict,materialIDsUsed)
+    partNameID,lpHpCurveDict=makeCrossSectionLayerAreas_perimeter(surfaceDict,iStation,temp[1:6],crosssectionParams,thicknessScaling,lpHpside,isFlatback,TEangle,lastRoundStation,partNameID,nModeledLayers,crossSectionNormal,lpHpCurveDict,materialsUsed)
     
     partName='shell'
-    partNameID=createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,lpHpCurveDict['LEadhesiveCurveList'],crosssectionParams['adhesiveMatID'],partNameID,nModeledLayers,materialIDsUsed)
+    partNameID=createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,lpHpCurveDict['LEadhesiveCurveList'],crosssectionParams['adhesiveMatID'],partNameID,nModeledLayers,materialsUsed)
     
     
 
@@ -1304,7 +1305,7 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     else:
         partName='roundTEadhesive'
         
-    partNameID=createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,lpHpCurveDict['TEadhesiveCurveList'],crosssectionParams['adhesiveMatID'],partNameID,nModeledLayers,materialIDsUsed)
+    partNameID=createSimplistSurfaceForTEorLEadhesive(iStation,surfaceDict,partName,lpHpCurveDict['TEadhesiveCurveList'],crosssectionParams['adhesiveMatID'],partNameID,nModeledLayers,materialsUsed)
 
 
 
@@ -1312,7 +1313,7 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
     if hasWebs:
         partNameID=0 #Reset since outer areoshell is complete (LE adhesive is accouted for as aeroshell)
 
-        partNameID,birdsMouthVerts=makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack,lpHpCurveDict['webInterfaceCurves'],crosssectionParams,partNameID,crossSectionNormal,nModeledLayers,materialIDsUsed)   
+        partNameID,birdsMouthVerts=makeCrossSectionLayerAreas_web(surfaceDict,iStation,aftWebStack,foreWebStack,lpHpCurveDict['webInterfaceCurves'],crosssectionParams,partNameID,crossSectionNormal,nModeledLayers,materialsUsed)   
     
     
 
@@ -1330,7 +1331,7 @@ def writeCubitCrossSection(surfaceDict,iStation,iStationGeometry,blade,hasWebs,a
 
 
 
-def writeVABSinput(surfaceDict,blade,crosssectionParams,directory,fileName, surfaceIDs):
+def writeVABSinput(surfaceDict,blade,crosssectionParams,directory,fileName, surfaceIDs,materialsUsed):
     #Write VABS inputfile
     if crosssectionParams['elementShape'].lower() == 'quad':
         expandedConnectivityString='face'
@@ -1345,7 +1346,7 @@ def writeVABSinput(surfaceDict,blade,crosssectionParams,directory,fileName, surf
     ######Write VABS input file
     nnodes=get_node_count()
     nelem=get_element_count()
-    nmate=len(blade.materials)
+    nmate=len(materialsUsed)
     nlayer=len(surfaceIDs) #One VABS layer is defined for each surface
     
 
@@ -1438,14 +1439,14 @@ def writeVABSinput(surfaceDict,blade,crosssectionParams,directory,fileName, surf
                 # #######Only needed For Plotting Orientation Check#######
         #Define Plies
         for iSurface, surfaceID in enumerate(surfaceIDs):
-            VABSmaterialID=surfaceDict[surfaceID]['materialID']+1
+            materialID=list(materialsUsed).index(surfaceDict[surfaceID]['materialName'])+1
             plyAngle=surfaceDict[surfaceID]['plyAngle']
-            f.write(f'{iSurface+1} {VABSmaterialID} {plyAngle}\n') 
+            f.write(f'{iSurface+1} {materialID} {plyAngle}\n') 
         #Define Materials
-        for imat in range(len(blade.materials)):
-            VABSmaterialID=imat+1
-            material=blade.materials[imat]
-            f.write(f'{VABSmaterialID} {1} \n')
+        for imat,matName in enumerate(materialsUsed):
+            materialID=imat+1
+            material=blade.materials[matName]
+            f.write(f'{materialID} {1} \n')
             f.write(f'{material.ex} {material.ey} {material.ez}\n')
             f.write(f'{material.gxy} {material.gxz} {material.gyz}\n')
             f.write(f'{material.prxy} {material.prxz} {material.pryz}\n')

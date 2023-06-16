@@ -1456,7 +1456,7 @@ class Blade():
                             ply2.thickness = 0.3333333*t1
                             ply1.thickness = 0.3333333*t1
                             ply3.thickness = 0.3333333*t1
-                            newPg = np.array([ply1,ply2.ply3])
+                            newPg = np.array([ply1,ply2,ply3])
                 self.stacks[i,j].plygroups = newPg
     
         for i in range(2):
