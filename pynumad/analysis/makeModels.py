@@ -26,19 +26,37 @@ def writeBeamModel(wt_name,settings,blade,mu,log,directory='.'):
         pattern=directory+'/'+wt_name+'*.in'
         if len(glob.glob(pattern))==0:
             raise RuntimeError(f'Could not find files with pattern: {pattern}. Beam model generation failed')
-
+        MAXnLicenceTries=100
         for filePath in glob.glob(directory+'/'+wt_name+'*.in'):
-            print(filePath)
             fileCount+=1
             try:
                 this_cmd = 'VABS ' +filePath
                 log.info(f' running: {this_cmd}')
-                subprocess.run(this_cmd, shell=True, check=True, capture_output=True)
 
-                with open(filePath+'.ech', 'r') as f:
-                    lines = f.readlines()
-                #log the last line of .ech file:
-                log.error(f'****************************\n{lines[-1]}\n******************************')
+                licenseAvailable=False
+                nLicenceTries=0
+                while not licenseAvailable and nLicenceTries <=MAXnLicenceTries-1:
+                    subprocess.run(this_cmd, shell=True, check=True, capture_output=True)
+
+                    with open(filePath+'.ech', 'r') as f:
+                        lines = f.readlines()
+                    #log the last line of .ech file:
+                    
+                    if 'Congratulations! No errors' in lines[-1]:
+                        log.info(f'****************************\n{lines[-1]}\n******************************')
+                        licenseAvailable=True
+                        nLicenceTries=0
+                    elif 'license' in lines[-1].lower():
+                        nLicenceTries+=1
+                        log.info(f'****************************\nnLicenceTries: {nLicenceTries}, {lines[-1]}\n******************************')
+
+                    else:
+                        log.error(f'****************************\n{lines[-1]}\n******************************')
+                        raise Exception(f'Cross-sectional homogenization for file {filePath} failed due to: \n {lines[-1]} \n Beam model creation failed.') 
+                if nLicenceTries ==MAXnLicenceTries:
+                        string=f'License failed to be obtained after {MAXnLicenceTries} tries. Beam model creation failed.'
+                        log.error(string)
+                        raise Exception(string) 
 
             except subprocess.CalledProcessError as e:
                 log.error(f'Error running {this_cmd}: {e}')
