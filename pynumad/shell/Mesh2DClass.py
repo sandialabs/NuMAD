@@ -701,6 +701,7 @@ class Mesh2D():
         return elElim
             
     def mergeTriEls(self,elType):
+        ## Initialize local fields
         nNds = self.numNodes
         nbNds = self.numBndNodes
         nEls = self.numTriEls
@@ -710,6 +711,7 @@ class Mesh2D():
         ndElems[:,0] = 0
         ndElim = np.zeros(nNds,dtype=int)
         
+        ## Form the node-to-element connectivity list
         for eli in range(0,nEls):
             for nd in self.triElements[eli]:
                 j = ndElems[nd,0]
@@ -718,17 +720,16 @@ class Mesh2D():
                     ndElems[nd,j] = eli
                     ndElems[nd,0] = j
         
+        ## Merge neste clusters
         for ndi in range(nbNds,nNds):
-            if(ndElems[ndi,4] == -1):
+            if(ndElems[ndi,0] == 3):
                 abrt = False
                 for el in ndElems[ndi,1:4]:
                     if(elElim[el] == 1):
                         abrt = True
                 if(not abrt):    
-                    ndElim[ndi] = 1
                     newElNds = list()
                     for el in ndElems[ndi,1:4]:
-                        elElim[el] = 1
                         newElNds.extend(self.triElements[el])
                     srtedNds = np.sort(newElNds)
                     finalNds = list()
@@ -736,20 +737,21 @@ class Mesh2D():
                         j = srtedNds[i]
                         if(j != ndi and srtedNds[i+1] == j):
                             finalNds.append(j)
-                    self.triElements[nEls] = np.array(finalNds,dtype=int)
-                    nEls = nEls + 1
-            elif(ndElems[ndi,5] == -1):
+                    if(len(finalNds) == 3):
+                        self.triElements[nEls] = np.array(finalNds,dtype=int)
+                        nEls = nEls + 1
+                        ndElim[ndi] = 1
+                        for el in ndElems[ndi,1:4]:
+                            elElim[el] = 1
+            elif(ndElems[ndi,0] == 4):
                 abrt = False
                 for el in ndElems[ndi,1:5]:
                     if(elElim[el] == 1):
                         abrt = True
                 if(not abrt):   
-                    ndElim[ndi] = 1
                     newElNds = list()
                     for el in ndElems[ndi,1:4]:
-                        elElim[el] = 1
                         newElNds.extend(self.triElements[el])
-                    elElim[ndElems[ndi,4]] = 1
                     srtedNds = np.sort(newElNds)
                     nds12 = list()
                     for i in range(0,8):
@@ -761,31 +763,39 @@ class Mesh2D():
                         j = srtedNds[i]
                         if(j != ndi and j not in nds12):
                             nds34.append(j)
-                    n1 = nds12[0]
-                    n2 = nds12[1]
-                    n3 = nds34[0]
-                    n4 = nds34[1]
-                    v1 = self.nodes[n2] - self.nodes[n1]
-                    v2 = self.nodes[n3] - self.nodes[n4]
-                    dp = np.dot(v1,v2)
-                    if(dp > 0.0):
-                        if(elType == 'quad'):
-                            self.quadElements[nQuad] = np.array([n1,n2,n3,n4])
-                            nQuad = nQuad + 1
+                    if(len(nds12) == 2 and len(nds34) == 2):
+                        n1 = nds12[0]
+                        n2 = nds12[1]
+                        n3 = nds34[0]
+                        n4 = nds34[1]
+                        v1 = self.nodes[n2] - self.nodes[n1]
+                        v2 = self.nodes[n3] - self.nodes[n1]
+                        v3 = self.nodes[n4] - self.nodes[n1]
+                        mat = np.array([v1,v2])
+                        det1 = np.linalg.det(mat)
+                        mat = np.array([v2,v3])
+                        det2 = np.linalg.det(mat)
+                        if(det1*det2 > 0.0):
+                            if(elType == 'quad'):
+                                self.quadElements[nQuad] = np.array([n1,n2,n3,n4])
+                                nQuad = nQuad + 1
+                            else:
+                                self.triElements[nEls] = np.array([n1,n2,n3])
+                                nEls = nEls + 1
+                                self.triElements[nEls] = np.array([n1,n3,n4])
+                                nEls = nEls + 1
                         else:
-                            self.triElements[nEls] = np.array([n1,n2,n3])
-                            nEls = nEls + 1
-                            self.triElements[nEls] = np.array([n1,n3,n4])
-                            nEls = nEls + 1
-                    else:
-                        if(elType == 'quad'):
-                            self.quadElements[nQuad] = np.array([n1,n2,n4,n3])
-                            nQuad = nQuad + 1
-                        else:
-                            self.triElements[nEls] = np.array([n1,n2,n4])
-                            nEls = nEls + 1
-                            self.triElements[nEls] = np.array([n1,n4,n3])
-                            nEls = nEls + 1
+                            if(elType == 'quad'):
+                                self.quadElements[nQuad] = np.array([n1,n2,n4,n3])
+                                nQuad = nQuad + 1
+                            else:
+                                self.triElements[nEls] = np.array([n1,n2,n4])
+                                nEls = nEls + 1
+                                self.triElements[nEls] = np.array([n1,n4,n3])
+                                nEls = nEls + 1
+                        ndElim[ndi] = 1
+                        for el in ndElems[ndi,1:5]:
+                            elElim[el] = 1
         self.numTriEls = nEls
         self.numQuadEls = nQuad
         
