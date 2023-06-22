@@ -36,7 +36,7 @@ def mesh_to_yaml(meshData,fileName):
                 newLayup.append(laystr)
             newSec['layup'] = newLayup
         else:
-            newSec['materialId'] = int(sec['materialId'])
+            newSec['material'] = sec['material']
         sections.append(newSec)
     mDataOut['nodes'] = nodes
     mDataOut['elements'] = elements
