@@ -9,7 +9,7 @@ AUTHOR = 'NuMAD Dev Team'
 MAINTAINER_EMAIL = 'klbonne@sandia.gov'
 LICENSE = 'Revised BSD'
 URL = 'https://github.com/sandialabs/pynumad'
-DEPENDENCIES = ['numpy', 'scipy', 'pandas', 'matplotlib', 'pyyaml', 'plotly']
+DEPENDENCIES = ['numpy', 'scipy', 'pandas', 'matplotlib', 'pyyaml', 'plotly', 'openpyxl']
 
 # use README file as the long description
 file_dir = os.path.abspath(os.path.dirname(__file__))
