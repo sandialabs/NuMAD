@@ -232,8 +232,10 @@ def _add_materials(blade, material_data):
             cur_mat.g1g2 = np.nan
         if 'alp0' in material_data[i]:
             cur_mat.alp0 = _parse_data(material_data[i]['alp0'])
-        else: cur_mat.alp0 = None
-        cur_mat.etat = LARCetaT(cur_mat.alp0)
+            cur_mat.etat = LARCetaT(cur_mat.alp0)
+        else: 
+            cur_mat.alp0 = None
+            cur_mat.etat = None
         try:
             #test if property is a list
             material_data[i]['E']+[]

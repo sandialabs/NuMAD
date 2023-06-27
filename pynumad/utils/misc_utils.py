@@ -62,10 +62,13 @@ def LARCetaL(SL,YC,alp0):
     -------
     etaL
     """
-    num = -SL * np.cos(np.deg2rad(2*alp0))
-    denom = (YC*np.cos(np.deg2rad(alp0))**2)
-    with np.errstate(divide='ignore', invalid='ignore'):
-        etaL = num / denom
+    if alp0:
+        num = -SL * np.cos(np.deg2rad(2*alp0))
+        denom = (YC*np.cos(np.deg2rad(alp0))**2)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            etaL = num / denom
+    else:
+        etaL = None
     return etaL
 
 def _parse_data(data):
