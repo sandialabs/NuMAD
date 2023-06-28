@@ -19,5 +19,3 @@ pprint(meshData['nodes'][:10,:])
 
 # Print first 10 element connectivities
 pprint(meshData['elements'][:10,:])
-
-foo

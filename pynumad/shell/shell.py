@@ -574,7 +574,7 @@ def solidMeshFromShell(blade, shellMesh, layerNumEls=[]):
             newSec = dict()
             newSec['type'] = 'solid'
             newSec['elementSet'] = newSet['name']
-            newSec['materialId'] = sectns[esi]['layup'][li-1][0]
+            newSec['material'] = sectns[esi]['layup'][li-1][0]
             newSectList.append(newSec)
             li = li + 1
         esi = esi + 1
@@ -590,12 +590,12 @@ def solidMeshFromShell(blade, shellMesh, layerNumEls=[]):
     return solidMesh
 
 
-def getSolidMesh(blade, layerNumEls):
+def getSolidMesh(blade, layerNumEls, elementSize):
     ## Edit stacks to be usable for 3D solid mesh
     blade.editStacksForSolidMesh()
     ## Create shell mesh as seed
     ## Note the new output structure of shellMeshGeneral, as a single python dictionary  -E Anderson
-    shellMesh = shellMeshGeneral(blade,1,1)
+    shellMesh = shellMeshGeneral(blade,1,1,elementSize)
     print('finished shell mesh')
     solidMesh = solidMeshFromShell(blade,shellMesh,layerNumEls)
     return solidMesh
